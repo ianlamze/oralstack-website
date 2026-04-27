@@ -53,7 +53,9 @@ export default function OnlineBookingMock() {
               </span>
               <span
                 className={`text-sm tabular-nums ${
-                  i === 0 ? "font-semibold text-[var(--color-text)]" : "text-[var(--color-text-muted)]"
+                  i === 0
+                    ? "font-semibold text-[var(--color-text)]"
+                    : "text-[var(--color-text-muted)]"
                 }`}
               >
                 {s.start} — {s.end}
