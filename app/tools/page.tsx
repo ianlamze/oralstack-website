@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { ArrowRight, Calculator, ClipboardCheck, GitCompare, Clock } from "lucide-react";
+import { ArrowRight, Calculator, Clock } from "lucide-react";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
 
 export const metadata: Metadata = {
   title: "Tools",
   description:
-    "Interactive tools for clinic owners weighing Oralstack — migration readiness check, no-show revenue calculator, side-by-side PMS comparison, and a day-in-the-life walkthrough.",
+    "Interactive tools for clinic owners weighing Oralstack — a no-show revenue calculator and a day-in-the-life walkthrough. Plus links to scoped widgets for migration timing, ROI, and PMS comparison.",
   alternates: { canonical: "/tools" },
 };
 
@@ -21,28 +21,12 @@ type Tool = {
 
 const TOOLS: Tool[] = [
   {
-    href: "/tools/migration-readiness",
-    title: "Migration readiness check",
-    blurb: "Estimate the cutover from your current PMS in four questions.",
-    body: "Pick your PMS, sketch your clinic profile, tell us what data needs to come across, and see a defensible week-range estimate plus a tailored migration plan in your inbox.",
-    Icon: ClipboardCheck,
-    takes: "~ 90 seconds",
-  },
-  {
     href: "/tools/no-show-calculator",
     title: "No-show revenue calculator",
     blurb: "Model the revenue your clinic loses to no-shows today.",
     body: "Slide your chair count, no-show rate, and average appointment value. The calculator returns annual lost revenue and a modeled recovery range for clinics that adopt confirmed messaging and same-day rebook.",
     Icon: Calculator,
     takes: "~ 30 seconds",
-  },
-  {
-    href: "/tools/compare-pms",
-    title: "PMS comparison picker",
-    blurb: "Stack up to three practice management systems side-by-side.",
-    body: "Choose Plato, Open Dental, Dentrix, Eaglesoft, or Carestream — capabilities render as parallel columns next to Oralstack, with a link to the full long-form comparison for each.",
-    Icon: GitCompare,
-    takes: "~ 60 seconds",
   },
   {
     href: "/tools/day-in-the-life",
@@ -54,6 +38,24 @@ const TOOLS: Tool[] = [
   },
 ];
 
+const ELSEWHERE: { href: string; label: string; body: string }[] = [
+  {
+    href: "/pricing",
+    label: "ROI on /pricing",
+    body: "What does $200/clinic/month earn back? Calibrated to DFI Synergy's 60→85% same-day-billing lift.",
+  },
+  {
+    href: "/compare",
+    label: "Compare builder on /compare",
+    body: "Pick the capabilities that matter to your clinic and the systems you're weighing — get a tailored side-by-side.",
+  },
+  {
+    href: "/articles/plato-to-cloud-migration",
+    label: "Migration estimator on the Plato → cloud article",
+    body: "Pick your current system, chair count, and years of records. Get a sized cutover plan tied to the published three-week playbook.",
+  },
+];
+
 export default function ToolsIndexPage() {
   return (
     <main>
@@ -61,13 +63,12 @@ export default function ToolsIndexPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Four interactive tools for clinic owners and office managers weighing Oralstack. Each one
-          runs in your browser, takes under three minutes, and gives you a number or a plan you can
-          take to a partner before you talk to us.
+          Two interactive tools that don&apos;t fit naturally on another page. Each runs in your
+          browser and gives you a number you can take to a partner before you talk to us.
         </p>
       </Section>
 
-      <Section className="pb-24 md:pb-32">
+      <Section className="pb-16">
         <ul className="grid gap-4 md:gap-5">
           {TOOLS.map(({ href, title, blurb, body, Icon, takes }) => (
             <li key={href}>
@@ -103,6 +104,39 @@ export default function ToolsIndexPage() {
             </li>
           ))}
         </ul>
+      </Section>
+
+      <Section className="pb-24 md:pb-32">
+        <div className="grid gap-5 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 md:p-8">
+          <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+            Looking for migration timing, ROI, or a side-by-side?
+          </p>
+          <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
+            Three more interactive widgets live on the pages they belong to, where they have full
+            context next to the rest of the argument.
+          </p>
+          <ul className="grid gap-3">
+            {ELSEWHERE.map((e) => (
+              <li key={e.href}>
+                <a
+                  href={e.href}
+                  className="group flex items-start gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white p-4 hover:border-[var(--color-text-soft)] transition-colors"
+                >
+                  <ArrowRight
+                    className="mt-1 size-3.5 shrink-0 text-[var(--color-tide-deep)] card-arrow"
+                    aria-hidden
+                  />
+                  <span className="grid gap-1">
+                    <span className="text-sm font-medium text-[var(--color-text)]">{e.label}</span>
+                    <span className="text-xs text-[var(--color-text-muted)] leading-relaxed">
+                      {e.body}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
     </main>
   );
