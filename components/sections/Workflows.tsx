@@ -4,6 +4,7 @@ import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
 import ImagingMock from "@/components/visuals/ImagingMock";
+import OnlineBookingMock from "@/components/visuals/OnlineBookingMock";
 import { workflows } from "@/content/workflows";
 
 const visualBySlug: Record<string, React.ComponentType> = {
@@ -11,6 +12,7 @@ const visualBySlug: Record<string, React.ComponentType> = {
   billing: CheckoutMock,
   charting: OdontogramMock,
   imaging: ImagingMock,
+  "online-bookings": OnlineBookingMock,
 };
 
 export default function Workflows() {

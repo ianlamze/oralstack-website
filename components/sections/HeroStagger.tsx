@@ -27,7 +27,7 @@ export function HeroStagger({
 }) {
   return (
     <motion.div
-      initial="hidden"
+      initial={false}
       animate="visible"
       variants={containerVariants}
       className={className}
