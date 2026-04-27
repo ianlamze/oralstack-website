@@ -32,6 +32,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...caseStudyUrls,
     { url: `${base}/integrations/`, lastModified: now, priority: 0.7 },
     { url: `${base}/pricing/`, lastModified: now, priority: 0.7 },
+    { url: `${base}/compare/plato/`, lastModified: now, priority: 0.8 },
+    { url: `${base}/compare/open-dental/`, lastModified: now, priority: 0.8 },
     { url: `${base}/book-a-demo/`, lastModified: now, priority: 0.9 },
     { url: `${base}/changelog/`, lastModified: now, priority: 0.6 },
     { url: `${base}/security/`, lastModified: now, priority: 0.5 },

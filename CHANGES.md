@@ -66,13 +66,52 @@ A single-day end-to-end ship: scaffold to live at https://oralstack.com.
 - AGENTS.md, research-map, 5 primitives, 5 playbooks, 4 brand docs, motion doc, architecture doc, this CHANGES.md, CLOUDFLARE.md
 - 5 memory files capturing decisions that should persist across sessions
 
+### Header rework — mega panel + mobile drawer
+
+Replaced the link-row Nav with a real navigation system. Source: [`components/sections/Nav.tsx`](components/sections/Nav.tsx).
+
+- **Workflows mega panel (md+)**: hover/click/Esc-trigger dropdown anchored under the trigger. 2-column grid of the 6 workflows (each: Lucide icon · name · one-line description · anchor to `/workflows#slug`) plus a featured rail card linking to the DFI Synergy case study with a 3-stat block (3 wks / 0 / 85%). Bottom strip: Articles · vs Plato · vs Open Dental · Integrations · Changelog.
+- **Mobile drawer (<md)**: hamburger top-right → right-side slide-over (`88vw`, max `380px`). Workflows expanded inline as a motion-animated accordion; flat list below for Customers / Pricing / Integrations / Articles / Compare:vs Plato / Compare:vs Open Dental / Changelog / Security; sticky **Book a demo** at the bottom.
+- A11y: `aria-expanded`, `aria-haspopup`, `role="dialog"`, `aria-modal`, body scroll lock when drawer open, Esc closes both, focus returns to trigger on close. Inherits the project-wide `prefers-reduced-motion` rule.
+- Direction picked from a Dribbble survey: rich panel + featured rail (Vercel/Stripe/Notion family), not minimal grid (Linear/Resend) and not asymmetric preview-pane (Framer/Arc).
+
+### `/book-a-demo` audit + form rebuild
+
+The old fallback was a single mailto link with apologetic "Self-serve booking is being wired up" copy — high friction on mobile, no qualifying fields. Cal.com iframe still kicks in if `NEXT_PUBLIC_CALCOM_USERNAME` is set.
+
+- New: [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) — proper form (clinic, name, role, email, location, chairs, providers, current PMS dropdown, preferred times, notes). On submit it builds a structured mailto and opens the user's mail client with everything pre-filled. Drop-in replaceable later with a real endpoint (Cloudflare Pages Function / Formspree / Resend).
+- New layout in [`app/book-a-demo/page.tsx`](app/book-a-demo/page.tsx) — two-column on desktop (form + sidebar with Length / Format / Outcome cards plus a "What clinics ask first" trust strip linking to migration article, security, pricing). Single column on mobile.
+
+### Compare pages
+
+Two new SEO-targeted comparison routes for high-intent searches ("Plato alternative", "Open Dental APAC").
+
+- [`/compare/plato`](app/compare/plato/page.tsx) — 11-row capability table (deployment, schedule UX, charting, billing, imaging, recall, multi-clinic, off-site access, hosting, updates, pricing) + 3 "why we built differently" sections + honest "where Plato is the right call" concession + CTA to demo + cross-link to the existing [Plato migration article](content/articles/plato-to-cloud-migration.tsx).
+- [`/compare/open-dental`](app/compare/open-dental/page.tsx) — same shape, OD-specific rows (license & cost, hosting, UX, customisation, US insurance, APAC compliance, imaging, updates, multi-clinic, setup time, community).
+- Both pages match house voice: qualified claims, no "all-in-one" / "supercharge" / "best-in-class". Concession sections are real, not strawmen.
+- Sitemap: both URLs added at priority 0.8 in [`app/sitemap.ts`](app/sitemap.ts).
+- Nav: both surfaced in the mega panel resource strip and in the mobile drawer.
+
+### Tooling — `scripts/browse.mjs`
+
+Local Playwright-based CLI for fetching JS-rendered pages and verifying the local dev server. Used for design research (Dribbble, competitor sites) and visually checking new pages before deploy.
+
+```
+node scripts/browse.mjs <url> [--out path] [--width N] [--height N] [--wait selector]
+```
+
+Defaults: 1280×800 viewport, full-page screenshot to `/tmp/browse-<ts>.png`, prints page innerText (first 8000 chars). `playwright` added to `devDependencies`.
+
 ### Open / pending (carry-over to next session)
 
 - Real product screenshots to replace one or more CSS mocks (needs capture from existing Dentologic app)
 - `/about` page (needs founder bios + framing decision per the DFI Synergy ownership rule)
 - Cloudflare Web Analytics token → `.env.local` (user task)
 - Cloudflare Email Routing for `hello@`, `security@`, `legal@`, `privacy@` (user task)
-- Cal.com username → `.env.local` (user task) — until then `/book-a-demo` shows the mailto fallback
+- Cal.com username → `.env.local` (user task) — fallback is now the structured demo form, not a mailto card
+- **Real demo form endpoint** — currently builds a mailto on submit. Wire to Cloudflare Pages Functions / Formspree / Resend so submissions reach the team without depending on the user's mail client.
 - Second case study (when a clinic story other than DFI Synergy is available)
 - Lighthouse audit on the live URL
+- Internal link from the Plato migration article to `/compare/plato`
+- `/compare/` index page (only when a 3rd comparison page lands)
 - Consider Geist or Inter as the typeface (currently system stack)
