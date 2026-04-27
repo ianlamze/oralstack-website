@@ -31,6 +31,7 @@ export default function Footer() {
               { label: "For multi-clinic & DSO", href: "/for-multi-clinic" },
               { label: "Customers", href: "/customers" },
               { label: "Articles", href: "/articles" },
+              { label: "References", href: "/lead-magnets" },
               { label: "FAQ", href: "/faq" },
             ]}
           />

@@ -5,8 +5,10 @@ import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/sections/AnimateInView";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import ArticleStickyBar from "@/components/sections/ArticleStickyBar";
+import InlineMagnetCapture from "@/components/forms/InlineMagnetCapture";
 import { articles, getArticle, getRelatedArticles } from "@/content/articles";
 import { clusterDefaultCTA, clusterLabels } from "@/content/articles/types";
+import { getLeadMagnetForCluster } from "@/content/lead-magnets";
 import { siteMeta } from "@/content/site-meta";
 
 export const dynamicParams = false;
@@ -61,6 +63,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
     article;
   const related = getRelatedArticles(slug, 2);
   const cta = article.cta ?? clusterDefaultCTA[cluster];
+  const magnet = getLeadMagnetForCluster(cluster);
 
   const articleJsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -128,6 +131,19 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
           <Body />
         </article>
       </Section>
+
+      {magnet && (
+        <Section className="pb-16 md:pb-20">
+          <div className="max-w-[820px]">
+            <InlineMagnetCapture
+              magnetSlug={magnet.slug}
+              magnetTitle={magnet.title}
+              pitch={magnet.pitch}
+              deliverable={magnet.deliverable}
+            />
+          </div>
+        </Section>
+      )}
 
       {related.length > 0 && (
         <Section className="pb-20 md:pb-24">
