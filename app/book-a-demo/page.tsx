@@ -90,7 +90,7 @@ export default function BookDemoPage() {
                   three weeks from kickoff to live.{" "}
                   <a
                     href="/articles/plato-to-cloud-migration"
-                    className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+                    className="text-[var(--color-tide-deep)] underline underline-offset-4"
                   >
                     The playbook →
                   </a>
@@ -100,7 +100,7 @@ export default function BookDemoPage() {
                   Singapore region, tenant-isolated, audit-logged.{" "}
                   <a
                     href="/security"
-                    className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+                    className="text-[var(--color-tide-deep)] underline underline-offset-4"
                   >
                     Security →
                   </a>
@@ -110,7 +110,7 @@ export default function BookDemoPage() {
                   flat $200/clinic/month, no per-seat charges.{" "}
                   <a
                     href="/pricing"
-                    className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+                    className="text-[var(--color-tide-deep)] underline underline-offset-4"
                   >
                     Pricing →
                   </a>

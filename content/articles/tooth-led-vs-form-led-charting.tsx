@@ -159,7 +159,7 @@ function ArticleBody() {
         See{" "}
         <a
           href="/articles/same-day-billing-dental"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           same-day billing
         </a>{" "}
@@ -272,7 +272,7 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/workflows#charting"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack charting workflow
         </a>{" "}
@@ -281,7 +281,7 @@ function ArticleBody() {
         Or read{" "}
         <a
           href="/articles/dicom-in-chart-vs-separate-viewer"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           DICOM in the chart
         </a>{" "}

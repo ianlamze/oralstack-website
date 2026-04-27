@@ -100,7 +100,7 @@ export default function IntegrationsPage() {
                   <p className="text-sm mt-3">
                     <a
                       href="/articles/plato-to-cloud-migration"
-                      className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                      className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
                     >
                       Read: Migrating from Plato to a cloud PMS →
                     </a>
@@ -110,7 +110,7 @@ export default function IntegrationsPage() {
                   <p className="text-sm mt-3">
                     <a
                       href="/articles/dicom-in-chart-vs-separate-viewer"
-                      className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                      className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
                     >
                       Read: DICOM in the chart vs a separate viewer →
                     </a>

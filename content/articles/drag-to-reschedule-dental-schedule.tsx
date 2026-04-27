@@ -145,7 +145,7 @@ function ArticleBody() {
         For more on the migration mechanics, see{" "}
         <a
           href="/articles/plato-to-cloud-migration"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           migrating from Plato to a cloud PMS
         </a>
@@ -214,7 +214,7 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/workflows#front-desk"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack front desk workflow
         </a>{" "}
@@ -222,7 +222,7 @@ function ArticleBody() {
         timezone-correct commits and conflict detection. Or read{" "}
         <a
           href="/articles/reducing-no-show-rates"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           how to reduce no-show rates
         </a>{" "}

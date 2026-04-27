@@ -205,14 +205,14 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/workflows#imaging"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack imaging workflow
         </a>{" "}
         for the in-record implementation, or the{" "}
         <a
           href="/integrations"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           integrations page
         </a>{" "}

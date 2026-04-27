@@ -101,7 +101,7 @@ export default function WorkflowsPage() {
                         <p className="text-sm">
                           <a
                             href={`/articles/${article.slug}`}
-                            className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                            className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
                           >
                             Read: {article.title.split(":")[0]} →
                           </a>

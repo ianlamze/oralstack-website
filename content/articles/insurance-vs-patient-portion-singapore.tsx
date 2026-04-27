@@ -36,14 +36,14 @@ function ArticleBody() {
         It complements{" "}
         <a
           href="/articles/same-day-billing-dental"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           same-day billing
         </a>{" "}
         and{" "}
         <a
           href="/articles/gst-singapore-dental-billing"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           GST mechanics
         </a>{" "}
@@ -266,7 +266,7 @@ function ArticleBody() {
         more careful manual reconciliation. See the{" "}
         <a
           href="/workflows#billing"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack billing workflow
         </a>{" "}

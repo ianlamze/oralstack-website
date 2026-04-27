@@ -61,7 +61,7 @@ function ArticleBody() {
         For a fuller breakdown of operational levers, see{" "}
         <a
           href="/articles/reducing-no-show-rates"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           reducing no-show rates
         </a>
@@ -188,7 +188,7 @@ function ArticleBody() {
         clean. A PMS that handles WhatsApp natively (like{" "}
         <a
           href="/integrations"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack&apos;s WhatsApp Business integration
         </a>
@@ -287,7 +287,7 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/workflows#recall"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           recall and messaging workflow
         </a>{" "}
@@ -295,7 +295,7 @@ function ArticleBody() {
         or the{" "}
         <a
           href="/customers/dfi-synergy"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           DFI Synergy case study
         </a>{" "}

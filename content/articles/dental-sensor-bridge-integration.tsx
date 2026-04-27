@@ -34,7 +34,7 @@ function ArticleBody() {
         with{" "}
         <a
           href="/articles/dicom-in-chart-vs-separate-viewer"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           DICOM in the chart vs a separate viewer
         </a>{" "}
@@ -217,7 +217,7 @@ function ArticleBody() {
         annotation event is in the audit log (relevant for{" "}
         <a
           href="/articles/dental-audit-logs"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           audit log purposes
         </a>
@@ -237,14 +237,14 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/integrations"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack integrations page
         </a>{" "}
         for current sensor-bridge coverage, or{" "}
         <a
           href="/workflows#imaging"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           the imaging workflow
         </a>{" "}

@@ -194,7 +194,7 @@ export default function CompareOpenDentalPage() {
               three-week onboarding looks like.{" "}
               <a
                 href="/security"
-                className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+                className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
                 Read the security posture →
               </a>
@@ -228,9 +228,9 @@ function Reason({
       <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
         {eyebrow}
       </p>
-      <h3 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.15] max-w-[34ch]">
+      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.15] max-w-[34ch]">
         {title}
-      </h3>
+      </h2>
       <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
         {body}
       </p>

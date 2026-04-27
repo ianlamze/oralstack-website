@@ -79,7 +79,7 @@ function ArticleBody() {
       <p>
         What you don&apos;t lose: patient history, treatment records, billing
         history, recall lists. Modern migration tooling like{" "}
-        <a href="/integrations" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/integrations" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           Plato → Oralstack field-for-field migration
         </a>{" "}
         carries these across.
@@ -153,7 +153,7 @@ function ArticleBody() {
 
       <p>
         Oralstack&apos;s{" "}
-        <a href="/security" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/security" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           security posture
         </a>{" "}
         documents both of these in detail.
@@ -241,16 +241,16 @@ function ArticleBody() {
 
       <p>
         See the{" "}
-        <a href="/customers/dfi-synergy" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/customers/dfi-synergy" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           DFI Synergy case study
         </a>{" "}
         for a worked example of this exact migration in a 3-chair Singapore
         clinic. For a feature-by-feature breakdown of what changes, see the{" "}
-        <a href="/compare/plato" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/compare/plato" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           Oralstack vs Plato comparison
         </a>
         . Or read about the{" "}
-        <a href="/workflows#front-desk" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/workflows#front-desk" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           front-desk workflow
         </a>{" "}
         that the migration moves you onto.

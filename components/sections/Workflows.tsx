@@ -72,7 +72,7 @@ export default function Workflows() {
         <p className="mt-14 text-sm">
           <a
             href="/workflows"
-            className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+            className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
           >
             See every workflow including recall and operations →
           </a>

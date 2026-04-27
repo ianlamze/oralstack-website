@@ -104,7 +104,7 @@ function ArticleBody() {
         three-week window has often passed for several patients. Recall
         needs to surface automatically, in the front desk&apos;s daily
         view, sorted by recall age.{" "}
-        <a href="/workflows#recall" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/workflows#recall" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           Oralstack does this by default
         </a>{" "}
         — but the principle holds regardless of which system you&apos;re on.
@@ -170,11 +170,11 @@ function ArticleBody() {
 
       <p>
         See the{" "}
-        <a href="/workflows#recall" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/workflows#recall" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           recall workflow
         </a>{" "}
         for how Oralstack implements these levers, or the{" "}
-        <a href="/customers/dfi-synergy" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+        <a href="/customers/dfi-synergy" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           DFI Synergy case study
         </a>{" "}
         for a worked example in a 3-chair Singapore clinic.

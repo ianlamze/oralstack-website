@@ -53,7 +53,7 @@ function ArticleBody() {
           (see{" "}
           <a
             href="/articles/gst-singapore-dental-billing"
-            className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+            className="text-[var(--color-tide-deep)] underline underline-offset-4"
           >
             GST 9% mechanics
           </a>
@@ -144,7 +144,7 @@ function ArticleBody() {
         See{" "}
         <a
           href="/articles/same-day-billing-dental"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           same-day billing
         </a>{" "}
@@ -161,7 +161,7 @@ function ArticleBody() {
         evidence of tenant isolation in operation (see{" "}
         <a
           href="/articles/singapore-pdpa-dental-clinics"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           PDPA + tenant isolation
         </a>
@@ -271,7 +271,7 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/security"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack security posture
         </a>{" "}

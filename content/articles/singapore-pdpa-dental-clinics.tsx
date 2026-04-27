@@ -185,7 +185,7 @@ function ArticleBody() {
         For a deeper architectural example, the{" "}
         <a
           href="/security"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack security page
         </a>{" "}
@@ -272,7 +272,7 @@ function ArticleBody() {
         For migration mechanics, see{" "}
         <a
           href="/articles/plato-to-cloud-migration"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           migrating from Plato to a cloud PMS
         </a>
@@ -309,7 +309,7 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/security"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack security posture
         </a>{" "}

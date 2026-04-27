@@ -251,14 +251,14 @@ function ArticleBody() {
         See the{" "}
         <a
           href="/workflows#billing"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           Oralstack billing workflow
         </a>{" "}
         for how the discharge-flow model is implemented. Or read the{" "}
         <a
           href="/customers/dfi-synergy"
-          className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+          className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
           DFI Synergy case study
         </a>{" "}

@@ -53,7 +53,7 @@ export default function NotFound() {
             pages below — or email{" "}
             <a
               href="mailto:hello@oralstack.com"
-              className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"
+              className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
               hello@oralstack.com
             </a>{" "}
