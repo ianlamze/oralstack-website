@@ -23,6 +23,16 @@ export const dentrix: Comparison = {
       us: "Drag-driven. Move a 10:00 to 14:00 in three seconds; commits are timezone-correct on reload.",
     },
     {
+      capability: "Find next available slot",
+      them: "Smart Scheduling available via third-party (Yapi); native Appointment Book is calendar-grid scan.",
+      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+    },
+    {
+      capability: "Patient self-booking",
+      them: "Online Booking sits inside the Patient Engage Suite — separate paid subscription on top of Dentrix.",
+      us: "Included — no separate Patient Engage subscription. Bookings commit straight into the schedule, not bolted on through a module.",
+    },
+    {
       capability: "Charting",
       them: "Tooth chart with treatment-coded fills, perio chart, free-text and structured notes per visit.",
       us: "FDI numbering with surface-specific notes (M/D/B/L/O) and per-procedure templates editable per visit.",

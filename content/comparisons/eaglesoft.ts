@@ -23,6 +23,16 @@ export const eaglesoft: Comparison = {
       us: "Drag-driven. Reschedule in three seconds; commits are timezone-correct on reload; provider columns render dynamically.",
     },
     {
+      capability: "Find next available slot",
+      them: "Calendar-grid scan. Procedure/duration filtering varies by version.",
+      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+    },
+    {
+      capability: "Patient self-booking",
+      them: "Patient self-booking via partner integrations (e.g. Vyne Trellis Patient Portal); not native to Eaglesoft.",
+      us: "Native to Oralstack — one tool, one bill, one schedule of record.",
+    },
+    {
       capability: "Billing",
       them: "Strong US insurance workflow — eClaims, EOB import, fee schedules, ledger reconciliation. ANSI 837/835 native.",
       us: "Discharge-flow billing for APAC fee-for-service. Treatment lines pull from the chart automatically; Singapore GST and insurance models built in.",
