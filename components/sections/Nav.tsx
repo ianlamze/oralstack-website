@@ -247,6 +247,13 @@ export default function Nav() {
                         Compare →
                       </a>
                       <a
+                        href="/tools"
+                        onClick={closeMega}
+                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                      >
+                        Tools →
+                      </a>
+                      <a
                         href="/articles"
                         onClick={closeMega}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
@@ -408,6 +415,9 @@ export default function Nav() {
                 </DrawerLink>
                 <DrawerLink href="/compare" onNavigate={() => setDrawerOpen(false)}>
                   Compare
+                </DrawerLink>
+                <DrawerLink href="/tools" onNavigate={() => setDrawerOpen(false)}>
+                  Tools
                 </DrawerLink>
                 <DrawerLink href="/articles" onNavigate={() => setDrawerOpen(false)}>
                   Articles
