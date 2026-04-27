@@ -5,7 +5,7 @@ import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/sections/AnimateInView";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import { articles, getArticle, getRelatedArticles } from "@/content/articles";
-import { clusterLabels } from "@/content/articles/types";
+import { clusterDefaultCTA, clusterLabels } from "@/content/articles/types";
 import { siteMeta } from "@/content/site-meta";
 
 export const dynamicParams = false;
@@ -59,6 +59,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   const { Body, title, description, publishedAt, updatedAt, author, cluster, readingMinutes } =
     article;
   const related = getRelatedArticles(slug, 2);
+  const cta = article.cta ?? clusterDefaultCTA[cluster];
 
   const articleJsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -160,17 +161,29 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
       <Section className="pb-24 md:pb-32">
         <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center max-w-[820px]">
           <div>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-3">
+              {cta.eyebrow}
+            </p>
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-              See how Oralstack handles this in production.
+              {cta.title}
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              A 30-minute demo walks the front desk and a clinician through every workflow on a
-              sample dataset that mirrors a typical Singapore clinic.
+              {cta.body}
             </p>
+            {cta.buttonHref !== "/book-a-demo" && (
+              <p className="mt-4 text-sm">
+                <a
+                  href="/book-a-demo"
+                  className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                >
+                  Or book a 30-minute demo →
+                </a>
+              </p>
+            )}
           </div>
           <div className="md:justify-self-end">
-            <MagneticButton href="/book-a-demo" variant="primary" withArrow>
-              Book a demo
+            <MagneticButton href={cta.buttonHref} variant="primary" withArrow>
+              {cta.buttonLabel}
             </MagneticButton>
           </div>
         </div>

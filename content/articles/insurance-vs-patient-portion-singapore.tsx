@@ -12,6 +12,13 @@ export const insuranceVsPatientPortionSingapore: Article = {
   cluster: "billing",
   tags: ["insurance", "TPA", "MediSave", "Singapore", "billing"],
   readingMinutes: 8,
+  cta: {
+    eyebrow: "Insurance in production",
+    title: "How Oralstack splits insurance and patient portion",
+    body: "Two-ledger structure native: TPA-direct claims, MediSave-eligible lines, and patient portion stay structurally separate. Reconciliation reads itself.",
+    buttonLabel: "See the billing workflow",
+    buttonHref: "/workflows#billing",
+  },
   Body: ArticleBody,
 };
 

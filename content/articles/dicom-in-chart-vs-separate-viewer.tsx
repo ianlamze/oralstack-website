@@ -12,6 +12,13 @@ export const dicomInChartVsSeparateViewer: Article = {
   cluster: "clinical",
   tags: ["DICOM", "imaging", "clinical", "sensor bridge", "patient chart"],
   readingMinutes: 7,
+  cta: {
+    eyebrow: "Imaging in production",
+    title: "DICOM viewer inside the patient chart",
+    body: "Open the chart, see the radiograph. Multi-frame DICOM, annotation tools, measurements — in the same surface as the case notes and the bill.",
+    buttonLabel: "See the imaging workflow",
+    buttonHref: "/workflows#imaging",
+  },
   Body: ArticleBody,
 };
 

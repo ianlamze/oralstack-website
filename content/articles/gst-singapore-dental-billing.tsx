@@ -12,6 +12,13 @@ export const gstSingaporeDentalBilling: Article = {
   cluster: "billing",
   tags: ["GST", "Singapore", "IRAS", "invoicing", "compliance"],
   readingMinutes: 8,
+  cta: {
+    eyebrow: "GST in production",
+    title: "How Oralstack handles GST mixed-supply",
+    body: "Per-line GST flag with auto-rate pickup, separate taxable and exempt totals on every invoice, IRAS-export ready. The audit trail is built in, not bolted on.",
+    buttonLabel: "See the billing workflow",
+    buttonHref: "/workflows#billing",
+  },
   Body: ArticleBody,
 };
 
