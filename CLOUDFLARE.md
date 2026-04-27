@@ -103,45 +103,44 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 5. Tell me — I rebuild and redeploy. `/book-a-demo` now embeds Cal.com directly.
 
-## Step 7 — Demo form endpoint (~5 minutes)
+## Step 7 — Form endpoints + Resend (~5 minutes)
 
-Without this, `/book-a-demo` builds a `mailto:` URL on submit and opens the user's mail client. That works, but depends on the visitor having a default email client configured — about a third of mobile users don't.
+The site has two Cloudflare Pages Functions handling form submissions:
 
-Two options. Pick one.
+- [`functions/api/contact.ts`](functions/api/contact.ts) — POST `/api/contact`. Multi-intent (`question`, `migration`, `pilot`, `demo`). Powers `/contact`, the article inline magnet capture, **and** DemoRequestForm on `/book-a-demo` (which posts here by default).
+- [`functions/api/lead-magnet.ts`](functions/api/lead-magnet.ts) — POST `/api/lead-magnet`. Email-captures the visitor address and emails them the link to the requested reference.
 
-### Path A — Cloudflare Pages Function + Resend (recommended)
+Without `RESEND_API_KEY` set, both endpoints still accept and validate submissions — they just log to the Cloudflare console instead of sending email. The form UI works either way.
 
-Already wired in: [`functions/api/demo.ts`](functions/api/demo.ts) handles `POST /api/demo`, validates the payload, and forwards to Resend's transactional email API.
+To activate real email forwarding:
 
 1. Sign up at [resend.com](https://resend.com) (free tier: 100 emails/day, 3,000/month).
 2. **Verify the sending domain.** Resend → Domains → Add → `oralstack.com` → add the DNS records (SPF, DKIM) Resend provides into Cloudflare DNS. Verification usually completes in 5–10 minutes.
 3. Resend → API Keys → Create API Key (full access, single domain). Copy the value (starts with `re_`).
 4. Cloudflare dashboard → Workers & Pages → **oralstack** → Settings → Environment variables:
-   - Add `RESEND_API_KEY` (encrypted) with the key from step 3
-   - Optionally `DEMO_FROM_EMAIL` (default `demo@oralstack.com`)
-   - Optionally `DEMO_TO_EMAIL` (default `hello@oralstack.com`)
-5. In your local `.env.local`:
+   - `RESEND_API_KEY` (encrypted) — the key from step 3
+   - `CONTACT_INBOX` — destination address (default: `hello@oralstack.com`)
+   - `CONTACT_FROM` — From: header (default: `Oralstack contact <noreply@oralstack.com>`)
+   - `SITE_URL` — public origin for absolute lead-magnet URLs (default: `https://oralstack.com`)
+5. Redeploy. Submissions land in `hello@oralstack.com` within a second.
 
-```bash
-NEXT_PUBLIC_DEMO_FORM_ENDPOINT=/api/demo
-```
+DemoRequestForm at `/book-a-demo` posts to `/api/contact` by default; if you want a third-party form service instead (Formspree etc.), set `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` in `.env.local` to override.
 
-6. Redeploy. Submissions land in `hello@oralstack.com` within a second.
-
-The function returns:
-- `200 { ok: true }` — submission accepted, email queued.
-- `400` — missing required fields or invalid email.
-- `503` — `RESEND_API_KEY` not set in Pages env vars.
+Function response codes:
+- `200 { ok: true, message }` — submission accepted; email sent if Resend configured, logged otherwise.
+- `400 { ok: false, message }` — missing or invalid fields (per-intent validation).
 - `502` — Resend rejected the request (check Cloudflare function logs).
 
-### Path B — Formspree (third-party, no Cloudflare config)
+See [CONTACT_SETUP.md](CONTACT_SETUP.md) for the consolidated setup walkthrough.
 
-Faster setup, no DNS verification, third-party dependency.
+### Optional: route DemoRequestForm at a third-party service
+
+If you'd rather use Formspree / Web3Forms / similar instead of the in-repo Pages Function:
 
 1. Sign up at [formspree.io](https://formspree.io) (free tier: 50 submissions/month).
 2. Create a form, destination email `hello@oralstack.com`.
 3. Copy the endpoint URL (e.g., `https://formspree.io/f/xxxxxxxx`).
-4. Add to `.env.local`:
+4. Add to `.env.local` to override the default `/api/contact`:
 
 ```bash
 NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
@@ -149,7 +148,7 @@ NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
 
 5. Redeploy.
 
-Either path: the form payload is JSON `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes, _subject }`. Formspree uses `_subject` as the email subject line; the Cloudflare function builds its own subject from the clinic name.
+The DemoRequestForm payload is JSON `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes }`. The in-repo `/api/contact` function detects this shape and normalizes it to `intent: "demo"` automatically.
 
 ## Quick checklist
 
@@ -160,7 +159,7 @@ Either path: the form payload is JSON `{ clinic, name, role, email, location, ch
 [ ] Step 4: Cloudflare Web Analytics token in .env.local
 [ ] Step 5: hello@ + security@ + legal@ forwarding via Email Routing
 [ ] Step 6: Cal.com username + event in .env.local
-[ ] Step 7: Demo form endpoint (Formspree) in .env.local
+[ ] Step 7: Resend wired (RESEND_API_KEY in Cloudflare Pages env vars)
 ```
 
 When you've done step 1, just say "logged in" and I take it from there.

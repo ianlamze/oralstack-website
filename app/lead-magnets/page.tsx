@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 export default function LeadMagnetsIndexPage() {
   return (
     <main>
-      <PageHeader eyebrow="References" title="Free dental clinic ops references." />
+      <PageHeader
+        eyebrow="References"
+        title="Free dental clinic ops references."
+        variant="display"
+      />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
@@ -30,7 +34,7 @@ export default function LeadMagnetsIndexPage() {
             <li key={m.slug}>
               <a
                 href={`/lead-magnets/${m.slug}`}
-                className="group block h-full rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 hover:border-[var(--color-border-strong)] transition-colors"
+                className="card-hover group block h-full rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6"
               >
                 <span className="inline-flex items-center text-[10px] font-medium uppercase tracking-[0.14em] rounded-full px-2 py-0.5 bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]">
                   {clusterLabels[m.cluster]}
