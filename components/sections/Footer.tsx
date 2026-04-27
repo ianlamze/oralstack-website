@@ -20,6 +20,7 @@ export default function Footer() {
               { label: "Integrations", href: "/integrations" },
               { label: "Pricing", href: "/pricing" },
               { label: "Compare", href: "/compare" },
+              { label: "Tools", href: "/tools" },
               { label: "Changelog", href: "/changelog" },
             ]}
           />
