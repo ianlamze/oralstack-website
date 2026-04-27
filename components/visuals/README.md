@@ -1,0 +1,74 @@
+# Visuals Library
+
+Reusable, brand-consistent React visualizations of oralstack's core product surfaces. Each visual is a **pure CSS/HTML React component** — no images, no external assets, no live data. They mirror the actual app UI (data shapes and visual hierarchy taken from the Dentologic codebase) but use Singapore-fictional names so nothing real ever leaks.
+
+## Philosophy
+
+- **Source of truth: the app codebase.** When a visual stops matching the real app, update the visual — don't let them diverge.
+- **Pure CSS over screenshots.** Crisp at any size, no asset pipeline, no DPI issues, no risk of patient-data leakage.
+- **Brand tokens only.** No raw hex outside this folder. All visuals consume `--color-*` and `--radius-*` tokens from `app/globals.css` so theming/dark-mode changes propagate automatically.
+- **Singapore-fictional names.** Every visual uses the same canonical patient set (Lim Wei Jian, Devi Krishnan, Aaron Teo, Mei Lin Tan, Hafiz Yusof) so cross-visual consistency reads as "same clinic."
+
+## Conventions
+
+| Concern | Rule |
+|---|---|
+| File naming | `{Feature}Mock.tsx` (e.g. `ScheduleMock.tsx`) |
+| Default export | The component |
+| Container | Outer card: `rounded-[var(--radius-lg)] border bg-white p-4 sm:p-5 md:p-6 shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]` |
+| Width | `max-w-[xxx]px` set on the outer card; sized to feel "real product UI" at ~360–560px |
+| Header | Eyebrow on left (uppercase, `text-[var(--color-text-soft)]`), context (clinic / patient / count) on right |
+| Footer | Single-line tag bar in soft text color, optional |
+| Accessibility | Outer container has `role="img"` and a sentence-long `aria-label` describing what's depicted |
+| Color palette | sunset = caries / overdue / sunset accent; sea = filling / booked / "live" state; violet = crown / xray / AI; neutrals = watch / contacted / line dividers |
+| Data | Inline `const` arrays of typed objects, mirroring real app data shapes; never imported from a live source |
+
+## Catalog
+
+| Component | File | Source app surface | Default width | Use cases |
+|---|---|---|---|---|
+| `ScheduleMock` | [ScheduleMock.tsx](ScheduleMock.tsx) | `apps/app/app/(authenticated)/schedule/` | 560px | Hero on homepage; "Front desk" workflow section; case study schedule reference |
+| `OdontogramMock` | [OdontogramMock.tsx](OdontogramMock.tsx) | `apps/app/app/(authenticated)/patients/[id]/` (dental-chart, odontogram, tooth-detail-panel) | 520px | "Charting & case notes" workflow section; case study charting visual |
+| `CheckoutMock` | [CheckoutMock.tsx](CheckoutMock.tsx) | `apps/app/app/(authenticated)/checkout/` (invoice editor, payment panel) | 480px | "Billing & discharge" workflow section; case study billing visual |
+| `ImagingMock` | [ImagingMock.tsx](ImagingMock.tsx) | `apps/app/app/(authenticated)/imaging/` (asset grid + categories) | 480px | "Clinical imaging" workflow section |
+| `RecallMock` | [RecallMock.tsx](RecallMock.tsx) | `apps/app/app/(authenticated)/reminders/recall-table.tsx` | 560px | "Recall & messaging" workflow section; case study lifecycle visual |
+| `MessagingMock` | [MessagingMock.tsx](MessagingMock.tsx) | `apps/app/app/(authenticated)/reminders/` + WhatsApp Business API | 440px | Patient communication / two-way messaging story; pairs naturally with `RecallMock` (queue → conversation) |
+| `DicomViewerMock` | [DicomViewerMock.tsx](DicomViewerMock.tsx) | `apps/app/app/(authenticated)/imaging/` (v13 single-image viewer) | 520px | Imaging deep-view; pairs naturally with `ImagingMock` (grid → single image); v13 signature feature |
+| `AnalyticsMock` | [AnalyticsMock.tsx](AnalyticsMock.tsx) | `apps/app/scripts/analyze:chairs` (chair utilisation analysis) | 540px | Operational reporting / chair utilisation story; standalone for an `/analytics` or operations workflow surface |
+
+## Where each visual is currently used
+
+| Visual | Pages |
+|---|---|
+| `ScheduleMock` | `/` (Hero), `/workflows#front-desk`, `/customers/dfi-synergy` |
+| `OdontogramMock` | `/workflows#charting`, `/customers/dfi-synergy`, `/` (homepage Workflows card) |
+| `CheckoutMock` | `/workflows#billing`, `/customers/dfi-synergy`, `/` (homepage Workflows card) |
+| `ImagingMock` | `/workflows#imaging`, `/` (homepage Workflows card) |
+| `RecallMock` | `/workflows#recall`, `/customers/dfi-synergy` |
+| `MessagingMock` | `/workflows#recall` (paired with `RecallMock`) |
+| `DicomViewerMock` | `/workflows#imaging` (paired with `ImagingMock`) |
+| `AnalyticsMock` | `/workflows#operations` (anchors the Operations & analytics section) |
+
+## How to add a new visual
+
+1. **Recon the source app surface.** Open the matching route under `apps/app/app/`. Note the data shape, distinctive UI elements, color cues. Don't guess — match what's there.
+2. **Create the file** `components/visuals/{Name}Mock.tsx`.
+3. **Match the conventions table above** — outer card classes, `role="img"`, brand tokens only.
+4. **Use the canonical patient names** (Lim Wei Jian / Devi Krishnan / Aaron Teo / Mei Lin Tan / Hafiz Yusof) for cross-visual consistency.
+5. **Add an entry** to the Catalog and Where-used tables in this README.
+6. **Add to the dev catalog page** at `/dev/visuals` (`app/dev/visuals/page.tsx`) so it shows up in visual review.
+7. **Use it.** Import from `@/components/visuals/{Name}Mock`.
+
+## Future visuals to build (TODO)
+
+- **InsuranceClaimMock** — claim form with line splits between insurer and patient (Singapore TPAs / HSA / Medisave)
+- **OnboardingWizardMock** — clinic provisioning flow (covers tenancy work; would support `/security` or a future `/onboarding` story)
+- **AuditLogMock** — audit-log table with row-level events, useful for the `/security` page
+- **NewPatientFormMock** — the inline new-patient registration form (mirrors the retired Plato booking form)
+- **DashboardMock** — at-a-glance owner dashboard (today's revenue, chair utilisation summary, recall count, outstanding A/R)
+
+## Reviewing visuals
+
+The `/dev/visuals` route renders all visuals on one page for at-a-glance review. It's `noindex` (excluded from search engines), not in the sitemap, and not linked from any production page — but the URL is stable and shareable for internal review.
+
+Run `npm run dev` and open <http://localhost:3000/dev/visuals> to view.

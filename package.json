@@ -1,0 +1,30 @@
+{
+  "name": "oralstack",
+  "version": "0.1.0",
+  "private": true,
+  "description": "oralstack.com — marketing site for the oralstack dental clinic OS",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "deploy": "next build && wrangler pages deploy out --project-name=oralstack --commit-dirty=true",
+    "deck:pdf": "bash scripts/generate-deck-pdf.sh"
+  },
+  "dependencies": {
+    "next": "^16.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "motion": "^12.0.0",
+    "lucide-react": "^0.460.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@tailwindcss/postcss": "^4.2.0",
+    "tailwindcss": "^4.2.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.0.0"
+  }
+}

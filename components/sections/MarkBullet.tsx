@@ -1,0 +1,33 @@
+type MarkBulletProps = {
+  size?: number;
+  className?: string;
+};
+
+export default function MarkBullet({
+  size = 12,
+  className,
+}: MarkBulletProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      aria-hidden
+      className={`shrink-0 ${className ?? ""}`}
+    >
+      <path
+        d="M16 4.5 C20.6 4.5 23.5 7 23.5 11.2 L23.5 14.2 C23.5 16.1 22 17.2 19.8 17.2 L12.2 17.2 C10 17.2 8.5 16.1 8.5 14.2 L8.5 11.2 C8.5 7 11.4 4.5 16 4.5 Z"
+        fill="var(--color-ink)"
+      />
+      <path
+        d="M11.4 17.6 L11.4 22.5 C11.4 25.2 12.6 26.6 14.2 26.2 C15 26 15.2 24.4 15.2 22.4 L15.2 17.6 Z"
+        fill="var(--color-tide)"
+      />
+      <path
+        d="M16.8 17.6 L16.8 25.4 C16.8 27.7 18.6 28.4 20.4 27.6 C22.4 26.7 22.4 23.4 21.7 19.6 L21.4 17.6 Z"
+        fill="var(--color-ink)"
+      />
+    </svg>
+  );
+}

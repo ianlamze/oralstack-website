@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* Cross-document view transitions — Chrome 126+. Browsers without support fall
+   back to normal navigation, no behavioural change. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme {
+  /* canvas — warm near-white, kept for warmth on a cool palette */
+  --color-canvas: oklch(0.99 0.005 90);
+  --color-canvas-tinted: oklch(0.97 0.004 240);
+
+  /* ink — navy, the new primary text + button colour */
+  --color-ink: oklch(0.30 0.07 250);
+  --color-ink-deep: oklch(0.22 0.08 250);
+  --color-ink-muted: oklch(0.46 0.03 240);
+  --color-ink-soft: oklch(0.62 0.02 240);
+
+  --color-line: oklch(0.91 0.005 240);
+  --color-line-strong: oklch(0.83 0.01 240);
+
+  /* tide — teal, the new brand accent */
+  --color-tide: oklch(0.60 0.10 218);
+  --color-tide-deep: oklch(0.48 0.10 218);
+
+  /* warm semantic colours, retained for product visualisations */
+  /* sunset = caries, overdue, warning, pilot */
+  --color-sunset: oklch(0.78 0.14 50);
+  --color-sunset-deep: oklch(0.66 0.16 40);
+  /* sea = legacy lighter teal — used inside visualisations only */
+  --color-sea: oklch(0.72 0.10 200);
+  /* violet = AI / x-ray / computed signal */
+  --color-violet: oklch(0.55 0.18 290);
+
+  /* semantic role tokens */
+  --color-bg: var(--color-canvas);
+  --color-text: var(--color-ink);
+  --color-text-muted: var(--color-ink-muted);
+  --color-text-soft: var(--color-ink-soft);
+  --color-border: var(--color-line);
+  --color-border-strong: var(--color-line-strong);
+  --color-accent: var(--color-tide);
+  --color-accent-deep: var(--color-tide-deep);
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+:where(a, button, [role="button"], input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-tide-deep);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body:has(.deck-mode) > header,
+body:has(.deck-mode) > footer {
+  display: none;
+}
+
+body:has(.deck-mode) {
+  background: white;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body > header,
+  body > footer,
+  .no-print {
+    display: none !important;
+  }
+
+  main.deck-mode {
+    padding: 0 !important;
+  }
+
+  .deck-slide {
+    page-break-after: always;
+    break-after: page;
+    width: 297mm;
+    height: 210mm;
+    padding: 14mm 16mm;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: hidden;
+  }
+
+  .deck-slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+}
