@@ -8,7 +8,7 @@ export const workflows: Workflow[] = [
   {
     slug: "front-desk",
     eyebrow: "Front desk",
-    title: "Schedule that responds in three seconds.",
+    title: "Scheduling that keeps up with the front desk.",
   },
   {
     slug: "billing",
@@ -24,5 +24,10 @@ export const workflows: Workflow[] = [
     slug: "imaging",
     eyebrow: "Clinical imaging",
     title: "DICOM in the chart, sensor in the room.",
+  },
+  {
+    slug: "online-bookings",
+    eyebrow: "Online bookings",
+    title: "Patients book the slot the schedule actually has open.",
   },
 ];

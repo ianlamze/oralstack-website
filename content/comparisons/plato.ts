@@ -23,6 +23,16 @@ export const plato: Comparison = {
       us: "Drag-driven. Move a 10:00 to 14:00 in three seconds; commits are timezone-correct on reload.",
     },
     {
+      capability: "Find next available slot",
+      them: "Calendar grid with slot rules; finding next available for a specific procedure + provider is a manual scan.",
+      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+    },
+    {
+      capability: "Patient self-booking",
+      them: "Native online booking on the on-prem product — the booking page syncs back to the clinic's Plato server.",
+      us: "Included in the base price. Bookings commit straight into the same schedule the front desk drives — no sync layer.",
+    },
+    {
       capability: "Charting",
       them: "FDI numbering with free-text clinical notes per visit.",
       us: "FDI numbering with surface-specific notes (M/D/B/L/O) and per-procedure templates editable per visit.",
@@ -83,6 +93,11 @@ export const plato: Comparison = {
       eyebrow: "Why we built differently · 3",
       title: "DICOM in the chart beats parallel desktop apps.",
       body: "If the radiograph lives in a folder on a separate desktop, every imaging review is a context switch. Oralstack runs the DICOM viewer inside the patient chart, with sensor-bridge integration for chairside capture across Carestream, Dexis, Sopro, and Schick. Open the chart, see the radiograph; review the radiograph, see the chart.",
+    },
+    {
+      eyebrow: "Why we built differently · 4",
+      title: "Self-booking and the schedule are the same system, not two integrations.",
+      body: "When the booking page syncs from a separate portal back to the clinic server, slot ownership gets fuzzy: the patient claims one, the front desk claims another, the chair has neither. Oralstack's booking page and the front-desk schedule are the same system. The slot the patient sees is the slot the chair has, and the booking commits straight in, timezone-correct.",
     },
   ],
   concession: {
