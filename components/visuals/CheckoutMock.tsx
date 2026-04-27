@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 type LineItem = { code: string; name: string; qty: number; price: number };
@@ -13,6 +13,10 @@ const items: LineItem[] = [
 ];
 
 const paymentModes: PaymentMode[] = ["PayNow", "Card", "Cash", "Bank"];
+
+// Demo target — Singapore's most common cash-equivalent payment method;
+// natural choice for a discharge-billing demo.
+const DEMO_MODE: PaymentMode = "PayNow";
 
 function format(n: number) {
   return `S$${n.toFixed(2)}`;
@@ -36,22 +40,113 @@ export default function CheckoutMock() {
 
   const [selected, setSelected] = useState<PaymentMode | null>(null);
   const [paid, setPaid] = useState<{ mode: PaymentMode; at: string } | null>(null);
+  const [postDemoNudge, setPostDemoNudge] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hasDemoedRef = useRef(false);
+  const hasInteractedRef = useRef(false);
+  const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const reduceMotion = useReducedMotion();
 
+  function markInteracted() {
+    if (!hasInteractedRef.current) hasInteractedRef.current = true;
+    setPostDemoNudge(false);
+  }
+
+  function pickMode(m: PaymentMode) {
+    markInteracted();
+    if (paid) return;
+    setSelected(m);
+  }
+
   function takePayment() {
+    markInteracted();
     if (!selected || paid) return;
     setPaid({ mode: selected, at: nowSGT() });
   }
 
   function reset() {
+    markInteracted();
     setSelected(null);
     setPaid(null);
   }
 
+  const runDemo = useCallback(() => {
+    if (hasInteractedRef.current) return;
+
+    const pick = setTimeout(() => {
+      if (hasInteractedRef.current) return;
+      setSelected(DEMO_MODE);
+    }, 700);
+
+    const pay = setTimeout(() => {
+      if (hasInteractedRef.current) return;
+      setPaid({ mode: DEMO_MODE, at: nowSGT() });
+    }, 700 + 1000);
+
+    const nudgeOn = setTimeout(
+      () => {
+        if (hasInteractedRef.current) return;
+        setPostDemoNudge(true);
+      },
+      700 + 1000 + 700,
+    );
+
+    const nudgeOff = setTimeout(
+      () => {
+        setPostDemoNudge(false);
+      },
+      700 + 1000 + 700 + 3000,
+    );
+
+    demoTimersRef.current = [pick, pay, nudgeOn, nudgeOff];
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    if (hasDemoedRef.current) return;
+    const node = containerRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry?.isIntersecting) return;
+        if (hasDemoedRef.current || hasInteractedRef.current) return;
+        hasDemoedRef.current = true;
+        observer.disconnect();
+        runDemo();
+      },
+      { threshold: 0.55 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [reduceMotion, runDemo]);
+
+  useEffect(() => {
+    return () => {
+      for (const t of demoTimersRef.current) clearTimeout(t);
+      demoTimersRef.current = [];
+    };
+  }, []);
+
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[480px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
+    <div
+      ref={containerRef}
+      className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[480px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
+    >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
-        <span>Discharge · Invoice INV-0421</span>
+        <span className="flex items-center gap-1.5 flex-wrap">
+          <span>Discharge · Invoice INV-0421</span>
+          <span aria-hidden className="text-[var(--color-text-soft)]">
+            ·
+          </span>
+          <span className="inline-flex items-center gap-1 text-[var(--color-tide-deep)] font-semibold">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-tide-deep)]"
+            />
+            Live demo
+          </span>
+        </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
           Devi Krishnan · #1054
         </span>
@@ -98,12 +193,15 @@ export default function CheckoutMock() {
             const isSelected = selected === m;
             const isDisabled = paid !== null;
             return (
-              <button
+              <motion.button
                 key={m}
                 type="button"
-                onClick={() => !isDisabled && setSelected(m)}
+                onClick={() => pickMode(m)}
+                onPointerEnter={markInteracted}
+                onFocus={markInteracted}
                 disabled={isDisabled}
                 aria-pressed={isSelected}
+                whileHover={reduceMotion || isDisabled || isSelected ? undefined : { y: -1 }}
                 className={`text-[11px] font-medium rounded-md border px-2.5 py-1.5 transition-colors disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
                   isSelected
                     ? "bg-[var(--color-ink)] text-[var(--color-canvas)] border-[var(--color-ink)]"
@@ -113,7 +211,7 @@ export default function CheckoutMock() {
                 }`}
               >
                 {m}
-              </button>
+              </motion.button>
             );
           })}
         </div>
@@ -138,9 +236,13 @@ export default function CheckoutMock() {
                 <button
                   type="button"
                   onClick={reset}
-                  className="justify-self-start text-[10px] font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] underline underline-offset-4 decoration-[var(--color-border-strong)] hover:decoration-[var(--color-ink)]"
+                  className={`justify-self-start text-[10px] font-medium underline underline-offset-4 transition-colors ${
+                    postDemoNudge
+                      ? "text-[var(--color-tide-deep)] decoration-[var(--color-tide-deep)] decoration-2"
+                      : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] decoration-[var(--color-border-strong)] hover:decoration-[var(--color-ink)]"
+                  }`}
                 >
-                  Take another payment
+                  {postDemoNudge ? "↕ Now you try →" : "Take another payment"}
                 </button>
               </motion.div>
             ) : (
@@ -152,15 +254,18 @@ export default function CheckoutMock() {
                 transition={{ duration: 0.18 }}
                 className="grid gap-1.5"
               >
-                <button
+                <motion.button
                   type="button"
                   onClick={takePayment}
+                  onPointerEnter={markInteracted}
+                  onFocus={markInteracted}
                   disabled={!selected}
+                  whileHover={reduceMotion || !selected ? undefined : { scale: 1.02 }}
                   className="justify-self-start inline-flex items-center min-h-[36px] rounded-md bg-[var(--color-ink)] text-[var(--color-canvas)] text-[11px] font-medium px-3 py-1.5 hover:bg-[var(--color-tide-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
                   aria-disabled={!selected}
                 >
                   Take {format(total)} →
-                </button>
+                </motion.button>
                 <p className="text-[10px] text-[var(--color-text-soft)] tracking-[0.04em]">
                   {selected
                     ? `Outstanding ${format(total)} · ${selected} selected · audit-logged on submit`

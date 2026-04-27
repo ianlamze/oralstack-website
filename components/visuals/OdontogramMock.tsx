@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 type Condition = "caries" | "filling" | "crown" | "watch";
 
@@ -40,6 +40,9 @@ const conditionStyles: Record<
 const upperRight = [18, 17, 16, 15, 14, 13, 12, 11];
 const lowerRight = [48, 47, 46, 45, 44, 43, 42, 41];
 
+const DEFAULT_TOOTH = 16;
+const DEMO_TOOTH = 14;
+
 const toothNames: Record<number, string> = {
   11: "Maxillary central incisor",
   12: "Maxillary lateral incisor",
@@ -76,15 +79,105 @@ const primaryCondition: Record<number, Condition | undefined> = Object.fromEntri
 );
 
 export default function OdontogramMock() {
-  const [selected, setSelected] = useState<number>(16);
+  const [selected, setSelected] = useState<number>(DEFAULT_TOOTH);
+  const [postDemoNudge, setPostDemoNudge] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hasDemoedRef = useRef(false);
+  const hasInteractedRef = useRef(false);
+  const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const reduceMotion = useReducedMotion();
 
   const selectedFindings = findings[selected] ?? [];
 
+  function markInteracted() {
+    if (!hasInteractedRef.current) hasInteractedRef.current = true;
+    setPostDemoNudge(false);
+  }
+
+  function pickTooth(n: number) {
+    markInteracted();
+    setSelected(n);
+  }
+
+  const runDemo = useCallback(() => {
+    if (hasInteractedRef.current) return;
+
+    // Move to demo tooth, hold so the user sees the sidebar update, then move
+    // back so the post-demo state matches the initial state — clean handoff.
+    const moveTo = setTimeout(() => {
+      if (hasInteractedRef.current) return;
+      setSelected(DEMO_TOOTH);
+    }, 700);
+
+    const moveBack = setTimeout(() => {
+      if (hasInteractedRef.current) return;
+      setSelected(DEFAULT_TOOTH);
+    }, 700 + 1500);
+
+    const nudgeOn = setTimeout(
+      () => {
+        if (hasInteractedRef.current) return;
+        setPostDemoNudge(true);
+      },
+      700 + 1500 + 400,
+    );
+
+    const nudgeOff = setTimeout(
+      () => {
+        setPostDemoNudge(false);
+      },
+      700 + 1500 + 400 + 3000,
+    );
+
+    demoTimersRef.current = [moveTo, moveBack, nudgeOn, nudgeOff];
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    if (hasDemoedRef.current) return;
+    const node = containerRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry?.isIntersecting) return;
+        if (hasDemoedRef.current || hasInteractedRef.current) return;
+        hasDemoedRef.current = true;
+        observer.disconnect();
+        runDemo();
+      },
+      { threshold: 0.55 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [reduceMotion, runDemo]);
+
+  useEffect(() => {
+    return () => {
+      for (const t of demoTimersRef.current) clearTimeout(t);
+      demoTimersRef.current = [];
+    };
+  }, []);
+
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[520px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
+    <div
+      ref={containerRef}
+      className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[520px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
+    >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
-        <span>Patient chart</span>
+        <span className="flex items-center gap-1.5 flex-wrap">
+          <span>Patient chart</span>
+          <span aria-hidden className="text-[var(--color-text-soft)]">
+            ·
+          </span>
+          <span className="inline-flex items-center gap-1 text-[var(--color-tide-deep)] font-semibold">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-tide-deep)]"
+            />
+            Live demo
+          </span>
+        </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
           Lim Wei Jian · #1042
         </span>
@@ -103,7 +196,8 @@ export default function OdontogramMock() {
                   num={n}
                   cond={primaryCondition[n]}
                   selected={selected === n}
-                  onSelect={() => setSelected(n)}
+                  onSelect={() => pickTooth(n)}
+                  onHoverIntent={markInteracted}
                   reduceMotion={!!reduceMotion}
                 />
               ))}
@@ -123,15 +217,41 @@ export default function OdontogramMock() {
                   num={n}
                   cond={primaryCondition[n]}
                   selected={selected === n}
-                  onSelect={() => setSelected(n)}
+                  onSelect={() => pickTooth(n)}
+                  onHoverIntent={markInteracted}
                   reduceMotion={!!reduceMotion}
                 />
               ))}
             </div>
           </div>
 
-          <p className="text-[9px] text-[var(--color-text-soft)] tracking-[0.04em] mt-2">
-            FDI numbering · 5 surfaces (M/D/B/L/O) · click a tooth
+          <p className="text-[9px] tracking-[0.04em] mt-2 min-h-[14px]">
+            <AnimatePresence mode="wait" initial={false}>
+              {postDemoNudge ? (
+                <motion.span
+                  key="nudge"
+                  initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }}
+                  transition={{ duration: 0.18 }}
+                  className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
+                >
+                  <span aria-hidden>↕</span>
+                  Now you try — click any tooth
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="default"
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18 }}
+                  className="text-[var(--color-text-soft)]"
+                >
+                  FDI numbering · 5 surfaces (M/D/B/L/O) · click a tooth
+                </motion.span>
+              )}
+            </AnimatePresence>
           </p>
         </div>
 
@@ -199,12 +319,14 @@ function Tooth({
   cond,
   selected,
   onSelect,
+  onHoverIntent,
   reduceMotion,
 }: {
   num: number;
   cond: Condition | undefined;
   selected: boolean;
   onSelect: () => void;
+  onHoverIntent: () => void;
   reduceMotion: boolean;
 }) {
   const s = cond ? conditionStyles[cond] : null;
@@ -212,6 +334,8 @@ function Tooth({
     <button
       type="button"
       onClick={onSelect}
+      onPointerEnter={onHoverIntent}
+      onFocus={onHoverIntent}
       aria-pressed={selected}
       aria-label={`Tooth ${num}${cond ? `, ${conditionStyles[cond].label.toLowerCase()}` : ""}${selected ? ", selected" : ""}`}
       className="grid gap-1 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
@@ -221,6 +345,7 @@ function Tooth({
       </div>
       <motion.div
         animate={reduceMotion ? undefined : { scale: selected ? 1.08 : 1, y: selected ? -1 : 0 }}
+        whileHover={reduceMotion || selected ? undefined : { scale: 1.04, y: -0.5 }}
         transition={{ type: "spring", stiffness: 520, damping: 30 }}
         className={`h-7 w-6 rounded-md border bg-white transition-colors ${
           selected
