@@ -40,7 +40,7 @@ export default function Footer() {
             links={[
               { label: "About", href: "/about" },
               { label: "Security", href: "/security" },
-              { label: "Contact", href: "mailto:hello@oralstack.com" },
+              { label: "Contact", href: "/contact" },
               { label: "Privacy", href: "/privacy" },
               { label: "Terms", href: "/terms" },
             ]}

@@ -43,6 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/compare/eaglesoft/`, lastModified: now, priority: 0.8 },
     { url: `${base}/compare/carestream/`, lastModified: now, priority: 0.8 },
     { url: `${base}/book-a-demo/`, lastModified: now, priority: 0.9 },
+    { url: `${base}/contact/`, lastModified: now, priority: 0.9 },
     { url: `${base}/changelog/`, lastModified: now, priority: 0.6 },
     { url: `${base}/security/`, lastModified: now, priority: 0.5 },
     { url: `${base}/privacy/`, lastModified: now, priority: 0.3 },

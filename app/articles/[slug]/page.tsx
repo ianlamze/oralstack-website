@@ -4,6 +4,7 @@ import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/sections/AnimateInView";
 import MagneticButton from "@/components/primitives/MagneticButton";
+import ArticleStickyBar from "@/components/sections/ArticleStickyBar";
 import { articles, getArticle, getRelatedArticles } from "@/content/articles";
 import { clusterDefaultCTA, clusterLabels } from "@/content/articles/types";
 import { siteMeta } from "@/content/site-meta";
@@ -191,6 +192,8 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }} />
+
+      <ArticleStickyBar articleTitle={title} />
     </main>
   );
 }
