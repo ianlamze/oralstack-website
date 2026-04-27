@@ -254,6 +254,13 @@ export default function Nav() {
                         Articles →
                       </a>
                       <a
+                        href="/lead-magnets"
+                        onClick={closeMega}
+                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                      >
+                        References →
+                      </a>
+                      <a
                         href="/faq"
                         onClick={closeMega}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
@@ -404,6 +411,9 @@ export default function Nav() {
                 </DrawerLink>
                 <DrawerLink href="/articles" onNavigate={() => setDrawerOpen(false)}>
                   Articles
+                </DrawerLink>
+                <DrawerLink href="/lead-magnets" onNavigate={() => setDrawerOpen(false)}>
+                  References
                 </DrawerLink>
                 <DrawerLink href="/faq" onNavigate={() => setDrawerOpen(false)}>
                   FAQ
