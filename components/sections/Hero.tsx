@@ -50,8 +50,8 @@ export default function Hero() {
           </HeroItem>
           <HeroItem>
             <h1
-              className="mt-5 font-semibold tracking-[-0.02em] leading-[0.94] text-balance text-[var(--color-text)] max-w-[26ch]"
-              style={{ fontSize: "var(--text-display)" }}
+              className="mt-5 font-semibold tracking-[-0.025em] leading-[0.94] text-balance text-[var(--color-text)] max-w-[28ch]"
+              style={{ fontSize: "clamp(3rem, 6vw, 5rem)" }}
             >
               The operating system for modern dental clinics.
             </h1>
