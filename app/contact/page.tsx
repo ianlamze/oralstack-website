@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { MessageCircle, Mail, Calendar, ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar, Mail, MessageCircle } from "lucide-react";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
-import QuickQuestionForm from "@/components/forms/QuickQuestionForm";
-import MigrationAssessmentForm from "@/components/forms/MigrationAssessmentForm";
-import PilotProposalForm from "@/components/forms/PilotProposalForm";
-import { contactChannels, whatsappLink, mailtoLink } from "@/content/contact";
+import ContactTabs from "@/components/forms/ContactTabs";
+import { contactChannels, mailtoLink, whatsappLink } from "@/content/contact";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -47,40 +45,6 @@ const quickTouchCards: {
     body: "Front desk and clinical workflows on a sample dataset that mirrors a typical Singapore clinic.",
     href: "/book-a-demo",
     cta: "Book a demo",
-  },
-];
-
-const formSections: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  body: string;
-  Form: () => React.ReactNode;
-  bestFor: string;
-}[] = [
-  {
-    id: "question",
-    eyebrow: "Quick question",
-    title: "Ask us anything",
-    body: "Pricing, integrations, security posture, what we don't do — short questions get short answers, fast.",
-    Form: QuickQuestionForm,
-    bestFor: "Best for: pre-demo questions, evaluating fit, security & compliance enquiries.",
-  },
-  {
-    id: "migration",
-    eyebrow: "Migration assessment",
-    title: "Moving from Plato, Open Dental, or another PMS?",
-    body: "Tell us your current stack and timeline. We'll come back with a migration plan specific to your PMS — what we can preserve, what needs cleaning, and an honest timeline.",
-    Form: MigrationAssessmentForm,
-    bestFor: "Best for: solo or small-group clinics planning a cutover within the next 6 months.",
-  },
-  {
-    id: "pilot",
-    eyebrow: "Pilot proposal",
-    title: "Group of clinics? Tell us the shape",
-    body: "Multi-location groups have different needs — ops standardisation, owner-level analytics, staged rollouts. Send us the basics and we'll come back with a pilot proposal sized to your group.",
-    Form: PilotProposalForm,
-    bestFor: "Best for: 2+ locations, DSO ops teams, group operations managers.",
   },
 ];
 
@@ -132,48 +96,16 @@ export default function ContactPage() {
         </ul>
       </Section>
 
-      {/* In-page jump nav for the three forms */}
+      {/* Tabbed forms — replaces the previous stacked-vertical layout */}
       <Section className="pb-10">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-4">
           Or send us a structured request
         </p>
-        <ul className="flex flex-wrap gap-2">
-          {formSections.map((s) => (
-            <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                className="inline-flex items-center min-h-[40px] rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
-              >
-                {s.eyebrow}
-              </a>
-            </li>
-          ))}
-        </ul>
       </Section>
 
-      {/* Form sections */}
       <Section className="pb-24 md:pb-32">
-        <div className="grid gap-16 md:gap-24 max-w-[820px]">
-          {formSections.map((s) => {
-            const Form = s.Form;
-            return (
-              <section key={s.id} id={s.id} className="scroll-mt-12 grid gap-6">
-                <header className="grid gap-2">
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                    {s.eyebrow}
-                  </p>
-                  <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-                    {s.title}
-                  </h2>
-                  <p className="mt-1 text-[var(--color-text-muted)] max-w-[62ch] leading-relaxed">
-                    {s.body}
-                  </p>
-                  <p className="text-xs text-[var(--color-text-soft)]">{s.bestFor}</p>
-                </header>
-                <Form />
-              </section>
-            );
-          })}
+        <div className="max-w-[820px]">
+          <ContactTabs />
         </div>
       </Section>
     </main>
