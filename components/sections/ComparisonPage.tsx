@@ -3,7 +3,15 @@ import Section from "@/components/primitives/Section";
 import Reason from "@/components/sections/Reason";
 import Bullet from "@/components/sections/Bullet";
 import ComparisonTable from "@/components/sections/ComparisonTable";
+import MigrationEstimator from "@/components/sections/MigrationEstimator";
 import type { Comparison } from "@/content/comparisons/types";
+
+const ESTIMATOR_SOURCES = ["plato", "dentrix", "open-dental", "carestream", "eaglesoft"] as const;
+type EstimatorSource = (typeof ESTIMATOR_SOURCES)[number];
+
+function isEstimatorSource(slug: string): slug is EstimatorSource {
+  return (ESTIMATOR_SOURCES as readonly string[]).includes(slug);
+}
 
 type ComparisonPageProps = {
   data: Comparison;
@@ -18,6 +26,10 @@ export default function ComparisonPage({ data }: ComparisonPageProps) {
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           {data.lede}
         </p>
+      </Section>
+
+      <Section className="pb-16">
+        <MigrationEstimator defaultSource={isEstimatorSource(data.slug) ? data.slug : "plato"} />
       </Section>
 
       <Section className="pb-16">

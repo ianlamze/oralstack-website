@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
+import CompareBuilder from "@/components/sections/CompareBuilder";
 import { comparisons } from "@/content/comparisons";
 
 export const metadata: Metadata = {
@@ -23,7 +24,26 @@ export default function ComparePage() {
         </p>
       </Section>
 
+      <Section className="pb-16 md:pb-20">
+        <div className="grid gap-3 mb-6 max-w-[760px]">
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+            Compare builder
+          </p>
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+            Pick what matters. We&apos;ll build the table.
+          </h2>
+          <p className="text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
+            Tick the capabilities you care about and the vendors you&apos;re weighing. The table
+            below renders only what you asked for — short cells, lifted from each full comparison.
+          </p>
+        </div>
+        <CompareBuilder />
+      </Section>
+
       <Section className="pb-24 md:pb-32">
+        <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-4">
+          Or read the full comparison
+        </p>
         <ul className="grid gap-4 md:gap-5">
           {comparisons.map((c) => (
             <li key={c.slug}>

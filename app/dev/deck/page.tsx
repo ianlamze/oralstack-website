@@ -493,7 +493,7 @@ export default function DeckPage() {
 
             <div className="mt-4 grid grid-cols-4 gap-3 border-t border-[var(--color-border)] pt-4">
               {[
-                ["3 weeks", "to live"],
+                ["3 days", "front desk live"],
                 ["0", "appts lost"],
                 ["120+", "drag reschedules wk 3"],
                 ["85%", "same-day billing"],
