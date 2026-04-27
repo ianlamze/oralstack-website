@@ -41,7 +41,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="grid gap-14 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-16 lg:gap-20 items-center">
+      <div className="grid gap-14 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-16 lg:gap-20 items-start">
         <HeroStagger>
           <HeroItem>
             <p className="inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-tide-deep)] bg-[color-mix(in_oklch,var(--color-tide),white_88%)] border border-[color-mix(in_oklch,var(--color-tide),transparent_72%)] rounded-full px-3 py-1.5">
@@ -50,26 +50,23 @@ export default function Hero() {
           </HeroItem>
           <HeroItem>
             <h1
-              className="mt-5 font-semibold tracking-[-0.02em] leading-[0.96] text-balance text-[var(--color-text)] max-w-[18ch]"
+              className="mt-5 font-semibold tracking-[-0.02em] leading-[0.94] text-balance text-[var(--color-text)] max-w-[26ch]"
               style={{ fontSize: "var(--text-display)" }}
             >
               The operating system for modern dental clinics.
             </h1>
-            <p
-              className="mt-5 text-[var(--color-text-muted)] font-normal leading-[1.15] tracking-tight max-w-[28ch]"
-              style={{ fontSize: "var(--text-display-sm)" }}
-            >
+            <p className="mt-3 text-2xl md:text-3xl text-[var(--color-text-muted)] font-normal leading-[1.2] tracking-tight max-w-[34ch]">
               Book, chart, bill, image, message.
             </p>
           </HeroItem>
           <HeroItem>
-            <p className="mt-8 text-base md:text-lg text-[var(--color-text-muted)] max-w-[44ch] leading-relaxed">
+            <p className="mt-7 text-base md:text-lg text-[var(--color-text-muted)] max-w-[44ch] leading-relaxed">
               Built for the front desk first, with imaging, charting, and patient communication that
               work the way busy clinics actually run.
             </p>
           </HeroItem>
           <HeroItem>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <MagneticButton href="/book-a-demo" variant="primary" withArrow>
                 Book a 30-min walkthrough
               </MagneticButton>
@@ -79,12 +76,24 @@ export default function Hero() {
             </div>
           </HeroItem>
         </HeroStagger>
-        <HeroStagger className="md:justify-self-end w-full">
+        <HeroStagger className="md:justify-self-end w-full md:pt-2">
           <HeroItem>
             <ScheduleMock />
           </HeroItem>
         </HeroStagger>
       </div>
+
+      {/* Soft bottom fade — bridges the hero's teal-tinted backdrop into the
+          canvas color of the TrustStrip below, so the section boundary
+          doesn't read as a hard horizontal seam. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-24 -z-10 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 0%, var(--color-canvas) 100%)",
+        }}
+      />
     </Section>
   );
 }
