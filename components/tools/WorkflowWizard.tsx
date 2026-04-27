@@ -107,26 +107,37 @@ export default function WorkflowWizard() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-[1080px]">
-        {pains.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            onClick={() => {
-              setPicked(p.id);
-              track("wizard_pain_picked", { pain: p.id });
-            }}
-            aria-pressed={picked === p.id}
-            className={`text-left rounded-[var(--radius-lg)] border px-4 py-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
-              picked === p.id
-                ? "border-[var(--color-ink)] bg-[var(--color-canvas-tinted)]"
-                : "border-[var(--color-border)] bg-white hover:border-[var(--color-border-strong)]"
-            }`}
-          >
-            <span className="text-[14px] font-semibold text-[var(--color-text)] leading-snug">
-              {p.question}
-            </span>
-          </button>
-        ))}
+        {pains.map((p) => {
+          const isPicked = picked === p.id;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => {
+                setPicked(p.id);
+                track("wizard_pain_picked", { pain: p.id });
+              }}
+              aria-pressed={isPicked}
+              className={`flex items-center justify-between gap-3 text-left rounded-[var(--radius-lg)] border px-4 py-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
+                isPicked
+                  ? "border-[var(--color-ink)] bg-[var(--color-canvas-tinted)]"
+                  : "card-hover border-[var(--color-border)] bg-white"
+              }`}
+            >
+              <span className="text-[14px] font-semibold text-[var(--color-text)] leading-snug">
+                {p.question}
+              </span>
+              <span
+                aria-hidden
+                className={`shrink-0 text-[15px] leading-none text-[var(--color-tide-deep)] ${
+                  isPicked ? "" : "card-arrow"
+                }`}
+              >
+                {isPicked ? "✓" : "→"}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="grid mt-6 max-w-[1080px]">
