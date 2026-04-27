@@ -7,10 +7,12 @@ The router for any agent working on this repo. Read this immediately after `AGEN
 | Task | Load | Then |
 |---|---|---|
 | Add a new page | `playbooks/new-page-add.playbook.md` | one or two relevant patterns |
+| Write a new article | `playbooks/add-article.playbook.md` | `seo/playbook.md` + `primitives/copy-voice.md` |
 | Edit a case study | `playbooks/edit-case-study.playbook.md` | `primitives/copy-voice.md` |
 | Add a changelog entry | `playbooks/add-changelog-entry.playbook.md` | `primitives/copy-voice.md` |
 | Add a product visualization | `playbooks/add-visualization.playbook.md` | `components/visuals/README.md` |
 | Redeploy to production | `playbooks/redeploy.playbook.md` | `../CLOUDFLARE.md` if auth/setup issues |
+| SEO strategy / keyword decisions | `seo/playbook.md` | the relevant cluster section |
 | Edit hero copy | `patterns/components/hero.pattern.md` | `primitives/copy-voice.md` |
 | Edit CTA copy | `patterns/components/cta.pattern.md` | `primitives/copy-voice.md` |
 | Update workflow content | `primitives/content.md` | `primitives/copy-voice.md` |
@@ -40,6 +42,10 @@ The router for any agent working on this repo. Read this immediately after `AGEN
 - `architecture.md` — directory tree, layer model, where-does-new-code-go decision table
 - `../CHANGES.md` — engineering changelog (decisions, milestones)
 - `website-audit.md` — competitive teardown of dental + premium SaaS sites that informed the v1 page structure
+
+## SEO
+
+- `seo/playbook.md` — keyword strategy, content clusters, on-page rules, technical SEO checklist, distribution + measurement
 
 ## Sources (full reference docs — load only for governance, teaching, or deep lookups)
 

@@ -11,6 +11,7 @@ import MessagingMock from "@/components/visuals/MessagingMock";
 import DicomViewerMock from "@/components/visuals/DicomViewerMock";
 import AnalyticsMock from "@/components/visuals/AnalyticsMock";
 import { workflowsDetailed } from "@/content/workflows-detailed";
+import { getArticle } from "@/content/articles";
 
 export const metadata: Metadata = {
   title: "Workflows",
@@ -46,6 +47,7 @@ export default function WorkflowsPage() {
           {workflowsDetailed.map((w, i) => {
             const Visuals = visualsBySlug[w.slug] ?? [];
             const visualSide = i % 2 === 0 ? "right" : "left";
+            const article = w.articleSlug ? getArticle(w.articleSlug) : undefined;
             return (
               <li key={w.slug} id={w.slug} className="scroll-mt-10">
                 <AnimateInView>
@@ -95,6 +97,16 @@ export default function WorkflowsPage() {
                           {w.replaces}
                         </span>
                       </p>
+                      {article && (
+                        <p className="text-sm">
+                          <a
+                            href={`/articles/${article.slug}`}
+                            className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                          >
+                            Read: {article.title.split(":")[0]} →
+                          </a>
+                        </p>
+                      )}
                     </div>
 
                     {Visuals.length > 0 && (

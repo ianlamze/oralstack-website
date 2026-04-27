@@ -96,6 +96,26 @@ export default function IntegrationsPage() {
                     </li>
                   ))}
                 </ul>
+                {cat.title === "Migration" && (
+                  <p className="text-sm mt-3">
+                    <a
+                      href="/articles/plato-to-cloud-migration"
+                      className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                    >
+                      Read: Migrating from Plato to a cloud PMS →
+                    </a>
+                  </p>
+                )}
+                {cat.title === "Imaging exchange & viewers" && (
+                  <p className="text-sm mt-3">
+                    <a
+                      href="/articles/dicom-in-chart-vs-separate-viewer"
+                      className="text-[var(--color-tide-deep)] font-medium hover:underline underline-offset-4"
+                    >
+                      Read: DICOM in the chart vs a separate viewer →
+                    </a>
+                  </p>
+                )}
               </section>
             );
           })}

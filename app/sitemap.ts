@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteMeta } from "@/content/site-meta";
 import { customers } from "@/content/customers";
+import { articles } from "@/content/articles";
 
 export const dynamic = "force-static";
 
@@ -16,9 +17,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     }));
 
+  const articleUrls: MetadataRoute.Sitemap = articles.map((a) => ({
+    url: `${base}/articles/${a.slug}/`,
+    lastModified: new Date(a.updatedAt ?? a.publishedAt),
+    priority: 0.7,
+  }));
+
   return [
     { url: `${base}/`, lastModified: now, priority: 1.0 },
     { url: `${base}/workflows/`, lastModified: now, priority: 0.9 },
+    { url: `${base}/articles/`, lastModified: now, priority: 0.8 },
+    ...articleUrls,
     { url: `${base}/customers/`, lastModified: now, priority: 0.8 },
     ...caseStudyUrls,
     { url: `${base}/integrations/`, lastModified: now, priority: 0.7 },

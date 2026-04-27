@@ -167,6 +167,47 @@ export default function DfiSynergyCaseStudy() {
         <StatGrid stats={study.stats} />
       </Section>
 
+      <Section className="pb-20 md:pb-24">
+        <div className="max-w-[820px]">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-6">
+            Related reading
+          </p>
+          <ul className="grid gap-3 md:grid-cols-2">
+            {[
+              {
+                slug: "plato-to-cloud-migration",
+                cluster: "Migration & operations",
+                title: "Migrating from Plato to a cloud PMS",
+                excerpt: "The 3-week playbook this clinic followed.",
+              },
+              {
+                slug: "same-day-billing-dental",
+                cluster: "Billing & revenue",
+                title: "Same-day billing for dental clinics",
+                excerpt: "How DFI Synergy moved 60% → 85% same-day rate.",
+              },
+            ].map((r) => (
+              <li key={r.slug}>
+                <a
+                  href={`/articles/${r.slug}`}
+                  className="group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 hover:border-[var(--color-border-strong)] transition-colors h-full"
+                >
+                  <span className="inline-flex items-center text-[10px] font-medium uppercase tracking-[0.14em] rounded-full px-2 py-0.5 bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]">
+                    {r.cluster}
+                  </span>
+                  <p className="mt-3 text-base font-semibold tracking-tight leading-snug group-hover:text-[var(--color-tide-deep)] transition-colors">
+                    {r.title}
+                  </p>
+                  <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
+                    {r.excerpt}
+                  </p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
       <Section className="pb-24 md:pb-32">
         <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
           <div>

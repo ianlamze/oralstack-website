@@ -27,6 +27,7 @@ export default function Footer() {
             title="Company"
             links={[
               { label: "Customers", href: "/customers" },
+              { label: "Articles", href: "/articles" },
               { label: "Security", href: "/security" },
               { label: "Contact", href: "mailto:hello@oralstack.com" },
             ]}

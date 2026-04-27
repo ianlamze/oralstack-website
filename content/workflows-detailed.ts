@@ -5,6 +5,8 @@ export type WorkflowDetail = {
   body: string;
   bullets: string[];
   replaces: string;
+  /** Optional related article slug (matched against `content/articles/`). */
+  articleSlug?: string;
 };
 
 export const workflowsDetailed: WorkflowDetail[] = [
@@ -20,6 +22,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "New-patient registration mirrored from the retired Plato booking form, field-for-field, for migrating clinics",
     ],
     replaces: "Paper diary · WhatsApp confirmations · spreadsheet recall lists",
+    articleSlug: "reducing-no-show-rates",
   },
   {
     slug: "billing",
@@ -33,6 +36,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "Same-flow checkout: bill, payment, receipt, recall scheduled, patient on their way",
     ],
     replaces: "End-of-day reconciliation · follow-up collection calls · paper receipts",
+    articleSlug: "same-day-billing-dental",
   },
   {
     slug: "charting",
@@ -59,6 +63,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "Annotation and measurement tools (pan, zoom, rotate, ruler) for treatment planning",
     ],
     replaces: "Separate imaging desktop apps · USB transfers · \"where's that radiograph\" hunts",
+    articleSlug: "dicom-in-chart-vs-separate-viewer",
   },
   {
     slug: "recall",
@@ -72,6 +77,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "Intake forms sent ahead of first visits",
     ],
     replaces: "Manual recall lists · spreadsheet tracking · staff personal phones for patient texts",
+    articleSlug: "reducing-no-show-rates",
   },
   {
     slug: "operations",
