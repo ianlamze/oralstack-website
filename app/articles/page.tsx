@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/sections/AnimateInView";
+import ArticlesView from "@/components/articles/ArticlesView";
 import { articles, getArticlesByCluster, getRecentArticles } from "@/content/articles";
-import { clusterDescriptions, clusterLabels, clusterOrder } from "@/content/articles/types";
+import { clusterLabels, clusterOrder } from "@/content/articles/types";
 
 export const metadata: Metadata = {
   title: "Articles & guides",
@@ -23,11 +24,18 @@ function formatDate(iso: string) {
 export default function ArticlesPage() {
   const recent = getRecentArticles(1)[0];
 
+  // Cluster stats for the jump-nav row at the top.
+  const clusterStats = clusterOrder.map((cluster) => {
+    const arts = getArticlesByCluster(cluster);
+    const totalMin = arts.reduce((sum, a) => sum + a.readingMinutes, 0);
+    return { cluster, count: arts.length, totalMin };
+  });
+
   return (
     <main>
       <PageHeader eyebrow="Articles & guides" title="Field guides for dental clinic operators." />
 
-      <Section className="pb-12">
+      <Section className="pb-10">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           Specific, opinionated, dental-grounded. Written by operators for operators — front desk,
           owners, multi-location managers. Organised by topic, not date.
@@ -35,6 +43,25 @@ export default function ArticlesPage() {
         <p className="mt-3 text-sm text-[var(--color-text-soft)]">
           {articles.length} articles · {clusterOrder.length} topic clusters
         </p>
+      </Section>
+
+      {/* Cluster jump-nav: one click to any topic cluster, with counts. */}
+      <Section className="pb-12">
+        <nav aria-label="Article topic clusters">
+          <ul className="flex flex-wrap gap-2">
+            {clusterStats.map(({ cluster, count }) => (
+              <li key={cluster}>
+                <a
+                  href={`#${cluster}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-3.5 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:border-[var(--color-tide)] hover:text-[var(--color-tide-deep)] transition-colors"
+                >
+                  <span>{clusterLabels[cluster]}</span>
+                  <span className="text-[var(--color-text-soft)] tabular-nums">· {count}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </Section>
 
       {recent && (
@@ -83,61 +110,7 @@ export default function ArticlesPage() {
       )}
 
       <Section className="pb-24 md:pb-32">
-        <div className="grid gap-20 md:gap-24">
-          {clusterOrder.map((cluster) => {
-            const clusterArticles = getArticlesByCluster(cluster);
-            if (clusterArticles.length === 0) return null;
-            return (
-              <section key={cluster} id={cluster} className="scroll-mt-10 grid gap-8">
-                <AnimateInView>
-                  <header className="grid gap-3 max-w-[58ch]">
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                      Topic · {clusterLabels[cluster]}
-                    </p>
-                    <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-                      {clusterLabels[cluster]}
-                    </h2>
-                    <p className="text-[var(--color-text-muted)] leading-relaxed">
-                      {clusterDescriptions[cluster]}
-                    </p>
-                  </header>
-                </AnimateInView>
-
-                <ul className="grid gap-4 md:gap-5">
-                  {clusterArticles.map((a, i) => (
-                    <li key={a.slug}>
-                      <AnimateInView delay={Math.min(i * 0.04, 0.16)}>
-                        <a
-                          href={`/articles/${a.slug}`}
-                          className="card-hover group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 md:p-7"
-                        >
-                          <div className="flex flex-wrap items-center gap-3 text-xs">
-                            <time
-                              dateTime={a.publishedAt}
-                              className="text-[var(--color-text-soft)] tabular-nums"
-                            >
-                              {formatDate(a.publishedAt)}
-                            </time>
-                            <span className="text-[var(--color-text-soft)]">·</span>
-                            <span className="text-[var(--color-text-soft)]">
-                              {a.readingMinutes} min read
-                            </span>
-                          </div>
-                          <h3 className="mt-3 text-lg md:text-xl font-semibold tracking-tight leading-snug text-balance group-hover:text-[var(--color-tide-deep)] transition-colors duration-150">
-                            {a.title}
-                          </h3>
-                          <p className="mt-2 text-sm md:text-base text-[var(--color-text-muted)] leading-relaxed max-w-[64ch]">
-                            {a.excerpt}
-                          </p>
-                        </a>
-                      </AnimateInView>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            );
-          })}
-        </div>
+        <ArticlesView />
       </Section>
     </main>
   );
