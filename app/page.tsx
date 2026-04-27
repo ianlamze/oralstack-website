@@ -1,5 +1,6 @@
 import Hero from "@/components/sections/Hero";
 import TrustStrip from "@/components/sections/TrustStrip";
+import ShipVelocityStrip from "@/components/sections/ShipVelocityStrip";
 import Workflows from "@/components/sections/Workflows";
 import WorkflowWizard from "@/components/sections/WorkflowWizard";
 import CustomerStoryStrip from "@/components/sections/CustomerStoryStrip";
@@ -11,6 +12,7 @@ export default function HomePage() {
     <main>
       <Hero />
       <TrustStrip />
+      <ShipVelocityStrip />
       <Workflows />
       <SectionDivider />
       <WorkflowWizard />
