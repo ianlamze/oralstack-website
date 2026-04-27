@@ -2,45 +2,11 @@ import Button from "@/components/primitives/Button";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import Section from "@/components/primitives/Section";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
-import BrandMotif from "@/components/visuals/BrandMotif";
 import { HeroStagger, HeroItem } from "@/components/sections/HeroStagger";
 
 export default function Hero() {
   return (
-    <Section className="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
-      {/* Layered backdrop: BrandMotif as the brand-anchored signal,
-          plus the existing radial glows for ambient depth. The motif
-          container carries a radial mask so its rectangular bounds and
-          the bottom of the SVG don't read as hard clipped edges at
-          wider viewports. */}
-      <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
-        <div
-          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[140%] opacity-[0.32]"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse 65% 75% at 50% 78%, black 35%, transparent 100%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 65% 75% at 50% 78%, black 35%, transparent 100%)",
-          }}
-        >
-          <BrandMotif tone="tide" intensity={0.42} aspect="wide" className="w-full h-[520px]" />
-        </div>
-        <div
-          className="absolute right-[-5%] top-[8%] w-[55%] aspect-square rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at center, color-mix(in oklch, var(--color-tide), transparent 82%) 0%, transparent 65%)",
-          }}
-        />
-        <div
-          className="absolute left-[-15%] bottom-[-10%] w-[45%] aspect-square rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at center, color-mix(in oklch, var(--color-ink), transparent 92%) 0%, transparent 65%)",
-          }}
-        />
-      </div>
-
+    <Section className="pt-16 pb-24 md:pt-24 md:pb-32">
       <div className="grid gap-14 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-16 lg:gap-20 items-start">
         <HeroStagger>
           <HeroItem>
@@ -82,18 +48,6 @@ export default function Hero() {
           </HeroItem>
         </HeroStagger>
       </div>
-
-      {/* Soft bottom fade — bridges the hero's teal-tinted backdrop into the
-          canvas color of the TrustStrip below, so the section boundary
-          doesn't read as a hard horizontal seam. */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-24 -z-10 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 0%, var(--color-canvas) 100%)",
-        }}
-      />
     </Section>
   );
 }
