@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 type Tone = "sea" | "violet" | "sunset";
@@ -22,6 +22,12 @@ const initialAppointments: Appointment[] = [
   { id: "a5", chair: 1, start: 13, len: 2, label: "New patient · K. Lee", tone: "sea" },
   { id: "a6", chair: 2, start: 14, len: 2, label: "Endo · Dr Pereira", tone: "violet" },
 ];
+
+// Demo move chosen for visibility: diagonal (chair AND time change), lands in
+// a clearly empty slot, no collisions. New patient · K. Lee: chair 1 / 13:00
+// → chair 2 / 12:00 (slot 12-14 is free between Hygiene 10-12 and Endo 14-16).
+const DEMO_APPT_ID = "a5";
+const DEMO_TARGET = { chair: 2 as const, start: 12 };
 
 const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16];
 const chairs = ["Chair 1", "Chair 2", "Chair 3"];
@@ -83,7 +89,12 @@ export default function ScheduleMock() {
   const [appointments, setAppointments] = useState(initialAppointments);
   const [toast, setToast] = useState<{ kind: "ok" | "blocked"; text: string } | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [demoActive, setDemoActive] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hasDemoedRef = useRef(false);
+  const hasInteractedRef = useRef(false);
+  const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const reduceMotion = useReducedMotion();
 
   function showToast(kind: "ok" | "blocked", text: string) {
@@ -111,6 +122,10 @@ export default function ScheduleMock() {
     );
   }
 
+  function markInteracted() {
+    if (!hasInteractedRef.current) hasInteractedRef.current = true;
+  }
+
   function handleDragEnd(a: Appointment, info: { point: { x: number; y: number } }) {
     setDraggingId(null);
     const target = findDropTarget(info.point.x, info.point.y);
@@ -119,10 +134,104 @@ export default function ScheduleMock() {
     commitMove(a, target);
   }
 
+  const runDemo = useCallback(() => {
+    if (hasInteractedRef.current) return;
+    setDemoActive(true);
+
+    const original = initialAppointments.find((a) => a.id === DEMO_APPT_ID);
+    if (!original) {
+      setDemoActive(false);
+      return;
+    }
+
+    const moveOut = setTimeout(() => {
+      if (hasInteractedRef.current) {
+        setDemoActive(false);
+        return;
+      }
+      setAppointments((prev) =>
+        prev.map((x) =>
+          x.id === DEMO_APPT_ID ? { ...x, chair: DEMO_TARGET.chair, start: DEMO_TARGET.start } : x,
+        ),
+      );
+    }, 700);
+
+    const moveBack = setTimeout(() => {
+      if (hasInteractedRef.current) {
+        setDemoActive(false);
+        return;
+      }
+      setAppointments((prev) =>
+        prev.map((x) =>
+          x.id === DEMO_APPT_ID ? { ...x, chair: original.chair, start: original.start } : x,
+        ),
+      );
+    }, 700 + 1100);
+
+    const finish = setTimeout(
+      () => {
+        setDemoActive(false);
+      },
+      700 + 1100 + 600,
+    );
+
+    demoTimersRef.current = [moveOut, moveBack, finish];
+  }, []);
+
+  // Auto-demo: when the schedule scrolls into view for the first time, briefly
+  // move one appointment to a free slot and back. Visible motion → "things move
+  // here" without copy. Skipped under prefers-reduced-motion or if the user
+  // already interacted (drag/hover/focus) before the demo had a chance to fire.
+  useEffect(() => {
+    if (reduceMotion) return;
+    if (hasDemoedRef.current) return;
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry?.isIntersecting) return;
+        if (hasDemoedRef.current || hasInteractedRef.current) return;
+        hasDemoedRef.current = true;
+        observer.disconnect();
+        runDemo();
+      },
+      { threshold: 0.55 },
+    );
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+    };
+  }, [reduceMotion, runDemo]);
+
+  // Cleanup any pending demo timers on unmount.
+  useEffect(() => {
+    return () => {
+      for (const t of demoTimersRef.current) clearTimeout(t);
+      demoTimersRef.current = [];
+    };
+  }, []);
+
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[560px] mx-auto md:mx-0 shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
+    <div
+      ref={containerRef}
+      className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[560px] mx-auto md:mx-0 shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
+    >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
-        <span>Schedule · Mon 27 Apr</span>
+        <span className="flex items-center gap-1.5 flex-wrap">
+          <span>Schedule · Mon 27 Apr</span>
+          <span aria-hidden className="text-[var(--color-text-soft)]">
+            ·
+          </span>
+          <span className="inline-flex items-center gap-1 text-[var(--color-tide-deep)] font-semibold">
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-tide-deep)]"
+            />
+            Live demo
+          </span>
+        </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
           DFI Synergy · Singapore
         </span>
@@ -168,6 +277,7 @@ export default function ScheduleMock() {
         {appointments.map((a) => {
           const t = toneStyles[a.tone];
           const isDragging = draggingId === a.id;
+          const dragEnabled = !demoActive;
           return (
             <motion.button
               key={a.id}
@@ -178,17 +288,32 @@ export default function ScheduleMock() {
                   ? { duration: 0 }
                   : { layout: { type: "spring", stiffness: 480, damping: 36 } }
               }
-              drag
+              drag={dragEnabled}
               dragSnapToOrigin
               dragMomentum={false}
               dragElastic={0.18}
+              whileHover={
+                reduceMotion
+                  ? undefined
+                  : {
+                      scale: 1.03,
+                      y: -1,
+                      boxShadow: "0 8px 18px -8px rgba(20,30,60,0.22)",
+                      zIndex: 10,
+                    }
+              }
               whileDrag={{
                 scale: 1.04,
                 cursor: "grabbing",
                 zIndex: 30,
                 boxShadow: "0 14px 30px -10px rgba(20,30,60,0.30)",
               }}
-              onDragStart={() => setDraggingId(a.id)}
+              onPointerEnter={markInteracted}
+              onFocus={markInteracted}
+              onDragStart={() => {
+                markInteracted();
+                setDraggingId(a.id);
+              }}
               onDragEnd={(_, info) => handleDragEnd(a, info)}
               aria-label={`${a.label}, Chair ${a.chair + 1}, ${String(a.start).padStart(2, "0")}:00 to ${String(a.start + a.len).padStart(2, "0")}:00. Drag to reschedule.`}
               className="rounded-md border px-1.5 sm:px-2 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-medium leading-tight text-[var(--color-ink)] m-0.5 overflow-hidden cursor-grab text-left touch-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
@@ -234,8 +359,15 @@ export default function ScheduleMock() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}
+                className="flex flex-wrap items-center gap-x-1.5"
               >
-                3 chairs · {appointments.length} booked · drag to reschedule
+                <span className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]">
+                  <span aria-hidden>↕</span>
+                  Drag any appointment
+                </span>
+                <span className="text-[var(--color-text-soft)]">
+                  — confirmation sends instantly
+                </span>
               </motion.span>
             )}
           </AnimatePresence>
