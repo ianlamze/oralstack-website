@@ -103,29 +103,53 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 5. Tell me — I rebuild and redeploy. `/book-a-demo` now embeds Cal.com directly.
 
-## Step 7 — Demo form endpoint (~3 minutes)
+## Step 7 — Demo form endpoint (~5 minutes)
 
 Without this, `/book-a-demo` builds a `mailto:` URL on submit and opens the user's mail client. That works, but depends on the visitor having a default email client configured — about a third of mobile users don't.
 
-The recommended path is **Formspree** (free tier covers 50 submissions/month):
+Two options. Pick one.
 
-1. Sign up at [formspree.io](https://formspree.io)
-2. Create a new form, set the destination email to `hello@oralstack.com`
-3. Copy the endpoint URL — it looks like `https://formspree.io/f/xxxxxxxx`
+### Path A — Cloudflare Pages Function + Resend (recommended)
+
+Already wired in: [`functions/api/demo.ts`](functions/api/demo.ts) handles `POST /api/demo`, validates the payload, and forwards to Resend's transactional email API.
+
+1. Sign up at [resend.com](https://resend.com) (free tier: 100 emails/day, 3,000/month).
+2. **Verify the sending domain.** Resend → Domains → Add → `oralstack.com` → add the DNS records (SPF, DKIM) Resend provides into Cloudflare DNS. Verification usually completes in 5–10 minutes.
+3. Resend → API Keys → Create API Key (full access, single domain). Copy the value (starts with `re_`).
+4. Cloudflare dashboard → Workers & Pages → **oralstack** → Settings → Environment variables:
+   - Add `RESEND_API_KEY` (encrypted) with the key from step 3
+   - Optionally `DEMO_FROM_EMAIL` (default `demo@oralstack.com`)
+   - Optionally `DEMO_TO_EMAIL` (default `hello@oralstack.com`)
+5. In your local `.env.local`:
+
+```bash
+NEXT_PUBLIC_DEMO_FORM_ENDPOINT=/api/demo
+```
+
+6. Redeploy. Submissions land in `hello@oralstack.com` within a second.
+
+The function returns:
+- `200 { ok: true }` — submission accepted, email queued.
+- `400` — missing required fields or invalid email.
+- `503` — `RESEND_API_KEY` not set in Pages env vars.
+- `502` — Resend rejected the request (check Cloudflare function logs).
+
+### Path B — Formspree (third-party, no Cloudflare config)
+
+Faster setup, no DNS verification, third-party dependency.
+
+1. Sign up at [formspree.io](https://formspree.io) (free tier: 50 submissions/month).
+2. Create a form, destination email `hello@oralstack.com`.
+3. Copy the endpoint URL (e.g., `https://formspree.io/f/xxxxxxxx`).
 4. Add to `.env.local`:
 
 ```bash
 NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
 ```
 
-5. Tell me — I rebuild and redeploy. Submissions now arrive in `hello@` directly.
+5. Redeploy.
 
-Other endpoint options (any HTTP `POST application/json` works):
-- **Web3Forms** — similar to Formspree, slightly different UX
-- **Cloudflare Pages Function** at `functions/api/demo.ts` — keeps everything on Cloudflare, requires writing the function and choosing an email service (Resend, SendGrid) for the actual delivery
-- **Resend webhook** — direct API integration, requires API key
-
-The form payload is JSON: `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes, _subject }`. The `_subject` field is what Formspree uses as the email subject line.
+Either path: the form payload is JSON `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes, _subject }`. Formspree uses `_subject` as the email subject line; the Cloudflare function builds its own subject from the clinic name.
 
 ## Quick checklist
 

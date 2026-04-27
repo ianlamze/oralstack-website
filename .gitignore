@@ -11,3 +11,5 @@ next-env.d.ts
 oralstack-deck.pdf
 .claude/
 tsconfig.tsbuildinfo
+tests/results
+playwright-report
