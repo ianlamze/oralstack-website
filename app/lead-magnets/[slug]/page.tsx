@@ -14,11 +14,7 @@ export function generateStaticParams() {
 
 type Params = { slug: string };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<Params>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const magnet = getLeadMagnet(slug);
   if (!magnet) return { title: "Not found" };
@@ -49,17 +45,12 @@ function formatDate(iso: string) {
   });
 }
 
-export default async function LeadMagnetPage({
-  params,
-}: {
-  params: Promise<Params>;
-}) {
+export default async function LeadMagnetPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const magnet = getLeadMagnet(slug);
   if (!magnet) notFound();
 
-  const { Body, title, description, publishedAt, updatedAt, cluster, readingMinutes } =
-    magnet;
+  const { Body, title, description, publishedAt, updatedAt, cluster, readingMinutes } = magnet;
 
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -82,10 +73,7 @@ export default async function LeadMagnetPage({
 
   return (
     <main>
-      <PageHeader
-        eyebrow={`Reference · ${clusterLabels[cluster]}`}
-        title={title}
-      />
+      <PageHeader eyebrow={`Reference · ${clusterLabels[cluster]}`} title={title} />
 
       <Section className="pb-8">
         <div className="max-w-[680px] flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-[var(--color-text-soft)] tabular-nums">
@@ -116,10 +104,9 @@ export default async function LeadMagnetPage({
               Want this in your clinic, not just on paper?
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              Oralstack&apos;s {clusterLabels[cluster].toLowerCase()} module is
-              built around the motions in this reference. A 30-minute demo
-              walks the relevant team through it on a sample dataset that
-              mirrors a Singapore clinic.
+              Oralstack&apos;s {clusterLabels[cluster].toLowerCase()} module is built around the
+              motions in this reference. A 30-minute demo walks the relevant team through it on a
+              sample dataset that mirrors a Singapore clinic.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -133,10 +120,7 @@ export default async function LeadMagnetPage({
         </div>
       </Section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLd }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
     </main>
   );
 }

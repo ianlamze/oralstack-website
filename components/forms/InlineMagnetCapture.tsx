@@ -62,9 +62,7 @@ export default function InlineMagnetCapture({
       }
     } catch {
       setStatus("error");
-      setMessage(
-        "Couldn't reach the server. The reference is still readable at /lead-magnets.",
-      );
+      setMessage("Couldn't reach the server. The reference is still readable at /lead-magnets.");
     }
   }
 
@@ -81,9 +79,7 @@ export default function InlineMagnetCapture({
           <p className="text-base md:text-lg font-semibold tracking-tight text-[var(--color-text)] leading-snug">
             {magnetTitle}
           </p>
-          <p className="mt-1 text-sm text-[var(--color-text-muted)] leading-relaxed">
-            {pitch}
-          </p>
+          <p className="mt-1 text-sm text-[var(--color-text-muted)] leading-relaxed">{pitch}</p>
         </div>
       </div>
 
@@ -94,20 +90,12 @@ export default function InlineMagnetCapture({
             aria-hidden
           />
           <div className="grid gap-1">
-            <p className="text-sm font-semibold text-[var(--color-text)]">
-              Check your email.
-            </p>
-            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-              {message}
-            </p>
+            <p className="text-sm font-semibold text-[var(--color-text)]">Check your email.</p>
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{message}</p>
           </div>
         </div>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row gap-2"
-          noValidate
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2" noValidate>
           <label className="flex-1 min-w-0">
             <span className="sr-only">Email address</span>
             <input
@@ -133,12 +121,8 @@ export default function InlineMagnetCapture({
             disabled={status === "submitting"}
             className="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
           >
-            <span>
-              {status === "submitting" ? "Sending…" : "Email me the link"}
-            </span>
-            {status !== "submitting" && (
-              <ArrowRight className="size-4" aria-hidden />
-            )}
+            <span>{status === "submitting" ? "Sending…" : "Email me the link"}</span>
+            {status !== "submitting" && <ArrowRight className="size-4" aria-hidden />}
           </button>
         </form>
       )}
@@ -150,8 +134,7 @@ export default function InlineMagnetCapture({
       )}
 
       <p className="text-xs text-[var(--color-text-soft)]">
-        We&apos;ll email you the link, no marketing list. Or read it
-        directly at{" "}
+        We&apos;ll email you the link, no marketing list. Or read it directly at{" "}
         <a
           href={`/lead-magnets/${magnetSlug}`}
           className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline"

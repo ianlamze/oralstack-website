@@ -7,13 +7,7 @@ export default function QuickQuestionForm() {
     <FormShell intent="question" submitLabel="Send question">
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Your name" name="name" required autoComplete="name" />
-        <Field
-          label="Email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-        />
+        <Field label="Email" name="email" type="email" required autoComplete="email" />
       </div>
       <TextArea
         label="What's your question?"

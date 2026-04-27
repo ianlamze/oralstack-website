@@ -49,9 +49,7 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
       }
     } catch {
       setStatus("error");
-      setMessage(
-        "Couldn't reach the server. Please email hello@oralstack.com directly.",
-      );
+      setMessage("Couldn't reach the server. Please email hello@oralstack.com directly.");
     }
   }
 
@@ -62,9 +60,7 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
           <CheckCircle2 className="size-5" aria-hidden />
           <p className="font-semibold tracking-tight">Got it.</p>
         </div>
-        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-          {message}
-        </p>
+        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{message}</p>
       </div>
     );
   }
@@ -89,12 +85,8 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
           disabled={status === "submitting"}
           className="inline-flex items-center gap-2 min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          <span>
-            {status === "submitting" ? "Sending…" : submitLabel}
-          </span>
-          {status !== "submitting" && (
-            <ArrowRight className="size-4" aria-hidden />
-          )}
+          <span>{status === "submitting" ? "Sending…" : submitLabel}</span>
+          {status !== "submitting" && <ArrowRight className="size-4" aria-hidden />}
         </button>
         {status === "error" && (
           <p className="text-sm text-red-700" role="alert">
@@ -128,9 +120,7 @@ export function Field({
     <label className="grid gap-1.5">
       <span className="text-sm font-medium text-[var(--color-text)]">
         {label}
-        {required && (
-          <span className="text-[var(--color-text-soft)]"> *</span>
-        )}
+        {required && <span className="text-[var(--color-text-soft)]"> *</span>}
       </span>
       <input
         type={type}
@@ -161,9 +151,7 @@ export function TextArea({
     <label className="grid gap-1.5">
       <span className="text-sm font-medium text-[var(--color-text)]">
         {label}
-        {required && (
-          <span className="text-[var(--color-text-soft)]"> *</span>
-        )}
+        {required && <span className="text-[var(--color-text-soft)]"> *</span>}
       </span>
       <textarea
         name={name}
@@ -193,16 +181,9 @@ export function Select({
     <label className="grid gap-1.5">
       <span className="text-sm font-medium text-[var(--color-text)]">
         {label}
-        {required && (
-          <span className="text-[var(--color-text-soft)]"> *</span>
-        )}
+        {required && <span className="text-[var(--color-text-soft)]"> *</span>}
       </span>
-      <select
-        name={name}
-        required={required}
-        defaultValue={defaultValue}
-        className={fieldBase}
-      >
+      <select name={name} required={required} defaultValue={defaultValue} className={fieldBase}>
         <option value="" disabled>
           Pick one
         </option>

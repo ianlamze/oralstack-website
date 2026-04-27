@@ -151,9 +151,9 @@ export default function ForMultiClinicPage() {
               Talk to us about a group pilot.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              Tell us how many locations, what your current PMS is, and a target start date. We
-              come back with a tailored pilot proposal — usually a two-clinic pilot first, then
-              group rollout — within two working days.
+              Tell us how many locations, what your current PMS is, and a target start date. We come
+              back with a tailored pilot proposal — usually a two-clinic pilot first, then group
+              rollout — within two working days.
             </p>
             <p className="mt-4 text-sm">
               <a

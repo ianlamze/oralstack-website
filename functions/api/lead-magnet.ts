@@ -57,10 +57,11 @@ function escapeHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-function buildVisitorEmail(args: {
-  magnetTitle: string;
-  magnetUrl: string;
-}): { subject: string; html: string; text: string } {
+function buildVisitorEmail(args: { magnetTitle: string; magnetUrl: string }): {
+  subject: string;
+  html: string;
+  text: string;
+} {
   const { magnetTitle, magnetUrl } = args;
   const safeTitle = escapeHtml(magnetTitle);
   const subject = `Your ${magnetTitle} from Oralstack`;
@@ -86,10 +87,11 @@ If anything's off in the content, or you want a related reference we haven't wri
   return { subject, html, text };
 }
 
-function buildInternalEmail(args: {
-  email: string;
-  magnetTitle: string;
-}): { subject: string; html: string; text: string } {
+function buildInternalEmail(args: { email: string; magnetTitle: string }): {
+  subject: string;
+  html: string;
+  text: string;
+} {
   const { email, magnetTitle } = args;
   const subject = `[oralstack lead] ${magnetTitle} — ${email}`;
   const html = `<div style="font:14px/1.5 -apple-system,Segoe UI,sans-serif;color:#222">

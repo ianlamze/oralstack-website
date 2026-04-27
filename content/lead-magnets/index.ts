@@ -15,16 +15,12 @@ export const leadMagnets: LeadMagnet[] = [
 ];
 
 const bySlug = new Map(leadMagnets.map((m) => [m.slug, m]));
-const byCluster = new Map<ArticleCluster, LeadMagnet>(
-  leadMagnets.map((m) => [m.cluster, m]),
-);
+const byCluster = new Map<ArticleCluster, LeadMagnet>(leadMagnets.map((m) => [m.cluster, m]));
 
 export function getLeadMagnet(slug: string): LeadMagnet | undefined {
   return bySlug.get(slug);
 }
 
-export function getLeadMagnetForCluster(
-  cluster: ArticleCluster,
-): LeadMagnet | undefined {
+export function getLeadMagnetForCluster(cluster: ArticleCluster): LeadMagnet | undefined {
   return byCluster.get(cluster);
 }

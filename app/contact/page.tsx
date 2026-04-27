@@ -5,11 +5,7 @@ import Section from "@/components/primitives/Section";
 import QuickQuestionForm from "@/components/forms/QuickQuestionForm";
 import MigrationAssessmentForm from "@/components/forms/MigrationAssessmentForm";
 import PilotProposalForm from "@/components/forms/PilotProposalForm";
-import {
-  contactChannels,
-  whatsappLink,
-  mailtoLink,
-} from "@/content/contact";
+import { contactChannels, whatsappLink, mailtoLink } from "@/content/contact";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -91,15 +87,12 @@ const formSections: {
 export default function ContactPage() {
   return (
     <main>
-      <PageHeader
-        eyebrow="Contact"
-        title="Talk to a Singapore dental ops engineer."
-      />
+      <PageHeader eyebrow="Contact" title="Talk to a Singapore dental ops engineer." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          We&apos;re a small team — your message reaches a real engineer, not a
-          shared inbox. Pick the channel that fits the question.
+          We&apos;re a small team — your message reaches a real engineer, not a shared inbox. Pick
+          the channel that fits the question.
         </p>
       </Section>
 
@@ -164,11 +157,7 @@ export default function ContactPage() {
           {formSections.map((s) => {
             const Form = s.Form;
             return (
-              <section
-                key={s.id}
-                id={s.id}
-                className="scroll-mt-12 grid gap-6"
-              >
+              <section key={s.id} id={s.id} className="scroll-mt-12 grid gap-6">
                 <header className="grid gap-2">
                   <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
                     {s.eyebrow}
@@ -179,9 +168,7 @@ export default function ContactPage() {
                   <p className="mt-1 text-[var(--color-text-muted)] max-w-[62ch] leading-relaxed">
                     {s.body}
                   </p>
-                  <p className="text-xs text-[var(--color-text-soft)]">
-                    {s.bestFor}
-                  </p>
+                  <p className="text-xs text-[var(--color-text-soft)]">{s.bestFor}</p>
                 </header>
                 <Form />
               </section>

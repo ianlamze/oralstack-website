@@ -14,17 +14,13 @@ export const metadata: Metadata = {
 export default function LeadMagnetsIndexPage() {
   return (
     <main>
-      <PageHeader
-        eyebrow="References"
-        title="Free dental clinic ops references."
-      />
+      <PageHeader eyebrow="References" title="Free dental clinic ops references." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Reference-quality checklists and runbooks for the operational
-          motions a Singapore dental clinic runs. Free to read, free to
-          share. Each is designed to print, edit per clinic, and use
-          as onboarding material.
+          Reference-quality checklists and runbooks for the operational motions a Singapore dental
+          clinic runs. Free to read, free to share. Each is designed to print, edit per clinic, and
+          use as onboarding material.
         </p>
       </Section>
 

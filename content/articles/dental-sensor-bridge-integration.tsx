@@ -15,7 +15,7 @@ export const dentalSensorBridgeIntegration: Article = {
   cta: {
     eyebrow: "Imaging integrations",
     title: "Sensor-bridge integration in Oralstack",
-    body: "Capture directly from Carestream, Dexis, Sopro, Schick into the visit — no separate desktop, no USB transfers, no \"where's the radiograph\" hunts.",
+    body: 'Capture directly from Carestream, Dexis, Sopro, Schick into the visit — no separate desktop, no USB transfers, no "where\'s the radiograph" hunts.',
     buttonLabel: "See the integrations",
     buttonHref: "/integrations",
   },

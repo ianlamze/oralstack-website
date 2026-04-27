@@ -11,7 +11,9 @@ export const contactChannels = {
   email: "hello@oralstack.com",
 } as const;
 
-export function whatsappLink(prefilledMessage = "Hi, I'd like to learn more about Oralstack."): string {
+export function whatsappLink(
+  prefilledMessage = "Hi, I'd like to learn more about Oralstack.",
+): string {
   const text = encodeURIComponent(prefilledMessage);
   return `https://wa.me/${contactChannels.whatsappNumber}?text=${text}`;
 }

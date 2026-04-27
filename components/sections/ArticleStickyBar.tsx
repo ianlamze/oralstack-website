@@ -14,11 +14,7 @@ const STORAGE_KEY = "oralstack:articleStickyBar:dismissed";
  * Renders nothing until hydration to avoid the flash of an undismissed bar
  * for users who already dismissed it.
  */
-export default function ArticleStickyBar({
-  articleTitle,
-}: {
-  articleTitle: string;
-}) {
+export default function ArticleStickyBar({ articleTitle }: { articleTitle: string }) {
   const [hydrated, setHydrated] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
