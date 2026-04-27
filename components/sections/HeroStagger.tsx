@@ -28,7 +28,7 @@ export function HeroStagger({
   const reduce = useReducedMotion();
   return (
     <motion.div
-      initial={reduce ? false : "hidden"}
+      initial={false}
       animate="visible"
       variants={reduce ? undefined : containerVariants}
       className={className}
