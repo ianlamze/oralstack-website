@@ -90,12 +90,25 @@ export default function ScheduleMock() {
   const [toast, setToast] = useState<{ kind: "ok" | "blocked"; text: string } | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [demoActive, setDemoActive] = useState(false);
+  const [postDemoNudge, setPostDemoNudge] = useState(false);
+  const [isTouchOnly, setIsTouchOnly] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const reduceMotion = useReducedMotion();
+
+  // Detect touch-only devices so the post-demo pulse fires only where the
+  // hover-lift affordance is unavailable. Mirrors `@media (hover: none)`.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(hover: none)");
+    setIsTouchOnly(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsTouchOnly(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   function showToast(kind: "ok" | "blocked", text: string) {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
@@ -171,11 +184,22 @@ export default function ScheduleMock() {
     const finish = setTimeout(
       () => {
         setDemoActive(false);
+        // Skip the post-demo nudge if the user already engaged — they're
+        // past the affordance question.
+        if (!hasInteractedRef.current) setPostDemoNudge(true);
       },
       700 + 1100 + 600,
     );
 
-    demoTimersRef.current = [moveOut, moveBack, finish];
+    // Clear the "Now you try" hint after 3s.
+    const nudgeEnd = setTimeout(
+      () => {
+        setPostDemoNudge(false);
+      },
+      700 + 1100 + 600 + 3000,
+    );
+
+    demoTimersRef.current = [moveOut, moveBack, finish, nudgeEnd];
   }, []);
 
   // Auto-demo: when the schedule scrolls into view for the first time, briefly
@@ -278,6 +302,8 @@ export default function ScheduleMock() {
           const t = toneStyles[a.tone];
           const isDragging = draggingId === a.id;
           const dragEnabled = !demoActive;
+          const shouldPulse =
+            postDemoNudge && isTouchOnly && a.id === DEMO_APPT_ID && !reduceMotion;
           return (
             <motion.button
               key={a.id}
@@ -287,6 +313,21 @@ export default function ScheduleMock() {
                 reduceMotion
                   ? { duration: 0 }
                   : { layout: { type: "spring", stiffness: 480, damping: 36 } }
+              }
+              animate={
+                shouldPulse
+                  ? {
+                      scale: [1, 1.05, 1, 1.05, 1],
+                      boxShadow: [
+                        "0 0 0 0 rgba(20,30,60,0)",
+                        "0 8px 22px -8px rgba(20,30,60,0.28)",
+                        "0 0 0 0 rgba(20,30,60,0)",
+                        "0 8px 22px -8px rgba(20,30,60,0.28)",
+                        "0 0 0 0 rgba(20,30,60,0)",
+                      ],
+                      transition: { duration: 1.6, ease: "easeInOut" },
+                    }
+                  : undefined
               }
               drag={dragEnabled}
               dragSnapToOrigin
@@ -312,6 +353,7 @@ export default function ScheduleMock() {
               onFocus={markInteracted}
               onDragStart={() => {
                 markInteracted();
+                setPostDemoNudge(false);
                 setDraggingId(a.id);
               }}
               onDragEnd={(_, info) => handleDragEnd(a, info)}
@@ -351,6 +393,18 @@ export default function ScheduleMock() {
                 }
               >
                 {toast.text}
+              </motion.span>
+            ) : postDemoNudge ? (
+              <motion.span
+                key="nudge"
+                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                transition={{ duration: 0.18 }}
+                className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
+              >
+                <span aria-hidden>↕</span>
+                Now you try →
               </motion.span>
             ) : (
               <motion.span
