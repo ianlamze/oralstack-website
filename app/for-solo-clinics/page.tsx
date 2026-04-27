@@ -99,8 +99,8 @@ export default function ForSoloClinicsPage() {
           </p>
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Migration:</span> three weeks
-              from kickoff to live, no fallback diary kept in parallel.{" "}
+              <span className="font-medium text-[var(--color-text)]">Migration:</span> front desk
+              live in three days, full migration in three weeks, no fallback diary kept in parallel.{" "}
               <a
                 href="/articles/plato-to-cloud-migration"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -130,7 +130,8 @@ export default function ForSoloClinicsPage() {
             </Bullet>
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Worked example:</span> DFI
-              Synergy, a 3-chair Singapore clinic, went live in three weeks.{" "}
+              Synergy, a 3-chair Singapore clinic, moved its front desk onto Oralstack in three
+              days.{" "}
               <a
                 href="/customers/dfi-synergy"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"

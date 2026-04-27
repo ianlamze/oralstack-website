@@ -56,7 +56,7 @@ export default function AboutPage() {
           <Reason
             eyebrow="Where we are"
             title="Singapore-first, with one cornerstone clinic live."
-            body="We're region-hosted in asia-southeast1 (Singapore), tenant-isolated, and PDPA-aware by design. Our first cornerstone clinic — DFI Synergy, a three-chair Singapore practice — went live on Oralstack in three weeks. The next pilot cohort opens in the v13 imaging release. APAC-first does not mean APAC-only: we'll cross the Pacific when the product warrants it."
+            body="We're region-hosted in asia-southeast1 (Singapore), tenant-isolated, and PDPA-aware by design. Our first cornerstone clinic — DFI Synergy, a three-chair Singapore practice — moved its front desk onto Oralstack in three days. The next pilot cohort opens in the v13 imaging release. APAC-first does not mean APAC-only: we'll cross the Pacific when the product warrants it."
           />
         </div>
       </Section>

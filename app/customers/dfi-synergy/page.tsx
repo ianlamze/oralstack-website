@@ -161,7 +161,7 @@ export default function DfiSynergyCaseStudy() {
             By the numbers
           </p>
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[36ch]">
-            What changed in the first three weeks.
+            What changed in the first month.
           </h2>
         </div>
         <StatGrid stats={study.stats} />
@@ -178,7 +178,7 @@ export default function DfiSynergyCaseStudy() {
                 slug: "plato-to-cloud-migration",
                 cluster: "Migration & operations",
                 title: "Migrating from Plato to a cloud PMS",
-                excerpt: "The 3-week playbook this clinic followed.",
+                excerpt: "The cutover playbook this clinic followed.",
               },
               {
                 slug: "same-day-billing-dental",
