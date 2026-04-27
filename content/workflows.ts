@@ -8,7 +8,7 @@ export const workflows: Workflow[] = [
   {
     slug: "front-desk",
     eyebrow: "Front desk",
-    title: "Schedule that responds in three seconds.",
+    title: "Scheduling that keeps up with the front desk.",
   },
   {
     slug: "billing",

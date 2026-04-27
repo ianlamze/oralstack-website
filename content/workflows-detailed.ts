@@ -13,7 +13,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
   {
     slug: "front-desk",
     eyebrow: "Front desk",
-    title: "Schedule that responds in three seconds.",
+    title: "Scheduling that keeps up with the front desk.",
     body: "The schedule isn't a thing the front desk consults — it's the thing they drive. Drag a 10:00 to 14:00 in three seconds. Search a returning patient in two keystrokes. Register a new patient inline without leaving the day view.",
     bullets: [
       "Drag-to-reschedule with timezone-correct commits — no UTC drift on reload",
