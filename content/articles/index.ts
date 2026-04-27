@@ -10,6 +10,9 @@ import { dragToRescheduleDentalSchedule } from "./drag-to-reschedule-dental-sche
 import { insuranceVsPatientPortionSingapore } from "./insurance-vs-patient-portion-singapore";
 import { dentalAuditLogs } from "./dental-audit-logs";
 import { dentalSensorBridgeIntegration } from "./dental-sensor-bridge-integration";
+import { choosingDentalPmsApac2026 } from "./choosing-dental-pms-apac-2026";
+import { openDentalToManagedPmsMigration } from "./open-dental-to-managed-pms-migration";
+import { tenantIsolationDentalSaas } from "./tenant-isolation-dental-saas";
 import type { Article, ArticleCluster } from "./types";
 
 export const articles: Article[] = [
@@ -25,6 +28,9 @@ export const articles: Article[] = [
   insuranceVsPatientPortionSingapore,
   dentalAuditLogs,
   dentalSensorBridgeIntegration,
+  choosingDentalPmsApac2026,
+  openDentalToManagedPmsMigration,
+  tenantIsolationDentalSaas,
 ];
 
 const bySlug = new Map(articles.map((a) => [a.slug, a]));

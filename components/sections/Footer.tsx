@@ -18,24 +18,29 @@ export default function Footer() {
             links={[
               { label: "Workflows", href: "/workflows" },
               { label: "Integrations", href: "/integrations" },
-              { label: "Changelog", href: "/changelog" },
               { label: "Pricing", href: "/pricing" },
+              { label: "Compare", href: "/compare" },
+              { label: "Changelog", href: "/changelog" },
+            ]}
+          />
+
+          <FooterColumn
+            title="Solutions"
+            links={[
+              { label: "For solo & small clinics", href: "/for-solo-clinics" },
+              { label: "For multi-clinic & DSO", href: "/for-multi-clinic" },
+              { label: "Customers", href: "/customers" },
+              { label: "Articles", href: "/articles" },
+              { label: "FAQ", href: "/faq" },
             ]}
           />
 
           <FooterColumn
             title="Company"
             links={[
-              { label: "Customers", href: "/customers" },
-              { label: "Articles", href: "/articles" },
+              { label: "About", href: "/about" },
               { label: "Security", href: "/security" },
               { label: "Contact", href: "mailto:hello@oralstack.com" },
-            ]}
-          />
-
-          <FooterColumn
-            title="Legal"
-            links={[
               { label: "Privacy", href: "/privacy" },
               { label: "Terms", href: "/terms" },
             ]}

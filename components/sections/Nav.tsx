@@ -226,6 +226,27 @@ export default function Nav() {
 
                     <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-border)] pt-4 text-xs">
                       <a
+                        href="/for-solo-clinics"
+                        onClick={closeMega}
+                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                      >
+                        For solo →
+                      </a>
+                      <a
+                        href="/for-multi-clinic"
+                        onClick={closeMega}
+                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                      >
+                        For DSOs →
+                      </a>
+                      <a
+                        href="/compare"
+                        onClick={closeMega}
+                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                      >
+                        Compare →
+                      </a>
+                      <a
                         href="/articles"
                         onClick={closeMega}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
@@ -233,32 +254,11 @@ export default function Nav() {
                         Articles →
                       </a>
                       <a
-                        href="/compare/plato"
+                        href="/faq"
                         onClick={closeMega}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
-                        vs Plato →
-                      </a>
-                      <a
-                        href="/compare/open-dental"
-                        onClick={closeMega}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        vs Open Dental →
-                      </a>
-                      <a
-                        href="/integrations"
-                        onClick={closeMega}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Integrations →
-                      </a>
-                      <a
-                        href="/changelog"
-                        onClick={closeMega}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Changelog →
+                        FAQ →
                       </a>
                     </div>
                   </div>
@@ -386,29 +386,38 @@ export default function Nav() {
                   )}
                 </AnimatePresence>
 
+                <DrawerLink href="/for-solo-clinics" onNavigate={() => setDrawerOpen(false)}>
+                  For solo & small clinics
+                </DrawerLink>
+                <DrawerLink href="/for-multi-clinic" onNavigate={() => setDrawerOpen(false)}>
+                  For multi-clinic & DSO
+                </DrawerLink>
                 <DrawerLink href="/customers" onNavigate={() => setDrawerOpen(false)}>
                   Customers
                 </DrawerLink>
                 <DrawerLink href="/pricing" onNavigate={() => setDrawerOpen(false)}>
                   Pricing
                 </DrawerLink>
-                <DrawerLink href="/integrations" onNavigate={() => setDrawerOpen(false)}>
-                  Integrations
+                <DrawerLink href="/compare" onNavigate={() => setDrawerOpen(false)}>
+                  Compare
                 </DrawerLink>
                 <DrawerLink href="/articles" onNavigate={() => setDrawerOpen(false)}>
                   Articles
                 </DrawerLink>
-                <DrawerLink href="/compare/plato" onNavigate={() => setDrawerOpen(false)}>
-                  Compare: vs Plato
+                <DrawerLink href="/faq" onNavigate={() => setDrawerOpen(false)}>
+                  FAQ
                 </DrawerLink>
-                <DrawerLink href="/compare/open-dental" onNavigate={() => setDrawerOpen(false)}>
-                  Compare: vs Open Dental
+                <DrawerLink href="/integrations" onNavigate={() => setDrawerOpen(false)}>
+                  Integrations
                 </DrawerLink>
-                <DrawerLink href="/changelog" onNavigate={() => setDrawerOpen(false)}>
-                  Changelog
+                <DrawerLink href="/about" onNavigate={() => setDrawerOpen(false)}>
+                  About
                 </DrawerLink>
                 <DrawerLink href="/security" onNavigate={() => setDrawerOpen(false)}>
                   Security
+                </DrawerLink>
+                <DrawerLink href="/changelog" onNavigate={() => setDrawerOpen(false)}>
+                  Changelog
                 </DrawerLink>
               </nav>
 

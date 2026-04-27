@@ -102,6 +102,17 @@ node scripts/browse.mjs <url> [--out path] [--width N] [--height N] [--wait sele
 
 Defaults: 1280×800 viewport, full-page screenshot to `/tmp/browse-<ts>.png`, prints page innerText (first 8000 chars). `playwright` added to `devDependencies`.
 
+### Content expansion — about, comparisons, verticals, FAQ, articles
+
+A second-pass content build to flesh out the site beyond the initial scaffold.
+
+- **`/about`** ([app/about/page.tsx](app/about/page.tsx)) — three "why we&apos;re building this" sections, a "how we work" rationale, and a placeholder founders array. Founder bios fill in via the `founders` const at the top of the file; until populated the page renders a graceful "team coming soon" notice. DFI Synergy is treated as an arms-length cornerstone customer per the framing rule (memory: `feedback_dfi_synergy_framing.md`).
+- **Three new comparison pages** — [`/compare/dentrix`](app/compare/dentrix/page.tsx), [`/compare/eaglesoft`](app/compare/eaglesoft/page.tsx), [`/compare/carestream`](app/compare/carestream/page.tsx). Same shape as the Plato/OD pages: 11-row capability table, three "why we built differently" sections, "where they&apos;re the right call" concession, CTA. Plus a [`/compare`](app/compare/page.tsx) index page listing all five comparisons.
+- **Vertical landing pages** — [`/for-solo-clinics`](app/for-solo-clinics/page.tsx) (1–4 chair, office-manager + dentist-owner buyer) and [`/for-multi-clinic`](app/for-multi-clinic/page.tsx) (DSO / multi-location, COO + VP Ops buyer). Different framing, different proof points, different CTA copy per segment.
+- **FAQ page** ([app/faq/page.tsx](app/faq/page.tsx)) — five categorised question groups (pricing, migration, security, integrations, about) with qualified, link-rich answers. ~17 Q&A entries.
+- **Three new articles** — [choosing-dental-pms-apac-2026](content/articles/choosing-dental-pms-apac-2026.tsx) (migration cluster, buyer's checklist), [open-dental-to-managed-pms-migration](content/articles/open-dental-to-managed-pms-migration.tsx) (migration cluster, mirror of the Plato playbook for OD), [tenant-isolation-dental-saas](content/articles/tenant-isolation-dental-saas.tsx) (compliance cluster, four questions to ask vendors with code examples).
+- **Wired in** — sitemap updated with the eleven new URLs; footer reorganised into Product / Solutions / Company columns to surface the new pages; nav mega panel resource strip swapped from "Articles · vs Plato · vs Open Dental · Integrations · Changelog" to "For solo · For DSOs · Compare · Articles · FAQ"; mobile drawer expanded with all new links.
+
 ### Open / pending (carry-over to next session)
 
 - Real product screenshots to replace one or more CSS mocks (needs capture from existing Dentologic app)
