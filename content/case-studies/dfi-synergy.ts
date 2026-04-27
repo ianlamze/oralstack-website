@@ -5,7 +5,7 @@ export const dfiSynergy: CaseStudy = {
   customerId: "dfi-synergy",
 
   eyebrow: "Customer story · Pilot · Singapore",
-  title: "How DFI Synergy moved their front desk into Oralstack in three weeks.",
+  title: "How DFI Synergy moved their front desk into Oralstack in three days.",
   outcome:
     "A three-chair, four-provider clinic in Singapore replaced a paper diary and WhatsApp-led rescheduling with Oralstack's drag-driven schedule and discharge-flow billing — with no migration downtime and no fallback diary in parallel.",
 
@@ -48,12 +48,14 @@ export const dfiSynergy: CaseStudy = {
       paragraphs: [
         "DFI Synergy evaluated three options to replace the paper-and-WhatsApp setup: continue with Plato (the dominant Singapore PMS), Open Dental, or Oralstack. The shortlist came down to two requirements neither legacy option met cleanly.",
         "The first was a schedule the front desk could drive in seconds, not consult through forms — drag-to-reschedule with timezone-correct commits, inline new-patient registration, recall candidates surfaced before they aged. The second was billing tied to the chart so treatment lines populated themselves at discharge, with insurance and patient portion structurally separate.",
-        "Oralstack was chosen on a third factor as well: APAC region hosting, with a tenant-isolated data model designed against Singapore PDPA from day one. The clinic agreed to a three-week handover with no fallback diary kept in parallel — a deliberate forcing function.",
+        "Oralstack was chosen on a third factor as well: APAC region hosting, with a tenant-isolated data model designed against Singapore PDPA from day one. The clinic agreed to a three-day front-desk cutover with no fallback diary kept in parallel — a deliberate forcing function. Legacy paper-and-WhatsApp records reconciled into Oralstack in the background over the following weeks.",
       ],
     },
     {
       heading: "What's running today",
-      paragraphs: ["Three workflows went live in the first week. A fourth followed in week two."],
+      paragraphs: [
+        "Schedule and billing went live on day three. Charting followed within the first week, recall in week two.",
+      ],
       bullets: [
         "Schedule — 3 chairs, 4 providers, drag-to-reschedule with timezone-correct commits.",
         "Billing — discharge-and-bill in the same flow, with treatment lines auto-populated from the chart.",
@@ -71,8 +73,8 @@ export const dfiSynergy: CaseStudy = {
 
   stats: [
     {
-      value: "3 weeks",
-      label: "From kickoff to all four workflows live in production.",
+      value: "3 days",
+      label: "From kickoff to front desk live on Oralstack — schedule and billing.",
       qualifier: "Apr 2026",
     },
     {

@@ -1,4 +1,10 @@
+"use client";
+
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+
 type LineItem = { code: string; name: string; qty: number; price: number };
+type PaymentMode = "PayNow" | "Card" | "Cash" | "Bank";
 
 const items: LineItem[] = [
   { code: "DCC107", name: "Filling, composite (16-O)", qty: 1, price: 180 },
@@ -6,10 +12,21 @@ const items: LineItem[] = [
   { code: "DCC212", name: "Hygiene assessment", qty: 1, price: 80 },
 ];
 
-const paymentModes = ["PayNow", "Card", "Cash", "Bank"] as const;
+const paymentModes: PaymentMode[] = ["PayNow", "Card", "Cash", "Bank"];
 
 function format(n: number) {
   return `S$${n.toFixed(2)}`;
+}
+
+function nowSGT() {
+  const fmt = new Intl.DateTimeFormat("en-SG", {
+    timeZone: "Asia/Singapore",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+  return fmt.format(new Date());
 }
 
 export default function CheckoutMock() {
@@ -17,12 +34,22 @@ export default function CheckoutMock() {
   const tax = +(subTotal * 0.09).toFixed(2);
   const total = +(subTotal + tax).toFixed(2);
 
+  const [selected, setSelected] = useState<PaymentMode | null>(null);
+  const [paid, setPaid] = useState<{ mode: PaymentMode; at: string } | null>(null);
+  const reduceMotion = useReducedMotion();
+
+  function takePayment() {
+    if (!selected || paid) return;
+    setPaid({ mode: selected, at: nowSGT() });
+  }
+
+  function reset() {
+    setSelected(null);
+    setPaid(null);
+  }
+
   return (
-    <div
-      role="img"
-      aria-label="Illustrative oralstack discharge and billing flow: invoice line items, tax line, total, and payment mode buttons."
-      className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[480px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
-    >
+    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[480px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
         <span>Discharge · Invoice INV-0421</span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
@@ -67,24 +94,82 @@ export default function CheckoutMock() {
           Take payment
         </p>
         <div className="flex flex-wrap gap-1.5">
-          {paymentModes.map((m, i) => (
-            <button
-              key={m}
-              type="button"
-              tabIndex={-1}
-              className={`text-[11px] font-medium rounded-md border px-2.5 py-1.5 transition-colors ${
-                i === 0
-                  ? "bg-[var(--color-ink)] text-[var(--color-canvas)] border-[var(--color-ink)]"
-                  : "bg-white text-[var(--color-text-muted)] border-[var(--color-border-strong)]"
-              }`}
-            >
-              {m}
-            </button>
-          ))}
+          {paymentModes.map((m) => {
+            const isSelected = selected === m;
+            const isDisabled = paid !== null;
+            return (
+              <button
+                key={m}
+                type="button"
+                onClick={() => !isDisabled && setSelected(m)}
+                disabled={isDisabled}
+                aria-pressed={isSelected}
+                className={`text-[11px] font-medium rounded-md border px-2.5 py-1.5 transition-colors disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
+                  isSelected
+                    ? "bg-[var(--color-ink)] text-[var(--color-canvas)] border-[var(--color-ink)]"
+                    : isDisabled
+                      ? "bg-white text-[var(--color-text-soft)] border-[var(--color-border)] opacity-60"
+                      : "bg-white text-[var(--color-text-muted)] border-[var(--color-border-strong)] hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
+                }`}
+              >
+                {m}
+              </button>
+            );
+          })}
         </div>
-        <p className="text-[10px] text-[var(--color-text-soft)] tracking-[0.04em]">
-          Outstanding {format(total)} · audit-logged on submit
-        </p>
+
+        <div className="grid gap-2 min-h-[44px]">
+          <AnimatePresence mode="wait" initial={false}>
+            {paid ? (
+              <motion.div
+                key="paid"
+                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.22 }}
+                className="grid gap-1"
+              >
+                <p className="text-[11px] font-medium text-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_55%)] tracking-[0.04em]">
+                  ✓ Paid · {paid.mode} · {format(total)} · {paid.at} SGT
+                </p>
+                <p className="text-[10px] text-[var(--color-text-soft)] tracking-[0.04em]">
+                  Receipt sent · audit-logged · ledger reconciled in real time
+                </p>
+                <button
+                  type="button"
+                  onClick={reset}
+                  className="justify-self-start text-[10px] font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text)] underline underline-offset-4 decoration-[var(--color-border-strong)] hover:decoration-[var(--color-ink)]"
+                >
+                  Take another payment
+                </button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="pending"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18 }}
+                className="grid gap-1.5"
+              >
+                <button
+                  type="button"
+                  onClick={takePayment}
+                  disabled={!selected}
+                  className="justify-self-start inline-flex items-center min-h-[36px] rounded-md bg-[var(--color-ink)] text-[var(--color-canvas)] text-[11px] font-medium px-3 py-1.5 hover:bg-[var(--color-tide-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
+                  aria-disabled={!selected}
+                >
+                  Take {format(total)} →
+                </button>
+                <p className="text-[10px] text-[var(--color-text-soft)] tracking-[0.04em]">
+                  {selected
+                    ? `Outstanding ${format(total)} · ${selected} selected · audit-logged on submit`
+                    : `Outstanding ${format(total)} · pick a mode · audit-logged on submit`}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

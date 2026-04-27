@@ -15,7 +15,7 @@ export default function CustomerStoryStrip() {
               Customer story
             </p>
             <h2 className="mt-4 text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-              {featured.name} moved their front desk into Oralstack in three weeks.
+              {featured.name} moved their front desk into Oralstack in three days.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[52ch] leading-relaxed">
               {featured.blurb}
