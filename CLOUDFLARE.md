@@ -105,12 +105,9 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 ## Step 7 — Form endpoints + Resend (~5 minutes)
 
-The site has two Cloudflare Pages Functions handling form submissions:
+The site has two Cloudflare Pages Functions handling form submissions: [`/api/contact`](functions/api/contact.ts) (multi-intent: question, migration, pilot, demo) and [`/api/lead-magnet`](functions/api/lead-magnet.ts) (email capture). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
-- [`functions/api/contact.ts`](functions/api/contact.ts) — POST `/api/contact`. Multi-intent (`question`, `migration`, `pilot`, `demo`). Powers `/contact`, the article inline magnet capture, **and** DemoRequestForm on `/book-a-demo` (which posts here by default).
-- [`functions/api/lead-magnet.ts`](functions/api/lead-magnet.ts) — POST `/api/lead-magnet`. Email-captures the visitor address and emails them the link to the requested reference.
-
-Without `RESEND_API_KEY` set, both endpoints still accept and validate submissions — they just log to the Cloudflare console instead of sending email. The form UI works either way.
+Without `RESEND_API_KEY` set, both endpoints still validate submissions and log to the Cloudflare console instead of sending email. The form UI works either way.
 
 To activate real email forwarding:
 
@@ -122,16 +119,68 @@ To activate real email forwarding:
    - `CONTACT_INBOX` — destination address (default: `hello@oralstack.com`)
    - `CONTACT_FROM` — From: header (default: `Oralstack contact <noreply@oralstack.com>`)
    - `SITE_URL` — public origin for absolute lead-magnet URLs (default: `https://oralstack.com`)
-5. Redeploy. Submissions land in `hello@oralstack.com` within a second.
+5. Redeploy. Submissions land in `CONTACT_INBOX` within a second.
 
-DemoRequestForm at `/book-a-demo` posts to `/api/contact` with `intent: "demo"`, the same pipeline as the `/contact` forms.
+### Optional: route DemoRequestForm at a third-party service
 
-Function response codes:
-- `200 { ok: true, message }` — submission accepted; email sent if Resend configured, logged otherwise.
-- `400 { ok: false, message }` — missing or invalid fields (per-intent validation).
-- `502` — Resend rejected the request (check Cloudflare function logs).
+If you'd rather use Formspree / Web3Forms / similar instead of the in-repo Pages Function:
 
-See [CONTACT_SETUP.md](CONTACT_SETUP.md) for the consolidated setup walkthrough.
+1. Sign up at [formspree.io](https://formspree.io) (free tier: 50 submissions/month).
+2. Create a form, destination email `hello@oralstack.com`.
+3. Copy the endpoint URL (e.g., `https://formspree.io/f/xxxxxxxx`).
+4. Add to `.env.local` to override the default `/api/contact`:
+
+```bash
+NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
+```
+
+5. Redeploy.
+
+The DemoRequestForm payload is JSON `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes }`. The in-repo `/api/contact` function detects this shape and normalizes it to `intent: "demo"` automatically.
+
+## Troubleshooting
+
+When a deploy fails, the cause is almost always one of these. Check in order.
+
+### `npm run deploy` fails locally before upload
+
+- **Wrangler auth expired** (~30 days inactive). Re-run `npx wrangler login`.
+- **Non-ASCII commit message rejected.** Wrangler's deploy API rejects en-dash, arrows, emoji in the auto-detected commit message. Override with `npx wrangler pages deploy out --project-name=oralstack --commit-dirty=true --commit-message="ASCII only"`.
+- **`next build` fails.** Run `npm run typecheck` and `npm run lint` first. Build errors often reduce to a TS error or a missing import. CI runs the same gate — see [.github/workflows/ci.yml](.github/workflows/ci.yml).
+- **Content check fails.** `npm run check:content` catches banned voice words, duplicate slugs, malformed `publishedAt`. The error message points at the file + line.
+
+### Site deploys but a route 404s in production
+
+- **Trailing slash mismatch.** Static export emits directories — `/foo/index.html` works at `/foo/` but redirects (308) at `/foo`. Always link with the trailing slash in nav and sitemap.
+- **Missing static export entry.** Dynamic routes (`/articles/[slug]`, `/compare/[slug]`) need their data registered in `content/<dir>/index.ts` so `generateStaticParams` picks them up. If the route is missing from the sitemap *and* 404s, that's the cause.
+- **Sitemap not updated.** Add the route to [`app/sitemap.ts`](app/sitemap.ts) and redeploy.
+
+### Form returns 502 in production
+
+`502` means Resend rejected the send. Causes:
+
+- **`RESEND_API_KEY` not set** in Cloudflare Pages env vars (Step 7). Without it, the function returns `200` with a dev-mode log line — not a 502 — so 502 means the key *is* set but invalid.
+- **Sending domain not verified** in Resend. Resend → Domains → check status. DNS propagation can take 5–10 min after adding records.
+- **`CONTACT_FROM` doesn't match a verified domain.** Resend rejects sends from unverified domains.
+
+Real-time logs: Cloudflare dashboard → **Workers & Pages → oralstack → Functions → Real-time logs**. Look for `[contact]` or `[lead-magnet]` prefixes.
+
+### Custom domain SSL pending
+
+Universal SSL provisioning takes ~1 minute after adding a custom domain. If still stuck after 10 min: Cloudflare dashboard → **Custom domains** → click the domain → manual reissue. SSL also requires the domain to be on Cloudflare DNS (Step 3 Path A).
+
+### DNS not propagating
+
+```bash
+dig oralstack.com NS
+dig www.oralstack.com
+```
+
+If NS records still point to the old registrar after 24 h, the registrar nameserver change didn't take. Re-check at the registrar.
+
+### Pages Function returns 500 with no body
+
+Cloudflare's runtime crashed before the function set a response. Check **Functions → Real-time logs** for the stack trace. Common causes: TypeScript runtime error from an unchecked `process.env.X` access (use a fallback), or a third-party fetch that threw outside the function's try/catch.
 
 ## Quick checklist
 
