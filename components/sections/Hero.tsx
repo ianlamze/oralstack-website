@@ -9,9 +9,20 @@ export default function Hero() {
   return (
     <Section className="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
       {/* Layered backdrop: BrandMotif as the brand-anchored signal,
-          plus the existing radial glows for ambient depth. */}
+          plus the existing radial glows for ambient depth. The motif
+          container carries a radial mask so its rectangular bounds and
+          the bottom of the SVG don't read as hard clipped edges at
+          wider viewports. */}
       <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[140%] opacity-[0.32]">
+        <div
+          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[140%] opacity-[0.32]"
+          style={{
+            maskImage:
+              "radial-gradient(ellipse 65% 75% at 50% 78%, black 35%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 65% 75% at 50% 78%, black 35%, transparent 100%)",
+          }}
+        >
           <BrandMotif tone="tide" intensity={0.42} aspect="wide" className="w-full h-[520px]" />
         </div>
         <div
