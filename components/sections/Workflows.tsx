@@ -49,10 +49,10 @@ export default function Workflows() {
                       <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
                         {w.eyebrow}
                       </p>
-                      <h3 className="text-lg md:text-xl font-semibold tracking-tight text-balance group-hover:text-[var(--color-tide-deep)] transition-colors duration-150">
+                      <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-balance group-hover:text-[var(--color-tide-deep)] transition-colors duration-150">
                         {w.title}
                       </h3>
-                      <p className="text-sm font-medium text-[var(--color-tide-deep)] mt-1">
+                      <p className="text-[15px] font-medium text-[var(--color-tide-deep)] mt-1">
                         See it in detail{" "}
                         <span
                           aria-hidden
