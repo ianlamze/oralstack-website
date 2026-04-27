@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteMeta } from "@/content/site-meta";
 import { customers } from "@/content/customers";
 import { articles } from "@/content/articles";
+import { leadMagnets } from "@/content/lead-magnets";
 
 export const dynamic = "force-static";
 
@@ -23,11 +24,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  const leadMagnetUrls: MetadataRoute.Sitemap = leadMagnets.map((m) => ({
+    url: `${base}/lead-magnets/${m.slug}/`,
+    lastModified: new Date(m.updatedAt ?? m.publishedAt),
+    priority: 0.7,
+  }));
+
   return [
     { url: `${base}/`, lastModified: now, priority: 1.0 },
     { url: `${base}/workflows/`, lastModified: now, priority: 0.9 },
     { url: `${base}/articles/`, lastModified: now, priority: 0.8 },
     ...articleUrls,
+    { url: `${base}/lead-magnets/`, lastModified: now, priority: 0.7 },
+    ...leadMagnetUrls,
     { url: `${base}/customers/`, lastModified: now, priority: 0.8 },
     ...caseStudyUrls,
     { url: `${base}/integrations/`, lastModified: now, priority: 0.7 },
@@ -43,6 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/compare/eaglesoft/`, lastModified: now, priority: 0.8 },
     { url: `${base}/compare/carestream/`, lastModified: now, priority: 0.8 },
     { url: `${base}/book-a-demo/`, lastModified: now, priority: 0.9 },
+    { url: `${base}/contact/`, lastModified: now, priority: 0.9 },
     { url: `${base}/changelog/`, lastModified: now, priority: 0.6 },
     { url: `${base}/security/`, lastModified: now, priority: 0.5 },
     { url: `${base}/privacy/`, lastModified: now, priority: 0.3 },

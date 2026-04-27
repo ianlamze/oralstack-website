@@ -12,7 +12,7 @@
     "format": "biome check --write",
     "test:smoke": "playwright test",
     "test:smoke:update": "playwright test --update-snapshots",
-    "deploy": "next build && wrangler pages deploy out --project-name=oralstack --commit-dirty=true",
+    "deploy": "next build && rm -rf out/functions && cp -r functions out/functions && wrangler pages deploy out --project-name=oralstack --commit-dirty=true",
     "deck:pdf": "bash scripts/generate-deck-pdf.sh"
   },
   "dependencies": {

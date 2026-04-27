@@ -31,6 +31,7 @@ export default function Footer() {
               { label: "For multi-clinic & DSO", href: "/for-multi-clinic" },
               { label: "Customers", href: "/customers" },
               { label: "Articles", href: "/articles" },
+              { label: "References", href: "/lead-magnets" },
               { label: "FAQ", href: "/faq" },
             ]}
           />
@@ -40,7 +41,7 @@ export default function Footer() {
             links={[
               { label: "About", href: "/about" },
               { label: "Security", href: "/security" },
-              { label: "Contact", href: "mailto:hello@oralstack.com" },
+              { label: "Contact", href: "/contact" },
               { label: "Privacy", href: "/privacy" },
               { label: "Terms", href: "/terms" },
             ]}
