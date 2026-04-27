@@ -1,4 +1,11 @@
+"use client";
+
+import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+
 type Condition = "caries" | "filling" | "crown" | "watch";
+
+type ToothFinding = { cond: Condition; surface: string; note: string };
 
 const conditionStyles: Record<
   Condition,
@@ -33,40 +40,49 @@ const conditionStyles: Record<
 const upperRight = [18, 17, 16, 15, 14, 13, 12, 11];
 const lowerRight = [48, 47, 46, 45, 44, 43, 42, 41];
 
-const teethConditions: Record<number, Condition> = {
-  16: "caries",
-  23: "crown",
-  46: "filling",
-  47: "filling",
+const toothNames: Record<number, string> = {
+  11: "Maxillary central incisor",
+  12: "Maxillary lateral incisor",
+  13: "Maxillary canine",
+  14: "Maxillary first premolar",
+  15: "Maxillary second premolar",
+  16: "Maxillary first molar",
+  17: "Maxillary second molar",
+  18: "Maxillary third molar",
+  41: "Mandibular central incisor",
+  42: "Mandibular lateral incisor",
+  43: "Mandibular canine",
+  44: "Mandibular first premolar",
+  45: "Mandibular second premolar",
+  46: "Mandibular first molar",
+  47: "Mandibular second molar",
+  48: "Mandibular third molar",
 };
 
-function Tooth({ num }: { num: number }) {
-  const cond = teethConditions[num];
-  const s = cond ? conditionStyles[cond] : null;
-  return (
-    <div className="grid gap-1">
-      <div className="text-[9px] text-[var(--color-text-soft)] tabular-nums text-center leading-none">
-        {num}
-      </div>
-      <div
-        className="h-7 w-6 rounded-md border bg-white transition-colors"
-        style={
-          s
-            ? { backgroundColor: s.bg, borderColor: s.border }
-            : { borderColor: "var(--color-border)" }
-        }
-      />
-    </div>
-  );
-}
+const findings: Record<number, ToothFinding[]> = {
+  16: [
+    { cond: "caries", surface: "(O)", note: "Active" },
+    { cond: "watch", surface: "(M)", note: "Watch" },
+  ],
+  14: [{ cond: "filling", surface: "(O)", note: "Composite, 2024" }],
+  12: [{ cond: "watch", surface: "(M)", note: "Watch" }],
+  46: [{ cond: "filling", surface: "(M-O)", note: "Composite, 2023" }],
+  47: [{ cond: "filling", surface: "(O)", note: "Composite, 2023" }],
+  44: [{ cond: "watch", surface: "(B)", note: "Watch" }],
+};
+
+const primaryCondition: Record<number, Condition | undefined> = Object.fromEntries(
+  Object.entries(findings).map(([n, fs]) => [Number(n), fs[0]?.cond]),
+);
 
 export default function OdontogramMock() {
+  const [selected, setSelected] = useState<number>(16);
+  const reduceMotion = useReducedMotion();
+
+  const selectedFindings = findings[selected] ?? [];
+
   return (
-    <div
-      role="img"
-      aria-label="Illustrative oralstack patient chart: tooth-led odontogram showing caries, fillings, and crowns across upper and lower arches."
-      className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[520px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
-    >
+    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[520px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
         <span>Patient chart</span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
@@ -82,7 +98,14 @@ export default function OdontogramMock() {
             </p>
             <div className="flex gap-1">
               {upperRight.map((n) => (
-                <Tooth key={n} num={n} />
+                <Tooth
+                  key={n}
+                  num={n}
+                  cond={primaryCondition[n]}
+                  selected={selected === n}
+                  onSelect={() => setSelected(n)}
+                  reduceMotion={!!reduceMotion}
+                />
               ))}
             </div>
           </div>
@@ -95,13 +118,20 @@ export default function OdontogramMock() {
             </p>
             <div className="flex gap-1">
               {lowerRight.map((n) => (
-                <Tooth key={n} num={n} />
+                <Tooth
+                  key={n}
+                  num={n}
+                  cond={primaryCondition[n]}
+                  selected={selected === n}
+                  onSelect={() => setSelected(n)}
+                  reduceMotion={!!reduceMotion}
+                />
               ))}
             </div>
           </div>
 
           <p className="text-[9px] text-[var(--color-text-soft)] tracking-[0.04em] mt-2">
-            FDI numbering · 5 surfaces (M/D/B/L/O)
+            FDI numbering · 5 surfaces (M/D/B/L/O) · click a tooth
           </p>
         </div>
 
@@ -110,37 +140,99 @@ export default function OdontogramMock() {
             <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
               Selected
             </p>
-            <p className="text-sm font-semibold text-[var(--color-text)] mt-1">Tooth 16</p>
-            <p className="text-[10px] text-[var(--color-text-soft)]">Maxillary first molar</p>
+            <motion.p
+              key={selected}
+              initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.15 }}
+              className="text-sm font-semibold text-[var(--color-text)] mt-1 tabular-nums"
+            >
+              Tooth {selected}
+            </motion.p>
+            <p className="text-[10px] text-[var(--color-text-soft)]">
+              {toothNames[selected] ?? "—"}
+            </p>
           </div>
 
-          <ul className="grid gap-2">
-            {[
-              { cond: "caries" as const, surface: "(O)", note: "Active" },
-              { cond: "watch" as const, surface: "(M)", note: "Watch" },
-            ].map((c, i) => {
-              const s = conditionStyles[c.cond];
-              return (
-                <li key={i} className="flex items-start gap-2">
-                  <span
-                    aria-hidden
-                    className="mt-1 inline-block h-2 w-2 rounded-full shrink-0"
-                    style={{ backgroundColor: s.dot }}
-                  />
-                  <div className="grid gap-0.5">
-                    <p className="text-[11px] font-medium text-[var(--color-text)] leading-tight">
-                      {s.label} {c.surface}
-                    </p>
-                    <p className="text-[10px] text-[var(--color-text-soft)] leading-tight">
-                      {c.note}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
+          <ul className="grid gap-2 min-h-[40px]">
+            {selectedFindings.length === 0 ? (
+              <li className="text-[10px] text-[var(--color-text-soft)] italic">
+                No findings yet — tap a surface to chart.
+              </li>
+            ) : (
+              selectedFindings.map((c, i) => {
+                const s = conditionStyles[c.cond];
+                return (
+                  <motion.li
+                    key={`${selected}-${i}`}
+                    initial={reduceMotion ? false : { opacity: 0, x: -4 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.15, delay: i * 0.04 }}
+                    className="flex items-start gap-2"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-1 inline-block h-2 w-2 rounded-full shrink-0"
+                      style={{ backgroundColor: s.dot }}
+                    />
+                    <div className="grid gap-0.5">
+                      <p className="text-[11px] font-medium text-[var(--color-text)] leading-tight">
+                        {s.label} {c.surface}
+                      </p>
+                      <p className="text-[10px] text-[var(--color-text-soft)] leading-tight">
+                        {c.note}
+                      </p>
+                    </div>
+                  </motion.li>
+                );
+              })
+            )}
           </ul>
         </aside>
       </div>
     </div>
+  );
+}
+
+function Tooth({
+  num,
+  cond,
+  selected,
+  onSelect,
+  reduceMotion,
+}: {
+  num: number;
+  cond: Condition | undefined;
+  selected: boolean;
+  onSelect: () => void;
+  reduceMotion: boolean;
+}) {
+  const s = cond ? conditionStyles[cond] : null;
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={selected}
+      aria-label={`Tooth ${num}${cond ? `, ${conditionStyles[cond].label.toLowerCase()}` : ""}${selected ? ", selected" : ""}`}
+      className="grid gap-1 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
+    >
+      <div className="text-[9px] text-[var(--color-text-soft)] tabular-nums text-center leading-none">
+        {num}
+      </div>
+      <motion.div
+        animate={reduceMotion ? undefined : { scale: selected ? 1.08 : 1, y: selected ? -1 : 0 }}
+        transition={{ type: "spring", stiffness: 520, damping: 30 }}
+        className={`h-7 w-6 rounded-md border bg-white transition-colors ${
+          selected
+            ? "ring-2 ring-offset-1 ring-[var(--color-tide-deep)]"
+            : "hover:border-[var(--color-border-strong)]"
+        }`}
+        style={
+          s
+            ? { backgroundColor: s.bg, borderColor: s.border }
+            : { borderColor: "var(--color-border)" }
+        }
+      />
+    </button>
   );
 }
