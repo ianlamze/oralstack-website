@@ -35,6 +35,10 @@ npm run typecheck
   - `patterns/components/` — testable contracts (hero, CTA)
   - `website-audit.md` — competitive teardown of dental + premium SaaS sites (the rationale for the v1 page structure)
 - `AGENTS.md` — root agent contract
+- `MAINTAINABILITY.md` — point-in-time codebase health check (architecture, code quality, tooling, debt list, conventions)
+- `CHANGES.md` — engineering changelog
+- `CLOUDFLARE.md` — deploy and infra setup
+- `scripts/browse.mjs` — Playwright-based CLI for visual verification and competitor research
 
 ## Brand rules (4 lines)
 
