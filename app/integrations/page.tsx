@@ -11,10 +11,7 @@ import {
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
 import StatusBadge from "@/components/sections/StatusBadge";
-import {
-  integrationCategories,
-  type IntegrationIcon,
-} from "@/content/integrations";
+import { integrationCategories, type IntegrationIcon } from "@/content/integrations";
 
 export const metadata: Metadata = {
   title: "Integrations",
@@ -43,9 +40,8 @@ export default function IntegrationsPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Direct integrations live today, in beta, and on the near-term
-          roadmap. Availability can vary by region and deployment — confirm
-          specifics for your clinic during a demo.
+          Direct integrations live today, in beta, and on the near-term roadmap. Availability can
+          vary by region and deployment — confirm specifics for your clinic during a demo.
         </p>
       </Section>
 
@@ -70,9 +66,7 @@ export default function IntegrationsPage() {
                   <div className="inline-flex items-center justify-center h-11 w-11 rounded-[var(--radius-md)] bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]">
                     <Icon className="size-5" />
                   </div>
-                  <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
-                    {cat.title}
-                  </h2>
+                  <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{cat.title}</h2>
                   <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[44ch]">
                     {cat.description}
                   </p>
@@ -85,9 +79,7 @@ export default function IntegrationsPage() {
                       className="flex items-start justify-between gap-4 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-5 py-4"
                     >
                       <div className="grid gap-1 min-w-0">
-                        <p className="font-medium text-[var(--color-text)]">
-                          {item.name}
-                        </p>
+                        <p className="font-medium text-[var(--color-text)]">{item.name}</p>
                         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
                           {item.description}
                         </p>
@@ -129,9 +121,8 @@ export default function IntegrationsPage() {
               Need an integration that&apos;s not listed?
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              Tell us what your clinic already runs. We prioritise integrations
-              by pilot demand — clinics that ask for it first usually get it
-              first.
+              Tell us what your clinic already runs. We prioritise integrations by pilot demand —
+              clinics that ask for it first usually get it first.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -155,7 +146,5 @@ function LegendDot({ status }: { status: "Live" | "Beta" | "Roadmap" }) {
       : status === "Beta"
         ? "bg-[color-mix(in_oklch,var(--color-sunset),var(--color-ink)_30%)]"
         : "bg-[var(--color-border-strong)]";
-  return (
-    <span aria-hidden className={`inline-block h-2 w-2 rounded-full ${cls}`} />
-  );
+  return <span aria-hidden className={`inline-block h-2 w-2 rounded-full ${cls}`} />;
 }

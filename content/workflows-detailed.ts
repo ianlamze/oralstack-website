@@ -62,7 +62,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "Imaging tied to the visit, not a parallel folder on a separate desktop",
       "Annotation and measurement tools (pan, zoom, rotate, ruler) for treatment planning",
     ],
-    replaces: "Separate imaging desktop apps · USB transfers · \"where's that radiograph\" hunts",
+    replaces: 'Separate imaging desktop apps · USB transfers · "where\'s that radiograph" hunts',
     articleSlug: "dicom-in-chart-vs-separate-viewer",
   },
   {
@@ -76,7 +76,8 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "Two-way patient conversations, audit-logged with delivery and read receipts",
       "Intake forms sent ahead of first visits",
     ],
-    replaces: "Manual recall lists · spreadsheet tracking · staff personal phones for patient texts",
+    replaces:
+      "Manual recall lists · spreadsheet tracking · staff personal phones for patient texts",
     articleSlug: "reducing-no-show-rates",
   },
   {
@@ -91,6 +92,7 @@ export const workflowsDetailed: WorkflowDetail[] = [
       "No-show rate trend with clinic-local timezone correctness",
       "Weekly owner email digest — clinic snapshot in one scroll",
     ],
-    replaces: "End-of-month spreadsheet pulls · CFO asking the practice manager · \"what was last Tuesday like?\"",
+    replaces:
+      'End-of-month spreadsheet pulls · CFO asking the practice manager · "what was last Tuesday like?"',
   },
 ];

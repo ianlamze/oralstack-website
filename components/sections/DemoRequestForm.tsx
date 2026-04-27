@@ -6,8 +6,7 @@ type FormState = "idle" | "submitting" | "sent" | "error";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_DEMO_FORM_ENDPOINT;
 
-const labelClass =
-  "text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)]";
+const labelClass = "text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)]";
 const fieldClass =
   "w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-canvas)] px-3 py-2.5 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-tide-deep)] focus:outline-none focus:ring-2 focus:ring-[var(--color-tide-deep)]/30";
 
@@ -111,16 +110,27 @@ export default function DemoRequestForm() {
           Tell us about your clinic.
         </h2>
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-          We&apos;ll reply within one working day with two or three time slots,
-          and run the demo against a sample dataset that matches your size.
+          We&apos;ll reply within one working day with two or three time slots, and run the demo
+          against a sample dataset that matches your size.
         </p>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
         <Field label="Clinic name" name="clinic" required placeholder="e.g. DFI Synergy" />
         <Field label="Location" name="location" required placeholder="City, country" />
-        <Field label="Your name" name="name" required placeholder="First and last" autoComplete="name" />
-        <Field label="Your role" name="role" required placeholder="Owner, practice manager, front desk lead…" />
+        <Field
+          label="Your name"
+          name="name"
+          required
+          placeholder="First and last"
+          autoComplete="name"
+        />
+        <Field
+          label="Your role"
+          name="role"
+          required
+          placeholder="Owner, practice manager, front desk lead…"
+        />
         <Field
           label="Email"
           name="email"
@@ -129,34 +139,16 @@ export default function DemoRequestForm() {
           placeholder="you@clinic.com"
           autoComplete="email"
         />
-        <Field
-          label="Chairs"
-          name="chairs"
-          type="number"
-          min={1}
-          required
-          placeholder="3"
-        />
+        <Field label="Chairs" name="chairs" type="number" min={1} required placeholder="3" />
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
-        <Field
-          label="Providers"
-          name="providers"
-          type="number"
-          min={1}
-          placeholder="4"
-        />
+        <Field label="Providers" name="providers" type="number" min={1} placeholder="4" />
         <div className="grid gap-1.5">
           <label htmlFor="currentPms" className={labelClass}>
             Current PMS
           </label>
-          <select
-            id="currentPms"
-            name="currentPms"
-            defaultValue=""
-            className={fieldClass}
-          >
+          <select id="currentPms" name="currentPms" defaultValue="" className={fieldClass}>
             <option value="" disabled>
               Select…
             </option>
@@ -173,7 +165,10 @@ export default function DemoRequestForm() {
 
       <div className="grid gap-1.5">
         <label htmlFor="preferredTimes" className={labelClass}>
-          Preferred times <span className="normal-case tracking-normal text-[var(--color-text-soft)]">(optional)</span>
+          Preferred times{" "}
+          <span className="normal-case tracking-normal text-[var(--color-text-soft)]">
+            (optional)
+          </span>
         </label>
         <textarea
           id="preferredTimes"
@@ -186,7 +181,10 @@ export default function DemoRequestForm() {
 
       <div className="grid gap-1.5">
         <label htmlFor="notes" className={labelClass}>
-          Anything else <span className="normal-case tracking-normal text-[var(--color-text-soft)]">(optional)</span>
+          Anything else{" "}
+          <span className="normal-case tracking-normal text-[var(--color-text-soft)]">
+            (optional)
+          </span>
         </label>
         <textarea
           id="notes"
@@ -213,7 +211,8 @@ export default function DemoRequestForm() {
       </div>
       {state === "error" && (
         <p className="text-xs text-[var(--color-sunset-deep)]">
-          Something went wrong sending the form. Email hello@oralstack.com directly and we&apos;ll pick it up.
+          Something went wrong sending the form. Email hello@oralstack.com directly and we&apos;ll
+          pick it up.
         </p>
       )}
     </form>
@@ -242,7 +241,10 @@ function Field({
       <label htmlFor={name} className={labelClass}>
         {label}
         {!required && (
-          <span className="normal-case tracking-normal text-[var(--color-text-soft)]"> (optional)</span>
+          <span className="normal-case tracking-normal text-[var(--color-text-soft)]">
+            {" "}
+            (optional)
+          </span>
         )}
       </label>
       <input

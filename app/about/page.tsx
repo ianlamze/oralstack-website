@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
-import MarkBullet from "@/components/sections/MarkBullet";
+import Reason from "@/components/sections/Reason";
+import Bullet from "@/components/sections/Bullet";
 
 export const metadata: Metadata = {
   title: "About",
@@ -33,10 +34,9 @@ export default function AboutPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack is the operating system for modern dental clinics —
-          APAC-first, region-hosted in Singapore, designed around the six
-          workflows that the front desk, clinical team, and clinic owner live in
-          every day. We&apos;re early — pre-revenue, hands-on with our first
+          Oralstack is the operating system for modern dental clinics — APAC-first, region-hosted in
+          Singapore, designed around the six workflows that the front desk, clinical team, and
+          clinic owner live in every day. We&apos;re early — pre-revenue, hands-on with our first
           pilot clinics, and shipping weekly.
         </p>
       </Section>
@@ -88,15 +88,15 @@ export default function AboutPage() {
           ) : (
             <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] p-6 md:p-8">
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-                Founder bios are being written up. In the meantime, the easiest
-                way to see who you&apos;d be working with is to{" "}
+                Founder bios are being written up. In the meantime, the easiest way to see who
+                you&apos;d be working with is to{" "}
                 <a
                   href="/book-a-demo"
                   className="text-[var(--color-tide-deep)] underline underline-offset-4"
                 >
                   book a 30-minute demo
-                </a>
-                {" "}— a real engineer is on every call.
+                </a>{" "}
+                — a real engineer is on every call.
               </p>
             </div>
           )}
@@ -110,19 +110,22 @@ export default function AboutPage() {
           </p>
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Engineer-led customer calls.</span>{" "}
-              The person who writes the code is the person on the demo, the
-              onboarding, and the call when something breaks.
+              <span className="font-medium text-[var(--color-text)]">
+                Engineer-led customer calls.
+              </span>{" "}
+              The person who writes the code is the person on the demo, the onboarding, and the call
+              when something breaks.
             </Bullet>
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Continuous deployment.</span>{" "}
-              Every clinic is on the same version every week. No version drift.
-              No held-back features per tier.
+              Every clinic is on the same version every week. No version drift. No held-back
+              features per tier.
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Region-hosted, tenant-isolated.</span>{" "}
-              Singapore region, Postgres row-level security, audit logs by
-              default — see the{" "}
+              <span className="font-medium text-[var(--color-text)]">
+                Region-hosted, tenant-isolated.
+              </span>{" "}
+              Singapore region, Postgres row-level security, audit logs by default — see the{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -133,8 +136,8 @@ export default function AboutPage() {
             </Bullet>
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Defensible claims only.</span>{" "}
-              Every workflow on this site replaces a specific tool a real clinic
-              was using. Every metric we cite has a source.
+              Every workflow on this site replaces a specific tool a real clinic was using. Every
+              metric we cite has a source.
             </Bullet>
           </ul>
         </div>
@@ -147,9 +150,8 @@ export default function AboutPage() {
               Want to see how we work in practice?
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              A 30-minute demo with a real engineer, on a sample dataset that
-              matches your clinic&apos;s shape. We follow up within two working
-              days with a pilot proposal.
+              A 30-minute demo with a real engineer, on a sample dataset that matches your
+              clinic&apos;s shape. We follow up within two working days with a pilot proposal.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -163,38 +165,5 @@ export default function AboutPage() {
         </div>
       </Section>
     </main>
-  );
-}
-
-function Reason({
-  eyebrow,
-  title,
-  body,
-}: {
-  eyebrow: string;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div className="grid gap-3">
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-        {eyebrow}
-      </p>
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.15] max-w-[34ch]">
-        {title}
-      </h2>
-      <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-        {body}
-      </p>
-    </div>
-  );
-}
-
-function Bullet({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-3 items-start">
-      <MarkBullet size={12} className="mt-1.5 opacity-90" />
-      <span>{children}</span>
-    </li>
   );
 }

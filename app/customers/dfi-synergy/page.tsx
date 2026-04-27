@@ -218,10 +218,9 @@ export default function DfiSynergyCaseStudy() {
               Want to see Oralstack in your clinic?
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              We&apos;re onboarding a small group of clinics across Singapore
-              and APAC each quarter. If you&apos;re considering a switch from
-              Plato, Open Dental, or a paper-led workflow, we&apos;d like to
-              hear how your front desk runs.
+              We&apos;re onboarding a small group of clinics across Singapore and APAC each quarter.
+              If you&apos;re considering a switch from Plato, Open Dental, or a paper-led workflow,
+              we&apos;d like to hear how your front desk runs.
             </p>
           </div>
           <div className="md:justify-self-end flex flex-col gap-3">

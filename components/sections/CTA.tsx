@@ -22,10 +22,7 @@ export default function CTA() {
           />
 
           {/* decorative animated mark in corner */}
-          <div
-            aria-hidden
-            className="absolute top-8 right-8 md:top-10 md:right-10 opacity-30"
-          >
+          <div aria-hidden className="absolute top-8 right-8 md:top-10 md:right-10 opacity-30">
             <AnimatedMark size={64} delay={0.1} />
           </div>
 
@@ -37,10 +34,9 @@ export default function CTA() {
               Bring Oralstack into your clinic.
             </h2>
             <p className="mt-5 max-w-[54ch] leading-relaxed text-[color-mix(in_oklch,var(--color-canvas),transparent_25%)]">
-              We&apos;re working with a small group of dental clinics across
-              Singapore and APAC. If you&apos;re considering a switch from
-              Plato, Open Dental, or a paper-led workflow, we&apos;d like to
-              hear how your front desk runs.
+              We&apos;re working with a small group of dental clinics across Singapore and APAC. If
+              you&apos;re considering a switch from Plato, Open Dental, or a paper-led workflow,
+              we&apos;d like to hear how your front desk runs.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <MagneticButton href="/book-a-demo" variant="onDark" withArrow>

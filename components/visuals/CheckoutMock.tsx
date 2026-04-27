@@ -39,9 +39,7 @@ export default function CheckoutMock() {
             <span className="text-[10px] font-mono text-[var(--color-text-soft)] tabular-nums">
               {it.code}
             </span>
-            <span className="text-sm text-[var(--color-text)] truncate">
-              {it.name}
-            </span>
+            <span className="text-sm text-[var(--color-text)] truncate">{it.name}</span>
             <span className="text-sm font-medium text-[var(--color-text)] tabular-nums">
               {format(it.qty * it.price)}
             </span>

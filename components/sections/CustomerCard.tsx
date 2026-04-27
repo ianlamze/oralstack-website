@@ -7,12 +7,9 @@ const statusLabels: Record<Customer["status"], string> = {
 };
 
 const statusStyles: Record<Customer["status"], string> = {
-  live:
-    "bg-[color-mix(in_oklch,var(--color-sea),white_70%)] text-[var(--color-text)]",
-  pilot:
-    "bg-[color-mix(in_oklch,var(--color-sunset),white_72%)] text-[var(--color-text)]",
-  "in-conversation":
-    "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
+  live: "bg-[color-mix(in_oklch,var(--color-sea),white_70%)] text-[var(--color-text)]",
+  pilot: "bg-[color-mix(in_oklch,var(--color-sunset),white_72%)] text-[var(--color-text)]",
+  "in-conversation": "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
 };
 
 type CustomerCardProps = {
@@ -28,9 +25,7 @@ export default function CustomerCard({ customer }: CustomerCardProps) {
           <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
             {customer.location}
           </p>
-          <h3 className="mt-2 text-xl md:text-2xl font-semibold tracking-tight">
-            {customer.name}
-          </h3>
+          <h3 className="mt-2 text-xl md:text-2xl font-semibold tracking-tight">{customer.name}</h3>
         </div>
         <span
           className={`text-xs font-medium uppercase tracking-[0.12em] rounded-full px-2.5 py-1 whitespace-nowrap ${statusStyles[customer.status]}`}
@@ -39,9 +34,7 @@ export default function CustomerCard({ customer }: CustomerCardProps) {
         </span>
       </div>
 
-      <p className="text-[var(--color-text-muted)] leading-relaxed">
-        {customer.blurb}
-      </p>
+      <p className="text-[var(--color-text-muted)] leading-relaxed">{customer.blurb}</p>
 
       {(customer.size || customer.specialty) && (
         <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
@@ -50,9 +43,7 @@ export default function CustomerCard({ customer }: CustomerCardProps) {
       )}
 
       {isLinked && (
-        <p className="text-sm font-medium text-[var(--color-accent-deep)]">
-          Read the case study →
-        </p>
+        <p className="text-sm font-medium text-[var(--color-accent-deep)]">Read the case study →</p>
       )}
     </article>
   );

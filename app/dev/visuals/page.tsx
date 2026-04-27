@@ -91,14 +91,18 @@ export default function VisualCatalog() {
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
             Internal · dev only
           </p>
-          <h1 className="mt-3 text-3xl md:text-4xl font-semibold tracking-tight">
-            Visual catalog
-          </h1>
+          <h1 className="mt-3 text-3xl md:text-4xl font-semibold tracking-tight">Visual catalog</h1>
           <p className="mt-4 text-base text-[var(--color-text-muted)] leading-relaxed">
-            Every component in <code className="font-mono text-sm bg-[var(--color-canvas-tinted)] px-1.5 py-0.5 rounded">components/visuals/</code>,
-            rendered side-by-side for review. Not indexed, not linked from
-            production pages. Catalog spec lives in{" "}
-            <code className="font-mono text-sm bg-[var(--color-canvas-tinted)] px-1.5 py-0.5 rounded">components/visuals/README.md</code>.
+            Every component in{" "}
+            <code className="font-mono text-sm bg-[var(--color-canvas-tinted)] px-1.5 py-0.5 rounded">
+              components/visuals/
+            </code>
+            , rendered side-by-side for review. Not indexed, not linked from production pages.
+            Catalog spec lives in{" "}
+            <code className="font-mono text-sm bg-[var(--color-canvas-tinted)] px-1.5 py-0.5 rounded">
+              components/visuals/README.md
+            </code>
+            .
           </p>
           <p className="mt-3 text-sm text-[var(--color-text-soft)]">
             {entries.length} visualizations · all wired into production pages
@@ -148,12 +152,8 @@ function ProfileRow({
 }) {
   return (
     <div className="grid gap-1">
-      <dt className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-        {label}
-      </dt>
-      <dd
-        className={`${mono ? "font-mono text-xs" : ""} text-[var(--color-text-muted)] break-all`}
-      >
+      <dt className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">{label}</dt>
+      <dd className={`${mono ? "font-mono text-xs" : ""} text-[var(--color-text-muted)] break-all`}>
         {value}
       </dd>
     </div>

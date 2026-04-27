@@ -19,7 +19,7 @@ function ToothMark({ size }: { size: number }) {
       height={size}
       viewBox="0 0 32 32"
       fill="none"
-      aria-hidden
+      aria-hidden="true"
       className="shrink-0"
     >
       {/* Crown — navy */}
@@ -46,6 +46,7 @@ export default function Wordmark({ size = "md", className = "" }: WordmarkProps)
   return (
     <span
       className={`inline-flex items-center ${s.gap} ${className}`}
+      role="img"
       aria-label="Oralstack"
     >
       <ToothMark size={s.icon} />

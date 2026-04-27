@@ -42,30 +42,20 @@ export function getArticle(slug: string): Article | undefined {
 export function getArticlesByCluster(cluster: ArticleCluster): Article[] {
   return articles
     .filter((a) => a.cluster === cluster)
-    .sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-    );
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
 export function getRecentArticles(limit = 5): Article[] {
   return [...articles]
-    .sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-    )
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, limit);
 }
 
 export function getRelatedArticles(slug: string, limit = 3): Article[] {
   const current = bySlug.get(slug);
   if (!current) return [];
-  const sameCluster = articles.filter(
-    (a) => a.slug !== slug && a.cluster === current.cluster,
-  );
+  const sameCluster = articles.filter((a) => a.slug !== slug && a.cluster === current.cluster);
   if (sameCluster.length >= limit) return sameCluster.slice(0, limit);
-  const others = articles.filter(
-    (a) => a.slug !== slug && a.cluster !== current.cluster,
-  );
+  const others = articles.filter((a) => a.slug !== slug && a.cluster !== current.cluster);
   return [...sameCluster, ...others].slice(0, limit);
 }

@@ -54,11 +54,7 @@ const organizationJsonLd = JSON.stringify({
 
 const CF_BEACON = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="antialiased">

@@ -2,16 +2,8 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/sections/AnimateInView";
-import {
-  articles,
-  getArticlesByCluster,
-  getRecentArticles,
-} from "@/content/articles";
-import {
-  clusterDescriptions,
-  clusterLabels,
-  clusterOrder,
-} from "@/content/articles/types";
+import { articles, getArticlesByCluster, getRecentArticles } from "@/content/articles";
+import { clusterDescriptions, clusterLabels, clusterOrder } from "@/content/articles/types";
 
 export const metadata: Metadata = {
   title: "Articles & guides",
@@ -33,16 +25,12 @@ export default function ArticlesPage() {
 
   return (
     <main>
-      <PageHeader
-        eyebrow="Articles & guides"
-        title="Field guides for dental clinic operators."
-      />
+      <PageHeader eyebrow="Articles & guides" title="Field guides for dental clinic operators." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Specific, opinionated, dental-grounded. Written by operators for
-          operators — front desk, owners, multi-location managers. Organised by
-          topic, not date.
+          Specific, opinionated, dental-grounded. Written by operators for operators — front desk,
+          owners, multi-location managers. Organised by topic, not date.
         </p>
         <p className="mt-3 text-sm text-[var(--color-text-soft)]">
           {articles.length} articles · {clusterOrder.length} topic clusters
@@ -100,11 +88,7 @@ export default function ArticlesPage() {
             const clusterArticles = getArticlesByCluster(cluster);
             if (clusterArticles.length === 0) return null;
             return (
-              <section
-                key={cluster}
-                id={cluster}
-                className="scroll-mt-10 grid gap-8"
-              >
+              <section key={cluster} id={cluster} className="scroll-mt-10 grid gap-8">
                 <AnimateInView>
                   <header className="grid gap-3 max-w-[58ch]">
                     <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">

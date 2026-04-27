@@ -6,8 +6,7 @@ import { customers } from "@/content/customers";
 
 export const metadata: Metadata = {
   title: "Customers",
-  description:
-    "Early dental clinic pilots running on Oralstack across Singapore and APAC.",
+  description: "Early dental clinic pilots running on Oralstack across Singapore and APAC.",
   alternates: { canonical: "/customers" },
 };
 
@@ -18,9 +17,9 @@ export default function CustomersPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          We&apos;re working with a small group of dental clinics in Singapore — and
-          selectively expanding across APAC. Each pilot is hands-on, named, and
-          reviewed weekly with the founding team.
+          We&apos;re working with a small group of dental clinics in Singapore — and selectively
+          expanding across APAC. Each pilot is hands-on, named, and reviewed weekly with the
+          founding team.
         </p>
       </Section>
 
@@ -44,10 +43,9 @@ export default function CustomersPage() {
               We&apos;re early. Pilots are deliberate.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              We pick clinics where we can be hands-on for the first three months —
-              named, in-region, with a real workflow we can shape the product
-              around. Case studies (like DFI Synergy&apos;s) help us land the next
-              pilot.
+              We pick clinics where we can be hands-on for the first three months — named,
+              in-region, with a real workflow we can shape the product around. Case studies (like
+              DFI Synergy&apos;s) help us land the next pilot.
             </p>
           </div>
           <div className="md:justify-self-end">

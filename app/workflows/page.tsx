@@ -36,9 +36,9 @@ export default function WorkflowsPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Six workflows that the front desk, clinical team, and clinic owner
-          live in — every day, on every chair. None of them require a separate
-          window, a separate login, or a separate desktop app.
+          Six workflows that the front desk, clinical team, and clinic owner live in — every day, on
+          every chair. None of them require a separate window, a separate login, or a separate
+          desktop app.
         </p>
       </Section>
 
@@ -67,11 +67,7 @@ export default function WorkflowsPage() {
                         : "lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
                     }`}
                   >
-                    <div
-                      className={`grid gap-6 ${
-                        visualSide === "left" ? "lg:order-2" : ""
-                      }`}
-                    >
+                    <div className={`grid gap-6 ${visualSide === "left" ? "lg:order-2" : ""}`}>
                       <p className="text-base md:text-lg text-[var(--color-text-muted)] leading-relaxed">
                         {w.body}
                       </p>
@@ -93,9 +89,7 @@ export default function WorkflowsPage() {
                         <span className="font-medium text-[var(--color-text-muted)]">
                           Replaces:
                         </span>{" "}
-                        <span className="normal-case tracking-normal">
-                          {w.replaces}
-                        </span>
+                        <span className="normal-case tracking-normal">{w.replaces}</span>
                       </p>
                       {article && (
                         <p className="text-sm">
@@ -114,9 +108,7 @@ export default function WorkflowsPage() {
                         className={`${
                           visualSide === "left" ? "lg:order-1" : ""
                         } w-full grid gap-6 ${
-                          visualSide === "right"
-                            ? "lg:justify-self-end"
-                            : "lg:justify-self-start"
+                          visualSide === "right" ? "lg:justify-self-end" : "lg:justify-self-start"
                         }`}
                       >
                         {Visuals.map((V, vi) => (
@@ -139,9 +131,8 @@ export default function WorkflowsPage() {
               See these workflows in your clinic.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              A 30-minute demo walks the front desk and a clinician through
-              every workflow above, on a sample dataset that mirrors a typical
-              Singapore clinic.
+              A 30-minute demo walks the front desk and a clinician through every workflow above, on
+              a sample dataset that mirrors a typical Singapore clinic.
             </p>
           </div>
           <div className="md:justify-self-end">

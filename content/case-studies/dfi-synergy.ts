@@ -5,8 +5,7 @@ export const dfiSynergy: CaseStudy = {
   customerId: "dfi-synergy",
 
   eyebrow: "Customer story · Pilot · Singapore",
-  title:
-    "How DFI Synergy moved their front desk into Oralstack in three weeks.",
+  title: "How DFI Synergy moved their front desk into Oralstack in three weeks.",
   outcome:
     "A three-chair, four-provider clinic in Singapore replaced a paper diary and WhatsApp-led rescheduling with Oralstack's drag-driven schedule and discharge-flow billing — with no migration downtime and no fallback diary in parallel.",
 
@@ -17,11 +16,7 @@ export const dfiSynergy: CaseStudy = {
     specialty: "General dentistry + hygiene",
     pilotStart: "April 2026",
     inProduction: ["Scheduling", "Billing", "Charting", "Recall"],
-    notYet: [
-      "Imaging (v13 rollout)",
-      "Patient portal",
-      "WhatsApp recall templates",
-    ],
+    notYet: ["Imaging (v13 rollout)", "Patient portal", "WhatsApp recall templates"],
   },
 
   pullQuoteHero: {
@@ -58,9 +53,7 @@ export const dfiSynergy: CaseStudy = {
     },
     {
       heading: "What's running today",
-      paragraphs: [
-        "Three workflows went live in the first week. A fourth followed in week two.",
-      ],
+      paragraphs: ["Three workflows went live in the first week. A fourth followed in week two."],
       bullets: [
         "Schedule — 3 chairs, 4 providers, drag-to-reschedule with timezone-correct commits.",
         "Billing — discharge-and-bill in the same flow, with treatment lines auto-populated from the chart.",
@@ -94,8 +87,7 @@ export const dfiSynergy: CaseStudy = {
     },
     {
       value: "85%",
-      label:
-        "Same-day billing rate at week four, up from 60% pre-Oralstack.",
+      label: "Same-day billing rate at week four, up from 60% pre-Oralstack.",
       qualifier: "Pre-pilot vs week 4",
     },
   ],

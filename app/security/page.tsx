@@ -13,8 +13,7 @@ import Section from "@/components/primitives/Section";
 
 export const metadata: Metadata = {
   title: "Security",
-  description:
-    "How Oralstack approaches data security and tenant isolation for dental clinics.",
+  description: "How Oralstack approaches data security and tenant isolation for dental clinics.",
   alternates: { canonical: "/security" },
 };
 
@@ -64,10 +63,9 @@ export default function SecurityPage() {
 
       <Section className="pb-12">
         <p className="max-w-[68ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack handles dental clinic records. Security is part of how the
-          product is built — not a checkbox at the end. This page describes our
-          current posture honestly. Where we are working toward a control rather
-          than already meeting it, we say so.
+          Oralstack handles dental clinic records. Security is part of how the product is built —
+          not a checkbox at the end. This page describes our current posture honestly. Where we are
+          working toward a control rather than already meeting it, we say so.
         </p>
       </Section>
 
@@ -107,8 +105,8 @@ export default function SecurityPage() {
               Reporting a vulnerability
             </h2>
             <p className="mt-2 text-[var(--color-text-muted)] leading-relaxed">
-              We acknowledge within 2 working days and confirm a fix or
-              mitigation timeline within 7.
+              We acknowledge within 2 working days and confirm a fix or mitigation timeline within
+              7.
             </p>
           </div>
           <div className="md:justify-self-end">

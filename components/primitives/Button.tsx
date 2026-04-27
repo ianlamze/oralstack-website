@@ -13,8 +13,7 @@ const base =
   "inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-[var(--radius-md)] transition-colors duration-150 min-h-[44px]";
 
 const variants: Record<ButtonVariant, string> = {
-  primary:
-    "bg-[var(--color-ink)] text-[var(--color-canvas)] hover:bg-[var(--color-accent-deep)]",
+  primary: "bg-[var(--color-ink)] text-[var(--color-canvas)] hover:bg-[var(--color-accent-deep)]",
   ghost:
     "text-[var(--color-ink)] border border-[var(--color-border-strong)] hover:bg-[var(--color-canvas-tinted)]",
 };

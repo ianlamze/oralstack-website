@@ -19,13 +19,7 @@ export default function NotFound() {
     <main>
       <Section className="pt-20 pb-32 md:pt-28 md:pb-48">
         <div className="max-w-[560px] grid gap-7">
-          <svg
-            width="56"
-            height="56"
-            viewBox="0 0 32 32"
-            fill="none"
-            aria-hidden
-          >
+          <svg width="56" height="56" viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <path
               d="M16 4.5 C20.6 4.5 23.5 7 23.5 11.2 L23.5 14.2 C23.5 16.1 22 17.2 19.8 17.2 L12.2 17.2 C10 17.2 8.5 16.1 8.5 14.2 L8.5 11.2 C8.5 7 11.4 4.5 16 4.5 Z"
               fill="var(--color-ink)"
@@ -49,8 +43,7 @@ export default function NotFound() {
           </h1>
 
           <p className="text-base md:text-lg text-[var(--color-text-muted)] leading-relaxed">
-            The link might be old, or the page may have moved. Try one of the
-            pages below — or email{" "}
+            The link might be old, or the page may have moved. Try one of the pages below — or email{" "}
             <a
               href="mailto:hello@oralstack.com"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -68,7 +61,7 @@ export default function NotFound() {
                   className="inline-flex items-center gap-2 text-base font-medium text-[var(--color-text)] hover:text-[var(--color-tide-deep)] transition-colors"
                 >
                   <span>{l.label}</span>
-                  <span aria-hidden className="text-[var(--color-text-soft)]">
+                  <span aria-hidden="true" className="text-[var(--color-text-soft)]">
                     →
                   </span>
                 </a>

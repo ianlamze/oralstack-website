@@ -68,10 +68,7 @@ export default function MessagingMock() {
         {conversation.map((m, i) => {
           const isClinic = m.from === "clinic";
           return (
-            <li
-              key={i}
-              className={`flex flex-col ${isClinic ? "items-end" : "items-start"} gap-1`}
-            >
+            <li key={i} className={`flex flex-col ${isClinic ? "items-end" : "items-start"} gap-1`}>
               <div
                 className={`max-w-[85%] rounded-[14px] px-3 py-2 text-[13px] leading-snug ${
                   isClinic

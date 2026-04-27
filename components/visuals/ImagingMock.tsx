@@ -17,8 +17,7 @@ const categoryStyles: Record<string, string> = {
     "bg-[color-mix(in_oklch,var(--color-violet),white_82%)] text-[color-mix(in_oklch,var(--color-violet),var(--color-ink)_45%)]",
   Photo:
     "bg-[color-mix(in_oklch,var(--color-sea),white_70%)] text-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_55%)]",
-  Consent:
-    "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
+  Consent: "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
 };
 
 function Thumbnail({ kind }: { kind: Asset["kind"] }) {
@@ -28,8 +27,7 @@ function Thumbnail({ kind }: { kind: Asset["kind"] }) {
         aria-hidden
         className="aspect-[4/3] rounded-md overflow-hidden relative"
         style={{
-          background:
-            "radial-gradient(circle at 40% 50%, #2a3142 0%, #15192C 60%, #0a0d18 100%)",
+          background: "radial-gradient(circle at 40% 50%, #2a3142 0%, #15192C 60%, #0a0d18 100%)",
         }}
       >
         <div
@@ -106,9 +104,7 @@ export default function ImagingMock() {
               </span>
             </div>
             <div className="grid gap-0.5">
-              <p className="text-xs font-medium text-[var(--color-text)] truncate">
-                {a.label}
-              </p>
+              <p className="text-xs font-medium text-[var(--color-text)] truncate">{a.label}</p>
               <p className="text-[10px] text-[var(--color-text-soft)] tabular-nums">
                 {a.date} · DICOM
               </p>

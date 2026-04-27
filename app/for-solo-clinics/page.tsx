@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
-import MarkBullet from "@/components/sections/MarkBullet";
+import Reason from "@/components/sections/Reason";
+import Bullet from "@/components/sections/Bullet";
 import AnimateInView from "@/components/sections/AnimateInView";
 
 export const metadata: Metadata = {
@@ -21,10 +22,9 @@ export default function ForSoloClinicsPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          For one to three chairs, one to four providers, and a front desk that
-          owns the schedule, the calls, and the bills. Oralstack replaces the
-          paper diary, the WhatsApp confirmations, and the end-of-day billing
-          spreadsheet — without a server in the back room.
+          For one to three chairs, one to four providers, and a front desk that owns the schedule,
+          the calls, and the bills. Oralstack replaces the paper diary, the WhatsApp confirmations,
+          and the end-of-day billing spreadsheet — without a server in the back room.
         </p>
       </Section>
 
@@ -35,10 +35,9 @@ export default function ForSoloClinicsPage() {
               Built for the people who run a small clinic
             </p>
             <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-              Two people typically decide on a PMS at a small clinic: the office
-              manager (who lives in it daily and decides whether it&apos;s
-              workable) and the dentist-owner (who signs the cheque and decides
-              whether the migration is worth the disruption). Oralstack is
+              Two people typically decide on a PMS at a small clinic: the office manager (who lives
+              in it daily and decides whether it&apos;s workable) and the dentist-owner (who signs
+              the cheque and decides whether the migration is worth the disruption). Oralstack is
               designed to be a yes for both.
             </p>
           </div>
@@ -76,9 +75,8 @@ export default function ForSoloClinicsPage() {
                 $200
               </p>
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[40ch]">
-                Per clinic, per month, flat. SGD or USD invoiced at parity. No
-                per-seat charges, no per-feature gating, three months of
-                hands-on onboarding included.
+                Per clinic, per month, flat. SGD or USD invoiced at parity. No per-seat charges, no
+                per-feature gating, three months of hands-on onboarding included.
               </p>
             </div>
             <p className="mt-3 text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
@@ -101,9 +99,8 @@ export default function ForSoloClinicsPage() {
           </p>
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Migration:</span>{" "}
-              three weeks from kickoff to live, no fallback diary kept in
-              parallel.{" "}
+              <span className="font-medium text-[var(--color-text)]">Migration:</span> three weeks
+              from kickoff to live, no fallback diary kept in parallel.{" "}
               <a
                 href="/articles/plato-to-cloud-migration"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -112,8 +109,8 @@ export default function ForSoloClinicsPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Hosting:</span>{" "}
-              Singapore region, tenant-isolated, audit-logged.{" "}
+              <span className="font-medium text-[var(--color-text)]">Hosting:</span> Singapore
+              region, tenant-isolated, audit-logged.{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -122,9 +119,8 @@ export default function ForSoloClinicsPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Imaging:</span>{" "}
-              DICOM viewer in chart, sensor-bridge across Carestream, Dexis,
-              Sopro, Schick.{" "}
+              <span className="font-medium text-[var(--color-text)]">Imaging:</span> DICOM viewer in
+              chart, sensor-bridge across Carestream, Dexis, Sopro, Schick.{" "}
               <a
                 href="/workflows#imaging"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -133,8 +129,8 @@ export default function ForSoloClinicsPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Worked example:</span>{" "}
-              DFI Synergy, a 3-chair Singapore clinic, went live in three weeks.{" "}
+              <span className="font-medium text-[var(--color-text)]">Worked example:</span> DFI
+              Synergy, a 3-chair Singapore clinic, went live in three weeks.{" "}
               <a
                 href="/customers/dfi-synergy"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -153,8 +149,8 @@ export default function ForSoloClinicsPage() {
               Book a demo with the engineer who built the schedule.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              30 minutes. Sample dataset matched to a 1–4 chair clinic. We
-              follow up with a pilot proposal within two working days.
+              30 minutes. Sample dataset matched to a 1–4 chair clinic. We follow up with a pilot
+              proposal within two working days.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -168,38 +164,5 @@ export default function ForSoloClinicsPage() {
         </div>
       </Section>
     </main>
-  );
-}
-
-function Reason({
-  eyebrow,
-  title,
-  body,
-}: {
-  eyebrow: string;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div className="grid gap-3">
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-        {eyebrow}
-      </p>
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.15] max-w-[34ch]">
-        {title}
-      </h2>
-      <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-        {body}
-      </p>
-    </div>
-  );
-}
-
-function Bullet({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-3 items-start">
-      <MarkBullet size={12} className="mt-1.5 opacity-90" />
-      <span>{children}</span>
-    </li>
   );
 }

@@ -69,9 +69,7 @@ export default function AnalyticsMock() {
             <div
               key={`d-${i}`}
               className={`text-[9px] text-center tabular-nums ${
-                isWeek2
-                  ? "text-[var(--color-text-soft)]"
-                  : "text-[var(--color-text-muted)]"
+                isWeek2 ? "text-[var(--color-text-soft)]" : "text-[var(--color-text-muted)]"
               }`}
             >
               {dayLabels[i % 7]}
@@ -133,15 +131,7 @@ export default function AnalyticsMock() {
   );
 }
 
-function Stat({
-  label,
-  value,
-  delta,
-}: {
-  label: string;
-  value: string;
-  delta?: number;
-}) {
+function Stat({ label, value, delta }: { label: string; value: string; delta?: number }) {
   const deltaSign = delta && delta > 0 ? "↑" : delta && delta < 0 ? "↓" : "";
   const deltaColor =
     delta && delta > 0

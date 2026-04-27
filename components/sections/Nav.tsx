@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CalendarClock,
   Receipt,
@@ -85,13 +85,13 @@ export default function Nav() {
     closeTimer.current = window.setTimeout(() => setMegaOpen(false), 120);
   };
 
-  const closeMega = () => {
+  const closeMega = useCallback(() => {
     if (closeTimer.current !== null) {
       window.clearTimeout(closeTimer.current);
       closeTimer.current = null;
     }
     setMegaOpen(false);
-  };
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -106,7 +106,7 @@ export default function Nav() {
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [megaOpen, drawerOpen]);
+  }, [megaOpen, drawerOpen, closeMega]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -276,7 +276,8 @@ export default function Nav() {
                         DFI Synergy moved their front desk in three weeks.
                       </h3>
                       <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
-                        Three chairs, four providers, no fallback diary. Same-day billing rate from 60% → 85%.
+                        Three chairs, four providers, no fallback diary. Same-day billing rate from
+                        60% → 85%.
                       </p>
                     </div>
 

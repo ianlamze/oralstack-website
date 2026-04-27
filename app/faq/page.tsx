@@ -21,13 +21,13 @@ const groups: Group[] = [
         a: (
           <>
             <p>
-              $200 per clinic per month, flat, during pilot. SGD or USD invoiced
-              at parity for now. Three months of hands-on onboarding included.
-              No per-seat charges, no per-feature gating, no setup fees.
+              $200 per clinic per month, flat, during pilot. SGD or USD invoiced at parity for now.
+              Three months of hands-on onboarding included. No per-seat charges, no per-feature
+              gating, no setup fees.
             </p>
             <p>
-              Multi-clinic groups: pricing scales linearly per clinic. Group
-              discounts on request once pilot is established.{" "}
+              Multi-clinic groups: pricing scales linearly per clinic. Group discounts on request
+              once pilot is established.{" "}
               <a
                 href="/pricing"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -42,9 +42,8 @@ const groups: Group[] = [
         q: "Is there a contract or minimum term?",
         a: (
           <p>
-            No long-term contract during pilot. We invoice monthly. You can
-            cancel any time and we hand back a full export of your data within
-            five working days.
+            No long-term contract during pilot. We invoice monthly. You can cancel any time and we
+            hand back a full export of your data within five working days.
           </p>
         ),
       },
@@ -52,10 +51,9 @@ const groups: Group[] = [
         q: "What happens after the pilot period?",
         a: (
           <p>
-            Pilot pricing is locked at $200/clinic/month for the first 12
-            months from kickoff. After that we&apos;ll tell you what GA
-            pricing looks like with at least 60 days&apos; notice; you can
-            stay or leave.
+            Pilot pricing is locked at $200/clinic/month for the first 12 months from kickoff. After
+            that we&apos;ll tell you what GA pricing looks like with at least 60 days&apos; notice;
+            you can stay or leave.
           </p>
         ),
       },
@@ -68,16 +66,16 @@ const groups: Group[] = [
         q: "How long does migration take?",
         a: (
           <p>
-            Three weeks from kickoff to live, in the model we run. Week 1 is
-            audit and prep; week 2 is cutover; week 3 stabilises.{" "}
+            Three weeks from kickoff to live, in the model we run. Week 1 is audit and prep; week 2
+            is cutover; week 3 stabilises.{" "}
             <a
               href="/articles/plato-to-cloud-migration"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
               Read the playbook →
             </a>{" "}
-            Clinics that try to keep their old system running in parallel
-            consistently take 6–8 weeks instead.
+            Clinics that try to keep their old system running in parallel consistently take 6–8
+            weeks instead.
           </p>
         ),
       },
@@ -85,12 +83,11 @@ const groups: Group[] = [
         q: "Will I lose patient data?",
         a: (
           <p>
-            No. We migrate patient records, appointment history (12 months
-            minimum), treatment records, and outstanding A/R balances
-            field-for-field. Most fields map 1:1 from legacy PMS schemas; the
-            ones that don&apos;t get reviewed in the week-1 audit. The only
-            data we don&apos;t carry across is data the clinic explicitly opts
-            out of (typically very old recall lists).
+            No. We migrate patient records, appointment history (12 months minimum), treatment
+            records, and outstanding A/R balances field-for-field. Most fields map 1:1 from legacy
+            PMS schemas; the ones that don&apos;t get reviewed in the week-1 audit. The only data we
+            don&apos;t carry across is data the clinic explicitly opts out of (typically very old
+            recall lists).
           </p>
         ),
       },
@@ -98,11 +95,10 @@ const groups: Group[] = [
         q: "Do you support a fallback during cutover?",
         a: (
           <p>
-            We deliberately don&apos;t recommend running both systems in
-            parallel — it&apos;s the single biggest cause of stuck migrations.
-            We do keep your old PMS read-only for historical lookups for as
-            long as you want, but the source of truth flips to Oralstack at
-            the cutover date.
+            We deliberately don&apos;t recommend running both systems in parallel — it&apos;s the
+            single biggest cause of stuck migrations. We do keep your old PMS read-only for
+            historical lookups for as long as you want, but the source of truth flips to Oralstack
+            at the cutover date.
           </p>
         ),
       },
@@ -110,10 +106,9 @@ const groups: Group[] = [
         q: "Who handles training?",
         a: (
           <p>
-            We do, directly. A 30-minute walkthrough on day one, then real
-            shift coverage with someone available on chat for questions for the
-            first week. Front desk staff learn by doing — multi-day classroom
-            training, in our experience, doesn&apos;t stick.
+            We do, directly. A 30-minute walkthrough on day one, then real shift coverage with
+            someone available on chat for questions for the first week. Front desk staff learn by
+            doing — multi-day classroom training, in our experience, doesn&apos;t stick.
           </p>
         ),
       },
@@ -126,9 +121,8 @@ const groups: Group[] = [
         q: "Where is my data hosted?",
         a: (
           <p>
-            Singapore region (asia-southeast1) on Google Cloud. Your patient
-            records do not leave the Singapore region without explicit
-            cross-border consent.{" "}
+            Singapore region (asia-southeast1) on Google Cloud. Your patient records do not leave
+            the Singapore region without explicit cross-border consent.{" "}
             <a
               href="/security"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -142,11 +136,10 @@ const groups: Group[] = [
         q: "Are you PDPA-compliant?",
         a: (
           <p>
-            Yes. PDPA-compliance is built into the data model — region-hosted,
-            tenant-isolated via Postgres row-level security, audit logs by
-            default with full access traceability, encryption in transit and
-            at rest. We are not the data controller; the clinic remains the
-            controller and we operate as the data intermediary.
+            Yes. PDPA-compliance is built into the data model — region-hosted, tenant-isolated via
+            Postgres row-level security, audit logs by default with full access traceability,
+            encryption in transit and at rest. We are not the data controller; the clinic remains
+            the controller and we operate as the data intermediary.
           </p>
         ),
       },
@@ -154,10 +147,9 @@ const groups: Group[] = [
         q: "Are you HIPAA-aware?",
         a: (
           <p>
-            We design with HIPAA principles in mind (access control, audit
-            logging, encryption, breach notification readiness) but we are not
-            a US-jurisdiction product. Clinics with US-jurisdiction patient
-            data should evaluate whether our model fits their specific HIPAA
+            We design with HIPAA principles in mind (access control, audit logging, encryption,
+            breach notification readiness) but we are not a US-jurisdiction product. Clinics with
+            US-jurisdiction patient data should evaluate whether our model fits their specific HIPAA
             requirements. We&apos;ll happily walk through the mapping.
           </p>
         ),
@@ -166,8 +158,8 @@ const groups: Group[] = [
         q: "Can I see audit logs?",
         a: (
           <p>
-            Yes. Every read and write is logged with user, clinic, resource,
-            and timestamp. The log is queryable per-clinic.{" "}
+            Yes. Every read and write is logged with user, clinic, resource, and timestamp. The log
+            is queryable per-clinic.{" "}
             <a
               href="/articles/dental-audit-logs"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -186,9 +178,8 @@ const groups: Group[] = [
         q: "Which sensors and imaging hardware do you support?",
         a: (
           <p>
-            DICOM viewer in the patient chart, with sensor-bridge integration
-            across Carestream, Dexis, Sopro, and Schick. We don&apos;t sell
-            hardware — bring your existing sensors.{" "}
+            DICOM viewer in the patient chart, with sensor-bridge integration across Carestream,
+            Dexis, Sopro, and Schick. We don&apos;t sell hardware — bring your existing sensors.{" "}
             <a
               href="/integrations"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -202,9 +193,9 @@ const groups: Group[] = [
         q: "What about WhatsApp recall messaging?",
         a: (
           <p>
-            We use the WhatsApp Business API with Singapore-region routing for
-            templated recall and confirmation messages. Two-way conversations
-            are audit-logged with delivery and read receipts.
+            We use the WhatsApp Business API with Singapore-region routing for templated recall and
+            confirmation messages. Two-way conversations are audit-logged with delivery and read
+            receipts.
           </p>
         ),
       },
@@ -212,9 +203,8 @@ const groups: Group[] = [
         q: "Can I export my data?",
         a: (
           <p>
-            Anytime. CSV and JSON exports are first-class — patient records,
-            appointment history, billing history, recall lists, audit logs.
-            We&apos;ll never charge for an export.
+            Anytime. CSV and JSON exports are first-class — patient records, appointment history,
+            billing history, recall lists, audit logs. We&apos;ll never charge for an export.
           </p>
         ),
       },
@@ -222,9 +212,8 @@ const groups: Group[] = [
         q: "Do you have an API?",
         a: (
           <p>
-            Not publicly yet. We integrate where it makes sense
-            (sensor-bridge, WhatsApp Business, payment processors). A
-            documented public API is on the roadmap once integration patterns
+            Not publicly yet. We integrate where it makes sense (sensor-bridge, WhatsApp Business,
+            payment processors). A documented public API is on the roadmap once integration patterns
             stabilise across the pilot cohort.
           </p>
         ),
@@ -238,13 +227,9 @@ const groups: Group[] = [
         q: "How big is the team?",
         a: (
           <p>
-            Small and engineering-led. The person who writes the schedule code
-            is the person on the demo call and the person on the support
-            channel when something breaks.{" "}
-            <a
-              href="/about"
-              className="text-[var(--color-tide-deep)] underline underline-offset-4"
-            >
+            Small and engineering-led. The person who writes the schedule code is the person on the
+            demo call and the person on the support channel when something breaks.{" "}
+            <a href="/about" className="text-[var(--color-tide-deep)] underline underline-offset-4">
               About →
             </a>
           </p>
@@ -254,8 +239,8 @@ const groups: Group[] = [
         q: "Where are you based?",
         a: (
           <p>
-            Singapore. APAC-first. Our cornerstone customer is also in
-            Singapore (DFI Synergy, a 3-chair general + hygiene practice).
+            Singapore. APAC-first. Our cornerstone customer is also in Singapore (DFI Synergy, a
+            3-chair general + hygiene practice).
           </p>
         ),
       },
@@ -263,12 +248,11 @@ const groups: Group[] = [
         q: "What if Oralstack goes out of business?",
         a: (
           <p>
-            A reasonable thing to ask of any early-stage SaaS. Two practical
-            answers: (1) you can export your full dataset (CSV/JSON) at any
-            time — there&apos;s no lock-in, (2) we work with clinics on a
-            data-handover plan as part of every pilot agreement, including a
-            field-mapping document so a successor PMS can ingest your
-            Oralstack data without a re-keying project.
+            A reasonable thing to ask of any early-stage SaaS. Two practical answers: (1) you can
+            export your full dataset (CSV/JSON) at any time — there&apos;s no lock-in, (2) we work
+            with clinics on a data-handover plan as part of every pilot agreement, including a
+            field-mapping document so a successor PMS can ingest your Oralstack data without a
+            re-keying project.
           </p>
         ),
       },
@@ -311,8 +295,8 @@ export default function FAQPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Questions clinic owners, office managers, and operators raise during
-          evaluation. If your question isn&apos;t here, email{" "}
+          Questions clinic owners, office managers, and operators raise during evaluation. If your
+          question isn&apos;t here, email{" "}
           <a
             href="mailto:hello@oralstack.com"
             className="text-[var(--color-tide-deep)] underline underline-offset-4"

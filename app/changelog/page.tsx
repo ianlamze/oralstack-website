@@ -13,18 +13,15 @@ export const metadata: Metadata = {
 const typeStyles: Record<ChangelogEntry["type"], string> = {
   Feature:
     "bg-[color-mix(in_oklch,var(--color-sea),white_70%)] text-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_55%)]",
-  Fix:
-    "bg-[color-mix(in_oklch,var(--color-sunset),white_72%)] text-[color-mix(in_oklch,var(--color-sunset-deep),var(--color-ink)_45%)]",
+  Fix: "bg-[color-mix(in_oklch,var(--color-sunset),white_72%)] text-[color-mix(in_oklch,var(--color-sunset-deep),var(--color-ink)_45%)]",
   Architecture:
     "bg-[color-mix(in_oklch,var(--color-violet),white_85%)] text-[color-mix(in_oklch,var(--color-violet),var(--color-ink)_45%)]",
   Pilot:
     "bg-[color-mix(in_oklch,var(--color-sunset),white_72%)] text-[color-mix(in_oklch,var(--color-sunset-deep),var(--color-ink)_45%)]",
-  Branch:
-    "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
+  Branch: "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
   Compliance:
     "bg-[color-mix(in_oklch,var(--color-violet),white_85%)] text-[color-mix(in_oklch,var(--color-violet),var(--color-ink)_45%)]",
-  Sweep:
-    "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
+  Sweep: "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]",
 };
 
 function formatDate(iso: string) {
@@ -43,8 +40,8 @@ export default function ChangelogPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Public log of meaningful changes — features, fixes, architecture
-          shifts, and pilot milestones. Latest first.
+          Public log of meaningful changes — features, fixes, architecture shifts, and pilot
+          milestones. Latest first.
         </p>
       </Section>
 
@@ -70,9 +67,7 @@ export default function ChangelogPage() {
                     {entry.type}
                   </span>
                 </div>
-                <h2 className="text-xl font-semibold tracking-tight">
-                  {entry.title}
-                </h2>
+                <h2 className="text-xl font-semibold tracking-tight">{entry.title}</h2>
                 <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
                   {entry.body}
                 </p>

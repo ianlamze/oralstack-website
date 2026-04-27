@@ -28,8 +28,7 @@ export default function DicomViewerMock() {
           aria-hidden
           className="aspect-[5/4] rounded-md overflow-hidden relative border border-[var(--color-border)]"
           style={{
-            background:
-              "radial-gradient(circle at 45% 50%, #2c3344 0%, #14182b 55%, #060a14 100%)",
+            background: "radial-gradient(circle at 45% 50%, #2c3344 0%, #14182b 55%, #060a14 100%)",
           }}
         >
           <div
@@ -42,8 +41,7 @@ export default function DicomViewerMock() {
           <div
             className="absolute inset-0 opacity-30 mix-blend-screen pointer-events-none"
             style={{
-              background:
-                "linear-gradient(180deg, transparent 70%, rgba(255,255,255,0.06) 100%)",
+              background: "linear-gradient(180deg, transparent 70%, rgba(255,255,255,0.06) 100%)",
             }}
           />
 
@@ -123,9 +121,7 @@ export default function DicomViewerMock() {
           <dt className="text-[9px] uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
             Annotation
           </dt>
-          <dd className="text-[var(--color-text)] font-medium tabular-nums">
-            4.2 mm
-          </dd>
+          <dd className="text-[var(--color-text)] font-medium tabular-nums">4.2 mm</dd>
         </div>
       </dl>
 

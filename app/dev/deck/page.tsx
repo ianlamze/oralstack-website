@@ -61,7 +61,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function ToothMark({ size }: { size: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <path
         d="M16 4.5 C20.6 4.5 23.5 7 23.5 11.2 L23.5 14.2 C23.5 16.1 22 17.2 19.8 17.2 L12.2 17.2 C10 17.2 8.5 16.1 8.5 14.2 L8.5 11.2 C8.5 7 11.4 4.5 16 4.5 Z"
         fill="var(--color-ink)"
@@ -102,9 +102,8 @@ export default function DeckPage() {
               The operating system for modern dental clinics.
             </h1>
             <p className="mt-6 text-[18px] text-[var(--color-text-muted)] leading-relaxed max-w-[44ch]">
-              Designed in Singapore. Deployed across APAC. Built around the
-              jobs the front desk and clinical team actually do — book, chart,
-              bill, image, message.
+              Designed in Singapore. Deployed across APAC. Built around the jobs the front desk and
+              clinical team actually do — book, chart, bill, image, message.
             </p>
             <div className="mt-12 flex flex-wrap gap-3">
               <span className="inline-flex items-center text-xs font-medium uppercase tracking-[0.16em] rounded-full px-3 py-1.5 bg-[color-mix(in_oklch,var(--color-tide),white_75%)] text-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_30%)]">
@@ -128,10 +127,12 @@ export default function DeckPage() {
       <Slide n={2} eyebrow="Brand identity">
         <H2>Tooth mark · navy + teal · two-tone wordmark.</H2>
         <p className="mt-4 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
-          A clinical, recognizable visual system. The mark is unmistakably
-          dental in 0.5 seconds. The palette reads as healthcare-trust without
-          being sterile. Full guidelines live in{" "}
-          <code className="font-mono text-[14px] bg-[var(--color-canvas-tinted)] px-1.5 py-0.5 rounded">research/brand/</code>.
+          A clinical, recognizable visual system. The mark is unmistakably dental in 0.5 seconds.
+          The palette reads as healthcare-trust without being sterile. Full guidelines live in{" "}
+          <code className="font-mono text-[14px] bg-[var(--color-canvas-tinted)] px-1.5 py-0.5 rounded">
+            research/brand/
+          </code>
+          .
         </p>
 
         <div className="mt-10 grid grid-cols-[1.1fr_1fr_1fr] gap-10">
@@ -145,15 +146,24 @@ export default function DeckPage() {
             </div>
             <ul className="grid gap-1.5 text-[11px] text-[var(--color-text-muted)]">
               <li className="flex gap-2 items-center">
-                <span className="inline-block h-2 w-2 rounded-sm" style={{ background: "var(--color-ink)" }} />
+                <span
+                  className="inline-block h-2 w-2 rounded-sm"
+                  style={{ background: "var(--color-ink)" }}
+                />
                 <span>Crown · navy</span>
               </li>
               <li className="flex gap-2 items-center">
-                <span className="inline-block h-2 w-2 rounded-sm" style={{ background: "var(--color-tide)" }} />
+                <span
+                  className="inline-block h-2 w-2 rounded-sm"
+                  style={{ background: "var(--color-tide)" }}
+                />
                 <span>Left root · teal · smaller</span>
               </li>
               <li className="flex gap-2 items-center">
-                <span className="inline-block h-2 w-2 rounded-sm" style={{ background: "var(--color-ink)" }} />
+                <span
+                  className="inline-block h-2 w-2 rounded-sm"
+                  style={{ background: "var(--color-ink)" }}
+                />
                 <span>Right root · navy · larger</span>
               </li>
             </ul>
@@ -179,11 +189,12 @@ export default function DeckPage() {
                   />
                   <div className="grid gap-0 min-w-0">
                     <span className="text-[11px] font-medium text-[var(--color-text)]">
-                      {c.name} <span className="text-[var(--color-text-soft)] font-mono text-[10px]">{c.hex}</span>
+                      {c.name}{" "}
+                      <span className="text-[var(--color-text-soft)] font-mono text-[10px]">
+                        {c.hex}
+                      </span>
                     </span>
-                    <span className="text-[10px] text-[var(--color-text-soft)]">
-                      {c.role}
-                    </span>
+                    <span className="text-[10px] text-[var(--color-text-soft)]">{c.role}</span>
                   </div>
                 </li>
               ))}
@@ -214,9 +225,7 @@ export default function DeckPage() {
               <p className="text-[18px] font-semibold tracking-tight leading-none text-[var(--color-text)]">
                 H2 600
               </p>
-              <p className="text-[14px] leading-none text-[var(--color-text-muted)]">
-                Body 400
-              </p>
+              <p className="text-[14px] leading-none text-[var(--color-text-muted)]">Body 400</p>
               <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-soft)] leading-none">
                 Eyebrow 500
               </p>
@@ -232,9 +241,8 @@ export default function DeckPage() {
       <Slide n={3} eyebrow="What Oralstack is">
         <H2>Built for the front desk first.</H2>
         <p className="mt-6 text-[18px] text-[var(--color-text-muted)] max-w-[60ch] leading-relaxed">
-          Oralstack makes busy dental clinics faster without making clinical
-          work feel generic, bloated, or decorative. Five qualities the brand
-          has to express in every surface:
+          Oralstack makes busy dental clinics faster without making clinical work feel generic,
+          bloated, or decorative. Five qualities the brand has to express in every surface:
         </p>
 
         <ul className="mt-12 grid gap-6 grid-cols-5">
@@ -252,9 +260,7 @@ export default function DeckPage() {
               <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
                 {p.k}
               </p>
-              <p className="text-sm text-[var(--color-text-muted)] leading-snug">
-                {p.v}
-              </p>
+              <p className="text-sm text-[var(--color-text-muted)] leading-snug">{p.v}</p>
             </li>
           ))}
         </ul>
@@ -269,9 +275,7 @@ export default function DeckPage() {
               <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
                 {p.k}
               </p>
-              <p className="text-base text-[var(--color-text)] leading-snug">
-                {p.v}
-              </p>
+              <p className="text-base text-[var(--color-text)] leading-snug">{p.v}</p>
             </div>
           ))}
         </div>
@@ -281,10 +285,9 @@ export default function DeckPage() {
       <Slide n={4} eyebrow="Audit findings">
         <H2>The dental category is dated. We&apos;re betting against it.</H2>
         <p className="mt-6 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
-          We tore down 9 dental + adjacent SaaS sites (Dentrix Ascend, Curve,
-          Pearly, NovaDontics, Dental Intelligence, Tebra, Jane, Linear, Attio).
-          Three patterns dominate the dental incumbents — and three moves let
-          us look unmistakably different.
+          We tore down 9 dental + adjacent SaaS sites (Dentrix Ascend, Curve, Pearly, NovaDontics,
+          Dental Intelligence, Tebra, Jane, Linear, Attio). Three patterns dominate the dental
+          incumbents — and three moves let us look unmistakably different.
         </p>
 
         <ul className="mt-10 grid grid-cols-3 gap-6">
@@ -374,9 +377,7 @@ export default function DeckPage() {
                     <p className="text-sm font-mono font-medium text-[var(--color-text)]">
                       {route}
                     </p>
-                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">
-                      {desc}
-                    </p>
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed">{desc}</p>
                   </li>
                 ))}
               </ul>
@@ -385,7 +386,8 @@ export default function DeckPage() {
         </div>
 
         <p className="mt-10 text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-          Plus generated assets: /icon.svg · /apple-icon · /opengraph-image · /sitemap.xml · /robots.txt
+          Plus generated assets: /icon.svg · /apple-icon · /opengraph-image · /sitemap.xml ·
+          /robots.txt
         </p>
       </Slide>
 
@@ -393,10 +395,9 @@ export default function DeckPage() {
       <Slide n={6} eyebrow="Page · /">
         <H2>Homepage</H2>
         <p className="mt-4 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
-          Verb-stack headline + product UI as the hero. Below: a qualified
-          trust strip, a workflow card grid (each card hooks into the
-          /workflows deep dive), the cornerstone customer story, and a pilot
-          CTA.
+          Verb-stack headline + product UI as the hero. Below: a qualified trust strip, a workflow
+          card grid (each card hooks into the /workflows deep dive), the cornerstone customer story,
+          and a pilot CTA.
         </p>
 
         <div className="mt-8 grid grid-cols-2 gap-6">
@@ -405,11 +406,23 @@ export default function DeckPage() {
           </div>
           <div className="grid gap-4">
             {[
-              ["Verb-stack hero", "\"Book, chart, bill, image, message.\" — names every job in nine words."],
-              ["Product UI hero visual", "Live schedule mock — no stock photos, no laptop mockups."],
-              ["Qualified trust strip", "Pilot at DFI Synergy · region-hosted · audit-logged · PDPA + HIPAA-aware."],
+              [
+                "Verb-stack hero",
+                '"Book, chart, bill, image, message." — names every job in nine words.',
+              ],
+              [
+                "Product UI hero visual",
+                "Live schedule mock — no stock photos, no laptop mockups.",
+              ],
+              [
+                "Qualified trust strip",
+                "Pilot at DFI Synergy · region-hosted · audit-logged · PDPA + HIPAA-aware.",
+              ],
               ["Workflow cards", "4 cards lead to /workflows#anchor for deep detail."],
-              ["Cornerstone customer story", "Surfaces DFI Synergy + a clear path to the case study."],
+              [
+                "Cornerstone customer story",
+                "Surfaces DFI Synergy + a clear path to the case study.",
+              ],
             ].map(([k, v]) => (
               <div key={k} className="grid gap-1">
                 <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
@@ -426,10 +439,9 @@ export default function DeckPage() {
       <Slide n={7} eyebrow="Page · /workflows">
         <H2>Six workflows, each visualised.</H2>
         <p className="mt-4 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
-          One section per JTBD. Visual on one side, body + bullets + a
-          &ldquo;Replaces&rdquo; line on the other. Visuals alternate sides
-          for vertical rhythm. Recall and imaging show two stacked visuals each
-          (queue → conversation; grid → single-image deep view).
+          One section per JTBD. Visual on one side, body + bullets + a &ldquo;Replaces&rdquo; line
+          on the other. Visuals alternate sides for vertical rhythm. Recall and imaging show two
+          stacked visuals each (queue → conversation; grid → single-image deep view).
         </p>
 
         <ul className="mt-8 grid grid-cols-6 gap-3">
@@ -446,9 +458,7 @@ export default function DeckPage() {
               className="grid gap-2 rounded-[var(--radius-md)] bg-[var(--color-canvas-tinted)] p-2"
             >
               <div className="bg-white rounded-[var(--radius-sm)] p-1.5 flex items-center justify-center min-h-[120px] overflow-hidden">
-                <div style={{ transform: "scale(0.36)", transformOrigin: "center" }}>
-                  {w.node}
-                </div>
+                <div style={{ transform: "scale(0.36)", transformOrigin: "center" }}>{w.node}</div>
               </div>
               <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)] text-center">
                 {w.name}
@@ -462,10 +472,9 @@ export default function DeckPage() {
       <Slide n={8} eyebrow="Page · /customers/dfi-synergy">
         <H2>DFI Synergy — cornerstone customer story.</H2>
         <p className="mt-4 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
-          Three-week pilot from paper-and-WhatsApp to four workflows live, no
-          fallback diary. Profile sidebar, hero pull-quote paired with the
-          product UI, body sections with embedded visualizations, stat grid,
-          mid-page pull quote, and a pilot CTA.
+          Three-week pilot from paper-and-WhatsApp to four workflows live, no fallback diary.
+          Profile sidebar, hero pull-quote paired with the product UI, body sections with embedded
+          visualizations, stat grid, mid-page pull quote, and a pilot CTA.
         </p>
 
         <div className="mt-8 grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-8 items-start">
@@ -474,9 +483,9 @@ export default function DeckPage() {
               Hero quote (verbatim)
             </p>
             <blockquote className="text-[20px] font-medium tracking-tight leading-[1.25] text-[var(--color-text)]">
-              &ldquo;We used to book on WhatsApp and a paper diary. Now we
-              don&apos;t reschedule without it being on the schedule, and the
-              bill is ready before the patient stands up.&rdquo;
+              &ldquo;We used to book on WhatsApp and a paper diary. Now we don&apos;t reschedule
+              without it being on the schedule, and the bill is ready before the patient stands
+              up.&rdquo;
             </blockquote>
             <p className="text-xs text-[var(--color-text-soft)] uppercase tracking-[0.16em]">
               Practice manager, DFI Synergy
@@ -493,9 +502,7 @@ export default function DeckPage() {
                   <p className="text-[20px] font-semibold text-[var(--color-text)] tabular-nums leading-none">
                     {v}
                   </p>
-                  <p className="text-[10px] text-[var(--color-text-soft)] leading-tight">
-                    {l}
-                  </p>
+                  <p className="text-[10px] text-[var(--color-text-soft)] leading-tight">{l}</p>
                 </div>
               ))}
             </div>
@@ -510,9 +517,9 @@ export default function DeckPage() {
       <Slide n={9} eyebrow="Library">
         <H2>8 product visualizations, all from the codebase.</H2>
         <p className="mt-4 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
-          Pure CSS/HTML React components. Brand tokens only. Singapore-fictional
-          canonical patient names. All wired into production pages. Documented
-          in components/visuals/README.md, reviewed at /dev/visuals.
+          Pure CSS/HTML React components. Brand tokens only. Singapore-fictional canonical patient
+          names. All wired into production pages. Documented in components/visuals/README.md,
+          reviewed at /dev/visuals.
         </p>
 
         <ul className="mt-8 grid grid-cols-4 gap-3">
@@ -531,9 +538,7 @@ export default function DeckPage() {
               className="grid gap-2 rounded-[var(--radius-md)] bg-[var(--color-canvas-tinted)] p-2"
             >
               <div className="bg-white rounded-[var(--radius-sm)] p-1.5 flex items-center justify-center min-h-[110px] overflow-hidden">
-                <div style={{ transform: "scale(0.32)", transformOrigin: "center" }}>
-                  {m.node}
-                </div>
+                <div style={{ transform: "scale(0.32)", transformOrigin: "center" }}>{m.node}</div>
               </div>
               <span className="font-mono text-[9px] text-[var(--color-text)] truncate text-center">
                 {m.name}
@@ -568,7 +573,7 @@ export default function DeckPage() {
               ].map((s) => (
                 <li key={s} className="flex gap-2.5">
                   <span
-                    aria-hidden
+                    aria-hidden="true"
                     className="mt-2.5 inline-block h-1 w-1 rounded-full bg-[var(--color-tide-deep)] shrink-0"
                   />
                   <span>{s}</span>
@@ -593,7 +598,7 @@ export default function DeckPage() {
               ].map((s) => (
                 <li key={s} className="flex gap-2.5">
                   <span
-                    aria-hidden
+                    aria-hidden="true"
                     className="mt-2.5 inline-block h-1 w-1 rounded-full bg-[color-mix(in_oklch,var(--color-sunset-deep),var(--color-ink)_25%)] shrink-0"
                   />
                   <span>{s}</span>
@@ -610,7 +615,10 @@ export default function DeckPage() {
           <ul className="mt-3 grid gap-1.5 text-sm text-[var(--color-text-muted)] leading-relaxed">
             <li>Lock the lead claim — currently placeholder (verb-stack of jobs).</li>
             <li>Lock the ICP — currently APAC general-practice clinics.</li>
-            <li>Confirm DFI Synergy sister clinics that actually run Oralstack — extends customer base.</li>
+            <li>
+              Confirm DFI Synergy sister clinics that actually run Oralstack — extends customer
+              base.
+            </li>
             <li>Founder bios + photo for /about (or hold the page).</li>
             <li>Greenlight Cloudflare deploy (one-time wrangler login).</li>
           </ul>

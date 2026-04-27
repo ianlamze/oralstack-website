@@ -18,9 +18,8 @@ export default function PricingPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          One flat price. Three months of hands-on onboarding included. No
-          per-seat charges, no per-feature gating, no setup fees while
-          we&apos;re in pilot.
+          One flat price. Three months of hands-on onboarding included. No per-seat charges, no
+          per-feature gating, no setup fees while we&apos;re in pilot.
         </p>
       </Section>
 
@@ -48,20 +47,17 @@ export default function PricingPage() {
               </p>
               <ul className="grid gap-2.5 text-[var(--color-text-muted)] leading-relaxed">
                 <Bullet>
-                  All workflows in the current build — scheduling, billing, charting, recall, plus imaging on the v13 cohort.
+                  All workflows in the current build — scheduling, billing, charting, recall, plus
+                  imaging on the v13 cohort.
                 </Bullet>
                 <Bullet>
                   Three months of hands-on onboarding for the front desk and clinical team.
                 </Bullet>
-                <Bullet>
-                  Unlimited users, chairs, and providers within the clinic.
-                </Bullet>
+                <Bullet>Unlimited users, chairs, and providers within the clinic.</Bullet>
                 <Bullet>
                   Region-hosted in Singapore (asia-southeast1), tenant-isolated, audit-logged.
                 </Bullet>
-                <Bullet>
-                  A named contact at Oralstack — usually an engineer.
-                </Bullet>
+                <Bullet>A named contact at Oralstack — usually an engineer.</Bullet>
               </ul>
             </div>
           </div>
@@ -91,15 +87,9 @@ export default function PricingPage() {
               <Bullet>
                 30 minutes a week from a front-desk lead and a clinician for the first six weeks.
               </Bullet>
-              <Bullet>
-                Permission to be named in a case study — like DFI Synergy.
-              </Bullet>
-              <Bullet>
-                Honest feedback. We change the product around what doesn&apos;t work.
-              </Bullet>
-              <Bullet>
-                A real workflow to anchor against — not a sandbox.
-              </Bullet>
+              <Bullet>Permission to be named in a case study — like DFI Synergy.</Bullet>
+              <Bullet>Honest feedback. We change the product around what doesn&apos;t work.</Bullet>
+              <Bullet>A real workflow to anchor against — not a sandbox.</Bullet>
             </ul>
           </div>
 
@@ -108,18 +98,12 @@ export default function PricingPage() {
               Out of scope (today)
             </p>
             <ul className="grid gap-2.5 text-[var(--color-text-muted)] text-sm leading-relaxed">
-              <Bullet>
-                Self-serve sign-up — every pilot starts with a 30-minute call.
-              </Bullet>
-              <Bullet>
-                Per-seat or per-feature gating — pricing stays flat in pilot.
-              </Bullet>
+              <Bullet>Self-serve sign-up — every pilot starts with a 30-minute call.</Bullet>
+              <Bullet>Per-seat or per-feature gating — pricing stays flat in pilot.</Bullet>
               <Bullet>
                 Custom integrations beyond what&apos;s on the integrations page — talk to us.
               </Bullet>
-              <Bullet>
-                Multi-region deployments outside APAC — talk to us.
-              </Bullet>
+              <Bullet>Multi-region deployments outside APAC — talk to us.</Bullet>
             </ul>
           </div>
         </div>
@@ -132,9 +116,9 @@ export default function PricingPage() {
               Talk to us about a pilot.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              Tell us how your front desk runs today, what your current PMS is,
-              and what would change first if Oralstack landed in the clinic
-              next week. We reply with a proposal within two working days.
+              Tell us how your front desk runs today, what your current PMS is, and what would
+              change first if Oralstack landed in the clinic next week. We reply with a proposal
+              within two working days.
             </p>
           </div>
           <div className="md:justify-self-end">

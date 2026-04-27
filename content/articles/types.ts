@@ -1,11 +1,6 @@
 import type { ComponentType } from "react";
 
-export type ArticleCluster =
-  | "front-desk"
-  | "billing"
-  | "clinical"
-  | "migration"
-  | "compliance";
+export type ArticleCluster = "front-desk" | "billing" | "clinical" | "migration" | "compliance";
 
 export const clusterLabels: Record<ArticleCluster, string> = {
   "front-desk": "Front desk",
@@ -18,8 +13,7 @@ export const clusterLabels: Record<ArticleCluster, string> = {
 export const clusterDescriptions: Record<ArticleCluster, string> = {
   "front-desk":
     "Scheduling, recall, no-shows, and the workflows the front desk lives in every shift.",
-  billing:
-    "Discharge-flow billing, GST, insurance, A/R, and the moments money actually moves.",
+  billing: "Discharge-flow billing, GST, insurance, A/R, and the moments money actually moves.",
   clinical:
     "Charting, case notes, imaging, tooth-led record-keeping, and what makes clinical work feel fast.",
   migration:

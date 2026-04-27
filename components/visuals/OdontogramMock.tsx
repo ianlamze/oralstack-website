@@ -110,21 +110,15 @@ export default function OdontogramMock() {
             <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
               Selected
             </p>
-            <p className="text-sm font-semibold text-[var(--color-text)] mt-1">
-              Tooth 16
-            </p>
-            <p className="text-[10px] text-[var(--color-text-soft)]">
-              Maxillary first molar
-            </p>
+            <p className="text-sm font-semibold text-[var(--color-text)] mt-1">Tooth 16</p>
+            <p className="text-[10px] text-[var(--color-text-soft)]">Maxillary first molar</p>
           </div>
 
           <ul className="grid gap-2">
-            {(
-              [
-                { cond: "caries" as const, surface: "(O)", note: "Active" },
-                { cond: "watch" as const, surface: "(M)", note: "Watch" },
-              ]
-            ).map((c, i) => {
+            {[
+              { cond: "caries" as const, surface: "(O)", note: "Active" },
+              { cond: "watch" as const, surface: "(M)", note: "Watch" },
+            ].map((c, i) => {
               const s = conditionStyles[c.cond];
               return (
                 <li key={i} className="flex items-start gap-2">

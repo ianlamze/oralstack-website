@@ -8,10 +8,7 @@ export default function Hero() {
   return (
     <Section className="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
       {/* subtle backdrop glow */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 pointer-events-none"
-      >
+      <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
         <div
           className="absolute right-[-5%] top-[10%] w-[55%] aspect-square rounded-full"
           style={{
@@ -45,8 +42,8 @@ export default function Hero() {
           </HeroItem>
           <HeroItem>
             <p className="mt-7 text-base md:text-lg text-[var(--color-text-muted)] max-w-[44ch] leading-relaxed">
-              Built for the front desk first, with imaging, charting, and patient
-              communication that work the way busy clinics actually run.
+              Built for the front desk first, with imaging, charting, and patient communication that
+              work the way busy clinics actually run.
             </p>
           </HeroItem>
           <HeroItem>

@@ -29,9 +29,7 @@ export default function CaseStudyHero({ study }: CaseStudyHeroProps) {
           </p>
           <dl className="grid gap-4 text-sm">
             <ProfileRow label="Location" value={profile.location} />
-            {profile.specialty && (
-              <ProfileRow label="Specialty" value={profile.specialty} />
-            )}
+            {profile.specialty && <ProfileRow label="Specialty" value={profile.specialty} />}
             {profile.chairs && (
               <ProfileRow
                 label="Size"
@@ -39,16 +37,9 @@ export default function CaseStudyHero({ study }: CaseStudyHeroProps) {
               />
             )}
             <ProfileRow label="Pilot start" value={profile.pilotStart} />
-            <ProfileRow
-              label="In production"
-              value={profile.inProduction.join(" · ")}
-            />
+            <ProfileRow label="In production" value={profile.inProduction.join(" · ")} />
             {profile.notYet && profile.notYet.length > 0 && (
-              <ProfileRow
-                label="Pending"
-                value={profile.notYet.join(" · ")}
-                muted
-              />
+              <ProfileRow label="Pending" value={profile.notYet.join(" · ")} muted />
             )}
           </dl>
         </aside>
@@ -68,15 +59,9 @@ function ProfileRow({
 }) {
   return (
     <div className="grid gap-1">
-      <dt className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-        {label}
-      </dt>
+      <dt className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">{label}</dt>
       <dd
-        className={
-          muted
-            ? "text-[var(--color-text-soft)]"
-            : "text-[var(--color-text)] font-medium"
-        }
+        className={muted ? "text-[var(--color-text-soft)]" : "text-[var(--color-text)] font-medium"}
       >
         {value}
       </dd>

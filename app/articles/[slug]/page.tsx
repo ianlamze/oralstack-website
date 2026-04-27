@@ -16,11 +16,7 @@ export function generateStaticParams() {
 
 type Params = { slug: string };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<Params>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) {
@@ -55,11 +51,7 @@ function formatDate(iso: string) {
   });
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: Promise<Params>;
-}) {
+export default async function ArticlePage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) notFound();
@@ -172,8 +164,8 @@ export default async function ArticlePage({
               See how Oralstack handles this in production.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              A 30-minute demo walks the front desk and a clinician through every
-              workflow on a sample dataset that mirrors a typical Singapore clinic.
+              A 30-minute demo walks the front desk and a clinician through every workflow on a
+              sample dataset that mirrors a typical Singapore clinic.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -184,14 +176,8 @@ export default async function ArticlePage({
         </div>
       </Section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: articleJsonLd }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }} />
     </main>
   );
 }

@@ -50,9 +50,7 @@ try {
     await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   }
   await page.screenshot({ path: out, fullPage: true });
-  const text = await page.evaluate(() =>
-    document.body.innerText.replace(/\n{3,}/g, "\n\n").trim(),
-  );
+  const text = await page.evaluate(() => document.body.innerText.replace(/\n{3,}/g, "\n\n").trim());
   const title = await page.title();
   console.log(`URL: ${url}`);
   console.log(`Title: ${title}`);

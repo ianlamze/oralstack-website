@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
-import MarkBullet from "@/components/sections/MarkBullet";
+import Reason from "@/components/sections/Reason";
+import Bullet from "@/components/sections/Bullet";
 import AnimateInView from "@/components/sections/AnimateInView";
 
 export const metadata: Metadata = {
@@ -14,18 +15,14 @@ export const metadata: Metadata = {
 export default function ForMultiClinicPage() {
   return (
     <main>
-      <PageHeader
-        eyebrow="For multi-clinic & DSO"
-        title="One PMS, every clinic, one version."
-      />
+      <PageHeader eyebrow="For multi-clinic & DSO" title="One PMS, every clinic, one version." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          For groups operating two to twenty clinics under one organisation —
-          where the office manager runs the chair and the COO runs the
-          spreadsheet that consolidates everything. Oralstack&apos;s tenant
-          model is built for this from day one, not bolted on after a single-clinic
-          install became popular.
+          For groups operating two to twenty clinics under one organisation — where the office
+          manager runs the chair and the COO runs the spreadsheet that consolidates everything.
+          Oralstack&apos;s tenant model is built for this from day one, not bolted on after a
+          single-clinic install became popular.
         </p>
       </Section>
 
@@ -36,12 +33,10 @@ export default function ForMultiClinicPage() {
               Built for the people consolidating across clinics
             </p>
             <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-              The buyer for a multi-location group is rarely the front desk —
-              it&apos;s a VP of Ops, a COO, or a Director of Clinical
-              Operations. They live in dashboards and consolidated reports.
-              Their question isn&apos;t &ldquo;does this work for one clinic&rdquo; —
-              it&apos;s &ldquo;does this give me one consistent view across
-              all of them?&rdquo;
+              The buyer for a multi-location group is rarely the front desk — it&apos;s a VP of Ops,
+              a COO, or a Director of Clinical Operations. They live in dashboards and consolidated
+              reports. Their question isn&apos;t &ldquo;does this work for one clinic&rdquo; —
+              it&apos;s &ldquo;does this give me one consistent view across all of them?&rdquo;
             </p>
           </div>
         </AnimateInView>
@@ -78,9 +73,8 @@ export default function ForMultiClinicPage() {
                 $200<span className="text-2xl text-[var(--color-text-soft)]"> × clinics</span>
               </p>
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[40ch]">
-                Pilot pricing scales linearly per clinic. No tier upcharges for
-                multi-clinic features. Multi-location and group discounts on
-                request once the pilot proves out.
+                Pilot pricing scales linearly per clinic. No tier upcharges for multi-clinic
+                features. Multi-location and group discounts on request once the pilot proves out.
               </p>
             </div>
             <p className="mt-3 text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
@@ -104,8 +98,8 @@ export default function ForMultiClinicPage() {
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Tenant isolation:</span>{" "}
-              Postgres row-level security enforces per-clinic data separation
-              at the database layer, not the application layer.{" "}
+              Postgres row-level security enforces per-clinic data separation at the database layer,
+              not the application layer.{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -114,9 +108,9 @@ export default function ForMultiClinicPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Audit logs:</span>{" "}
-              every read and write is logged with user, clinic, and resource.
-              Queryable per-clinic for PDPC, IRAS, or internal audits.{" "}
+              <span className="font-medium text-[var(--color-text)]">Audit logs:</span> every read
+              and write is logged with user, clinic, and resource. Queryable per-clinic for PDPC,
+              IRAS, or internal audits.{" "}
               <a
                 href="/articles/dental-audit-logs"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -125,9 +119,9 @@ export default function ForMultiClinicPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Migration:</span>{" "}
-              we run group migrations clinic-by-clinic, on a three-week cadence
-              per location, no fallback diary kept in parallel.{" "}
+              <span className="font-medium text-[var(--color-text)]">Migration:</span> we run group
+              migrations clinic-by-clinic, on a three-week cadence per location, no fallback diary
+              kept in parallel.{" "}
               <a
                 href="/articles/plato-to-cloud-migration"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -136,9 +130,9 @@ export default function ForMultiClinicPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Reporting:</span>{" "}
-              chair utilisation heatmap, revenue per chair, recall coverage,
-              no-show trend — all timezone-correct per clinic.{" "}
+              <span className="font-medium text-[var(--color-text)]">Reporting:</span> chair
+              utilisation heatmap, revenue per chair, recall coverage, no-show trend — all
+              timezone-correct per clinic.{" "}
               <a
                 href="/workflows#operations"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -157,10 +151,9 @@ export default function ForMultiClinicPage() {
               Talk to us about a group pilot.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              30 minutes with a real engineer, on a multi-clinic sample
-              dataset. We follow up with a tailored proposal — usually a
-              two-clinic pilot first, then group rollout — within two working
-              days.
+              30 minutes with a real engineer, on a multi-clinic sample dataset. We follow up with a
+              tailored proposal — usually a two-clinic pilot first, then group rollout — within two
+              working days.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -174,38 +167,5 @@ export default function ForMultiClinicPage() {
         </div>
       </Section>
     </main>
-  );
-}
-
-function Reason({
-  eyebrow,
-  title,
-  body,
-}: {
-  eyebrow: string;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div className="grid gap-3">
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-        {eyebrow}
-      </p>
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight leading-[1.15] max-w-[34ch]">
-        {title}
-      </h2>
-      <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-        {body}
-      </p>
-    </div>
-  );
-}
-
-function Bullet({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-3 items-start">
-      <MarkBullet size={12} className="mt-1.5 opacity-90" />
-      <span>{children}</span>
-    </li>
   );
 }

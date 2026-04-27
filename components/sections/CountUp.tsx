@@ -9,11 +9,7 @@ type CountUpProps = {
   className?: string;
 };
 
-export default function CountUp({
-  value,
-  duration = 1.4,
-  className,
-}: CountUpProps) {
+export default function CountUp({ value, duration = 1.4, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
 
@@ -34,9 +30,7 @@ export default function CountUp({
       duration,
       ease: [0.16, 1, 0.3, 1],
       onUpdate: (latest) => {
-        const n = isInt
-          ? Math.round(latest).toString()
-          : latest.toFixed(1);
+        const n = isInt ? Math.round(latest).toString() : latest.toFixed(1);
         setDisplay(`${prefix}${n}${suffix}`);
       },
     });

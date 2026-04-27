@@ -3,17 +3,14 @@ type MarkBulletProps = {
   className?: string;
 };
 
-export default function MarkBullet({
-  size = 12,
-  className,
-}: MarkBulletProps) {
+export default function MarkBullet({ size = 12, className }: MarkBulletProps) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 32 32"
       fill="none"
-      aria-hidden
+      aria-hidden="true"
       className={`shrink-0 ${className ?? ""}`}
     >
       <path

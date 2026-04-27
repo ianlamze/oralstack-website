@@ -20,10 +20,9 @@ export default function BookDemoPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          We&apos;ll walk the front desk and a clinician through every workflow
-          on a sample dataset that mirrors a typical Singapore clinic.
-          Scheduling, billing, charting, imaging, recall, owner analytics —
-          all of it.
+          We&apos;ll walk the front desk and a clinician through every workflow on a sample dataset
+          that mirrors a typical Singapore clinic. Scheduling, billing, charting, imaging, recall,
+          owner analytics — all of it.
         </p>
       </Section>
 
@@ -86,8 +85,8 @@ export default function BookDemoPage() {
               </p>
               <ul className="grid gap-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
                 <li>
-                  <span className="text-[var(--color-text)] font-medium">Migration:</span>{" "}
-                  three weeks from kickoff to live.{" "}
+                  <span className="text-[var(--color-text)] font-medium">Migration:</span> three
+                  weeks from kickoff to live.{" "}
                   <a
                     href="/articles/plato-to-cloud-migration"
                     className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -96,8 +95,8 @@ export default function BookDemoPage() {
                   </a>
                 </li>
                 <li>
-                  <span className="text-[var(--color-text)] font-medium">Hosting:</span>{" "}
-                  Singapore region, tenant-isolated, audit-logged.{" "}
+                  <span className="text-[var(--color-text)] font-medium">Hosting:</span> Singapore
+                  region, tenant-isolated, audit-logged.{" "}
                   <a
                     href="/security"
                     className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -106,8 +105,8 @@ export default function BookDemoPage() {
                   </a>
                 </li>
                 <li>
-                  <span className="text-[var(--color-text)] font-medium">Pilot:</span>{" "}
-                  flat $200/clinic/month, no per-seat charges.{" "}
+                  <span className="text-[var(--color-text)] font-medium">Pilot:</span> flat
+                  $200/clinic/month, no per-seat charges.{" "}
                   <a
                     href="/pricing"
                     className="text-[var(--color-tide-deep)] underline underline-offset-4"
