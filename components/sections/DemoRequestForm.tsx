@@ -2,7 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 
-type FormState = "idle" | "submitting" | "sent";
+type FormState = "idle" | "submitting" | "sent" | "error";
+
+const ENDPOINT = process.env.NEXT_PUBLIC_DEMO_FORM_ENDPOINT;
 
 const labelClass =
   "text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)]";
@@ -12,7 +14,7 @@ const fieldClass =
 export default function DemoRequestForm() {
   const [state, setState] = useState<FormState>("idle");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setState("submitting");
 
@@ -20,17 +22,50 @@ export default function DemoRequestForm() {
     const data = new FormData(form);
     const get = (k: string) => String(data.get(k) ?? "").trim();
 
+    const payload = {
+      clinic: get("clinic"),
+      name: get("name"),
+      role: get("role"),
+      email: get("email"),
+      location: get("location"),
+      chairs: get("chairs"),
+      providers: get("providers"),
+      currentPms: get("currentPms"),
+      preferredTimes: get("preferredTimes"),
+      notes: get("notes"),
+    };
+
+    if (ENDPOINT) {
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: `Demo request — ${payload.clinic || "Oralstack"}`,
+            ...payload,
+          }),
+        });
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        setState("sent");
+        form.reset();
+        return;
+      } catch {
+        setState("error");
+        return;
+      }
+    }
+
     const fields = [
-      ["Clinic", get("clinic")],
-      ["Your name", get("name")],
-      ["Role", get("role")],
-      ["Email", get("email")],
-      ["Location", get("location")],
-      ["Chairs", get("chairs")],
-      ["Providers", get("providers")],
-      ["Current PMS", get("currentPms")],
-      ["Preferred times", get("preferredTimes")],
-      ["Anything else", get("notes")],
+      ["Clinic", payload.clinic],
+      ["Your name", payload.name],
+      ["Role", payload.role],
+      ["Email", payload.email],
+      ["Location", payload.location],
+      ["Chairs", payload.chairs],
+      ["Providers", payload.providers],
+      ["Current PMS", payload.currentPms],
+      ["Preferred times", payload.preferredTimes],
+      ["Anything else", payload.notes],
     ];
 
     const body = fields
@@ -38,11 +73,29 @@ export default function DemoRequestForm() {
       .map(([k, v]) => `${k}:\n${v}`)
       .join("\n\n");
 
-    const subject = `Demo request — ${get("clinic") || "Oralstack"}`;
+    const subject = `Demo request — ${payload.clinic || "Oralstack"}`;
     const url = `mailto:hello@oralstack.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     window.location.href = url;
     setState("sent");
+  }
+
+  if (state === "sent") {
+    return (
+      <div className="grid gap-3 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-8 md:p-10">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+          Request received
+        </p>
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+          Thanks — we&apos;ll be in touch within one working day.
+        </h2>
+        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
+          {ENDPOINT
+            ? "We've got your request. Reply will come from hello@oralstack.com — keep an eye on spam if you don't see it."
+            : "Your email client should be opening with the request pre-filled. If nothing happened, email hello@oralstack.com directly."}
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -150,13 +203,19 @@ export default function DemoRequestForm() {
           disabled={state === "submitting"}
           className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] disabled:opacity-60 transition-colors"
         >
-          {state === "sent" ? "Email opening…" : "Send demo request →"}
+          {state === "submitting" ? "Sending…" : "Send demo request →"}
         </button>
         <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em] max-w-[44ch]">
-          Submitting opens your email client with the request pre-filled. We
-          reply within one working day.
+          {ENDPOINT
+            ? "We reply within one working day from hello@oralstack.com."
+            : "Submitting opens your email client with the request pre-filled. We reply within one working day."}
         </p>
       </div>
+      {state === "error" && (
+        <p className="text-xs text-[var(--color-sunset-deep)]">
+          Something went wrong sending the form. Email hello@oralstack.com directly and we&apos;ll pick it up.
+        </p>
+      )}
     </form>
   );
 }

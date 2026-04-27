@@ -51,7 +51,7 @@ export default function Wordmark({ size = "md", className = "" }: WordmarkProps)
       <ToothMark size={s.icon} />
       <span className={`font-semibold tracking-tight ${s.text}`}>
         <span style={{ color: "var(--color-ink)" }}>Oral</span>
-        <span style={{ color: "var(--color-tide)" }}>stack</span>
+        <span style={{ color: "var(--color-tide-deep)" }}>stack</span>
       </span>
     </span>
   );

@@ -245,7 +245,11 @@ function ArticleBody() {
           DFI Synergy case study
         </a>{" "}
         for a worked example of this exact migration in a 3-chair Singapore
-        clinic. Or read about the{" "}
+        clinic. For a feature-by-feature breakdown of what changes, see the{" "}
+        <a href="/compare/plato" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
+          Oralstack vs Plato comparison
+        </a>
+        . Or read about the{" "}
         <a href="/workflows#front-desk" className="text-[var(--color-tide-deep)] underline-offset-4 hover:underline">
           front-desk workflow
         </a>{" "}

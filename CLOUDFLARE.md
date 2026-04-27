@@ -103,6 +103,30 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 5. Tell me — I rebuild and redeploy. `/book-a-demo` now embeds Cal.com directly.
 
+## Step 7 — Demo form endpoint (~3 minutes)
+
+Without this, `/book-a-demo` builds a `mailto:` URL on submit and opens the user's mail client. That works, but depends on the visitor having a default email client configured — about a third of mobile users don't.
+
+The recommended path is **Formspree** (free tier covers 50 submissions/month):
+
+1. Sign up at [formspree.io](https://formspree.io)
+2. Create a new form, set the destination email to `hello@oralstack.com`
+3. Copy the endpoint URL — it looks like `https://formspree.io/f/xxxxxxxx`
+4. Add to `.env.local`:
+
+```bash
+NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
+```
+
+5. Tell me — I rebuild and redeploy. Submissions now arrive in `hello@` directly.
+
+Other endpoint options (any HTTP `POST application/json` works):
+- **Web3Forms** — similar to Formspree, slightly different UX
+- **Cloudflare Pages Function** at `functions/api/demo.ts` — keeps everything on Cloudflare, requires writing the function and choosing an email service (Resend, SendGrid) for the actual delivery
+- **Resend webhook** — direct API integration, requires API key
+
+The form payload is JSON: `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes, _subject }`. The `_subject` field is what Formspree uses as the email subject line.
+
 ## Quick checklist
 
 ```
@@ -112,6 +136,7 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 [ ] Step 4: Cloudflare Web Analytics token in .env.local
 [ ] Step 5: hello@ + security@ + legal@ forwarding via Email Routing
 [ ] Step 6: Cal.com username + event in .env.local
+[ ] Step 7: Demo form endpoint (Formspree) in .env.local
 ```
 
 When you've done step 1, just say "logged in" and I take it from there.
