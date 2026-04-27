@@ -9,10 +9,13 @@ const pills = [
 
 export default function TrustStrip() {
   return (
-    <Section className="border-y border-[var(--color-border)] py-6">
-      <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-[var(--color-text-soft)]">
+    <Section className="border-y border-[var(--color-border)] py-5">
+      <ul className="flex flex-wrap items-center justify-center gap-2 text-xs">
         {pills.map((p) => (
-          <li key={p} className="tracking-[0.02em]">
+          <li
+            key={p}
+            className="rounded-full border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-3 py-1.5 tracking-[0.02em] text-[var(--color-text-muted)]"
+          >
             {p}
           </li>
         ))}

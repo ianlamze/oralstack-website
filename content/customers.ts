@@ -22,7 +22,7 @@ export const customers: Customer[] = [
     size: "3 chairs · 4 providers",
     pilotStart: "April 2026",
     blurb:
-      "Replaced a paper-and-WhatsApp booking workflow with Oralstack's drag-to-reschedule schedule and discharge-flow billing in three weeks.",
+      "Replaced a paper-and-WhatsApp booking workflow with Oralstack's drag-to-reschedule schedule and discharge-flow billing — front desk live in three days, legacy records migrated in the background.",
     caseStudySlug: "dfi-synergy",
   },
 ];

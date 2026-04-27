@@ -3,6 +3,7 @@ import PageHeader from "@/components/sections/PageHeader";
 import Section from "@/components/primitives/Section";
 import MarkBullet from "@/components/sections/MarkBullet";
 import MagneticButton from "@/components/primitives/MagneticButton";
+import RoiCalculator from "@/components/sections/RoiCalculator";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -75,6 +76,10 @@ export default function PricingPage() {
             </p>
           </div>
         </div>
+      </Section>
+
+      <Section className="pb-16">
+        <RoiCalculator />
       </Section>
 
       <Section className="pb-16">

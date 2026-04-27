@@ -287,7 +287,7 @@ export default function Nav() {
                         Featured · customer story
                       </p>
                       <h3 className="mt-3 text-base font-semibold leading-snug text-[var(--color-text)]">
-                        DFI Synergy moved their front desk in three weeks.
+                        DFI Synergy moved their front desk in three days.
                       </h3>
                       <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
                         Three chairs, four providers, no fallback diary. Same-day billing rate from
