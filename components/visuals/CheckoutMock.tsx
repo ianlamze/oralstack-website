@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { track } from "@/lib/analytics";
 
 type LineItem = { code: string; name: string; qty: number; price: number };
 type PaymentMode = "PayNow" | "Card" | "Cash" | "Bank";
@@ -56,12 +57,14 @@ export default function CheckoutMock() {
     markInteracted();
     if (paid) return;
     setSelected(m);
+    track("checkout_mode_picked", { mode: m });
   }
 
   function takePayment() {
     markInteracted();
     if (!selected || paid) return;
     setPaid({ mode: selected, at: nowSGT() });
+    track("checkout_payment_taken", { mode: selected });
   }
 
   function reset() {

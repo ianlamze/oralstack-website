@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { track } from "@/lib/analytics";
 
 type Tone = "sea" | "violet" | "sunset";
 
@@ -120,10 +121,12 @@ export default function ScheduleMock() {
     const lastStart = hours[hours.length - 1];
     if (target.start + a.len > lastStart + 1) {
       showToast("blocked", "Doesn't fit before close — pick an earlier slot.");
+      track("schedule_drag_blocked", { reason: "out_of_bounds", appt_id: a.id });
       return;
     }
     if (hasCollision(appointments, a.id, target.chair, target.start, a.len)) {
       showToast("blocked", "Slot taken — try another time.");
+      track("schedule_drag_blocked", { reason: "collision", appt_id: a.id });
       return;
     }
     setAppointments((prev) =>
@@ -133,6 +136,13 @@ export default function ScheduleMock() {
       "ok",
       `Confirmation sent → ${patientFromLabel(a.label)} · Chair ${target.chair + 1}, ${String(target.start).padStart(2, "0")}:00`,
     );
+    track("schedule_drag_completed", {
+      appt_id: a.id,
+      from_chair: a.chair,
+      from_start: a.start,
+      to_chair: target.chair,
+      to_start: target.start,
+    });
   }
 
   function markInteracted() {

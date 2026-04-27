@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Section from "@/components/primitives/Section";
+import { track } from "@/lib/analytics";
 
 type Pain = {
   id: string;
@@ -110,7 +111,10 @@ export default function WorkflowWizard() {
           <button
             key={p.id}
             type="button"
-            onClick={() => setPicked(p.id)}
+            onClick={() => {
+              setPicked(p.id);
+              track("wizard_pain_picked", { pain: p.id });
+            }}
             aria-pressed={picked === p.id}
             className={`text-left rounded-[var(--radius-lg)] border px-4 py-4 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
               picked === p.id

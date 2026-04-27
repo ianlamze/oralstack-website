@@ -9,6 +9,7 @@ import {
   type CapabilityId,
   type CompetitorId,
 } from "@/content/comparison-matrix";
+import { track } from "@/lib/analytics";
 
 type ChipProps = {
   active: boolean;
@@ -98,8 +99,10 @@ export default function CompareBuilder() {
   function toggleCap(id: CapabilityId) {
     setSelectedCaps((prev) => {
       const next = new Set(prev);
+      const willBeOn = !next.has(id);
       if (next.has(id)) next.delete(id);
       else next.add(id);
+      track("compare_capability_toggled", { capability: id, on: willBeOn });
       return next;
     });
   }
@@ -107,8 +110,10 @@ export default function CompareBuilder() {
   function toggleComp(id: CompetitorId) {
     setSelectedComps((prev) => {
       const next = new Set(prev);
+      const willBeOn = !next.has(id);
       if (next.has(id)) next.delete(id);
       else next.add(id);
+      track("compare_competitor_toggled", { competitor: id, on: willBeOn });
       return next;
     });
   }

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { track } from "@/lib/analytics";
 
 type Status = "Overdue" | "Contacted" | "Booked";
 
@@ -124,12 +125,16 @@ export default function RecallMock() {
 
   function toggleSort(key: SortKey) {
     markInteracted();
+    let nextDir: "asc" | "desc";
     if (key === sortKey) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+      nextDir = sortDir === "asc" ? "desc" : "asc";
+      setSortDir(nextDir);
     } else {
+      nextDir = key === "name" ? "asc" : "desc";
       setSortKey(key);
-      setSortDir(key === "name" ? "asc" : "desc");
+      setSortDir(nextDir);
     }
+    track("recall_sorted", { key, dir: nextDir });
   }
 
   function sendRecall(id: string) {
@@ -142,6 +147,7 @@ export default function RecallMock() {
   function handleRowClick(id: string) {
     markInteracted();
     sendRecall(id);
+    track("recall_sent", { id });
   }
 
   const runDemo = useCallback(() => {

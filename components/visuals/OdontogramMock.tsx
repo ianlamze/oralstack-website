@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { track } from "@/lib/analytics";
 
 type Condition = "caries" | "filling" | "crown" | "watch";
 
@@ -97,6 +98,7 @@ export default function OdontogramMock() {
   function pickTooth(n: number) {
     markInteracted();
     setSelected(n);
+    track("odontogram_tooth_selected", { tooth: n });
   }
 
   const runDemo = useCallback(() => {

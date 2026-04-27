@@ -2,6 +2,7 @@
 
 import { useId, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { track } from "@/lib/analytics";
 
 type ChairsBucket = "1" | "2-3" | "4-6" | "7+";
 
@@ -118,7 +119,10 @@ export default function RoiCalculator() {
                 <button
                   key={b}
                   type="button"
-                  onClick={() => setChairs(b)}
+                  onClick={() => {
+                    setChairs(b);
+                    track("roi_input_changed", { field: "chairs", value: b });
+                  }}
                   aria-pressed={chairs === b}
                   className={`min-h-[36px] px-3 py-1.5 rounded-md border text-[12px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
                     chairs === b
@@ -149,7 +153,11 @@ export default function RoiCalculator() {
               max={85}
               step={5}
               value={rate}
-              onChange={(e) => setRate(Number.parseInt(e.target.value, 10))}
+              onChange={(e) => {
+                const v = Number.parseInt(e.target.value, 10);
+                setRate(v);
+                track("roi_input_changed", { field: "rate", value: v });
+              }}
               className="w-full accent-[var(--color-ink)]"
             />
             <p className="text-[10px] text-[var(--color-text-soft)] tracking-[0.04em] flex justify-between">

@@ -2,6 +2,7 @@
 
 import { useId, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { track } from "@/lib/analytics";
 
 type SourceSystem = "plato" | "dentrix" | "open-dental" | "carestream" | "eaglesoft" | "paper";
 type ChairsBucket = "1" | "2-3" | "4-6" | "7+";
@@ -148,7 +149,11 @@ export default function MigrationEstimator({
             <select
               id={sourceId}
               value={source}
-              onChange={(e) => setSource(e.target.value as SourceSystem)}
+              onChange={(e) => {
+                const v = e.target.value as SourceSystem;
+                setSource(v);
+                track("estimator_input_changed", { field: "source", value: v });
+              }}
               className="rounded-md border border-[var(--color-border-strong)] bg-white px-3 py-2 text-sm text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
             >
               {(Object.entries(sourceLabel) as [SourceSystem, string][]).map(([k, v]) => (
@@ -165,7 +170,15 @@ export default function MigrationEstimator({
             </legend>
             <div className="flex flex-wrap gap-1.5">
               {chairsBuckets.map((b) => (
-                <Pill key={b} value={b} active={chairs === b} onSelect={(v) => setChairs(v)}>
+                <Pill
+                  key={b}
+                  value={b}
+                  active={chairs === b}
+                  onSelect={(v) => {
+                    setChairs(v);
+                    track("estimator_input_changed", { field: "chairs", value: v });
+                  }}
+                >
                   {b}
                 </Pill>
               ))}
@@ -178,7 +191,15 @@ export default function MigrationEstimator({
             </legend>
             <div className="flex flex-wrap gap-1.5">
               {yearsBuckets.map((b) => (
-                <Pill key={b} value={b} active={years === b} onSelect={(v) => setYears(v)}>
+                <Pill
+                  key={b}
+                  value={b}
+                  active={years === b}
+                  onSelect={(v) => {
+                    setYears(v);
+                    track("estimator_input_changed", { field: "years", value: v });
+                  }}
+                >
                   {b}
                 </Pill>
               ))}
