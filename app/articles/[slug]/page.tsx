@@ -6,6 +6,7 @@ import AnimateInView from "@/components/sections/AnimateInView";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import ArticleStickyBar from "@/components/sections/ArticleStickyBar";
 import InlineMagnetCapture from "@/components/forms/InlineMagnetCapture";
+import MigrationEstimator from "@/components/sections/MigrationEstimator";
 import { articles, getArticle, getRelatedArticles } from "@/content/articles";
 import { clusterDefaultCTA, clusterLabels } from "@/content/articles/types";
 import { getLeadMagnetForCluster } from "@/content/lead-magnets";
@@ -125,6 +126,12 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
           )}
         </div>
       </Section>
+
+      {slug === "plato-to-cloud-migration" && (
+        <Section className="pb-12">
+          <MigrationEstimator defaultSource="plato" />
+        </Section>
+      )}
 
       <Section className="pb-20 md:pb-24">
         <article className="max-w-[680px] grid gap-7 text-[var(--color-text-muted)] leading-relaxed text-base md:text-lg [&_p]:text-base md:[&_p]:text-lg [&_h2]:text-2xl md:[&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-[var(--color-text)] [&_h2]:mt-6 [&_h2]:mb-1 [&_h3]:text-lg md:[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-[var(--color-text)] [&_h3]:mt-4 [&_h3]:mb-1 [&_strong]:text-[var(--color-text)] [&_strong]:font-semibold [&_ul]:grid [&_ul]:gap-2 [&_ul]:list-none [&_ul]:pl-0 [&_ol]:grid [&_ol]:gap-2 [&_li]:relative [&_li]:pl-6 [&_ul_li]:before:content-[''] [&_ul_li]:before:absolute [&_ul_li]:before:left-0 [&_ul_li]:before:top-[0.7em] [&_ul_li]:before:w-1.5 [&_ul_li]:before:h-1.5 [&_ul_li]:before:rounded-full [&_ul_li]:before:bg-[var(--color-tide-deep)]">
