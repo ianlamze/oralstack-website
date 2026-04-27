@@ -27,14 +27,14 @@ type PagesFunction<E = unknown> = (context: {
   waitUntil: (p: Promise<unknown>) => void;
 }) => Promise<Response> | Response;
 
-type Intent = "question" | "migration" | "pilot";
+type Intent = "question" | "migration" | "pilot" | "demo";
 
 interface ContactPayload {
   intent: Intent;
   name?: string;
   email?: string;
   message?: string;
-  // migration-specific
+  // migration / pilot / demo-specific
   clinicName?: string;
   currentPms?: string;
   numChairs?: string | number;
@@ -43,8 +43,39 @@ interface ContactPayload {
   numLocations?: string | number;
   numChairsTotal?: string | number;
   startDate?: string;
+  // demo-specific (matches DemoRequestForm fields)
+  role?: string;
+  location?: string;
+  providers?: string | number;
+  preferredTimes?: string;
   // honeypot — bots fill, humans don't see
   website?: string;
+}
+
+/**
+ * DemoRequestForm at /book-a-demo posts with field names from its own schema
+ * (clinic, notes). Map them onto our canonical payload shape so the same
+ * email-building / validation / send pipeline serves all intents.
+ */
+function normalizeDemoPayload(raw: Record<string, unknown>): ContactPayload {
+  const get = (k: string): string | undefined => {
+    const v = raw[k];
+    return typeof v === "string" && v.trim() !== "" ? v.trim() : undefined;
+  };
+  return {
+    intent: "demo",
+    name: get("name"),
+    email: get("email"),
+    message: get("notes") ?? get("message"),
+    clinicName: get("clinic") ?? get("clinicName"),
+    currentPms: get("currentPms"),
+    numChairs: get("chairs") ?? get("numChairs"),
+    role: get("role"),
+    location: get("location"),
+    providers: get("providers"),
+    preferredTimes: get("preferredTimes"),
+    website: get("website"),
+  };
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,15 +107,20 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     question: "Quick question",
     migration: "Migration assessment request",
     pilot: "Pilot proposal request",
+    demo: "Demo request",
   };
   const subject = `[oralstack contact] ${intentLabel[p.intent]} — ${p.name ?? "(no name)"}`;
   const rows = [
     row("Intent", intentLabel[p.intent]),
     row("Name", p.name),
+    row("Role", p.role),
     row("Email", p.email),
     row("Clinic name", p.clinicName),
+    row("Location", p.location),
     row("Current PMS", p.currentPms),
     row("# chairs", p.numChairs),
+    row("# providers", p.providers),
+    row("Preferred times", p.preferredTimes),
     row("Timeline", p.timeline),
     row("# locations", p.numLocations),
     row("# chairs total", p.numChairsTotal),
@@ -99,10 +135,14 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     ``,
     `Intent: ${intentLabel[p.intent]}`,
     p.name && `Name: ${p.name}`,
+    p.role && `Role: ${p.role}`,
     p.email && `Email: ${p.email}`,
     p.clinicName && `Clinic: ${p.clinicName}`,
+    p.location && `Location: ${p.location}`,
     p.currentPms && `Current PMS: ${p.currentPms}`,
     p.numChairs && `# chairs: ${p.numChairs}`,
+    p.providers && `# providers: ${p.providers}`,
+    p.preferredTimes && `Preferred times: ${p.preferredTimes}`,
     p.timeline && `Timeline: ${p.timeline}`,
     p.numLocations && `# locations: ${p.numLocations}`,
     p.numChairsTotal && `# chairs total: ${p.numChairsTotal}`,
@@ -115,7 +155,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
 }
 
 function validate(p: ContactPayload): string | null {
-  if (!p.intent || !["question", "migration", "pilot"].includes(p.intent)) {
+  if (!p.intent || !["question", "migration", "pilot", "demo"].includes(p.intent)) {
     return "Missing or invalid intent.";
   }
   if (!p.name || p.name.trim().length < 2) return "Please enter your name.";
@@ -130,6 +170,10 @@ function validate(p: ContactPayload): string | null {
   if (p.intent === "pilot") {
     if (!p.clinicName) return "Please tell us your clinic / group name.";
     if (!p.numLocations) return "Please tell us how many locations.";
+  }
+  if (p.intent === "demo") {
+    if (!p.clinicName) return "Please tell us your clinic name.";
+    if (!p.location) return "Please tell us your clinic location.";
   }
   return null;
 }
@@ -165,12 +209,21 @@ async function sendViaResend(env: Env, p: ContactPayload): Promise<Response> {
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  let payload: ContactPayload;
+  let raw: Record<string, unknown>;
   try {
-    payload = (await request.json()) as ContactPayload;
+    raw = (await request.json()) as Record<string, unknown>;
   } catch {
     return bad("Could not parse request body.");
   }
+
+  // DemoRequestForm posts in its own shape (clinic / notes / no intent).
+  // Detect and normalize so the rest of the pipeline is uniform.
+  const isDemoShape =
+    typeof raw.intent !== "string" &&
+    (typeof raw.clinic === "string" || typeof raw.role === "string");
+  const payload: ContactPayload = isDemoShape
+    ? normalizeDemoPayload(raw)
+    : (raw as unknown as ContactPayload);
 
   // Honeypot: bots fill the hidden `website` field; real users never see it.
   if (payload.website && payload.website.trim() !== "") {

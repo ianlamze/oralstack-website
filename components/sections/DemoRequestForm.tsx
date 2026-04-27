@@ -4,7 +4,10 @@ import { useState, type FormEvent } from "react";
 
 type FormState = "idle" | "submitting" | "sent" | "error";
 
-const ENDPOINT = process.env.NEXT_PUBLIC_DEMO_FORM_ENDPOINT;
+// Defaults to the in-repo Cloudflare Pages Function. Override with
+// NEXT_PUBLIC_DEMO_FORM_ENDPOINT to use a third-party form service (Formspree,
+// Web3Forms, etc.) — useful for local-only dev when functions aren't running.
+const ENDPOINT = process.env.NEXT_PUBLIC_DEMO_FORM_ENDPOINT ?? "/api/contact";
 
 const labelClass = "text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)]";
 const fieldClass =

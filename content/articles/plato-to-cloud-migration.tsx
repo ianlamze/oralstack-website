@@ -12,6 +12,13 @@ export const platoToCloudMigration: Article = {
   cluster: "migration",
   tags: ["Plato", "migration", "Singapore", "PMS", "cloud"],
   readingMinutes: 9,
+  cta: {
+    eyebrow: "Plato vs Oralstack",
+    title: "Side-by-side comparison",
+    body: "Deployment, schedule UX, charting, billing, imaging, recall — what changes feature-by-feature when you leave Plato. Then book a migration walk-through if it lines up.",
+    buttonLabel: "See Oralstack vs Plato",
+    buttonHref: "/compare/plato",
+  },
   Body: ArticleBody,
 };
 

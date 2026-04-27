@@ -12,6 +12,13 @@ export const openDentalToManagedPmsMigration: Article = {
   cluster: "migration",
   tags: ["Open Dental", "migration", "managed SaaS", "self-hosted", "PMS"],
   readingMinutes: 9,
+  cta: {
+    eyebrow: "Open Dental vs Oralstack",
+    title: "Side-by-side comparison",
+    body: "Self-hosted Open Dental vs managed Oralstack — IT load, billing workflow, integrations, and what changes when you stop maintaining the database yourself.",
+    buttonLabel: "See Oralstack vs Open Dental",
+    buttonHref: "/compare/open-dental",
+  },
   Body: ArticleBody,
 };
 

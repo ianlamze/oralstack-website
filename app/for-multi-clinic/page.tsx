@@ -151,17 +151,25 @@ export default function ForMultiClinicPage() {
               Talk to us about a group pilot.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              30 minutes with a real engineer, on a multi-clinic sample dataset. We follow up with a
-              tailored proposal — usually a two-clinic pilot first, then group rollout — within two
-              working days.
+              Tell us how many locations, what your current PMS is, and a target start date. We
+              come back with a tailored pilot proposal — usually a two-clinic pilot first, then
+              group rollout — within two working days.
+            </p>
+            <p className="mt-4 text-sm">
+              <a
+                href="/book-a-demo"
+                className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
+              >
+                Or book a 30-minute demo first →
+              </a>
             </p>
           </div>
           <div className="md:justify-self-end">
             <a
-              href="/book-a-demo"
+              href="/contact#pilot"
               className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
             >
-              Book a demo →
+              Request pilot proposal →
             </a>
           </div>
         </div>
