@@ -29,7 +29,7 @@ export default function ComparePage() {
             <li key={c.slug}>
               <a
                 href={`/compare/${c.slug}`}
-                className="group block rounded-[var(--radius-xl)] border border-[var(--color-border)] p-6 md:p-8 hover:border-[var(--color-border-strong)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                className="card-hover group block rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white p-6 md:p-8"
               >
                 <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:items-baseline md:gap-8">
                   <div>

@@ -156,7 +156,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
                 <li key={r.slug}>
                   <a
                     href={`/articles/${r.slug}`}
-                    className="group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 hover:border-[var(--color-border-strong)] transition-colors h-full"
+                    className="card-hover group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 h-full"
                   >
                     <span className="inline-flex items-center text-[10px] font-medium uppercase tracking-[0.14em] rounded-full px-2 py-0.5 bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]">
                       {clusterLabels[r.cluster]}

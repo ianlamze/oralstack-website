@@ -20,9 +20,13 @@ export default function PullQuote({ quote, attribution, size = "lg" }: PullQuote
           className="font-semibold tracking-[-0.02em] leading-[1.05] text-balance text-[var(--color-text)]"
           style={{ fontSize: "var(--text-display-sm)" }}
         >
-          <span aria-hidden className="text-[var(--color-tide-deep)]">&ldquo;</span>
+          <span aria-hidden className="text-[var(--color-tide-deep)]">
+            &ldquo;
+          </span>
           {quote}
-          <span aria-hidden className="text-[var(--color-tide-deep)]">&rdquo;</span>
+          <span aria-hidden className="text-[var(--color-tide-deep)]">
+            &rdquo;
+          </span>
         </blockquote>
         <figcaption className="text-sm text-[var(--color-text-soft)] uppercase tracking-[0.16em]">
           {attribution}
