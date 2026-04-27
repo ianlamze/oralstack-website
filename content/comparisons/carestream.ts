@@ -99,7 +99,7 @@ export const carestream: Comparison = {
     title: "Where Carestream is the right call",
     intro: "We're not the right answer for every clinic.",
     bullets: [
-      "If your practice is heavily imaging-led — a CBCT-driven oral surgery or implant practice — Carestream's vertical integration of sensor → CBCT → PMS is genuinely best-in-class for that path.",
+      "If your practice is heavily imaging-led — a CBCT-driven oral surgery or implant practice — Carestream's vertical integration of sensor → CBCT → PMS is the strongest combo on the market for that path.",
       "If you're an orthodontic clinic specifically, OrthoTrac has decades of ortho-specific workflow tooling we don't replicate.",
       "If you're standardising on Carestream hardware across a chain and want a single vendor for imaging plus PMS, the integration story will be tighter with their PMS than with ours.",
     ],

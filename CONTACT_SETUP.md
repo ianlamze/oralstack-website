@@ -1,93 +1,46 @@
-# Contact form setup
+# Contact form
 
-The contact-form endpoint at `/api/contact` is a Cloudflare Pages Function
-(`functions/api/contact.ts`). It validates submissions and emails them to
-`hello@oralstack.com` via [Resend](https://resend.com).
+How the contact-form system is wired together. For setup walkthroughs and env-var inventory, follow the pointers below — this doc owns the *system specifics* (intents, anti-spam, WhatsApp).
 
-**One backend, four intents:**
-- `/contact` page — Quick question, Migration assessment, Pilot proposal forms (intents `question`, `migration`, `pilot`)
-- `/book-a-demo` page — DemoRequestForm (intent `demo`)
-- `/api/lead-magnet` is a separate function for lead-magnet captures (also via Resend)
+## What posts where
 
-Without the env vars below set, the endpoint still **accepts and validates** the
-form (so the UI works end-to-end), but it logs the submission to the Cloudflare
-Pages console instead of emailing. Useful for dev / pre-launch — but real users
-need real email forwarding, so finish this setup before launch.
+One backend Pages Function, four intents, all flowing through `POST /api/contact`:
 
-## One-time setup (~10 minutes)
+| Surface | Intent | Form component |
+|---|---|---|
+| `/contact` → Quick question tab | `question` | [`components/forms/QuickQuestionForm.tsx`](components/forms/QuickQuestionForm.tsx) |
+| `/contact` → Migration assessment tab | `migration` | [`components/forms/MigrationAssessmentForm.tsx`](components/forms/MigrationAssessmentForm.tsx) |
+| `/contact` → Pilot proposal tab | `pilot` | [`components/forms/PilotProposalForm.tsx`](components/forms/PilotProposalForm.tsx) |
+| `/book-a-demo` (when Cal.com env not set) | `demo` (auto-detected) | [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) |
 
-### 1. Sign up for Resend
+Lead-magnet capture flows through a separate function `POST /api/lead-magnet` with its own request shape — see [`functions/README.md`](functions/README.md).
 
-[resend.com](https://resend.com) — free tier is 100 emails/day, more than enough
-for early-stage contact-form volume.
+## Endpoint contract
 
-### 2. Verify `oralstack.com` in Resend
+Full request/response shapes, validation rules, and error modes live in [`functions/README.md`](functions/README.md). One-line summary: every form posts JSON, the function validates, sends mail via Resend, returns `{ ok: boolean, message }`.
 
-Resend dashboard → **Domains** → **Add Domain** → `oralstack.com`.
+Without `RESEND_API_KEY` set, the endpoint validates and **logs to the Cloudflare console** instead of sending. The form UI works either way — useful for dev.
 
-Resend will show 3–4 DNS records to add (SPF TXT, DKIM CNAME, return-path).
-Since `oralstack.com` is on Cloudflare DNS:
+## Environment variables
 
-1. Cloudflare dashboard → **DNS** → **Records** → **Add record** for each
-2. Each record: copy the Type / Name / Content from Resend verbatim
-3. **Important**: set Proxy status to **DNS only** (grey cloud), not Proxied
-4. Back in Resend → **Verify** — usually <1 min
+`RESEND_API_KEY`, `CONTACT_INBOX`, `CONTACT_FROM`, `SITE_URL`, plus `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` for the third-party-service escape hatch on `DemoRequestForm`. Full inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
-### 3. Get a Resend API key
+## Setup
 
-Resend dashboard → **API Keys** → **Create API Key** → name it `oralstack-prod`.
-Copy the key (starts with `re_…`).
+Operational setup (Resend signup, DNS verification, Cloudflare Pages env-var configuration, redeploy) is in [`CLOUDFLARE.md`](CLOUDFLARE.md) → **Step 7 — Form endpoints + Resend**. Don't reproduce here; do it there.
 
-### 4. Set the env vars in Cloudflare Pages
+## Anti-spam
 
-Cloudflare dashboard → **Workers & Pages** → **oralstack** → **Settings** →
-**Environment variables** → **Production**.
+Two cheap layers built in:
 
-Add:
+- **Honeypot** — hidden `website` input. Bots fill it; humans don't. Non-empty `website` returns `200 { ok: true }` and silently drops the message (no log, no mail). Bots don't retry.
+- **Per-intent validation** — required fields differ by intent, so generic spam payloads fail validation.
 
-| Name | Value |
-|---|---|
-| `RESEND_API_KEY` | `re_…` from step 3 |
-| `CONTACT_INBOX` | `hello@oralstack.com` (or wherever you want submissions to land) |
-| `CONTACT_FROM` | `Oralstack contact <noreply@oralstack.com>` |
+If real spam volume becomes annoying, add Cloudflare Turnstile — Pages has first-class support, no code change beyond a token in `.env.local` and a Turnstile widget in the form.
 
-(Optionally repeat for the **Preview** environment if you want preview deploys
-to actually send.)
+## Switching the WhatsApp number
 
-### 5. Redeploy
-
-```bash
-npm run deploy
-```
-
-The deploy script copies `functions/` into `out/functions/` so wrangler picks
-them up.
-
-### 6. Test
-
-- Visit `https://oralstack.com/contact`
-- Submit the "Quick question" form
-- Confirm an email lands in your inbox within ~30 seconds
-- Reply directly — the `Reply-To` header is set to the submitter's address
-
-If something fails: Cloudflare dashboard → **oralstack** → **Functions** →
-**Real-time logs** shows the function output (including any Resend API errors).
-
-## Anti-spam notes
-
-The function ships with two layers of cheap spam protection:
-
-- **Honeypot field**: a hidden `website` input that bots fill but humans never
-  see. Submissions with a non-empty `website` are silently dropped.
-- **Per-intent validation**: required fields differ per form, so generic bot
-  payloads typically fail validation.
-
-If real spam volume becomes annoying later, add Cloudflare Turnstile (free,
-seamless) — Pages has first-class support.
-
-## Switching the WhatsApp number later
-
-The WhatsApp number lives in [`content/contact.ts`](content/contact.ts):
+The number lives in [`content/contact.ts`](content/contact.ts):
 
 ```ts
 export const contactChannels = {
@@ -97,7 +50,8 @@ export const contactChannels = {
 };
 ```
 
-Update both fields, redeploy, done. The change propagates to:
-- The `/contact` page's WhatsApp card
-- The article sticky bar's WhatsApp button
-- Anywhere else that imports from `@/content/contact`
+Update both fields, redeploy, done. Propagates to:
+
+- The `/contact` page WhatsApp card
+- The article sticky bar WhatsApp button
+- Any other component that imports from `@/content/contact`

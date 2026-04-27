@@ -9,7 +9,8 @@ out
 next-env.d.ts
 .vercel
 oralstack-deck.pdf
-.claude/
+.claude/settings.local.json
+.claude/.credentials*
 tsconfig.tsbuildinfo
 tests/results
 playwright-report

@@ -25,6 +25,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Content check (voice + schema)
+        run: npm run check:content
+
       - name: Build (Next.js static export)
         run: npm run build
 

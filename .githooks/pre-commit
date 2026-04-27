@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Pre-commit hook: catches lint + type + content-voice errors before push.
+# Skip for emergencies with `git commit --no-verify` (use sparingly — CI runs
+# the same checks).
+#
+# Wired up automatically by `npm install` via the `prepare` script in
+# package.json (`git config core.hooksPath .githooks`).
+
+set -e
+
+echo "▸ lint"
+npm run lint --silent
+
+echo "▸ typecheck"
+npm run typecheck --silent
+
+echo "▸ content check"
+npm run check:content --silent
+
+echo "✓ pre-commit checks passed"

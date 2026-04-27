@@ -20,25 +20,62 @@ npm run build      # produces ./out/ — fully static HTML, drop on any static h
 npm run typecheck
 ```
 
-## Layout
+## Documentation
 
-- `app/` — Next.js App Router pages and global styles
-- `components/primitives/` — `Button`, `Section`
-- `components/sections/` — `Hero`, `TrustStrip`, `Workflows`, `CTA`, `Footer`, `ScheduleMock`
-- `content/` — typed content (workflows, site metadata) — edit copy here, not in JSX
+Start with [CLAUDE.md](CLAUDE.md) — it's the always-loaded agent memory and has a where-to-find-what table for the rest. Below is the full index.
+
+**Working on the site (devs + agents):**
+
+| Doc | What's in it |
+|---|---|
+| [CLAUDE.md](CLAUDE.md) | Five rules that trip agents most, where-to-find-what table, scripts, pre-deploy checklist |
+| [AGENTS.md](AGENTS.md) | Agent contract: startup order, context budget, copy/design rules, output format |
+| [EXTENDING.md](EXTENDING.md) | Copy-paste patterns for adding a comparison, article, vertical page, or workflow |
+| [MAINTAINABILITY.md](MAINTAINABILITY.md) | Point-in-time codebase health check: architecture, tooling grades, debt list |
+| [CHANGES.md](CHANGES.md) | Engineering changelog (different audience from the public `/changelog`) |
+| [ENV_VARS.md](ENV_VARS.md) | Master inventory of every env var: scope, required, used by, purpose |
+
+**Subsystem READMEs:**
+
+| Doc | What's in it |
+|---|---|
+| [functions/README.md](functions/README.md) | Cloudflare Pages Functions: endpoints, request/response shapes, env vars, error modes |
+| [tests/README.md](tests/README.md) | Playwright smoke + visual snapshots: coverage, run, update, add a route |
+| [components/visuals/README.md](components/visuals/README.md) | CSS-only product mock catalogue |
+
+**Operations + deploy:**
+
+| Doc | What's in it |
+|---|---|
+| [CLOUDFLARE.md](CLOUDFLARE.md) | 7-step Cloudflare Pages setup + troubleshooting runbook |
+| [CONTACT_SETUP.md](CONTACT_SETUP.md) | Contact-form system: intents, anti-spam, WhatsApp number |
+| [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md) | Google Search Console verification + sitemap submission |
+
+**Brand + voice (long-form references):**
+
+[`research/`](research/) is the agent-collaboration scaffold — read selectively, not all at once:
+
+- [`research/index/research-map.md`](research/index/research-map.md) — entry point for routing tasks
+- [`research/primitives/`](research/primitives/) — brand-identity, color-tokens, content, copy-voice, visuals
+- [`research/brand/`](research/brand/) — brand v2 guidelines (color, logo, motion, typography)
+- [`research/playbooks/`](research/playbooks/) — task procedures (add-article, add-changelog-entry, add-visualization, edit-case-study, new-page-add, redeploy)
+- [`research/sources/`](research/sources/) — three verbatim reference docs (agentic-workspace, copywriting-system, design-system-rules)
+- [`research/architecture.md`](research/architecture.md), [`research/seo/playbook.md`](research/seo/playbook.md), [`research/website-audit.md`](research/website-audit.md)
+
+## Code layout
+
+- `app/` — Next.js App Router pages, layouts, global styles
+- `components/primitives/` — atomic UI (Button, Section)
+- `components/sections/` — composed sections (Hero, Nav, Footer, ComparisonPage, etc.)
+- `components/visuals/` — CSS-only product mocks (ScheduleMock, OdontogramMock, …)
+- `components/forms/` — form components (QuickQuestion, MigrationAssessment, PilotProposal, ContactTabs)
+- `content/` — typed content (articles, comparisons, workflows, lead magnets) — **edit copy here, not in JSX**
 - `lib/` — small utilities
-- `research/` — agent-collaboration scaffold (see `AGENTS.md`):
-  - `sources/` — three reference docs verbatim (agentic-workspace, copywriting-system, design-system-rules)
-  - `index/research-map.md` — entry point for routing tasks
-  - `primitives/` — brand, voice, tokens, content
-  - `playbooks/` — task procedures (start with `new-page-add`)
-  - `patterns/components/` — testable contracts (hero, CTA)
-  - `website-audit.md` — competitive teardown of dental + premium SaaS sites (the rationale for the v1 page structure)
-- `AGENTS.md` — root agent contract
-- `MAINTAINABILITY.md` — point-in-time codebase health check (architecture, code quality, tooling, debt list, conventions)
-- `CHANGES.md` — engineering changelog
-- `CLOUDFLARE.md` — deploy and infra setup
-- `scripts/browse.mjs` — Playwright-based CLI for visual verification and competitor research
+- `functions/` — Cloudflare Pages Functions (the only dynamic surface)
+- `tests/` — Playwright smoke + visual snapshots
+- `scripts/` — `browse.mjs` (Playwright CLI), `check-content.mjs` (voice + schema lint), `generate-deck-pdf.sh`
+- `.claude/commands/` — slash commands for repeated agent workflows
+- `.githooks/` — pre-commit hook (lint + typecheck + content check)
 
 ## Brand rules (4 lines)
 

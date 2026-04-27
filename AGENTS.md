@@ -12,6 +12,7 @@ Brand wiki rules (preserved from the previous brand) still apply verbatim — se
 
 ## Startup (read in this order)
 
+0. `CLAUDE.md` is auto-loaded on every session — its where-to-find-what table is your navigation aid. No re-read needed.
 1. `AGENTS.md` (this file)
 2. `research/index/research-map.md`
 3. The one playbook the task class routes to (do not read multiple)
