@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowRight, Calendar, Mail, MessageCircle } from "lucide-react";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import ContactTabs from "@/components/forms/ContactTabs";
 import { contactChannels, mailtoLink, whatsappLink } from "@/content/contact";

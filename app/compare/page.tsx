@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import CompareBuilder from "@/components/sections/CompareBuilder";
+import CompareBuilder from "@/components/tools/CompareBuilder";
 import { comparisons } from "@/content/comparisons";
 
 export const metadata: Metadata = {

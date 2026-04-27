@@ -12,6 +12,7 @@ export const toothLedVsFormLedCharting: Article = {
   cluster: "clinical",
   tags: ["charting", "case notes", "FDI", "clinical workflow"],
   readingMinutes: 9,
+  canonical: true,
   Body: ArticleBody,
 };
 

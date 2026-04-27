@@ -3,10 +3,10 @@ import TrustStrip from "@/components/sections/TrustStrip";
 import ShipVelocityStrip from "@/components/sections/ShipVelocityStrip";
 import Workflows from "@/components/sections/Workflows";
 import ProductShowcase from "@/components/sections/ProductShowcase";
-import WorkflowWizard from "@/components/sections/WorkflowWizard";
+import WorkflowWizard from "@/components/tools/WorkflowWizard";
 import CustomerStoryStrip from "@/components/sections/CustomerStoryStrip";
 import CTA from "@/components/sections/CTA";
-import SectionDivider from "@/components/sections/SectionDivider";
+import SectionDivider from "@/components/ui/SectionDivider";
 
 export default function HomePage() {
   return (

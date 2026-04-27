@@ -8,9 +8,9 @@ import {
   KeyRound,
   MessageSquare,
 } from "lucide-react";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import StatusBadge from "@/components/sections/StatusBadge";
+import StatusBadge from "@/components/ui/StatusBadge";
 import { integrationCategories, type IntegrationIcon } from "@/content/integrations";
 
 export const metadata: Metadata = {

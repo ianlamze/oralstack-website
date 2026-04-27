@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import AnimateInView from "@/components/sections/AnimateInView";
+import AnimateInView from "@/components/motion/AnimateInView";
 import MagneticButton from "@/components/primitives/MagneticButton";
-import ArticleStickyBar from "@/components/sections/ArticleStickyBar";
+import ArticleStickyBar from "@/components/page/ArticleStickyBar";
 import InlineMagnetCapture from "@/components/forms/InlineMagnetCapture";
-import MigrationEstimator from "@/components/sections/MigrationEstimator";
+import MigrationEstimator from "@/components/tools/MigrationEstimator";
 import { articles, getArticle, getRelatedArticles } from "@/content/articles";
 import { clusterDefaultCTA, clusterLabels } from "@/content/articles/types";
 import { getLeadMagnetForCluster } from "@/content/lead-magnets";

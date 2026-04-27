@@ -2,7 +2,7 @@ import Button from "@/components/primitives/Button";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import Section from "@/components/primitives/Section";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
-import { HeroStagger, HeroItem } from "@/components/sections/HeroStagger";
+import { HeroStagger, HeroItem } from "@/components/motion/HeroStagger";
 
 export default function Hero() {
   return (

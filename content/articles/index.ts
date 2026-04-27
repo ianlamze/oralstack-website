@@ -42,7 +42,50 @@ export function getArticle(slug: string): Article | undefined {
 export function getArticlesByCluster(cluster: ArticleCluster): Article[] {
   return articles
     .filter((a) => a.cluster === cluster)
+    .sort((a, b) => {
+      // Canonical "start here" pins to top.
+      if (a.canonical && !b.canonical) return -1;
+      if (!a.canonical && b.canonical) return 1;
+      // Otherwise newest first.
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+    });
+}
+
+export function getArticlesByTagSlug(slug: string): Article[] {
+  return articles
+    .filter((a) =>
+      a.tags.some(
+        (t) =>
+          t
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "") === slug,
+      ),
+    )
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+}
+
+export function getAllTagSlugs(): { slug: string; original: string; count: number }[] {
+  const map = new Map<string, { original: string; count: number }>();
+  for (const a of articles) {
+    for (const t of a.tags) {
+      const slug = t
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      const existing = map.get(slug);
+      if (existing) {
+        existing.count++;
+      } else {
+        map.set(slug, { original: t, count: 1 });
+      }
+    }
+  }
+  return Array.from(map.entries())
+    .map(([slug, { original, count }]) => ({ slug, original, count }))
+    .sort((a, b) => b.count - a.count);
 }
 
 export function getRecentArticles(limit = 5): Article[] {

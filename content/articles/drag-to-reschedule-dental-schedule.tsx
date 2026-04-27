@@ -12,6 +12,7 @@ export const dragToRescheduleDentalSchedule: Article = {
   cluster: "front-desk",
   tags: ["scheduling", "drag and drop", "front desk", "Singapore", "timezone"],
   readingMinutes: 7,
+  canonical: true,
   Body: ArticleBody,
 };
 

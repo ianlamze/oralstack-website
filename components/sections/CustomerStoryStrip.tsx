@@ -1,5 +1,5 @@
 import Section from "@/components/primitives/Section";
-import AnimateInView from "@/components/sections/AnimateInView";
+import AnimateInView from "@/components/motion/AnimateInView";
 import { customers } from "@/content/customers";
 
 export default function CustomerStoryStrip() {

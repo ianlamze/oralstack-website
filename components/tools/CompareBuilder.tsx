@@ -8,7 +8,7 @@ import {
   defaultCapabilityIds,
   type CapabilityId,
   type CompetitorId,
-} from "@/content/comparison-matrix";
+} from "@/content/comparisons/matrix";
 import { track } from "@/lib/analytics";
 
 type ChipProps = {

@@ -1,5 +1,5 @@
 import Section from "@/components/primitives/Section";
-import AnimatedMark from "@/components/sections/AnimatedMark";
+import AnimatedMark from "@/components/ui/AnimatedMark";
 import BrandMotif from "@/components/visuals/BrandMotif";
 
 type PageHeaderProps = {

@@ -97,9 +97,28 @@ export type ArticleMetadata = {
   cluster: ArticleCluster;
   tags: string[];
   readingMinutes: number;
+  /**
+   * Marks this article as the canonical "start here" entry for its cluster.
+   * Canonical articles are pinned to the top of cluster lists regardless of
+   * publish date, with a "Start here" badge. At most one per cluster — if
+   * multiple are flagged the first is used.
+   */
+  canonical?: boolean;
   /** Optional override of the cluster-default CTA. */
   cta?: ArticleCTA;
 };
+
+/**
+ * Slug-ify a tag for use in URLs (e.g. "audit log" → "audit-log").
+ * Used for /articles/tag/[tag] routing.
+ */
+export function tagToSlug(tag: string): string {
+  return tag
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export type Article = ArticleMetadata & {
   Body: ComponentType;

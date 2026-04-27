@@ -30,10 +30,10 @@ Start with [CLAUDE.md](CLAUDE.md) — it's the always-loaded agent memory and ha
 |---|---|
 | [CLAUDE.md](CLAUDE.md) | Five rules that trip agents most, where-to-find-what table, scripts, pre-deploy checklist |
 | [AGENTS.md](AGENTS.md) | Agent contract: startup order, context budget, copy/design rules, output format |
-| [EXTENDING.md](EXTENDING.md) | Copy-paste patterns for adding a comparison, article, vertical page, or workflow |
-| [MAINTAINABILITY.md](MAINTAINABILITY.md) | Point-in-time codebase health check: architecture, tooling grades, debt list |
-| [CHANGES.md](CHANGES.md) | Engineering changelog (different audience from the public `/changelog`) |
-| [ENV_VARS.md](ENV_VARS.md) | Master inventory of every env var: scope, required, used by, purpose |
+| [EXTENDING.md](docs/EXTENDING.md) | Copy-paste patterns for adding a comparison, article, vertical page, or workflow |
+| [MAINTAINABILITY.md](docs/MAINTAINABILITY.md) | Point-in-time codebase health check: architecture, tooling grades, debt list |
+| [CHANGES.md](docs/CHANGES.md) | Engineering changelog (different audience from the public `/changelog`) |
+| [ENV_VARS.md](docs/ENV_VARS.md) | Master inventory of every env var: scope, required, used by, purpose |
 
 **Subsystem READMEs:**
 
@@ -47,9 +47,9 @@ Start with [CLAUDE.md](CLAUDE.md) — it's the always-loaded agent memory and ha
 
 | Doc | What's in it |
 |---|---|
-| [CLOUDFLARE.md](CLOUDFLARE.md) | 7-step Cloudflare Pages setup + troubleshooting runbook |
-| [CONTACT_SETUP.md](CONTACT_SETUP.md) | Contact-form system: intents, anti-spam, WhatsApp number |
-| [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md) | Google Search Console verification + sitemap submission |
+| [CLOUDFLARE.md](docs/CLOUDFLARE.md) | 7-step Cloudflare Pages setup + troubleshooting runbook |
+| [CONTACT_SETUP.md](docs/CONTACT_SETUP.md) | Contact-form system: intents, anti-spam, WhatsApp number |
+| [SEARCH_CONSOLE.md](docs/SEARCH_CONSOLE.md) | Google Search Console verification + sitemap submission |
 
 **Brand + voice (long-form references):**
 

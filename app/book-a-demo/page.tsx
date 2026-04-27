@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import DemoRequestForm from "@/components/sections/DemoRequestForm";
+import DemoRequestForm from "@/components/forms/DemoRequestForm";
 
 export const metadata: Metadata = {
   title: "Book a demo",

@@ -8,7 +8,7 @@ import {
   ScrollText,
   ShieldCheck,
 } from "lucide-react";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 
 export const metadata: Metadata = {

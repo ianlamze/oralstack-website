@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ComparisonPage from "@/components/sections/ComparisonPage";
+import ComparisonPage from "@/components/page/ComparisonPage";
 import { carestream } from "@/content/comparisons/carestream";
 
 export const metadata: Metadata = {

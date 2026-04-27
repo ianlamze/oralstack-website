@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Section from "@/components/primitives/Section";
-import Wordmark from "@/components/sections/Wordmark";
+import Wordmark from "@/components/ui/Wordmark";
 
 type WorkflowItem = {
   slug: string;

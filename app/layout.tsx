@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { siteMeta } from "@/content/site-meta";
 import Nav from "@/components/sections/Nav";
 import Footer from "@/components/sections/Footer";
-import ScrollProgress from "@/components/sections/ScrollProgress";
+import ScrollProgress from "@/components/motion/ScrollProgress";
 import "./globals.css";
 
 export const metadata: Metadata = {

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import AnimateInView from "@/components/sections/AnimateInView";
-import ArticlesView from "@/components/articles/ArticlesView";
+import AnimateInView from "@/components/motion/AnimateInView";
+import ArticlesView, { type ClusterWithArticles } from "@/components/articles/ArticlesView";
 import { articles, getArticlesByCluster, getRecentArticles } from "@/content/articles";
 import { clusterLabels, clusterOrder } from "@/content/articles/types";
 
@@ -31,6 +31,11 @@ export default function ArticlesPage() {
     return { cluster, count: arts.length, totalMin };
   });
 
+  const clustersWithArticles: ClusterWithArticles[] = clusterOrder.map((cluster) => ({
+    cluster,
+    articles: getArticlesByCluster(cluster),
+  }));
+
   return (
     <main>
       <PageHeader eyebrow="Articles & guides" title="Field guides for dental clinic operators." />
@@ -45,15 +50,17 @@ export default function ArticlesPage() {
         </p>
       </Section>
 
-      {/* Cluster jump-nav: one click to any topic cluster, with counts. */}
-      <Section className="pb-12">
+      {/* Sticky cluster jump-nav — anchored to id={cluster} targets, stays
+          visible while scrolling deep into the page so cross-cluster
+          navigation is one click from anywhere. */}
+      <Section className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklch,var(--color-canvas),transparent_15%)] border-b border-[var(--color-border)] py-3">
         <nav aria-label="Article topic clusters">
           <ul className="flex flex-wrap gap-2">
             {clusterStats.map(({ cluster, count }) => (
               <li key={cluster}>
                 <a
                   href={`#${cluster}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-3.5 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:border-[var(--color-tide)] hover:text-[var(--color-tide-deep)] transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-3 py-1.5 text-sm font-medium text-[var(--color-text-muted)] hover:border-[var(--color-tide)] hover:text-[var(--color-tide-deep)] transition-colors"
                 >
                   <span>{clusterLabels[cluster]}</span>
                   <span className="text-[var(--color-text-soft)] tabular-nums">· {count}</span>
@@ -65,7 +72,7 @@ export default function ArticlesPage() {
       </Section>
 
       {recent && (
-        <Section className="pb-16">
+        <Section className="pt-10 pb-16">
           <AnimateInView>
             <a
               href={`/articles/${recent.slug}`}
@@ -110,7 +117,7 @@ export default function ArticlesPage() {
       )}
 
       <Section className="pb-24 md:pb-32">
-        <ArticlesView />
+        <ArticlesView clustersWithArticles={clustersWithArticles} />
       </Section>
     </main>
   );

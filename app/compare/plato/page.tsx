@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ComparisonPage from "@/components/sections/ComparisonPage";
+import ComparisonPage from "@/components/page/ComparisonPage";
 import { plato } from "@/content/comparisons/plato";
 
 export const metadata: Metadata = {

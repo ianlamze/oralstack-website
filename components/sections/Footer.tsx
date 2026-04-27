@@ -1,5 +1,5 @@
 import Section from "@/components/primitives/Section";
-import Wordmark from "@/components/sections/Wordmark";
+import Wordmark from "@/components/ui/Wordmark";
 
 export default function Footer() {
   return (

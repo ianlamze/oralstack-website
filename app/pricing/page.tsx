@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import MarkBullet from "@/components/sections/MarkBullet";
+import MarkBullet from "@/components/ui/MarkBullet";
 import MagneticButton from "@/components/primitives/MagneticButton";
-import RoiCalculator from "@/components/sections/RoiCalculator";
+import RoiCalculator from "@/components/tools/RoiCalculator";
 
 export const metadata: Metadata = {
   title: "Pricing",

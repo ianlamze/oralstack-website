@@ -1,9 +1,9 @@
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import Reason from "@/components/sections/Reason";
-import Bullet from "@/components/sections/Bullet";
-import ComparisonTable from "@/components/sections/ComparisonTable";
-import MigrationEstimator from "@/components/sections/MigrationEstimator";
+import Reason from "@/components/ui/Reason";
+import Bullet from "@/components/ui/Bullet";
+import ComparisonTable from "@/components/page/ComparisonTable";
+import MigrationEstimator from "@/components/tools/MigrationEstimator";
 import type { Comparison } from "@/content/comparisons/types";
 
 const ESTIMATOR_SOURCES = ["plato", "dentrix", "open-dental", "carestream", "eaglesoft"] as const;

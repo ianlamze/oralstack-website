@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import Reason from "@/components/sections/Reason";
-import Bullet from "@/components/sections/Bullet";
-import AnimateInView from "@/components/sections/AnimateInView";
+import Reason from "@/components/ui/Reason";
+import Bullet from "@/components/ui/Bullet";
+import AnimateInView from "@/components/motion/AnimateInView";
 
 export const metadata: Metadata = {
   title: "For multi-clinic & DSO",

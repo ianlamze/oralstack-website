@@ -1,5 +1,5 @@
 import Section from "@/components/primitives/Section";
-import AnimateInView from "@/components/sections/AnimateInView";
+import AnimateInView from "@/components/motion/AnimateInView";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";

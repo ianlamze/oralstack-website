@@ -23,7 +23,7 @@ The previous review (graded **B+**) flagged ten debt items split into "do this m
 - ✅ **Linter** — Biome 2.4.13 configured with sane defaults. `npm run lint` exits clean (5 warnings, 0 errors).
 - ✅ **EXTENDING.md** — patterns guide for adding comparison pages, articles, vertical landers, workflows.
 - ✅ **Smoke tests** — Playwright runner with 46 load tests across desktop + mobile, 12 visual snapshot baselines covering high-traffic routes. Failures upload screenshot diffs as CI artifacts. See [tests/smoke.spec.ts](tests/smoke.spec.ts).
-- ✅ **Form endpoint scaffold** — Cloudflare Pages Functions at [functions/api/contact.ts](functions/api/contact.ts) (multi-intent: question / migration / pilot / demo) and [functions/api/lead-magnet.ts](functions/api/lead-magnet.ts) (lead-magnet email captures). Both validate, both forward to Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7).
+- ✅ **Form endpoint scaffold** — Cloudflare Pages Functions at [functions/api/contact.ts](../functions/api/contact.ts) (multi-intent: question / migration / pilot / demo) and [functions/api/lead-magnet.ts](../functions/api/lead-magnet.ts) (lead-magnet email captures). Both validate, both forward to Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7).
 - ✅ **Bundle pass** — Next 16 + Turbopack already tree-shakes lucide and motion to optimal; verified by inspection of `out/_next/static/chunks/`. `optimizePackageImports` config added for explicit intent though it produced no measurable delta.
 
 Two items remain, both already noted in the previous review:
@@ -107,7 +107,7 @@ The Cloudflare Pages Function for the demo form is the one new dynamic surface, 
 ## Documentation — grade A
 
 **What exists:**
-- [README.md](README.md), [AGENTS.md](AGENTS.md), [CHANGES.md](CHANGES.md), [CLOUDFLARE.md](CLOUDFLARE.md), [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md), [.env.example](.env.example), this file, and [EXTENDING.md](EXTENDING.md).
+- [README.md](../README.md), [AGENTS.md](../AGENTS.md), [CHANGES.md](CHANGES.md), [CLOUDFLARE.md](CLOUDFLARE.md), [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md), [.env.example](../.env.example), this file, and [EXTENDING.md](EXTENDING.md).
 - All the patterns that emerged organically (page shell, comparison shape, article shape, voice rules, pre-deploy checklist) are documented with copy-paste-able templates.
 - New contributor can land a content PR after reading EXTENDING.md, without needing to grep existing examples.
 

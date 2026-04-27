@@ -11,6 +11,7 @@ next-env.d.ts
 oralstack-deck.pdf
 .claude/settings.local.json
 .claude/.credentials*
+.claude/worktrees/
 tsconfig.tsbuildinfo
 tests/results
 playwright-report

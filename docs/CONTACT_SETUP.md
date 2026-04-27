@@ -13,11 +13,11 @@ One backend Pages Function, four intents, all flowing through `POST /api/contact
 | `/contact` → Pilot proposal tab | `pilot` | [`components/forms/PilotProposalForm.tsx`](components/forms/PilotProposalForm.tsx) |
 | `/book-a-demo` (when Cal.com env not set) | `demo` (auto-detected) | [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) |
 
-Lead-magnet capture flows through a separate function `POST /api/lead-magnet` with its own request shape — see [`functions/README.md`](functions/README.md).
+Lead-magnet capture flows through a separate function `POST /api/lead-magnet` with its own request shape — see [`functions/README.md`](../functions/README.md).
 
 ## Endpoint contract
 
-Full request/response shapes, validation rules, and error modes live in [`functions/README.md`](functions/README.md). One-line summary: every form posts JSON, the function validates, sends mail via Resend, returns `{ ok: boolean, message }`.
+Full request/response shapes, validation rules, and error modes live in [`functions/README.md`](../functions/README.md). One-line summary: every form posts JSON, the function validates, sends mail via Resend, returns `{ ok: boolean, message }`.
 
 Without `RESEND_API_KEY` set, the endpoint validates and **logs to the Cloudflare console** instead of sending. The form UI works either way — useful for dev.
 

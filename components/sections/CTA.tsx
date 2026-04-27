@@ -1,7 +1,7 @@
 import MagneticButton from "@/components/primitives/MagneticButton";
 import Section from "@/components/primitives/Section";
-import AnimateInView from "@/components/sections/AnimateInView";
-import AnimatedMark from "@/components/sections/AnimatedMark";
+import AnimateInView from "@/components/motion/AnimateInView";
+import AnimatedMark from "@/components/ui/AnimatedMark";
 
 export default function CTA() {
   return (

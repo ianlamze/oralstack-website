@@ -12,6 +12,7 @@ export const sameDayBillingDental: Article = {
   cluster: "billing",
   tags: ["billing", "discharge", "GST", "Singapore", "revenue cycle"],
   readingMinutes: 8,
+  canonical: true,
   Body: ArticleBody,
 };
 

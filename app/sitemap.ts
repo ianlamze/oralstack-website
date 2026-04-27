@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteMeta } from "@/content/site-meta";
 import { customers } from "@/content/customers";
-import { articles } from "@/content/articles";
+import { articles, getAllTagSlugs } from "@/content/articles";
 import { leadMagnets } from "@/content/lead-magnets";
 
 export const dynamic = "force-static";
@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  const tagUrls: MetadataRoute.Sitemap = getAllTagSlugs().map(({ slug }) => ({
+    url: `${base}/articles/tag/${slug}/`,
+    lastModified: now,
+    priority: 0.5,
+  }));
+
   const leadMagnetUrls: MetadataRoute.Sitemap = leadMagnets.map((m) => ({
     url: `${base}/lead-magnets/${m.slug}/`,
     lastModified: new Date(m.updatedAt ?? m.publishedAt),
@@ -35,6 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/workflows/`, lastModified: now, priority: 0.9 },
     { url: `${base}/articles/`, lastModified: now, priority: 0.8 },
     ...articleUrls,
+    ...tagUrls,
     { url: `${base}/lead-magnets/`, lastModified: now, priority: 0.7 },
     ...leadMagnetUrls,
     { url: `${base}/customers/`, lastModified: now, priority: 0.8 },

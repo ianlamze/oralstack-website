@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Section from "@/components/primitives/Section";
-import CaseStudyHero from "@/components/sections/CaseStudyHero";
-import PullQuote from "@/components/sections/PullQuote";
-import StatGrid from "@/components/sections/StatGrid";
+import CaseStudyHero from "@/components/page/CaseStudyHero";
+import PullQuote from "@/components/ui/PullQuote";
+import StatGrid from "@/components/ui/StatGrid";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";

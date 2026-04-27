@@ -12,6 +12,7 @@ export const platoToCloudMigration: Article = {
   cluster: "migration",
   tags: ["Plato", "migration", "Singapore", "PMS", "cloud"],
   readingMinutes: 9,
+  canonical: true,
   cta: {
     eyebrow: "Plato vs Oralstack",
     title: "Side-by-side comparison",

@@ -35,7 +35,7 @@ How to add the most common content surfaces. Each pattern is copy-paste-able and
    }
    ```
 
-4. **Add to sitemap** in [app/sitemap.ts](app/sitemap.ts), priority 0.8.
+4. **Add to sitemap** in [app/sitemap.ts](../app/sitemap.ts), priority 0.8.
 
 5. **Surface in nav** if relevant — the mega panel already links to `/compare` (the index, which auto-includes new comparisons via `comparisons` array).
 
@@ -88,7 +88,7 @@ That's it. The page renders with the standard 11-row table, three Reason blocks,
 
 ## Add a vertical landing page (~1 hour)
 
-Vertical pages segment messaging for different buyer shapes (solo clinic vs DSO). Pattern is in [app/for-solo-clinics/page.tsx](app/for-solo-clinics/page.tsx) and [app/for-multi-clinic/page.tsx](app/for-multi-clinic/page.tsx).
+Vertical pages segment messaging for different buyer shapes (solo clinic vs DSO). Pattern is in [app/for-solo-clinics/page.tsx](../app/for-solo-clinics/page.tsx) and [app/for-multi-clinic/page.tsx](../app/for-multi-clinic/page.tsx).
 
 1. **Create** `app/for-<segment>/page.tsx`. Shape:
    - `<PageHeader eyebrow="For X" title="..." />`
@@ -115,7 +115,7 @@ Workflows are the six core jobs the product is built around — front-desk, bill
 
 2. **Add the workflow data** to both [content/workflows.ts](content/workflows.ts) (short version, used on homepage) and [content/workflows-detailed.ts](content/workflows-detailed.ts) (long version, used on `/workflows`).
 
-3. **Wire the visual to the workflow** in [app/workflows/page.tsx](app/workflows/page.tsx) — the `visualsBySlug` map.
+3. **Wire the visual to the workflow** in [app/workflows/page.tsx](../app/workflows/page.tsx) — the `visualsBySlug` map.
 
 4. **Surface in nav** mega panel — the `workflowItems` array in [components/sections/Nav.tsx](components/sections/Nav.tsx) needs the new entry with a Lucide icon, label, and one-line description.
 

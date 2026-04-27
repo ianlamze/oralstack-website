@@ -105,7 +105,7 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 ## Step 7 — Form endpoints + Resend (~5 minutes)
 
-The site has two Cloudflare Pages Functions handling form submissions: [`/api/contact`](functions/api/contact.ts) (multi-intent: question, migration, pilot, demo) and [`/api/lead-magnet`](functions/api/lead-magnet.ts) (email capture). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
+The site has two Cloudflare Pages Functions handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo) and [`/api/lead-magnet`](../functions/api/lead-magnet.ts) (email capture). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
 Without `RESEND_API_KEY` set, both endpoints still validate submissions and log to the Cloudflare console instead of sending email. The form UI works either way.
 
@@ -153,7 +153,7 @@ When a deploy fails, the cause is almost always one of these. Check in order.
 
 - **Trailing slash mismatch.** Static export emits directories — `/foo/index.html` works at `/foo/` but redirects (308) at `/foo`. Always link with the trailing slash in nav and sitemap.
 - **Missing static export entry.** Dynamic routes (`/articles/[slug]`, `/compare/[slug]`) need their data registered in `content/<dir>/index.ts` so `generateStaticParams` picks them up. If the route is missing from the sitemap *and* 404s, that's the cause.
-- **Sitemap not updated.** Add the route to [`app/sitemap.ts`](app/sitemap.ts) and redeploy.
+- **Sitemap not updated.** Add the route to [`app/sitemap.ts`](../app/sitemap.ts) and redeploy.
 
 ### Form returns 502 in production
 

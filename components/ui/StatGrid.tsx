@@ -1,4 +1,4 @@
-import CountUp from "@/components/sections/CountUp";
+import CountUp from "@/components/ui/CountUp";
 
 type Stat = {
   value: string;

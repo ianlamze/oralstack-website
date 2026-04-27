@@ -80,7 +80,7 @@ async function listDataFiles(dir) {
   return entries
     .filter((e) => e.isFile() && /\.(ts|tsx)$/.test(e.name))
     .map((e) => e.name)
-    .filter((n) => n !== "types.ts" && n !== "index.ts");
+    .filter((n) => n !== "types.ts" && n !== "index.ts" && n !== "matrix.ts");
 }
 
 async function checkCollection(name) {

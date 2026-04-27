@@ -1,4 +1,4 @@
-import AnimateInView from "@/components/sections/AnimateInView";
+import AnimateInView from "@/components/motion/AnimateInView";
 import type { ComparisonRow } from "@/content/comparisons/types";
 
 type ComparisonTableProps = {

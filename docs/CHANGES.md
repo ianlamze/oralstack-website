@@ -27,7 +27,7 @@ A single-day end-to-end ship: scaffold to live at https://oralstack.com.
 - Decision: present DFI Synergy as an arms-length cornerstone customer, not as the operator-founder clinic. Ownership relationship is internal, never disclosed publicly.
 - Removed all "built where it ships", "operator-founder", "our own clinic", "design partner" framing
 - Quote attribution moved to roles only ("Practice manager", "Clinical director") — never "Founder, DFI Synergy & Oralstack"
-- Captured in agent memory as `feedback_dfi_synergy_framing.md` (loaded automatically into agent sessions; see [CLAUDE.md](CLAUDE.md) for the rule)
+- Captured in agent memory as `feedback_dfi_synergy_framing.md` (loaded automatically into agent sessions; see [CLAUDE.md](../CLAUDE.md) for the rule)
 
 **Brand v2**
 - New mark: stylised molar in three segments (navy crown, teal left root, navy right root) — recreated as clean SVG, not pixel-traced
@@ -41,7 +41,7 @@ A single-day end-to-end ship: scaffold to live at https://oralstack.com.
 - Added 3 more mocks: MessagingMock (WhatsApp recall), DicomViewerMock (single-image deep view), AnalyticsMock (chair utilisation heatmap) → 8 total
 - Added 6th workflow section "Operations & analytics" anchored by AnalyticsMock
 - All 8 mocks now wired into production pages
-- Library catalogue at [`components/visuals/README.md`](components/visuals/README.md) + dev review at [`/dev/visuals`](app/dev/visuals/page.tsx)
+- Library catalogue at [`components/visuals/README.md`](components/visuals/README.md) + dev review at [`/dev/visuals`](../app/dev/visuals/page.tsx)
 
 **Motion stack**
 - ScrollProgress (top-of-page bar), CountUp (stat reveals), MagneticButton (cursor magnetism on critical CTAs), AnimatedMark (3-segment assembly), MarkBullet + SectionDivider (decorative brand-mark elements), HeroStagger + HeroItem (hero entrance staging)
@@ -80,16 +80,16 @@ Replaced the link-row Nav with a real navigation system. Source: [`components/se
 The old fallback was a single mailto link with apologetic "Self-serve booking is being wired up" copy — high friction on mobile, no qualifying fields. Cal.com iframe still kicks in if `NEXT_PUBLIC_CALCOM_USERNAME` is set.
 
 - New: [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) — proper form (clinic, name, role, email, location, chairs, providers, current PMS dropdown, preferred times, notes). On submit it builds a structured mailto and opens the user's mail client with everything pre-filled. Drop-in replaceable later with a real endpoint (Cloudflare Pages Function / Formspree / Resend).
-- New layout in [`app/book-a-demo/page.tsx`](app/book-a-demo/page.tsx) — two-column on desktop (form + sidebar with Length / Format / Outcome cards plus a "What clinics ask first" trust strip linking to migration article, security, pricing). Single column on mobile.
+- New layout in [`app/book-a-demo/page.tsx`](../app/book-a-demo/page.tsx) — two-column on desktop (form + sidebar with Length / Format / Outcome cards plus a "What clinics ask first" trust strip linking to migration article, security, pricing). Single column on mobile.
 
 ### Compare pages
 
 Two new SEO-targeted comparison routes for high-intent searches ("Plato alternative", "Open Dental APAC").
 
-- [`/compare/plato`](app/compare/plato/page.tsx) — 11-row capability table (deployment, schedule UX, charting, billing, imaging, recall, multi-clinic, off-site access, hosting, updates, pricing) + 3 "why we built differently" sections + honest "where Plato is the right call" concession + CTA to demo + cross-link to the existing [Plato migration article](content/articles/plato-to-cloud-migration.tsx).
-- [`/compare/open-dental`](app/compare/open-dental/page.tsx) — same shape, OD-specific rows (license & cost, hosting, UX, customisation, US insurance, APAC compliance, imaging, updates, multi-clinic, setup time, community).
+- [`/compare/plato`](../app/compare/plato/page.tsx) — 11-row capability table (deployment, schedule UX, charting, billing, imaging, recall, multi-clinic, off-site access, hosting, updates, pricing) + 3 "why we built differently" sections + honest "where Plato is the right call" concession + CTA to demo + cross-link to the existing [Plato migration article](content/articles/plato-to-cloud-migration.tsx).
+- [`/compare/open-dental`](../app/compare/open-dental/page.tsx) — same shape, OD-specific rows (license & cost, hosting, UX, customisation, US insurance, APAC compliance, imaging, updates, multi-clinic, setup time, community).
 - Both pages match house voice: qualified claims, no "all-in-one" / "supercharge" / "best-in-class". Concession sections are real, not strawmen.
-- Sitemap: both URLs added at priority 0.8 in [`app/sitemap.ts`](app/sitemap.ts).
+- Sitemap: both URLs added at priority 0.8 in [`app/sitemap.ts`](../app/sitemap.ts).
 - Nav: both surfaced in the mega panel resource strip and in the mobile drawer.
 
 ### Tooling — `scripts/browse.mjs`
@@ -106,10 +106,10 @@ Defaults: 1280×800 viewport, full-page screenshot to `/tmp/browse-<ts>.png`, pr
 
 A second-pass content build to flesh out the site beyond the initial scaffold.
 
-- **`/about`** ([app/about/page.tsx](app/about/page.tsx)) — three "why we&apos;re building this" sections, a "how we work" rationale, and a placeholder founders array. Founder bios fill in via the `founders` const at the top of the file; until populated the page renders a graceful "team coming soon" notice. DFI Synergy is treated as an arms-length cornerstone customer per the framing rule (memory: `feedback_dfi_synergy_framing.md`).
-- **Three new comparison pages** — [`/compare/dentrix`](app/compare/dentrix/page.tsx), [`/compare/eaglesoft`](app/compare/eaglesoft/page.tsx), [`/compare/carestream`](app/compare/carestream/page.tsx). Same shape as the Plato/OD pages: 11-row capability table, three "why we built differently" sections, "where they&apos;re the right call" concession, CTA. Plus a [`/compare`](app/compare/page.tsx) index page listing all five comparisons.
-- **Vertical landing pages** — [`/for-solo-clinics`](app/for-solo-clinics/page.tsx) (1–4 chair, office-manager + dentist-owner buyer) and [`/for-multi-clinic`](app/for-multi-clinic/page.tsx) (DSO / multi-location, COO + VP Ops buyer). Different framing, different proof points, different CTA copy per segment.
-- **FAQ page** ([app/faq/page.tsx](app/faq/page.tsx)) — five categorised question groups (pricing, migration, security, integrations, about) with qualified, link-rich answers. ~17 Q&A entries.
+- **`/about`** ([app/about/page.tsx](../app/about/page.tsx)) — three "why we&apos;re building this" sections, a "how we work" rationale, and a placeholder founders array. Founder bios fill in via the `founders` const at the top of the file; until populated the page renders a graceful "team coming soon" notice. DFI Synergy is treated as an arms-length cornerstone customer per the framing rule (memory: `feedback_dfi_synergy_framing.md`).
+- **Three new comparison pages** — [`/compare/dentrix`](../app/compare/dentrix/page.tsx), [`/compare/eaglesoft`](../app/compare/eaglesoft/page.tsx), [`/compare/carestream`](../app/compare/carestream/page.tsx). Same shape as the Plato/OD pages: 11-row capability table, three "why we built differently" sections, "where they&apos;re the right call" concession, CTA. Plus a [`/compare`](../app/compare/page.tsx) index page listing all five comparisons.
+- **Vertical landing pages** — [`/for-solo-clinics`](../app/for-solo-clinics/page.tsx) (1–4 chair, office-manager + dentist-owner buyer) and [`/for-multi-clinic`](../app/for-multi-clinic/page.tsx) (DSO / multi-location, COO + VP Ops buyer). Different framing, different proof points, different CTA copy per segment.
+- **FAQ page** ([app/faq/page.tsx](../app/faq/page.tsx)) — five categorised question groups (pricing, migration, security, integrations, about) with qualified, link-rich answers. ~17 Q&A entries.
 - **Three new articles** — [choosing-dental-pms-apac-2026](content/articles/choosing-dental-pms-apac-2026.tsx) (migration cluster, buyer's checklist), [open-dental-to-managed-pms-migration](content/articles/open-dental-to-managed-pms-migration.tsx) (migration cluster, mirror of the Plato playbook for OD), [tenant-isolation-dental-saas](content/articles/tenant-isolation-dental-saas.tsx) (compliance cluster, four questions to ask vendors with code examples).
 - **Wired in** — sitemap updated with the eleven new URLs; footer reorganised into Product / Solutions / Company columns to surface the new pages; nav mega panel resource strip swapped from "Articles · vs Plato · vs Open Dental · Integrations · Changelog" to "For solo · For DSOs · Compare · Articles · FAQ"; mobile drawer expanded with all new links.
 

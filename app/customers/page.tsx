@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import CustomerCard from "@/components/sections/CustomerCard";
+import CustomerCard from "@/components/page/CustomerCard";
 import { customers } from "@/content/customers";
 
 export const metadata: Metadata = {

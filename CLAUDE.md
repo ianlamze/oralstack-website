@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Project-level memory for agents working on the **Oralstack** marketing site. Always loaded — keep tight. For deeper context, see [AGENTS.md](AGENTS.md), [EXTENDING.md](EXTENDING.md), [MAINTAINABILITY.md](MAINTAINABILITY.md).
+Project-level memory for agents working on the **Oralstack** marketing site. Always loaded — keep tight. For deeper context, see [AGENTS.md](AGENTS.md), [EXTENDING.md](docs/EXTENDING.md), [MAINTAINABILITY.md](docs/MAINTAINABILITY.md).
 
 ## What this is
 
@@ -31,7 +31,7 @@ Static Next.js 16 marketing site at https://oralstack.com. Static export to `out
 | Site metadata, env-flagged URLs | [content/site-meta.ts](content/site-meta.ts) |
 | Sitemap | [app/sitemap.ts](app/sitemap.ts) |
 
-When adding a comparison, article, vertical page, or workflow — **read [EXTENDING.md](EXTENDING.md) first**. It has copy-paste-ready patterns that match the conventions.
+When adding a comparison, article, vertical page, or workflow — **read [EXTENDING.md](docs/EXTENDING.md) first**. It has copy-paste-ready patterns that match the conventions.
 
 ## Scripts
 
@@ -71,7 +71,7 @@ CI runs all of these on every PR ([.github/workflows/ci.yml](.github/workflows/c
 - No backend, database, or API routes — this is a **static export**. Cloudflare Pages Functions live in [functions/](functions/) for the contact / lead-magnet endpoints; that's the entire dynamic surface.
 - No CMS until non-engineers need to edit copy.
 - No Storybook or visual regression beyond the existing Playwright snapshots.
-- No new shared components until a pattern is duplicated across 3+ pages with ≥30 LOC each (see [EXTENDING.md](EXTENDING.md) "When to factor out").
+- No new shared components until a pattern is duplicated across 3+ pages with ≥30 LOC each (see [EXTENDING.md](docs/EXTENDING.md) "When to factor out").
 - No multi-paragraph comments or docstrings.
 - No raw hex / px / shadow values inside components — everything goes through tokens in [app/globals.css](app/globals.css).
 

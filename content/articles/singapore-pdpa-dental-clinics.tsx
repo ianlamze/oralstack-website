@@ -12,6 +12,7 @@ export const singaporePdpaDentalClinics: Article = {
   cluster: "compliance",
   tags: ["PDPA", "Singapore", "tenant isolation", "compliance", "audit log"],
   readingMinutes: 9,
+  canonical: true,
   Body: ArticleBody,
 };
 

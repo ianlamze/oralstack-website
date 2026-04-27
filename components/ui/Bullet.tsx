@@ -1,4 +1,4 @@
-import MarkBullet from "@/components/sections/MarkBullet";
+import MarkBullet from "@/components/ui/MarkBullet";
 
 type BulletProps = {
   children: React.ReactNode;

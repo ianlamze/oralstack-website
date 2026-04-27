@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PageHeader from "@/components/sections/PageHeader";
+import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import { changelog, type ChangelogEntry } from "@/content/changelog";
 

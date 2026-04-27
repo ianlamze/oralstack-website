@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Wordmark from "@/components/sections/Wordmark";
+import Wordmark from "@/components/ui/Wordmark";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ComparisonPage from "@/components/sections/ComparisonPage";
+import ComparisonPage from "@/components/page/ComparisonPage";
 import { eaglesoft } from "@/content/comparisons/eaglesoft";
 
 export const metadata: Metadata = {
