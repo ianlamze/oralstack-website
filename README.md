@@ -30,10 +30,13 @@ npm run typecheck
 - `research/` — agent-collaboration scaffold (see `AGENTS.md`):
   - `sources/` — three reference docs verbatim (agentic-workspace, copywriting-system, design-system-rules)
   - `index/research-map.md` — entry point for routing tasks
-  - `primitives/` — brand, voice, tokens, content
-  - `playbooks/` — task procedures (start with `new-page-add`)
-  - `patterns/components/` — testable contracts (hero, CTA)
+  - `primitives/` — brand-identity, color-tokens, content, copy-voice, visuals
+  - `brand/` — brand v2 guidelines (color, logo, motion, typography)
+  - `playbooks/` — task procedures (add-article, add-changelog-entry, add-visualization, edit-case-study, new-page-add, redeploy)
+  - `seo/playbook.md` — SEO/keyword strategy
+  - `architecture.md` — deployment & data-flow architecture
   - `website-audit.md` — competitive teardown of dental + premium SaaS sites (the rationale for the v1 page structure)
+- `CLAUDE.md` — project memory always loaded into agent sessions
 - `AGENTS.md` — root agent contract
 - `MAINTAINABILITY.md` — point-in-time codebase health check (architecture, code quality, tooling, debt list, conventions)
 - `CHANGES.md` — engineering changelog

@@ -27,7 +27,7 @@ A single-day end-to-end ship: scaffold to live at https://oralstack.com.
 - Decision: present DFI Synergy as an arms-length cornerstone customer, not as the operator-founder clinic. Ownership relationship is internal, never disclosed publicly.
 - Removed all "built where it ships", "operator-founder", "our own clinic", "design partner" framing
 - Quote attribution moved to roles only ("Practice manager", "Clinical director") — never "Founder, DFI Synergy & Oralstack"
-- Captured in [memory: project_dfi_synergy_framing.md](file:///Users/ianlam/.claude/projects/-Users-ianlam-Documents-Agent-Projects-Dentologic/memory/project_dfi_synergy_framing.md)
+- Captured in agent memory as `feedback_dfi_synergy_framing.md` (loaded automatically into agent sessions; see [CLAUDE.md](CLAUDE.md) for the rule)
 
 **Brand v2**
 - New mark: stylised molar in three segments (navy crown, teal left root, navy right root) — recreated as clean SVG, not pixel-traced
