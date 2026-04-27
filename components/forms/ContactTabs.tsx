@@ -101,11 +101,7 @@ export default function ContactTabs() {
 
   return (
     <div className="grid gap-8">
-      <div
-        role="tablist"
-        aria-label="Contact form types"
-        className="flex flex-wrap gap-2"
-      >
+      <div role="tablist" aria-label="Contact form types" className="flex flex-wrap gap-2">
         {TABS.map((t) => {
           const isActive = t.id === active;
           return (
@@ -135,6 +131,7 @@ export default function ContactTabs() {
         id={`contact-panel-${activeTab.id}`}
         role="tabpanel"
         aria-labelledby={`contact-tab-${activeTab.id}`}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: WAI-ARIA tabs pattern — the tabpanel must be focusable so keyboard users can Tab from the active tab into the panel content.
         tabIndex={0}
         className="grid gap-6 focus:outline-none"
       >

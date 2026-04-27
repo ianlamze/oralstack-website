@@ -43,39 +43,13 @@ interface ContactPayload {
   numLocations?: string | number;
   numChairsTotal?: string | number;
   startDate?: string;
-  // demo-specific (matches DemoRequestForm fields)
+  // demo-specific
   role?: string;
   location?: string;
   providers?: string | number;
   preferredTimes?: string;
   // honeypot — bots fill, humans don't see
   website?: string;
-}
-
-/**
- * DemoRequestForm at /book-a-demo posts with field names from its own schema
- * (clinic, notes). Map them onto our canonical payload shape so the same
- * email-building / validation / send pipeline serves all intents.
- */
-function normalizeDemoPayload(raw: Record<string, unknown>): ContactPayload {
-  const get = (k: string): string | undefined => {
-    const v = raw[k];
-    return typeof v === "string" && v.trim() !== "" ? v.trim() : undefined;
-  };
-  return {
-    intent: "demo",
-    name: get("name"),
-    email: get("email"),
-    message: get("notes") ?? get("message"),
-    clinicName: get("clinic") ?? get("clinicName"),
-    currentPms: get("currentPms"),
-    numChairs: get("chairs") ?? get("numChairs"),
-    role: get("role"),
-    location: get("location"),
-    providers: get("providers"),
-    preferredTimes: get("preferredTimes"),
-    website: get("website"),
-  };
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -216,14 +190,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return bad("Could not parse request body.");
   }
 
-  // DemoRequestForm posts in its own shape (clinic / notes / no intent).
-  // Detect and normalize so the rest of the pipeline is uniform.
-  const isDemoShape =
-    typeof raw.intent !== "string" &&
-    (typeof raw.clinic === "string" || typeof raw.role === "string");
-  const payload: ContactPayload = isDemoShape
-    ? normalizeDemoPayload(raw)
-    : (raw as unknown as ContactPayload);
+  const payload = raw as unknown as ContactPayload;
 
   // Honeypot: bots fill the hidden `website` field; real users never see it.
   if (payload.website && payload.website.trim() !== "") {

@@ -29,9 +29,7 @@ export default function PageHeader({
   return (
     <Section
       className={
-        isDisplay
-          ? "relative pt-16 md:pt-24 pb-12 md:pb-16 overflow-hidden"
-          : "pt-16 md:pt-24 pb-8"
+        isDisplay ? "relative pt-16 md:pt-24 pb-12 md:pb-16 overflow-hidden" : "pt-16 md:pt-24 pb-8"
       }
     >
       {isDisplay && (

@@ -19,7 +19,7 @@ type CustomerCardProps = {
 export default function CustomerCard({ customer }: CustomerCardProps) {
   const isLinked = Boolean(customer.caseStudySlug);
   const inner = (
-    <article className="grid gap-5 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 h-full transition-colors duration-150 hover:border-[var(--color-border-strong)]">
+    <article className="card-hover grid gap-5 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 h-full">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.16em] text-[var(--color-text-soft)]">

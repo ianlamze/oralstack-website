@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 type Status = "idle" | "submitting" | "success" | "error";
 
 type Props = {
-  intent: "question" | "migration" | "pilot";
+  intent: "question" | "migration" | "pilot" | "demo";
   /** Visible button label. */
   submitLabel?: string;
   children: ReactNode;
@@ -108,6 +108,7 @@ export function Field({
   required = false,
   placeholder,
   autoComplete,
+  min,
 }: {
   label: string;
   name: string;
@@ -115,6 +116,7 @@ export function Field({
   required?: boolean;
   placeholder?: string;
   autoComplete?: string;
+  min?: number;
 }) {
   return (
     <label className="grid gap-1.5">
@@ -128,6 +130,7 @@ export function Field({
         required={required}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        min={min}
         className={fieldBase}
       />
     </label>

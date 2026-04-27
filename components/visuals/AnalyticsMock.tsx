@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
 const utilisation: number[][] = [
@@ -78,11 +80,8 @@ export default function AnalyticsMock() {
         })}
 
         {utilisation.map((row, ri) => (
-          <>
-            <div
-              key={`label-${ri}`}
-              className="text-[10px] font-medium text-[var(--color-text-muted)] truncate pr-2"
-            >
+          <Fragment key={`row-${ri}`}>
+            <div className="text-[10px] font-medium text-[var(--color-text-muted)] truncate pr-2">
               {chairs[ri]}
             </div>
             {row.map((v, ci) => {
@@ -99,7 +98,7 @@ export default function AnalyticsMock() {
                 />
               );
             })}
-          </>
+          </Fragment>
         ))}
       </div>
 

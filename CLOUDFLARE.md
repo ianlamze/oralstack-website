@@ -124,7 +124,7 @@ To activate real email forwarding:
    - `SITE_URL` — public origin for absolute lead-magnet URLs (default: `https://oralstack.com`)
 5. Redeploy. Submissions land in `hello@oralstack.com` within a second.
 
-DemoRequestForm at `/book-a-demo` posts to `/api/contact` by default; if you want a third-party form service instead (Formspree etc.), set `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` in `.env.local` to override.
+DemoRequestForm at `/book-a-demo` posts to `/api/contact` with `intent: "demo"`, the same pipeline as the `/contact` forms.
 
 Function response codes:
 - `200 { ok: true, message }` — submission accepted; email sent if Resend configured, logged otherwise.
@@ -132,23 +132,6 @@ Function response codes:
 - `502` — Resend rejected the request (check Cloudflare function logs).
 
 See [CONTACT_SETUP.md](CONTACT_SETUP.md) for the consolidated setup walkthrough.
-
-### Optional: route DemoRequestForm at a third-party service
-
-If you'd rather use Formspree / Web3Forms / similar instead of the in-repo Pages Function:
-
-1. Sign up at [formspree.io](https://formspree.io) (free tier: 50 submissions/month).
-2. Create a form, destination email `hello@oralstack.com`.
-3. Copy the endpoint URL (e.g., `https://formspree.io/f/xxxxxxxx`).
-4. Add to `.env.local` to override the default `/api/contact`:
-
-```bash
-NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
-```
-
-5. Redeploy.
-
-The DemoRequestForm payload is JSON `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes }`. The in-repo `/api/contact` function detects this shape and normalizes it to `intent: "demo"` automatically.
 
 ## Quick checklist
 
