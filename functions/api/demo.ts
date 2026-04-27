@@ -1,4 +1,10 @@
-/// <reference types="@cloudflare/workers-types" />
+// Cloudflare Pages Function — POST /api/demo
+// Inline PagesFunction type avoids the @cloudflare/workers-types dev dep.
+type PagesFunction<E = unknown> = (context: {
+  request: Request;
+  env: E;
+  waitUntil: (p: Promise<unknown>) => void;
+}) => Promise<Response> | Response;
 // Cloudflare Pages Function — POST /api/demo
 //
 // Receives the demo-request form payload, validates, and forwards to a
