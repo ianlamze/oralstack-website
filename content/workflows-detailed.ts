@@ -13,10 +13,11 @@ export const workflowsDetailed: WorkflowDetail[] = [
   {
     slug: "front-desk",
     eyebrow: "Front desk",
-    title: "Schedule that responds in three seconds.",
+    title: "Scheduling that keeps up with the front desk.",
     body: "The schedule isn't a thing the front desk consults — it's the thing they drive. Drag a 10:00 to 14:00 in three seconds. Search a returning patient in two keystrokes. Register a new patient inline without leaving the day view.",
     bullets: [
       "Drag-to-reschedule with timezone-correct commits — no UTC drift on reload",
+      "Open slots surface automatically — type 'endo, 60 min, Dr. Lim' and see the next three available, no week-by-week clicking",
       "Three-chair to multi-chair layouts; provider columns render dynamically",
       "Recall candidates surface 3 weeks before their due date",
       "New-patient registration mirrored from the retired Plato booking form, field-for-field, for migrating clinics",
@@ -64,6 +65,21 @@ export const workflowsDetailed: WorkflowDetail[] = [
     ],
     replaces: 'Separate imaging desktop apps · USB transfers · "where\'s that radiograph" hunts',
     articleSlug: "dicom-in-chart-vs-separate-viewer",
+  },
+  {
+    slug: "online-bookings",
+    eyebrow: "Online bookings",
+    title: "Patients book the slot the schedule actually has open.",
+    body: "An Oralstack booking page the clinic shares with patients. The patient sees only slots that fit the procedure, the duration, and the provider — so the front desk doesn't field a callback to reshuffle, and a patient can't claim a slot the chair doesn't actually have free.",
+    bullets: [
+      "Hosted on Oralstack — no DNS or web setup needed from the clinic",
+      "Slot filter: procedure, duration, provider, preferred window — only fitting slots are shown",
+      "Bookings commit straight into the front-desk schedule, timezone-correct, no double-bookings",
+      "Recall messages link to the booking page — overdue patients self-serve into the next open slot",
+    ],
+    replaces:
+      'Phone-tree appointment hunting · "let me check Tuesday… no? Wednesday?" · WhatsApp back-and-forth to settle a time',
+    articleSlug: "reducing-no-show-rates",
   },
   {
     slug: "recall",

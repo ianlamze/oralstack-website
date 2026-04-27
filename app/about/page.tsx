@@ -30,7 +30,11 @@ const founders: Founder[] = [
 export default function AboutPage() {
   return (
     <main>
-      <PageHeader eyebrow="About" title="Built around what dental clinics actually run." />
+      <PageHeader
+        eyebrow="About"
+        title="Built around what dental clinics actually run."
+        variant="display"
+      />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">

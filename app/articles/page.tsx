@@ -109,7 +109,7 @@ export default function ArticlesPage() {
                       <AnimateInView delay={Math.min(i * 0.04, 0.16)}>
                         <a
                           href={`/articles/${a.slug}`}
-                          className="group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 md:p-7 hover:border-[var(--color-border-strong)] hover:shadow-[0_1px_0_rgba(0,0,0,0.02),0_12px_40px_-30px_rgba(20,30,60,0.18)] transition-[box-shadow,border-color,transform] duration-200 ease-out hover:-translate-y-0.5"
+                          className="card-hover group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 md:p-7"
                         >
                           <div className="flex flex-wrap items-center gap-3 text-xs">
                             <time

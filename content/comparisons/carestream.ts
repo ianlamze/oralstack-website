@@ -28,6 +28,16 @@ export const carestream: Comparison = {
       us: "Drag-driven schedule built as the front-desk's primary tool. Reschedule in three seconds, timezone-correct.",
     },
     {
+      capability: "Find next available slot",
+      them: "Fill-gap and pending-state features available; procedure-aware slot search varies by deployment.",
+      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+    },
+    {
+      capability: "Patient self-booking",
+      them: "Patient self-scheduling via secure portal, on supported deployments.",
+      us: "Native, and the slot filter is procedure + duration + provider — not just calendar time.",
+    },
+    {
       capability: "Charting",
       them: "Tooth-charting and clinical notes; integration to imaging via the chart timeline is a Carestream strength.",
       us: "FDI charting with surface-specific notes (M/D/B/L/O) and per-procedure templates. Imaging in the chart natively.",

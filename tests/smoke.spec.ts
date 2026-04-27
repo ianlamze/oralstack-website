@@ -20,6 +20,8 @@ const ROUTES = [
   { path: "/about/", title: /About/ },
   { path: "/faq/", title: /FAQ/ },
   { path: "/book-a-demo/", title: /demo/i },
+  { path: "/contact/", title: /Contact/ },
+  { path: "/lead-magnets/", title: /Free dental clinic ops references/ },
   { path: "/changelog/", title: /Changelog/ },
   { path: "/security/", title: /Security/ },
   { path: "/privacy/", title: /Privacy/ },

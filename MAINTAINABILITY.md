@@ -23,7 +23,7 @@ The previous review (graded **B+**) flagged ten debt items split into "do this m
 - ✅ **Linter** — Biome 2.4.13 configured with sane defaults. `npm run lint` exits clean (5 warnings, 0 errors).
 - ✅ **EXTENDING.md** — patterns guide for adding comparison pages, articles, vertical landers, workflows.
 - ✅ **Smoke tests** — Playwright runner with 46 load tests across desktop + mobile, 12 visual snapshot baselines covering high-traffic routes. Failures upload screenshot diffs as CI artifacts. See [tests/smoke.spec.ts](tests/smoke.spec.ts).
-- ✅ **Form endpoint scaffold** — Cloudflare Pages Function at [functions/api/demo.ts](functions/api/demo.ts) handles `POST /api/demo`, validates, and forwards to Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7 Path A).
+- ✅ **Form endpoint scaffold** — Cloudflare Pages Functions at [functions/api/contact.ts](functions/api/contact.ts) (multi-intent: question / migration / pilot / demo) and [functions/api/lead-magnet.ts](functions/api/lead-magnet.ts) (lead-magnet email captures). Both validate, both forward to Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7).
 - ✅ **Bundle pass** — Next 16 + Turbopack already tree-shakes lucide and motion to optimal; verified by inspection of `out/_next/static/chunks/`. `optimizePackageImports` config added for explicit intent though it produced no measurable delta.
 
 Two items remain, both already noted in the previous review:
@@ -39,7 +39,7 @@ File counts and LOC by directory (.ts/.tsx/.css/.mjs):
   app/           32 files   3,837 LOC   (down from 5,212 — compare pages thinned)
   components/    37 files   2,935 LOC   (up from 2,845 — new shared atoms)
   content/       32 files   4,690 LOC   (up from 4,511 — new comparison data files)
-  functions/      1 file      154 LOC   (new — Pages Function for /api/demo)
+  functions/      2 files     ~430 LOC  (Pages Functions for /api/contact + /api/lead-magnet)
   scripts/        1 file       63 LOC
   tests/          1 file       79 LOC   (new — Playwright smoke suite)
   lib/            1 file        3 LOC
@@ -123,7 +123,7 @@ The Cloudflare Pages Function for the demo form is the one new dynamic surface, 
 
 **Real product screenshots** — the lone remaining "gap to A" item from the previous review. CSS visualisations are clever, modern, and consistent; replacing one or two with actual product shots (especially on the imaging workflow) is a marketing-conversion lift, not a maintainability item. Estimated half-day from screenshot capture to component swap.
 
-**Activate the form endpoint** — function code is in. Sign up at Resend, verify the domain, set `RESEND_API_KEY` in Cloudflare Pages env vars, set `NEXT_PUBLIC_DEMO_FORM_ENDPOINT=/api/demo` in `.env.local`, redeploy. Submissions land in `hello@oralstack.com` immediately. ~10 minutes of out-of-band work.
+**Activate the form endpoints** — function code is in. Sign up at Resend, verify the domain, set `RESEND_API_KEY` in Cloudflare Pages env vars, redeploy. `/api/contact` (multi-intent) and `/api/lead-magnet` start sending real emails to `hello@oralstack.com` immediately. ~10 minutes of out-of-band work.
 
 **Defer until needed:**
 - Cross-browser smoke tests (real WebKit) — only worth it if a Safari-specific bug surfaces.

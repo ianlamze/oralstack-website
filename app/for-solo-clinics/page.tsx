@@ -18,6 +18,7 @@ export default function ForSoloClinicsPage() {
       <PageHeader
         eyebrow="For solo & small clinics"
         title="The clinic OS that runs in a browser tab."
+        variant="display"
       />
 
       <Section className="pb-12">

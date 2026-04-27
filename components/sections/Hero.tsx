@@ -2,18 +2,23 @@ import Button from "@/components/primitives/Button";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import Section from "@/components/primitives/Section";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
+import BrandMotif from "@/components/visuals/BrandMotif";
 import { HeroStagger, HeroItem } from "@/components/sections/HeroStagger";
 
 export default function Hero() {
   return (
     <Section className="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden">
-      {/* subtle backdrop glow */}
+      {/* Layered backdrop: BrandMotif as the brand-anchored signal,
+          plus the existing radial glows for ambient depth. */}
       <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[140%] opacity-[0.32]">
+          <BrandMotif tone="tide" intensity={0.42} aspect="wide" className="w-full h-[520px]" />
+        </div>
         <div
-          className="absolute right-[-5%] top-[10%] w-[55%] aspect-square rounded-full"
+          className="absolute right-[-5%] top-[8%] w-[55%] aspect-square rounded-full"
           style={{
             background:
-              "radial-gradient(circle at center, color-mix(in oklch, var(--color-tide), transparent 80%) 0%, transparent 65%)",
+              "radial-gradient(circle at center, color-mix(in oklch, var(--color-tide), transparent 82%) 0%, transparent 65%)",
           }}
         />
         <div
@@ -33,15 +38,21 @@ export default function Hero() {
             </p>
           </HeroItem>
           <HeroItem>
-            <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05] text-balance">
+            <h1
+              className="mt-5 font-semibold tracking-[-0.02em] leading-[0.96] text-balance text-[var(--color-text)]"
+              style={{ fontSize: "var(--text-display)" }}
+            >
               Book, chart, bill, image, message.
-              <span className="block text-[var(--color-text-muted)] font-normal mt-3">
-                The operating system for modern dental clinics.
-              </span>
             </h1>
+            <p
+              className="mt-5 text-[var(--color-text-muted)] font-normal leading-[1.1] tracking-tight max-w-[26ch]"
+              style={{ fontSize: "var(--text-display-sm)" }}
+            >
+              The operating system for modern dental clinics.
+            </p>
           </HeroItem>
           <HeroItem>
-            <p className="mt-7 text-base md:text-lg text-[var(--color-text-muted)] max-w-[44ch] leading-relaxed">
+            <p className="mt-8 text-base md:text-lg text-[var(--color-text-muted)] max-w-[44ch] leading-relaxed">
               Built for the front desk first, with imaging, charting, and patient communication that
               work the way busy clinics actually run.
             </p>
@@ -49,7 +60,7 @@ export default function Hero() {
           <HeroItem>
             <div className="mt-10 flex flex-wrap items-center gap-3">
               <MagneticButton href="/book-a-demo" variant="primary" withArrow>
-                Book a demo
+                Book a 30-min walkthrough
               </MagneticButton>
               <Button href="/workflows" variant="ghost">
                 See the workflows

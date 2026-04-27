@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 const containerVariants = {
   hidden: {},
@@ -25,11 +25,12 @@ export function HeroStagger({
   children: React.ReactNode;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   return (
     <motion.div
-      initial="hidden"
+      initial={false}
       animate="visible"
-      variants={containerVariants}
+      variants={reduce ? undefined : containerVariants}
       className={className}
     >
       {children}
@@ -44,8 +45,9 @@ export function HeroItem({
   children: React.ReactNode;
   className?: string;
 }) {
+  const reduce = useReducedMotion();
   return (
-    <motion.div variants={itemVariants} className={className}>
+    <motion.div variants={reduce ? undefined : itemVariants} className={className}>
       {children}
     </motion.div>
   );

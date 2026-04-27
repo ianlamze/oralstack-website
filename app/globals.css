@@ -60,6 +60,22 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+
+  /* Display type scale — for one or two breakthrough moments per page.
+     Use sparingly; default headings stay at text-{2,3,4,5,6}xl. */
+  --text-display-sm: clamp(2.5rem, 4.5vw, 3.75rem);
+  --text-display: clamp(3.25rem, 7vw, 5.75rem);
+
+  /* Elevation system — used on cards, drawers, and hero objects.
+     Calibrated to feel like soft daylight, not heavy shadow. */
+  --shadow-1: 0 1px 2px 0 oklch(0.20 0.05 250 / 0.04), 0 1px 3px 0 oklch(0.20 0.05 250 / 0.06);
+  --shadow-2: 0 4px 8px -2px oklch(0.20 0.05 250 / 0.06), 0 2px 4px -2px oklch(0.20 0.05 250 / 0.04);
+  --shadow-3: 0 12px 24px -6px oklch(0.20 0.05 250 / 0.08), 0 6px 12px -4px oklch(0.20 0.05 250 / 0.06);
+  --shadow-elevated: 0 24px 48px -16px oklch(0.20 0.05 250 / 0.18);
+
+  /* Warmth — activated sunset-deep for human/clinical moments. Reserved for
+     marketing visuals (BrandMotif, hero accents). */
+  --color-warmth: oklch(0.72 0.13 45);
 }
 
 * {
@@ -94,6 +110,35 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .card-hover:hover {
+    transform: none !important;
+  }
+}
+
+/* Card-hover — used across article cards, lead-magnet cards, customer cards,
+   compare-page rows, and workflow tiles. Bundles the three affordances:
+   border darkens, shadow lifts, element nudges up by 2px. Disables in
+   reduced-motion via the rule above. */
+.card-hover {
+  transition:
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.card-hover:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+/* Card-hover with arrow — pairs with `.card-arrow` on a child to drift the
+   arrow rightward on hover. Use on cards with a "Read more →" indicator. */
+.card-hover:hover .card-arrow {
+  transform: translateX(3px);
+}
+.card-arrow {
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body:has(.deck-mode) > header,

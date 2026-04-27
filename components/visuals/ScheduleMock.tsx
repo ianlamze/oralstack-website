@@ -149,7 +149,7 @@ export default function ScheduleMock() {
           </div>
         ))}
 
-        {[0, 1, 2].map((c) =>
+        {[0, 1, 2].flatMap((c) =>
           hours.map((h, i) => (
             <div
               key={`grid-${c}-${i}`}

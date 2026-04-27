@@ -6,13 +6,8 @@ The contact-form endpoint at `/api/contact` is a Cloudflare Pages Function
 
 **One backend, four intents:**
 - `/contact` page — Quick question, Migration assessment, Pilot proposal forms (intents `question`, `migration`, `pilot`)
-- `/book-a-demo` page — DemoRequestForm (intent `demo`, normalized from its own field shape)
+- `/book-a-demo` page — DemoRequestForm (intent `demo`)
 - `/api/lead-magnet` is a separate function for lead-magnet captures (also via Resend)
-
-DemoRequestForm defaults to posting at `/api/contact`. Override with
-`NEXT_PUBLIC_DEMO_FORM_ENDPOINT` if you want a third-party form service
-(Formspree, Web3Forms) instead — useful for local-only dev when functions
-aren't running.
 
 Without the env vars below set, the endpoint still **accepts and validates** the
 form (so the UI works end-to-end), but it logs the submission to the Cloudflare

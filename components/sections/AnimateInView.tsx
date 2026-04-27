@@ -8,10 +8,10 @@ type AnimateInViewProps = HTMLMotionProps<"div"> & {
 };
 
 /**
- * Fade-up-on-scroll wrapper used across the marketing site. For users with
- * `prefers-reduced-motion: reduce`, the animation is skipped entirely and the
- * element renders in its natural CSS state — so below-the-fold content is
- * always visible regardless of scroll/intersection behavior.
+ * Fade-up-on-scroll wrapper used across the marketing site. SSR always renders
+ * in the visible state (initial={false}) so content is never invisible if JS
+ * is slow, fails to hydrate, or never gets a scroll trigger. For users with
+ * `prefers-reduced-motion: reduce`, the entrance transition is skipped too.
  */
 export default function AnimateInView({
   children,
@@ -23,7 +23,7 @@ export default function AnimateInView({
 
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, y: 14 }}
+      initial={false}
       whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount }}
       transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}

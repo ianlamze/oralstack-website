@@ -15,7 +15,11 @@ export const metadata: Metadata = {
 export default function ForMultiClinicPage() {
   return (
     <main>
-      <PageHeader eyebrow="For multi-clinic & DSO" title="One PMS, every clinic, one version." />
+      <PageHeader
+        eyebrow="For multi-clinic & DSO"
+        title="One PMS, every clinic, one version."
+        variant="display"
+      />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
