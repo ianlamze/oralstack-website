@@ -1,5 +1,6 @@
 import Hero from "@/components/sections/Hero";
 import TrustStrip from "@/components/sections/TrustStrip";
+import StatBand from "@/components/sections/StatBand";
 import ShipVelocityStrip from "@/components/sections/ShipVelocityStrip";
 import Workflows from "@/components/sections/Workflows";
 import ProductShowcase from "@/components/sections/ProductShowcase";
@@ -13,6 +14,7 @@ export default function HomePage() {
     <main>
       <Hero />
       <TrustStrip />
+      <StatBand />
       <ShipVelocityStrip />
       <Workflows />
       <ProductShowcase />
