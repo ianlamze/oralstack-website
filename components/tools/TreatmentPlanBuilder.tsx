@@ -259,7 +259,7 @@ export default function TreatmentPlanBuilder() {
   return (
     <div
       ref={containerRef}
-      className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white p-5 sm:p-6 md:p-8"
+      className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white p-3 sm:p-6 md:p-8"
     >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3 mb-5">
         <span className="flex items-center gap-1.5 flex-wrap">
@@ -283,7 +283,7 @@ export default function TreatmentPlanBuilder() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-8 items-start">
         {/* Odontogram — 4 quadrants, full mouth */}
         <div className="grid gap-3">
-          <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-2 sm:gap-x-6">
             <Quadrant
               label="Upper right"
               numbers={UPPER_RIGHT}
@@ -308,7 +308,7 @@ export default function TreatmentPlanBuilder() {
             />
           </div>
           <div className="border-t border-[var(--color-border)] my-1" />
-          <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-2 sm:gap-x-6">
             <Quadrant
               label="Lower right"
               numbers={LOWER_RIGHT}
@@ -541,7 +541,9 @@ function Quadrant({
       >
         {label}
       </p>
-      <div className={`flex gap-1 ${align === "right" ? "justify-end" : "justify-start"}`}>
+      <div
+        className={`flex gap-0.5 sm:gap-1 ${align === "right" ? "justify-end" : "justify-start"}`}
+      >
         {numbers.map((n) => {
           const planItems = itemsByTooth.get(n) ?? [];
           const isOpen = selected === n;
@@ -606,7 +608,7 @@ function Tooth({
         animate={reduceMotion ? undefined : { scale: isOpen ? 1.08 : 1, y: isOpen ? -1 : 0 }}
         whileHover={reduceMotion || isOpen ? undefined : { scale: 1.04, y: -0.5 }}
         transition={{ type: "spring", stiffness: 520, damping: 30 }}
-        className={`block h-7 w-6 rounded-md border bg-white transition-colors ${
+        className={`block h-6 w-4 sm:h-7 sm:w-6 rounded-md border bg-white transition-colors ${
           isOpen
             ? "ring-2 ring-offset-1 ring-[var(--color-tide-deep)]"
             : "hover:border-[var(--color-border-strong)]"
