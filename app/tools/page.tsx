@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
-import { ArrowRight, Calculator, Clock, Stethoscope, Users } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  Calculator,
+  Clock,
+  LayoutGrid,
+  ReceiptText,
+  Stethoscope,
+  Users,
+} from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 
@@ -50,6 +59,30 @@ const TOOLS: Tool[] = [
     blurb: "Patient cancels at 11:00 — see the slot fill itself.",
     body: "When a cancel hits, the front desk has minutes — not hours — to fill the slot. Oralstack ranks the waitlist by procedure fit, slot length, distance, and recall age, then drafts a WhatsApp confirmation. Click ✕ on the 11:00 hygiene slot to walk through it.",
     Icon: Users,
+    takes: "~ 30 seconds",
+  },
+  {
+    href: "/tools/perio-chart",
+    title: "Periodontal chart",
+    blurb: "Click any site to record probing depth — flag what needs attention.",
+    body: "Perio is the hygienist's daily workflow — depths per site, BoP per tooth, sites >4mm queued for follow-up. Most legacy PMSs treat it as a spreadsheet; Oralstack runs it inline next to the chart with WhatsApp recall templated off the findings.",
+    Icon: Activity,
+    takes: "~ 1 minute",
+  },
+  {
+    href: "/tools/eligibility-estimate",
+    title: "Eligibility & estimate",
+    blurb: "Pick CHAS tier + insurance + procedures — see patient portion before treatment.",
+    body: "The front desk's killer demo. CHAS subsidy by tier, IPP claim by plan, MediSave deduction for surgical procedures, GST, final number — all live as you toggle inputs. Solves the 'no surprise bill' patient experience pain at the chair.",
+    Icon: ReceiptText,
+    takes: "~ 1 minute",
+  },
+  {
+    href: "/tools/daily-huddle",
+    title: "Daily huddle dashboard",
+    blurb: "The owner's morning-coffee view — schedule, recall, AR, production at a glance.",
+    body: "Today's schedule with gaps marked, top recall opportunities, AR over 30 days, production goal vs. actual, hygiene re-care rate. Same data the front desk and clinical team see — different shape, owner-sized.",
+    Icon: LayoutGrid,
     takes: "~ 30 seconds",
   },
 ];

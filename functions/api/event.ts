@@ -37,6 +37,15 @@ const ALLOWED_EVENTS = new Set([
   "waitlist_autofill_opened",
   "waitlist_candidate_picked",
   "waitlist_reset",
+  "perio_site_recorded",
+  "perio_bop_toggled",
+  "perio_reset",
+  "eligibility_chas_changed",
+  "eligibility_insurance_changed",
+  "eligibility_procedure_toggled",
+  "eligibility_cta_click",
+  "huddle_pane_focused",
+  "huddle_cta_click",
 ]);
 
 type EventPayload = {

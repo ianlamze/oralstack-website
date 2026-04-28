@@ -35,7 +35,19 @@ export type AnalyticsEvent =
   | "waitlist_cancel_simulated"
   | "waitlist_autofill_opened"
   | "waitlist_candidate_picked"
-  | "waitlist_reset";
+  | "waitlist_reset"
+  // Perio chart
+  | "perio_site_recorded"
+  | "perio_bop_toggled"
+  | "perio_reset"
+  // Eligibility & estimate
+  | "eligibility_chas_changed"
+  | "eligibility_insurance_changed"
+  | "eligibility_procedure_toggled"
+  | "eligibility_cta_click"
+  // Daily huddle
+  | "huddle_pane_focused"
+  | "huddle_cta_click";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
