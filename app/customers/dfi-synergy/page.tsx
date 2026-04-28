@@ -167,6 +167,29 @@ export default function DfiSynergyCaseStudy() {
         <StatGrid stats={study.stats} />
       </Section>
 
+      {study.methodology && (
+        <Section className="pb-20 md:pb-24">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-7 md:p-8 max-w-[820px] grid gap-3">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+              How the numbers were measured
+            </p>
+            <p className="text-sm md:text-base text-[var(--color-text-muted)] leading-relaxed">
+              {study.methodology}
+            </p>
+            <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em] mt-1">
+              Buyers reviewing this case study are welcome to ask for the underlying queries —{" "}
+              <a
+                href="mailto:hello@oralstack.com?subject=DFI%20Synergy%20case%20study%20methodology"
+                className="text-[var(--color-tide-deep)] underline underline-offset-4"
+              >
+                hello@oralstack.com
+              </a>
+              .
+            </p>
+          </div>
+        </Section>
+      )}
+
       <Section className="pb-20 md:pb-24">
         <div className="max-w-[820px]">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-6">

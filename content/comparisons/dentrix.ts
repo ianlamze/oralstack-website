@@ -10,6 +10,7 @@ export const dentrix: Comparison = {
   indexBlurb:
     "Dentrix is category-defining for US dental practices. The comparison covers US-payer rails, multi-location pricing, deployment models, and APAC fit.",
   pageTitle: "Oralstack vs Dentrix.",
+  lastReviewed: "April 2026",
   lede: "Dentrix is a category-defining dental practice management system — mature, US-rooted, and excellent at US-payer claims. Oralstack is designed for APAC dental practices that want region-hosted data, flat pricing, and workflows tuned for fee-for-service rather than insurance-claims rails. Here's what changes, line by line.",
   rows: [
     {

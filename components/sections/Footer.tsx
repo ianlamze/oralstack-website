@@ -38,13 +38,15 @@ export default function Footer() {
           />
 
           <FooterColumn
-            title="Company"
+            title="Trust & company"
             links={[
-              { label: "About", href: "/about" },
-              { label: "Security", href: "/security" },
-              { label: "Contact", href: "/contact" },
+              { label: "Security & compliance", href: "/security" },
+              { label: "Status", href: "/status" },
+              { label: "Accessibility", href: "/accessibility" },
               { label: "Privacy", href: "/privacy" },
               { label: "Terms", href: "/terms" },
+              { label: "About", href: "/about" },
+              { label: "Contact", href: "/contact" },
             ]}
           />
         </div>

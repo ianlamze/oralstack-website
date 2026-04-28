@@ -10,6 +10,7 @@ export const eaglesoft: Comparison = {
   indexBlurb:
     "Eaglesoft is Patterson Dental's PMS. The comparison covers sales motion, sensor-vendor neutrality, on-prem vs region-hosted, and APAC presence.",
   pageTitle: "Oralstack vs Eaglesoft.",
+  lastReviewed: "April 2026",
   lede: "Eaglesoft is Patterson Dental's practice management system — mature, US-rooted, and a strong fit for clinics already inside the Patterson supply-chain. Oralstack is built for APAC dental practices that want region-hosted data, direct-to-clinic support, and pricing that doesn't scale with seat count. Here's what differs, line by line.",
   rows: [
     {

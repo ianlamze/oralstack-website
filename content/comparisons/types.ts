@@ -2,6 +2,8 @@ export type ComparisonRow = {
   capability: string;
   them: string;
   us: string;
+  /** Optional source for the `them` claim. Surfaced below the row. Either a URL the reader can verify, or a short citation like "Vendor pricing page · Apr 2026". */
+  source?: string;
 };
 
 export type ComparisonReason = {
@@ -43,4 +45,6 @@ export type Comparison = {
   reasons: ComparisonReason[];
   concession: ComparisonConcession;
   cta: ComparisonCTA;
+  /** Date the page was last reviewed against current vendor public information. Surfaced near the top of the page. */
+  lastReviewed?: string;
 };

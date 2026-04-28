@@ -11,6 +11,7 @@ export const plato: Comparison = {
     "Plato is the dominant Singapore PMS — reliable, familiar, two decades old. The comparison covers schedule UX, billing, imaging, and the three-week migration path.",
   pageTitle: "Oralstack vs Plato.",
   lede: "Plato has been the dominant practice management system in Singapore for two decades. It is reliable, familiar, and Singapore-fit. It is also a Windows desktop client built around the front-desk PC. Oralstack was built differently — for the schedule the front desk drives, the bill that's ready before the patient stands up, and the DICOM that lives inside the chart. Here's what changes, line by line.",
+  lastReviewed: "April 2026",
   rows: [
     {
       capability: "Deployment",

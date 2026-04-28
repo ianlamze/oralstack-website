@@ -23,7 +23,7 @@ export default function ComparisonTable({ competitor, rows }: ComparisonTablePro
         </div>
 
         <ul className="divide-y divide-[var(--color-border)]">
-          {rows.map(({ capability, them, us }) => (
+          {rows.map(({ capability, them, us, source }) => (
             <li
               key={capability}
               className="grid gap-3 px-6 py-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1.5fr)] md:gap-6"
@@ -33,7 +33,8 @@ export default function ComparisonTable({ competitor, rows }: ComparisonTablePro
                 <span className="mb-1 block text-[10px] uppercase tracking-[0.14em] text-[var(--color-text-soft)] md:hidden">
                   {competitor}
                 </span>
-                {them}
+                <p>{them}</p>
+                {source && <SourceLine source={source} />}
               </div>
               <div className="text-sm leading-relaxed text-[var(--color-text)] md:rounded-[var(--radius-md)] md:bg-[var(--color-canvas-tinted)] md:px-4 md:py-3 md:-my-1">
                 <span className="mb-1 block text-[10px] uppercase tracking-[0.14em] text-[var(--color-tide-deep)] md:hidden">
@@ -46,5 +47,26 @@ export default function ComparisonTable({ competitor, rows }: ComparisonTablePro
         </ul>
       </div>
     </AnimateInView>
+  );
+}
+
+function SourceLine({ source }: { source: string }) {
+  const isUrl = /^https?:\/\//i.test(source);
+  return (
+    <p className="mt-1.5 text-[10px] tracking-[0.04em] text-[var(--color-text-soft)]">
+      Source:{" "}
+      {isUrl ? (
+        <a
+          href={source}
+          className="underline underline-offset-2 hover:text-[var(--color-text-muted)] break-all"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {source.replace(/^https?:\/\//i, "").replace(/\/$/, "")}
+        </a>
+      ) : (
+        <span>{source}</span>
+      )}
+    </p>
   );
 }
