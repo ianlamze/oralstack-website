@@ -71,6 +71,8 @@ export const dfiSynergy: CaseStudy = {
     },
   ],
 
+  methodology:
+    "Same-day billing rate is the share of completed visits where the bill was settled in full before the patient left the chair, measured weekly from Oralstack's discharge-flow billing log against the visit's discharge timestamp. Pre-pilot baseline (60%) was taken from DFI Synergy's prior end-of-day reconciliation reports for Q1 2026, normalised to the same definition. Week-4 measurement (85%) is the trailing 14-day rolling average through the end of the fourth pilot week. Drag-to-reschedule operations are counted from the audit log (entries of type schedule_drag_committed). Cutover days are calendar days from kickoff to the schedule running for live patient traffic without a fallback paper diary running in parallel. Lost-appointment count is reconciled from the patient list at cutover against the first 30 days of bookings.",
   stats: [
     {
       value: "3 days",

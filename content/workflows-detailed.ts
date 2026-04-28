@@ -111,4 +111,19 @@ export const workflowsDetailed: WorkflowDetail[] = [
     replaces:
       'End-of-month spreadsheet pulls · CFO asking the practice manager · "what was last Tuesday like?"',
   },
+  {
+    slug: "compliance",
+    eyebrow: "Compliance & traceability",
+    title: "The audit chain writes itself.",
+    body: "Sterilisation, lab cases, inventory, claims — the parts of clinic life that are felt only when something goes wrong. Oralstack stamps every step so when an auditor asks (or a spore test fails), the answer is one click, not a binder hunt. Every consumable, every tray, every claim ties back to the patient and the procedure.",
+    bullets: [
+      "Autoclave cycle data captured per load — ISO 17665 chain stamped automatically (class B vacuum and type N gravity supported)",
+      "Every tray linked to the patient and procedure that consumed it — spore-test fail surfaces the recall list in seconds",
+      "Lab cases stamped sent → received → seated — when the lab slips, the seat appointment auto-reschedules",
+      "Consumables auto-deducted from procedure templates — bill-of-materials traceable per visit",
+      "Insurance claims with submission, decision, and payment timestamps — auditable end to end",
+    ],
+    replaces:
+      "Paper sterilisation log books · separate compliance binder · WhatsApp threads with the lab tech · spreadsheet stock counts",
+  },
 ];

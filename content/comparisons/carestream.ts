@@ -10,6 +10,7 @@ export const carestream: Comparison = {
   indexBlurb:
     "Carestream Dental ships imaging hardware plus PMS (SoftDent, OrthoTrac). The comparison covers sensor lock-in, hosting, and the PMS-first vs hardware-first product shape.",
   pageTitle: "Oralstack vs Carestream Dental.",
+  lastReviewed: "April 2026",
   lede: "Carestream Dental is one of the strongest names in dental imaging hardware — sensors, panoramic units, CBCT — and ships PMS products (SoftDent, OrthoTrac) tightly tuned for that hardware. Oralstack inverts the relationship: the PMS is the centre of gravity, and the sensor bridge sits across vendors so you're not locked to one imaging brand. Here's what differs, line by line.",
   rows: [
     {
@@ -87,7 +88,7 @@ export const carestream: Comparison = {
     {
       eyebrow: "Why we built differently · 2",
       title: "A PMS-first product beats a hardware-first product.",
-      body: "The bulk of clinic time isn't spent on imaging — it's spent on scheduling, patient calls, billing, and recall. We built Oralstack with the PMS as the centre of gravity and imaging as one of six workflows that lives inside it. That trade-off favours the front desk and the practice manager more than the radiology-heavy specialty.",
+      body: "The bulk of clinic time isn't spent on imaging — it's spent on scheduling, patient calls, billing, and recall. We built Oralstack with the PMS as the centre of gravity and imaging as one of eight workflows that lives inside it. That trade-off favours the front desk and the practice manager more than the radiology-heavy specialty.",
     },
     {
       eyebrow: "Why we built differently · 3",

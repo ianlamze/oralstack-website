@@ -36,5 +36,8 @@ export type CaseStudy = {
     qualifier?: string;
   }>;
 
+  /** How the headline outcomes were measured — surfaced as the last narrative block before the CTA. Procurement-grade case studies cite the data source, baseline, and measurement window so a buyer can verify the claim. */
+  methodology?: string;
+
   disclaimer?: string;
 };

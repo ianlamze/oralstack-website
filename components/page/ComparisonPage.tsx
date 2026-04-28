@@ -26,6 +26,11 @@ export default function ComparisonPage({ data }: ComparisonPageProps) {
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           {data.lede}
         </p>
+        {data.lastReviewed && (
+          <p className="mt-4 text-[11px] tracking-[0.06em] uppercase text-[var(--color-text-soft)]">
+            Last reviewed {data.lastReviewed} · sourced rows linked inline
+          </p>
+        )}
       </Section>
 
       <Section className="pb-16">

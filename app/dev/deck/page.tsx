@@ -437,7 +437,7 @@ export default function DeckPage() {
 
       {/* SLIDE 7 — Workflows */}
       <Slide n={7} eyebrow="Page · /workflows">
-        <H2>Six workflows, each visualised.</H2>
+        <H2>Eight workflows, each visualised.</H2>
         <p className="mt-4 text-[16px] text-[var(--color-text-muted)] max-w-[68ch] leading-relaxed">
           One section per JTBD. Visual on one side, body + bullets + a &ldquo;Replaces&rdquo; line
           on the other. Visuals alternate sides for vertical rhythm. Recall and imaging show two

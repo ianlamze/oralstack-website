@@ -114,6 +114,83 @@ export default function PricingPage() {
         </div>
       </Section>
 
+      <Section className="pb-16">
+        <div className="grid gap-6 max-w-[820px]">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+            After the pilot
+          </p>
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[36ch]">
+            Pilot pricing is locked for 12 months. Here&apos;s what happens after that.
+          </h2>
+          <ul className="grid gap-2.5 text-[var(--color-text-muted)] leading-relaxed text-sm md:text-base">
+            <Bullet>
+              Pilot pricing ($200 / clinic / month) is contractually locked for 12 months from pilot
+              start, regardless of when GA pricing is announced.
+            </Bullet>
+            <Bullet>
+              When GA pricing is announced, pilot clinics get 90 days&apos; notice and the option to
+              renew at a documented pilot-loyalty rate. We commit, in writing in the MSA, that
+              renewal pricing won&apos;t exceed the GA list price for the same clinic shape.
+            </Bullet>
+            <Bullet>
+              No silent feature gating. Anything in your pilot stays in your pilot. New surfaces
+              built after pilot start (e.g. v13 imaging cohort) are added in scope unless they come
+              from a third-party vendor with their own per-seat cost (e.g. specialty integrations).
+            </Bullet>
+            <Bullet>
+              Custom quotes (groups, DSOs, multi-region clinics) are written in the pilot MSA up
+              front — no surprise renegotiation at renewal.
+            </Bullet>
+          </ul>
+        </div>
+      </Section>
+
+      <Section className="pb-16">
+        <div className="grid gap-8 md:grid-cols-2 max-w-[820px]">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 grid gap-3">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+              Your data, on the way out
+            </p>
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+              If you leave, you take everything: full CSV / JSON export of patients, schedule,
+              billing, charting, recall, and the audit log. No export fees, no waiting list, no
+              proprietary lock-in. Standard format on request; the export tooling lives inside the
+              admin surface.
+            </p>
+            <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
+              Spelled out in the MSA · request a draft from{" "}
+              <a
+                href="mailto:hello@oralstack.com?subject=Oralstack%20MSA%20request"
+                className="text-[var(--color-tide-deep)] underline underline-offset-4"
+              >
+                hello@oralstack.com
+              </a>
+              .
+            </p>
+          </div>
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 grid gap-3">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+              Multi-clinic & DSO
+            </p>
+            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+              Flat $200 / clinic / month applies linearly during pilot. We discount on the roll-out
+              plan, not the headcount: clinics 2–5 typically tier down once the first is live. Talk
+              to us about a multi-clinic pilot if you&apos;re running 3+ locations today.
+            </p>
+            <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
+              Walk-through of the multi-clinic surface lives at{" "}
+              <a
+                href="/for-multi-clinic"
+                className="text-[var(--color-tide-deep)] underline underline-offset-4"
+              >
+                /for-multi-clinic
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </Section>
+
       <Section className="pb-24 md:pb-32">
         <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
           <div>
@@ -123,7 +200,14 @@ export default function PricingPage() {
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
               Tell us how your front desk runs today, what your current PMS is, and what would
               change first if Oralstack landed in the clinic next week. We reply with a proposal
-              within two working days.
+              within two working days. Procurement teams: the{" "}
+              <a
+                href="/security"
+                className="text-[var(--color-tide-deep)] underline underline-offset-4"
+              >
+                security & compliance hub
+              </a>{" "}
+              has MSA, DPA, BAA, and the subprocessor list.
             </p>
           </div>
           <div className="md:justify-self-end">

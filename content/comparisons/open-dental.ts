@@ -10,17 +10,20 @@ export const openDental: Comparison = {
   indexBlurb:
     "Open Dental is mature, free to license, and US-rooted. The comparison covers self-hosted vs managed, APAC compliance, US-insurance fit, and customisability.",
   pageTitle: "Oralstack vs Open Dental.",
+  lastReviewed: "April 2026",
   lede: "Open Dental is mature, feature-complete, and free to license — a legitimate option for clinics with IT capacity and a US-style insurance workflow. Oralstack is a managed SaaS designed for APAC dental practices that want fast onboarding, region-hosted data, and opinionated workflows rather than a configuration project. Here's what differs, line by line.",
   rows: [
     {
       capability: "License & cost",
       them: "Free open-source license. Paid support tiers, plus IT and hosting costs you cover.",
       us: "Flat $200 / clinic / month during pilot. Includes hosting, three months of onboarding, and a named contact.",
+      source: "https://www.opendental.com/site/pricing.html",
     },
     {
       capability: "Hosting",
       them: "Self-hosted on your own server, or hosted with a third-party Open Dental partner.",
       us: "Managed SaaS, region-hosted in Singapore (asia-southeast1) on Google Cloud. Tenant-isolated by default.",
+      source: "https://www.opendental.com/manual/installation.html",
     },
     {
       capability: "UX",
@@ -31,6 +34,7 @@ export const openDental: Comparison = {
       capability: "Customisation",
       them: "Highly customisable. Custom reports, queries, and workflows are possible with SQL and DIY effort.",
       us: "Opinionated workflows aligned to six job-to-be-done flows. Less malleable, faster to land on.",
+      source: "https://opendental.com/site/sourcecode.html",
     },
     {
       capability: "US insurance billing",

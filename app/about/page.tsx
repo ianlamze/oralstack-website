@@ -39,7 +39,7 @@ export default function AboutPage() {
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           Oralstack is the operating system for modern dental clinics — APAC-first, region-hosted in
-          Singapore, designed around the six workflows that the front desk, clinical team, and
+          Singapore, designed around the eight workflows that the front desk, clinical team, and
           clinic owner live in every day. We&apos;re early — pre-revenue, hands-on with our first
           pilot clinics, and shipping weekly.
         </p>

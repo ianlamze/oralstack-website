@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  BadgeDollarSign,
+  CalendarCheck,
   CalendarClock,
   Receipt,
   ClipboardList,
@@ -11,10 +13,17 @@ import {
   Activity,
   Calculator,
   Clock,
+  FileCheck,
+  FileSignature,
+  FlaskConical,
   LayoutGrid,
   MessageSquare,
+  Package,
   ReceiptCent,
   ReceiptText,
+  ShieldAlert,
+  ShieldCheck,
+  Star,
   Stethoscope,
   Users,
   Menu,
@@ -67,6 +76,12 @@ const workflowItems: WorkflowItem[] = [
     Icon: ScanSearch,
   },
   {
+    slug: "online-bookings",
+    label: "Online bookings",
+    desc: "Patients book the slot the schedule actually has open.",
+    Icon: CalendarCheck,
+  },
+  {
     slug: "recall",
     label: "Recall & messaging",
     desc: "Outreach that fires three weeks before due.",
@@ -78,14 +93,32 @@ const workflowItems: WorkflowItem[] = [
     desc: "Chair utilisation, revenue, recall coverage.",
     Icon: BarChart3,
   },
+  {
+    slug: "compliance",
+    label: "Compliance & traceability",
+    desc: "Sterilisation cycle to tray to patient — audit chain automatic.",
+    Icon: ShieldCheck,
+  },
 ];
 
 const toolItems: ToolItem[] = [
+  {
+    slug: "online-booking",
+    label: "Online booking",
+    desc: "Patients pick the slot — chair availability live.",
+    Icon: CalendarCheck,
+  },
   {
     slug: "treatment-plan-builder",
     label: "Treatment plan builder",
     desc: "Click teeth, see the bill before treatment.",
     Icon: Stethoscope,
+  },
+  {
+    slug: "plan-presentation",
+    label: "Plan presentation & e-sign",
+    desc: "Patient signs on the iPad — phases live, audited.",
+    Icon: FileSignature,
   },
   {
     slug: "eligibility-estimate",
@@ -94,10 +127,34 @@ const toolItems: ToolItem[] = [
     Icon: ReceiptText,
   },
   {
+    slug: "insurance-claims",
+    label: "Insurance claims",
+    desc: "MediSave, CHAS, IPP — auto-packaged and tracked.",
+    Icon: FileCheck,
+  },
+  {
     slug: "perio-chart",
     label: "Periodontal chart",
     desc: "Click any site to record probing depth.",
     Icon: Activity,
+  },
+  {
+    slug: "medical-alerts",
+    label: "Patient medical alerts",
+    desc: "Allergies, meds, conditions — surfaced where it matters.",
+    Icon: ShieldAlert,
+  },
+  {
+    slug: "lab-orders",
+    label: "Lab order tracking",
+    desc: "Crowns and bridges from sent to seated.",
+    Icon: FlaskConical,
+  },
+  {
+    slug: "sterilization",
+    label: "Sterilisation traceability",
+    desc: "Cycle to tray to patient — audit chain automatic.",
+    Icon: ShieldCheck,
   },
   {
     slug: "patient-communications",
@@ -118,6 +175,12 @@ const toolItems: ToolItem[] = [
     Icon: LayoutGrid,
   },
   {
+    slug: "inventory",
+    label: "Inventory & consumables",
+    desc: "Procedure deducts stock; reorder before par.",
+    Icon: Package,
+  },
+  {
     slug: "end-of-day-reconciliation",
     label: "End-of-day reconciliation",
     desc: "Variance flagged, matched, synced to Xero.",
@@ -128,6 +191,18 @@ const toolItems: ToolItem[] = [
     label: "Management report",
     desc: "KPIs over time, AR aging, provider heatmap.",
     Icon: BarChart3,
+  },
+  {
+    slug: "provider-productivity",
+    label: "Provider productivity",
+    desc: "Associate production, commission, recall credit.",
+    Icon: BadgeDollarSign,
+  },
+  {
+    slug: "reviews-referrals",
+    label: "Reviews & referrals",
+    desc: "Visit ends → review request fires → referrer credited.",
+    Icon: Star,
   },
   {
     slug: "no-show-calculator",

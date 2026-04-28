@@ -62,7 +62,48 @@ export type AnalyticsEvent =
   // Patient communication center
   | "patient_comm_thread_opened"
   | "patient_comm_template_picked"
-  | "patient_comm_message_sent";
+  | "patient_comm_message_sent"
+  // Online booking
+  | "booking_reason_picked"
+  | "booking_slot_picked"
+  | "booking_phone_lookup"
+  | "booking_completed"
+  | "booking_reset"
+  // Lab order tracking
+  | "lab_order_opened"
+  | "lab_order_advanced"
+  | "lab_order_reschedule_clicked"
+  | "lab_order_reset"
+  // Insurance claims
+  | "claim_opened"
+  | "claim_submitted"
+  | "claim_resubmitted"
+  | "claim_reset"
+  // Inventory
+  | "inventory_item_opened"
+  | "inventory_reorder_clicked"
+  | "inventory_reset"
+  // Sterilisation
+  | "sterilization_load_opened"
+  | "sterilization_spore_marked"
+  | "sterilization_recall_notified"
+  | "sterilization_reset"
+  // Plan presentation
+  | "plan_phase_toggled"
+  | "plan_signed"
+  | "plan_accepted"
+  | "plan_reset"
+  // Provider productivity
+  | "provider_opened"
+  | "provider_period_changed"
+  // Reviews & referrals
+  | "reviews_visit_opened"
+  | "reviews_request_sent"
+  | "reviews_reset"
+  // Medical alerts
+  | "alerts_patient_opened"
+  | "alerts_acknowledged"
+  | "alerts_reset";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
