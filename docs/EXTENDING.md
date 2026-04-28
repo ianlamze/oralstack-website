@@ -109,7 +109,7 @@ Vertical pages are unique enough (different audience, different proof, different
 
 ## Add a workflow (rare, ~2 hours)
 
-Workflows are the six core jobs the product is built around — front-desk, billing, charting, imaging, recall, operations. Adding one means the product has actually grown a seventh.
+Workflows are the core jobs the product is built around — front-desk, billing, charting, imaging, online-bookings, recall, operations, compliance. Adding one means the product has actually grown a new lever — confirm with the user before adding.
 
 1. **Add a visualisation mock** at `components/visuals/<NameMock>.tsx`. Look at existing mocks (ScheduleMock, OdontogramMock) — they're CSS-only, no images, no asset pipeline.
 

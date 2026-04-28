@@ -87,7 +87,7 @@ export const carestream: Comparison = {
     {
       eyebrow: "Why we built differently · 2",
       title: "A PMS-first product beats a hardware-first product.",
-      body: "The bulk of clinic time isn't spent on imaging — it's spent on scheduling, patient calls, billing, and recall. We built Oralstack with the PMS as the centre of gravity and imaging as one of six workflows that lives inside it. That trade-off favours the front desk and the practice manager more than the radiology-heavy specialty.",
+      body: "The bulk of clinic time isn't spent on imaging — it's spent on scheduling, patient calls, billing, and recall. We built Oralstack with the PMS as the centre of gravity and imaging as one of eight workflows that lives inside it. That trade-off favours the front desk and the practice manager more than the radiology-heavy specialty.",
     },
     {
       eyebrow: "Why we built differently · 3",

@@ -10,13 +10,15 @@ import RecallMock from "@/components/visuals/RecallMock";
 import MessagingMock from "@/components/visuals/MessagingMock";
 import DicomViewerMock from "@/components/visuals/DicomViewerMock";
 import AnalyticsMock from "@/components/visuals/AnalyticsMock";
+import OnlineBookingMock from "@/components/visuals/OnlineBookingMock";
+import ComplianceMock from "@/components/visuals/ComplianceMock";
 import { workflowsDetailed } from "@/content/workflows-detailed";
 import { getArticle } from "@/content/articles";
 
 export const metadata: Metadata = {
   title: "Workflows",
   description:
-    "The six workflows Oralstack is designed around — front desk scheduling, billing, charting, clinical imaging, patient recall, and operations analytics.",
+    "The eight workflows Oralstack is designed around — front desk scheduling, billing, charting, clinical imaging, online bookings, patient recall, operations analytics, and the compliance audit chain.",
   alternates: { canonical: "/workflows" },
 };
 
@@ -30,11 +32,13 @@ const visualsBySlug: Record<string, VisualEntry[]> = {
     { id: "imaging-summary", Component: ImagingMock },
     { id: "dicom-viewer", Component: DicomViewerMock },
   ],
+  "online-bookings": [{ id: "online-booking", Component: OnlineBookingMock }],
   recall: [
     { id: "recall-list", Component: RecallMock },
     { id: "messaging", Component: MessagingMock },
   ],
   operations: [{ id: "analytics", Component: AnalyticsMock }],
+  compliance: [{ id: "compliance", Component: ComplianceMock }],
 };
 
 export default function WorkflowsPage() {
@@ -44,8 +48,8 @@ export default function WorkflowsPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Six workflows that the front desk, clinical team, and clinic owner live in — every day, on
-          every chair. None of them require a separate window, a separate login, or a separate
+          Eight workflows that the front desk, clinical team, and clinic owner live in — every day,
+          on every chair. None of them require a separate window, a separate login, or a separate
           desktop app.
         </p>
       </Section>
