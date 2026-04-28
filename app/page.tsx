@@ -5,6 +5,7 @@ import ShipVelocityStrip from "@/components/sections/ShipVelocityStrip";
 import Workflows from "@/components/sections/Workflows";
 import ProductShowcase from "@/components/sections/ProductShowcase";
 import WorkflowWizard from "@/components/tools/WorkflowWizard";
+import ToolsShowcase from "@/components/sections/ToolsShowcase";
 import CustomerStoryStrip from "@/components/sections/CustomerStoryStrip";
 import CTA from "@/components/sections/CTA";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -20,6 +21,7 @@ export default function HomePage() {
       <ProductShowcase />
       <SectionDivider />
       <WorkflowWizard />
+      <ToolsShowcase />
       <CustomerStoryStrip />
       <CTA />
     </main>
