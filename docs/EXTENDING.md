@@ -145,16 +145,18 @@ Both screenshots save to `/tmp/browse-<ts>.png`. Open and eyeball.
 
 ## Deploy
 
-The deploy script is in [package.json](package.json):
+**Production auto-deploys on push to `main`.** The `oralstack-website` Cloudflare Pages project is Git-connected; every commit on `main` triggers a build and replaces oralstack.com once it's green. No manual step needed.
+
+Manual fallback (out-of-band hotfixes, or shipping a dirty working tree):
 
 ```bash
-npm run deploy   # runs `npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main`
+npm run deploy   # runs `npm run build:cf && wrangler pages deploy out --project-name=oralstack-website --commit-dirty=true --branch=main`
 ```
 
-This always ships to production (oralstack.com). For a preview / branch deploy, run wrangler directly without `--branch`:
+For a preview / branch deploy via wrangler directly (don't pass `--branch`):
 
 ```bash
-npm run build:cf && npx wrangler pages deploy out --project-name=oralstack --commit-dirty=true
+npm run build:cf && npx wrangler pages deploy out --project-name=oralstack-website --commit-dirty=true
 ```
 
 Notes:

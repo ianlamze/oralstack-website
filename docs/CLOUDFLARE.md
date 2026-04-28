@@ -29,15 +29,17 @@ Should show your email + account ID. Tell me when this is done — I'll fire the
 
 ## Step 2 — First deploy
 
-Once you're authenticated, I run:
+Production runs as the `oralstack-website` Pages project, **Git-connected**. Default deploy is automatic: push to `main` and Cloudflare picks it up, builds, and ships within ~60 seconds. No CLI step required for routine work.
+
+Initial project creation is done in the Cloudflare dashboard once: **Workers & Pages → Create → Connect to Git → select the repo → set build command `npm run build:cf` and output dir `out` → set production branch `main`**. After that, every push to `main` deploys automatically.
+
+`npm run deploy` is the manual fallback (out-of-band hotfixes, dirty working tree, or shipping the same commit again):
 
 ```bash
 npm run deploy
 ```
 
-Which is `npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main` — always ships to production. First run prompts to create the Pages project — Wrangler accepts the `--project-name=oralstack` flag and creates it without further input. Returns a URL like `https://oralstack.pages.dev`.
-
-The Pages project is now live. Subsequent deploys are the same single command.
+Which is `npm run build:cf && wrangler pages deploy out --project-name=oralstack-website --commit-dirty=true --branch=main`.
 
 ## Step 3 — Wire `oralstack.com` (~5 minutes)
 
@@ -45,7 +47,7 @@ Two paths depending on where DNS lives today:
 
 ### Path A — Already on Cloudflare DNS
 
-1. Cloudflare dashboard → **Workers & Pages** → **oralstack** → **Custom domains** → **Set up a custom domain**
+1. Cloudflare dashboard → **Workers & Pages** → **oralstack-website** → **Custom domains** → **Set up a custom domain**
 2. Enter `oralstack.com` and click through. SSL auto-provisions in ~1 minute.
 3. Repeat for `www.oralstack.com` if you want both.
 
@@ -114,7 +116,7 @@ To activate real email forwarding:
 1. Sign up at [resend.com](https://resend.com) (free tier: 100 emails/day, 3,000/month).
 2. **Verify the sending domain.** Resend → Domains → Add → `oralstack.com` → add the DNS records (SPF, DKIM) Resend provides into Cloudflare DNS. Verification usually completes in 5–10 minutes.
 3. Resend → API Keys → Create API Key (full access, single domain). Copy the value (starts with `re_`).
-4. Cloudflare dashboard → Workers & Pages → **oralstack** → Settings → Environment variables:
+4. Cloudflare dashboard → Workers & Pages → **oralstack-website** → Settings → Environment variables:
    - `RESEND_API_KEY` (encrypted) — the key from step 3
    - `CONTACT_INBOX` — destination address (default: `hello@oralstack.com`)
    - `CONTACT_FROM` — From: header (default: `Oralstack contact <noreply@oralstack.com>`)
@@ -145,7 +147,7 @@ When a deploy fails, the cause is almost always one of these. Check in order.
 ### `npm run deploy` fails locally before upload
 
 - **Wrangler auth expired** (~30 days inactive). Re-run `npx wrangler login`.
-- **Non-ASCII commit message rejected.** Wrangler's deploy API rejects en-dash, arrows, emoji in the auto-detected commit message. Override with `npx wrangler pages deploy out --project-name=oralstack --commit-dirty=true --commit-message="ASCII only"`.
+- **Non-ASCII commit message rejected.** Wrangler's deploy API rejects en-dash, arrows, emoji in the auto-detected commit message. Override with `npx wrangler pages deploy out --project-name=oralstack-website --commit-dirty=true --commit-message="ASCII only"`.
 - **`next build` fails.** Run `npm run typecheck` and `npm run lint` first. Build errors often reduce to a TS error or a missing import. CI runs the same gate — see [.github/workflows/ci.yml](.github/workflows/ci.yml).
 - **Content check fails.** `npm run check:content` catches banned voice words, duplicate slugs, malformed `publishedAt`. The error message points at the file + line.
 
@@ -163,7 +165,7 @@ When a deploy fails, the cause is almost always one of these. Check in order.
 - **Sending domain not verified** in Resend. Resend → Domains → check status. DNS propagation can take 5–10 min after adding records.
 - **`CONTACT_FROM` doesn't match a verified domain.** Resend rejects sends from unverified domains.
 
-Real-time logs: Cloudflare dashboard → **Workers & Pages → oralstack → Functions → Real-time logs**. Look for `[contact]` or `[lead-magnet]` prefixes.
+Real-time logs: Cloudflare dashboard → **Workers & Pages → oralstack-website → Functions → Real-time logs**. Look for `[contact]` or `[lead-magnet]` prefixes.
 
 ### Custom domain SSL pending
 
