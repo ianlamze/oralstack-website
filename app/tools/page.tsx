@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight, Calculator, Clock } from "lucide-react";
+import { ArrowRight, Calculator, Clock, Stethoscope } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 
@@ -35,6 +35,14 @@ const TOOLS: Tool[] = [
     body: "Six moments from 08:30 to 17:45 — open the schedule, take a walk-in, bill at the chair, pull up DICOM, fire recall, close the day. Each stop shows the legacy-PMS cost and what changes with Oralstack.",
     Icon: Clock,
     takes: "~ 3 minutes",
+  },
+  {
+    href: "/tools/treatment-plan-builder",
+    title: "Treatment plan builder",
+    blurb: "Click teeth, add procedures, see the bill before treatment.",
+    body: "The spine of every dental treatment conversation. Pick from twelve common procedures across preventive, restorative, endo, surgical, and prosthetic. The plan card auto-phases by clinical priority and splits insurance from patient portion live, so you can present to the patient at the chair — not after.",
+    Icon: Stethoscope,
+    takes: "~ 1 minute",
   },
 ];
 

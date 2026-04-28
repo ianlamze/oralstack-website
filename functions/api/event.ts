@@ -30,6 +30,9 @@ const ALLOWED_EVENTS = new Set([
   "recall_sent",
   "recall_sorted",
   "odontogram_tooth_selected",
+  "treatment_plan_procedure_added",
+  "treatment_plan_procedure_removed",
+  "treatment_plan_cta_click",
 ]);
 
 type EventPayload = {

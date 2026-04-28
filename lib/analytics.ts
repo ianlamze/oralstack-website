@@ -26,7 +26,11 @@ export type AnalyticsEvent =
   | "recall_sent"
   | "recall_sorted"
   // Odontogram mock
-  | "odontogram_tooth_selected";
+  | "odontogram_tooth_selected"
+  // Treatment plan builder
+  | "treatment_plan_procedure_added"
+  | "treatment_plan_procedure_removed"
+  | "treatment_plan_cta_click";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 
