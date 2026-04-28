@@ -51,6 +51,13 @@ const ALLOWED_EVENTS = new Set([
   "mgmt_category_focused",
   "mgmt_heatmap_cell_focused",
   "mgmt_cta_click",
+  "eod_investigate_clicked",
+  "eod_mismatch_resolved",
+  "eod_xero_sync_clicked",
+  "eod_reset",
+  "patient_comm_thread_opened",
+  "patient_comm_template_picked",
+  "patient_comm_message_sent",
 ]);
 
 type EventPayload = {

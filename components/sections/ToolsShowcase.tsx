@@ -5,6 +5,8 @@ import {
   Calculator,
   Clock,
   LayoutGrid,
+  MessageSquare,
+  ReceiptCent,
   ReceiptText,
   Stethoscope,
   Users,
@@ -75,6 +77,20 @@ const TOOLS: ToolCard[] = [
     persona: "owner",
   },
   {
+    href: "/tools/end-of-day-reconciliation",
+    title: "End-of-day reconciliation",
+    blurb: "Variance flagged → mismatch resolved → ledger synced to Xero, in one pane.",
+    Icon: ReceiptCent,
+    persona: "owner",
+  },
+  {
+    href: "/tools/patient-communications",
+    title: "Patient communications",
+    blurb: "Aggregated WhatsApp threads with one-click templated replies — audit-logged.",
+    Icon: MessageSquare,
+    persona: "front-desk",
+  },
+  {
     href: "/tools/day-in-the-life",
     title: "Day in the life",
     blurb: "Walk through a typical clinic day, station by station.",
@@ -107,7 +123,7 @@ export default function ToolsShowcase() {
           Try before you talk
         </p>
         <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-          Eight interactive tools, no signup.
+          Ten interactive tools, no signup.
         </h2>
         <p className="text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
           Every persona on your team has something to play with before a demo call. Each tool runs

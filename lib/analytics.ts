@@ -53,7 +53,16 @@ export type AnalyticsEvent =
   | "mgmt_stat_focused"
   | "mgmt_category_focused"
   | "mgmt_heatmap_cell_focused"
-  | "mgmt_cta_click";
+  | "mgmt_cta_click"
+  // End-of-day reconciliation
+  | "eod_investigate_clicked"
+  | "eod_mismatch_resolved"
+  | "eod_xero_sync_clicked"
+  | "eod_reset"
+  // Patient communication center
+  | "patient_comm_thread_opened"
+  | "patient_comm_template_picked"
+  | "patient_comm_message_sent";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

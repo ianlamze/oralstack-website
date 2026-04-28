@@ -6,6 +6,8 @@ import {
   Calculator,
   Clock,
   LayoutGrid,
+  MessageSquare,
+  ReceiptCent,
   ReceiptText,
   Stethoscope,
   Users,
@@ -93,6 +95,22 @@ const TOOLS: Tool[] = [
     body: "The owner's strategic counterpart to the daily huddle: production / collection ratio / new patients / hygiene re-care over the period (7d / 30d / 90d / YTD), with sparklines, category-stacked production, AR aging bands, provider scorecard, and a provider × procedure heatmap that surfaces specialisation gaps.",
     Icon: BarChart3,
     takes: "~ 1 minute",
+  },
+  {
+    href: "/tools/end-of-day-reconciliation",
+    title: "End-of-day reconciliation",
+    blurb: "Variance flagged · mismatch resolved · ledger pushed to Xero — in one pane.",
+    body: "Today's takings rolled up by mode (PayNow / Card / Cash / Bank), every transaction visible, any variance auto-flagged to the cent. Click investigate → match the unaccounted line → push the day's ledger to Xero. Solves the bookkeeper's Tuesday-morning chase before anyone goes home.",
+    Icon: ReceiptCent,
+    takes: "~ 30 seconds",
+  },
+  {
+    href: "/tools/patient-communications",
+    title: "Patient communication center",
+    blurb: "WhatsApp threads aggregated · templated replies · audit-logged on send.",
+    body: "Confirmations, reschedules, recall, post-op care — five templates one click away, with placeholders that auto-fill from the patient record. Every send is audit-logged with template id, sender, timestamp. Replaces 'whoever has the clinic phone' with a single auditable surface.",
+    Icon: MessageSquare,
+    takes: "~ 30 seconds",
   },
 ];
 
