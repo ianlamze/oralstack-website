@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   Activity,
   ArrowRight,
+  BarChart3,
   Calculator,
   Clock,
   LayoutGrid,
@@ -84,6 +85,14 @@ const TOOLS: Tool[] = [
     body: "Today's schedule with gaps marked, top recall opportunities, AR over 30 days, production goal vs. actual, hygiene re-care rate. Same data the front desk and clinical team see — different shape, owner-sized.",
     Icon: LayoutGrid,
     takes: "~ 30 seconds",
+  },
+  {
+    href: "/tools/management-report",
+    title: "Management report",
+    blurb: "Strategic view — KPIs over time, category breakdown, AR aging, provider heatmap.",
+    body: "The owner's strategic counterpart to the daily huddle: production / collection ratio / new patients / hygiene re-care over the period (7d / 30d / 90d / YTD), with sparklines, category-stacked production, AR aging bands, provider scorecard, and a provider × procedure heatmap that surfaces specialisation gaps.",
+    Icon: BarChart3,
+    takes: "~ 1 minute",
   },
 ];
 

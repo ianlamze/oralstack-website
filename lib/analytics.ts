@@ -47,7 +47,13 @@ export type AnalyticsEvent =
   | "eligibility_cta_click"
   // Daily huddle
   | "huddle_pane_focused"
-  | "huddle_cta_click";
+  | "huddle_cta_click"
+  // Management report
+  | "mgmt_period_changed"
+  | "mgmt_stat_focused"
+  | "mgmt_category_focused"
+  | "mgmt_heatmap_cell_focused"
+  | "mgmt_cta_click";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

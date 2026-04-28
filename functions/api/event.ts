@@ -46,6 +46,11 @@ const ALLOWED_EVENTS = new Set([
   "eligibility_cta_click",
   "huddle_pane_focused",
   "huddle_cta_click",
+  "mgmt_period_changed",
+  "mgmt_stat_focused",
+  "mgmt_category_focused",
+  "mgmt_heatmap_cell_focused",
+  "mgmt_cta_click",
 ]);
 
 type EventPayload = {
