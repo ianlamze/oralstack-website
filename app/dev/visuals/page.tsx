@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Section from "@/components/primitives/Section";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
+import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
 import ImagingMock from "@/components/visuals/ImagingMock";
 import RecallMock from "@/components/visuals/RecallMock";
@@ -108,6 +109,13 @@ const entries: Entry[] = [
     source: "apps/app/app/(authenticated)/patients/[id]/",
     used: ["/", "/workflows#charting", "/customers/dfi-synergy"],
     Component: OdontogramMock,
+  },
+  {
+    name: "CaseNoteParseMock",
+    file: "components/visuals/CaseNoteParseMock.tsx",
+    source: "apps/app/app/(authenticated)/patients/[id]/ (case-note → chart + billing parser)",
+    used: ["/workflows#charting"],
+    Component: CaseNoteParseMock,
   },
   {
     name: "CheckoutMock",

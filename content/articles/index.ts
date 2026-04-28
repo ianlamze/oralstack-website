@@ -13,6 +13,7 @@ import { dentalSensorBridgeIntegration } from "./dental-sensor-bridge-integratio
 import { choosingDentalPmsApac2026 } from "./choosing-dental-pms-apac-2026";
 import { openDentalToManagedPmsMigration } from "./open-dental-to-managed-pms-migration";
 import { tenantIsolationDentalSaas } from "./tenant-isolation-dental-saas";
+import { caseNoteParser } from "./case-note-parser";
 import type { Article, ArticleCluster } from "./types";
 
 export const articles: Article[] = [
@@ -31,6 +32,7 @@ export const articles: Article[] = [
   choosingDentalPmsApac2026,
   openDentalToManagedPmsMigration,
   tenantIsolationDentalSaas,
+  caseNoteParser,
 ];
 
 const bySlug = new Map(articles.map((a) => [a.slug, a]));

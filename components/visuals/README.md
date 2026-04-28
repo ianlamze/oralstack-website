@@ -29,6 +29,7 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 |---|---|---|---|---|
 | `ScheduleMock` | [ScheduleMock.tsx](ScheduleMock.tsx) | `apps/app/app/(authenticated)/schedule/` | 560px | Hero on homepage; "Front desk" workflow section; case study schedule reference |
 | `OdontogramMock` | [OdontogramMock.tsx](OdontogramMock.tsx) | `apps/app/app/(authenticated)/patients/[id]/` (dental-chart, odontogram, tooth-detail-panel) | 520px | "Charting & case notes" workflow section; case study charting visual |
+| `CaseNoteParseMock` | [CaseNoteParseMock.tsx](CaseNoteParseMock.tsx) | `apps/app/app/(authenticated)/patients/[id]/` (case-note → chart + billing parser) | 560px | "Charting & case notes" workflow section; pairs naturally with `OdontogramMock` (note → chart shading) |
 | `CheckoutMock` | [CheckoutMock.tsx](CheckoutMock.tsx) | `apps/app/app/(authenticated)/checkout/` (invoice editor, payment panel) | 480px | "Billing & discharge" workflow section; case study billing visual |
 | `ImagingMock` | [ImagingMock.tsx](ImagingMock.tsx) | `apps/app/app/(authenticated)/imaging/` (asset grid + categories) | 480px | "Clinical imaging" workflow section |
 | `RecallMock` | [RecallMock.tsx](RecallMock.tsx) | `apps/app/app/(authenticated)/reminders/recall-table.tsx` | 560px | "Recall & messaging" workflow section; case study lifecycle visual |
@@ -42,6 +43,7 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 |---|---|
 | `ScheduleMock` | `/` (Hero), `/workflows#front-desk`, `/customers/dfi-synergy` |
 | `OdontogramMock` | `/workflows#charting`, `/customers/dfi-synergy`, `/` (homepage Workflows card) |
+| `CaseNoteParseMock` | `/workflows#charting` (paired with `OdontogramMock`) |
 | `CheckoutMock` | `/workflows#billing`, `/customers/dfi-synergy`, `/` (homepage Workflows card) |
 | `ImagingMock` | `/workflows#imaging`, `/` (homepage Workflows card) |
 | `RecallMock` | `/workflows#recall`, `/customers/dfi-synergy` |

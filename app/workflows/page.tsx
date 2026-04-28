@@ -4,6 +4,7 @@ import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/motion/AnimateInView";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
+import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
 import ImagingMock from "@/components/visuals/ImagingMock";
 import RecallMock from "@/components/visuals/RecallMock";
@@ -27,7 +28,10 @@ type VisualEntry = { id: string; Component: React.ComponentType };
 const visualsBySlug: Record<string, VisualEntry[]> = {
   "front-desk": [{ id: "schedule", Component: ScheduleMock }],
   billing: [{ id: "checkout", Component: CheckoutMock }],
-  charting: [{ id: "odontogram", Component: OdontogramMock }],
+  charting: [
+    { id: "case-note-parse", Component: CaseNoteParseMock },
+    { id: "odontogram", Component: OdontogramMock },
+  ],
   imaging: [
     { id: "imaging-summary", Component: ImagingMock },
     { id: "dicom-viewer", Component: DicomViewerMock },
