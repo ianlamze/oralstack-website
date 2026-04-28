@@ -27,7 +27,7 @@ const seedTeeth: Record<number, ToothCondition[]> = {
 
 export default function OdontogramMock() {
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-3 sm:p-4 shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
+    <div className="min-w-0 max-w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-3 sm:p-4 shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]">
       <DentalChart
         initialTeeth={seedTeeth}
         showPalette={false}

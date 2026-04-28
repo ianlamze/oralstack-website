@@ -96,16 +96,22 @@ export default function Odontogram({
   );
 
   if (!showFraming) {
-    return <div className="overflow-x-auto -mx-2 px-2">{body}</div>;
+    return (
+      <div className="min-w-0 overflow-x-auto">
+        <div className="w-max">{body}</div>
+      </div>
+    );
   }
 
   return (
-    <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white px-4 py-5">
+    <div className="min-w-0 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white px-4 py-5 overflow-hidden">
       <div className="mb-4 flex items-center justify-between text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.24em] text-[var(--color-text-soft)]">
         <span>Maxillary</span>
         <span>FDI</span>
       </div>
-      <div className="overflow-x-auto -mx-4 px-4">{body}</div>
+      <div className="overflow-x-auto">
+        <div className="w-max">{body}</div>
+      </div>
       <div className="mt-4 flex items-center justify-between text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] sm:tracking-[0.24em] text-[var(--color-text-soft)]">
         <span>Mandibular</span>
         <span>Click to chart</span>

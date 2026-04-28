@@ -236,16 +236,16 @@ export default function DentalChart({
   const selectedFindings = selectedTooth !== null ? (teeth[selectedTooth] ?? []) : [];
 
   return (
-    <div className={`grid gap-4 ${className ?? ""}`}>
+    <div className={`grid gap-4 min-w-0 ${className ?? ""}`}>
       {(caption || patientLabel) && (
-        <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
+        <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3 min-w-0">
           {caption && (
-            <span className="flex items-center gap-1.5 flex-wrap">
+            <span className="flex items-center gap-1.5 min-w-0 shrink-0">
               <span>{caption}</span>
               <span aria-hidden className="text-[var(--color-text-soft)]">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 text-[var(--color-tide-deep)] font-semibold">
+              <span className="inline-flex items-center gap-1 text-[var(--color-tide-deep)] font-semibold whitespace-nowrap">
                 <span
                   aria-hidden
                   className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-tide-deep)]"
@@ -255,7 +255,7 @@ export default function DentalChart({
             </span>
           )}
           {patientLabel && (
-            <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
+            <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right truncate min-w-0">
               {patientLabel}
             </span>
           )}
@@ -276,11 +276,11 @@ export default function DentalChart({
       )}
 
       <div
-        className={`grid gap-4 ${
+        className={`grid gap-4 min-w-0 ${
           showChatBox ? "lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start" : ""
         }`}
       >
-        <div className="grid gap-3">
+        <div className="grid gap-3 min-w-0">
           <Odontogram
             teeth={filteredTeeth}
             selectedTooth={selectedTooth}

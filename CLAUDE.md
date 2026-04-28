@@ -42,10 +42,16 @@ npm run typecheck        # tsc --noEmit
 npm run build            # static export to out/
 npm run test:smoke       # Playwright smoke + visual snapshots
 npm run check:content    # voice rules + content schema validation
-npm run deploy           # build + wrangler pages deploy
+npm run deploy           # manual fallback only — see Deploy below
 
 node scripts/browse.mjs <url> [--width N] [--height N]   # screenshot any URL (local or remote)
 ```
+
+## Deploy
+
+Cloudflare Pages is **Git-connected**. Pushing to `main` auto-builds and ships in ~60s — no CLI step. Watch the deploy at Cloudflare → Workers & Pages → `oralstack-website` → Deployments.
+
+`npm run deploy` is a manual fallback for out-of-band hotfixes or shipping a dirty working tree. Don't run it after a routine `git push` — you'll just queue a duplicate of the auto-deploy. See [docs/CLOUDFLARE.md](docs/CLOUDFLARE.md) and [research/playbooks/redeploy.playbook.md](research/playbooks/redeploy.playbook.md).
 
 ## Slash commands (in `.claude/commands/`)
 
@@ -54,9 +60,9 @@ node scripts/browse.mjs <url> [--width N] [--height N]   # screenshot any URL (l
 - `/new-comparison <slug>` — scaffolds a `/compare/<slug>` page from the comparison template
 - `/new-article <slug>` — scaffolds a content/articles entry
 
-## Pre-deploy checklist
+## Pre-push checklist
 
-Before opening a PR for any content addition:
+Before opening a PR or pushing to `main` (which auto-deploys):
 
 1. `npm run lint` — clean
 2. `npm run typecheck` — clean
@@ -64,7 +70,7 @@ Before opening a PR for any content addition:
 4. `npm run check:content` — no banned words, slugs unique, required fields present
 5. For UI-touching changes: `npm run dev` + `node scripts/browse.mjs http://localhost:3000/<route>` at desktop and mobile
 
-CI runs all of these on every PR ([.github/workflows/ci.yml](.github/workflows/ci.yml)). A pre-commit hook also runs lint + typecheck locally — installed automatically by `npm install` via `npm run prepare`.
+CI runs all of these on every PR and on every push to `main` ([.github/workflows/ci.yml](.github/workflows/ci.yml)). A pre-commit hook also runs lint + typecheck locally — installed automatically by `npm install` via `npm run prepare`.
 
 ## Out of bounds (do not do)
 
