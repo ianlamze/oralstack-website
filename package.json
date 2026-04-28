@@ -14,7 +14,7 @@
     "test:smoke:update": "playwright test --update-snapshots",
     "check:content": "node scripts/check-content.mjs",
     "build:cf": "next build && rm -rf out/functions && cp -r functions out/functions",
-    "deploy": "npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main",
+    "deploy": "npm run build:cf && wrangler pages deploy out --project-name=oralstack-website --commit-dirty=true --branch=main",
     "deck:pdf": "bash scripts/generate-deck-pdf.sh",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
   },
