@@ -245,7 +245,7 @@ export default function PatientCommunicationCenter() {
         <div className="grid grid-rows-[auto_minmax(0,1fr)_auto] bg-white min-h-[400px]">
           {activeThread && (
             <>
-              <div className="px-5 py-3 border-b border-[var(--color-border)] flex items-baseline justify-between gap-3">
+              <div className="px-3 sm:px-5 py-3 border-b border-[var(--color-border)] flex items-baseline justify-between gap-3">
                 <div>
                   <p className="text-[13px] font-semibold text-[var(--color-text)]">
                     {activeThread.patientName}
@@ -259,7 +259,7 @@ export default function PatientCommunicationCenter() {
                 </p>
               </div>
 
-              <div className="px-5 py-4 overflow-y-auto max-h-[340px] grid gap-3 content-start">
+              <div className="px-3 sm:px-5 py-4 overflow-y-auto max-h-[340px] grid gap-3 content-start">
                 {activeThread.messages.map((m) => (
                   <motion.div
                     key={m.id}
@@ -267,7 +267,7 @@ export default function PatientCommunicationCenter() {
                     initial={reduceMotion ? false : { opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className={`max-w-[78%] rounded-[var(--radius-md)] px-3 py-2 grid gap-0.5 ${
+                    className={`max-w-[88%] sm:max-w-[78%] rounded-[var(--radius-md)] px-3 py-2 grid gap-0.5 ${
                       m.from === "clinic"
                         ? "justify-self-end bg-[color-mix(in_oklch,var(--color-tide-deep),white_82%)] border border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)]"
                         : "justify-self-start bg-[var(--color-canvas-tinted)] border border-[var(--color-border)]"
@@ -289,7 +289,7 @@ export default function PatientCommunicationCenter() {
                 <div ref={messagesEndRef} />
               </div>
 
-              <div className="px-5 py-3 border-t border-[var(--color-border)] grid gap-2 relative">
+              <div className="px-3 sm:px-5 py-3 border-t border-[var(--color-border)] grid gap-2 relative">
                 <AnimatePresence initial={false}>
                   {pickerOpen && (
                     <motion.div

@@ -283,7 +283,7 @@ export default function TreatmentPlanBuilder() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-8 items-start">
         {/* Odontogram — 4 quadrants, full mouth */}
         <div className="grid gap-3">
-          <div className="grid grid-cols-2 gap-x-2 sm:gap-x-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3 sm:gap-x-6 sm:gap-y-0">
             <Quadrant
               label="Upper right"
               numbers={UPPER_RIGHT}
@@ -308,7 +308,7 @@ export default function TreatmentPlanBuilder() {
             />
           </div>
           <div className="border-t border-[var(--color-border)] my-1" />
-          <div className="grid grid-cols-2 gap-x-2 sm:gap-x-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3 sm:gap-x-6 sm:gap-y-0">
             <Quadrant
               label="Lower right"
               numbers={LOWER_RIGHT}
@@ -660,8 +660,11 @@ function ProcedurePicker({
       animate={{ opacity: 1, y: 0 }}
       exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
       transition={{ duration: 0.16 }}
-      className={`absolute z-30 top-full mt-2 w-[260px] rounded-[var(--radius-lg)] border border-[var(--color-border-strong)] bg-white shadow-[0_18px_60px_-24px_rgba(20,30,60,0.35)] p-3 ${
-        align === "right" ? "right-0" : "left-0"
+      // On narrow viewports the popover centers on the tooth and clamps to the
+      // viewport (max-w accounts for ~32px of page padding). On sm+ it falls
+      // back to the alignment hint from the parent quadrant.
+      className={`absolute z-30 top-full mt-2 w-[260px] max-w-[calc(100vw-32px)] rounded-[var(--radius-lg)] border border-[var(--color-border-strong)] bg-white shadow-[0_18px_60px_-24px_rgba(20,30,60,0.35)] p-3 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-auto sm:right-auto ${
+        align === "right" ? "sm:right-0" : "sm:left-0"
       }`}
     >
       <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[var(--color-text-soft)] mb-2">
