@@ -16,16 +16,17 @@ export default function CountUp({ value, duration = 1.4, className }: CountUpPro
   // Parse leading digits + optional decimal + suffix.
   // Handles "85%", "120+", "3 weeks", "0", "$200", "1.6M+".
   const match = value.match(/^([^\d-]*)(\d+(?:\.\d+)?)(.*)$/);
+  const hasMatch = match !== null;
   const prefix = match?.[1] ?? "";
   const numStr = match?.[2] ?? "";
   const suffix = match?.[3] ?? "";
   const target = numStr ? parseFloat(numStr) : 0;
   const isInt = numStr && !numStr.includes(".");
 
-  const [display, setDisplay] = useState(match ? `${prefix}0${suffix}` : value);
+  const [display, setDisplay] = useState(hasMatch ? `${prefix}0${suffix}` : value);
 
   useEffect(() => {
-    if (!inView || !match) return;
+    if (!inView || !hasMatch) return;
     const controls = animate(0, target, {
       duration,
       ease: [0.16, 1, 0.3, 1],
@@ -35,9 +36,9 @@ export default function CountUp({ value, duration = 1.4, className }: CountUpPro
       },
     });
     return () => controls.stop();
-  }, [inView, target, duration, prefix, suffix, isInt, match]);
+  }, [inView, target, duration, prefix, suffix, isInt, hasMatch]);
 
-  if (!match) {
+  if (!hasMatch) {
     return (
       <span ref={ref} className={className}>
         {value}
