@@ -8,6 +8,8 @@ import RecallMock from "@/components/visuals/RecallMock";
 import MessagingMock from "@/components/visuals/MessagingMock";
 import DicomViewerMock from "@/components/visuals/DicomViewerMock";
 import AnalyticsMock from "@/components/visuals/AnalyticsMock";
+import DentalChart from "@/components/visuals/dental-chart/DentalChart";
+import type { ToothCondition } from "@/content/charting/types";
 
 export const metadata: Metadata = {
   title: "Visual catalog (dev)",
@@ -24,7 +26,75 @@ type Entry = {
   Component: React.ComponentType;
 };
 
+const fullChartSeed: Record<number, ToothCondition[]> = {
+  16: [
+    {
+      id: "demo-16-mod-amalgam",
+      condition: "filling_amalgam",
+      surfaces: ["M", "O", "D"],
+      date: "2026-04-01",
+      status: "completed",
+    },
+  ],
+  26: [
+    {
+      id: "demo-26-do-comp",
+      condition: "filling_composite",
+      surfaces: ["D", "O"],
+      date: "2026-04-01",
+      status: "completed",
+    },
+  ],
+  36: [{ id: "demo-36-imp", condition: "implant", date: "2026-04-01", status: "active" }],
+  37: [{ id: "demo-37-imp", condition: "implant", date: "2026-04-01", status: "active" }],
+  35: [{ id: "demo-35-imp", condition: "implant", date: "2026-04-01", status: "active" }],
+  18: [{ id: "demo-18-x", condition: "extracted", date: "2026-04-01", status: "completed" }],
+  28: [{ id: "demo-28-x", condition: "extracted", date: "2026-04-01", status: "completed" }],
+  47: [
+    {
+      id: "demo-47-rct",
+      condition: "root_canal",
+      date: "2026-04-01",
+      status: "completed",
+    },
+    {
+      id: "demo-47-cr",
+      condition: "crown",
+      date: "2026-04-01",
+      status: "completed",
+    },
+  ],
+  46: [{ id: "demo-46-mob", condition: "mobility", date: "2026-04-01", status: "active" }],
+  13: [
+    { id: "demo-13-abt", condition: "bridge_abutment", date: "2026-04-01", status: "completed" },
+  ],
+  12: [{ id: "demo-12-pon", condition: "bridge_pontic", date: "2026-04-01", status: "completed" }],
+  11: [{ id: "demo-11-pon", condition: "bridge_pontic", date: "2026-04-01", status: "completed" }],
+  21: [{ id: "demo-21-pon", condition: "bridge_pontic", date: "2026-04-01", status: "completed" }],
+  22: [{ id: "demo-22-pon", condition: "bridge_pontic", date: "2026-04-01", status: "completed" }],
+  23: [
+    { id: "demo-23-abt", condition: "bridge_abutment", date: "2026-04-01", status: "completed" },
+  ],
+};
+
+function DentalChartFull() {
+  return (
+    <DentalChart
+      initialTeeth={fullChartSeed}
+      caption="Patient chart"
+      patientLabel="Lim Wei Jian · #1042"
+    />
+  );
+}
+
 const entries: Entry[] = [
+  {
+    name: "DentalChart",
+    file: "components/visuals/dental-chart/DentalChart.tsx",
+    source: "apps/app/app/(authenticated)/patients/[id]/dental-chart.tsx",
+    used: ["asset — composes Tooth, Odontogram, ConditionPalette, ChatBox"],
+    Component: DentalChartFull,
+  },
   {
     name: "ScheduleMock",
     file: "components/visuals/ScheduleMock.tsx",

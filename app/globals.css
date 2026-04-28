@@ -76,6 +76,44 @@
   /* Warmth — activated sunset-deep for human/clinical moments. Reserved for
      marketing visuals (BrandMotif, hero accents). */
   --color-warmth: oklch(0.72 0.13 45);
+
+  /* Charting palette — per-condition fills for the dental chart. Each token
+     resolves to a distinguishable hue against the chart's near-white surface.
+     Consumed via CONDITION_COLORS in content/charting/types.ts. */
+  --color-chart-caries: #ef4444;
+  --color-chart-filling-composite: #4ecb71;
+  --color-chart-filling-amalgam: #f29a3f;
+  --color-chart-crown: #f3ea15;
+  --color-chart-missing: #f28b2d;
+  --color-chart-extracted: #2d2d2d;
+  --color-chart-implant: #8b5cf6;
+  --color-chart-extraction-planned: #dc2626;
+  --color-chart-impacted: #d946ef;
+  --color-chart-partially-erupted: #4c1d95;
+  --color-chart-unerupted: #c1c96f;
+  --color-chart-retained-root: #6477ff;
+  --color-chart-non-carious-lesion: #76a2e2;
+  --color-chart-inlay: #d8f671;
+  --color-chart-onlay: #8b98c6;
+  --color-chart-root-canal: #6db26f;
+  --color-chart-post-core: #3dbe3f;
+  --color-chart-bridge-pontic: #d9b0bf;
+  --color-chart-bridge-abutment: #9f1239;
+  --color-chart-denture-tooth: #ec4899;
+  --color-chart-periodontal-treatment: #0ea5a3;
+  --color-chart-splint: #6366f1;
+  --color-chart-veneer: #14b8a6;
+  --color-chart-sealant: #84cc16;
+  --color-chart-fracture: #38bdf8;
+  --color-chart-abscess: #991b1b;
+  --color-chart-mobility: #a88d00;
+  --color-chart-recession: #7c3aed;
+  --color-chart-furcation: #92400e;
+  --color-chart-apicoectomy: #1190ab;
+  --color-chart-watch: #fbbf24;
+  --color-chart-surface: #f8fafc;
+  --color-chart-surface-line: #e2e8f0;
+  --color-chart-label-soft: #94a3b8;
 }
 
 * {
