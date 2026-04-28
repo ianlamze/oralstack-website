@@ -8,6 +8,15 @@ import {
   ScanSearch,
   MessageCircle,
   BarChart3,
+  Activity,
+  Calculator,
+  Clock,
+  LayoutGrid,
+  MessageSquare,
+  ReceiptCent,
+  ReceiptText,
+  Stethoscope,
+  Users,
   Menu,
   X,
   ChevronDown,
@@ -19,6 +28,13 @@ import Section from "@/components/primitives/Section";
 import Wordmark from "@/components/ui/Wordmark";
 
 type WorkflowItem = {
+  slug: string;
+  label: string;
+  desc: string;
+  Icon: LucideIcon;
+};
+
+type ToolItem = {
   slug: string;
   label: string;
   desc: string;
@@ -64,33 +80,98 @@ const workflowItems: WorkflowItem[] = [
   },
 ];
 
+const toolItems: ToolItem[] = [
+  {
+    slug: "treatment-plan-builder",
+    label: "Treatment plan builder",
+    desc: "Click teeth, see the bill before treatment.",
+    Icon: Stethoscope,
+  },
+  {
+    slug: "eligibility-estimate",
+    label: "Eligibility & estimate",
+    desc: "CHAS, insurance, MediSave — patient portion live.",
+    Icon: ReceiptText,
+  },
+  {
+    slug: "perio-chart",
+    label: "Periodontal chart",
+    desc: "Click any site to record probing depth.",
+    Icon: Activity,
+  },
+  {
+    slug: "patient-communications",
+    label: "Patient communications",
+    desc: "Templated WhatsApp replies, audit-logged on send.",
+    Icon: MessageSquare,
+  },
+  {
+    slug: "waitlist-auto-fill",
+    label: "Waitlist auto-fill",
+    desc: "Patient cancels — see the slot fill itself.",
+    Icon: Users,
+  },
+  {
+    slug: "daily-huddle",
+    label: "Daily huddle",
+    desc: "Owner's morning-coffee view at a glance.",
+    Icon: LayoutGrid,
+  },
+  {
+    slug: "end-of-day-reconciliation",
+    label: "End-of-day reconciliation",
+    desc: "Variance flagged, matched, synced to Xero.",
+    Icon: ReceiptCent,
+  },
+  {
+    slug: "management-report",
+    label: "Management report",
+    desc: "KPIs over time, AR aging, provider heatmap.",
+    Icon: BarChart3,
+  },
+  {
+    slug: "no-show-calculator",
+    label: "No-show calculator",
+    desc: "Model revenue your clinic loses today.",
+    Icon: Calculator,
+  },
+  {
+    slug: "day-in-the-life",
+    label: "Day in the life",
+    desc: "Walk through a typical clinic day.",
+    Icon: Clock,
+  },
+];
+
 export default function Nav() {
-  const [megaOpen, setMegaOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<"workflows" | "tools" | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [workflowsExpanded, setWorkflowsExpanded] = useState(true);
+  const [toolsExpanded, setToolsExpanded] = useState(false);
   const closeTimer = useRef<number | null>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const workflowsTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const toolsTriggerRef = useRef<HTMLButtonElement | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
-  const openMega = () => {
+  const openMenuFor = (menu: "workflows" | "tools") => {
     if (closeTimer.current !== null) {
       window.clearTimeout(closeTimer.current);
       closeTimer.current = null;
     }
-    setMegaOpen(true);
+    setOpenMenu(menu);
   };
 
-  const scheduleCloseMega = () => {
+  const scheduleCloseMenu = () => {
     if (closeTimer.current !== null) window.clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => setMegaOpen(false), 120);
+    closeTimer.current = window.setTimeout(() => setOpenMenu(null), 120);
   };
 
-  const closeMega = useCallback(() => {
+  const closeMenu = useCallback(() => {
     if (closeTimer.current !== null) {
       window.clearTimeout(closeTimer.current);
       closeTimer.current = null;
     }
-    setMegaOpen(false);
+    setOpenMenu(null);
   }, []);
 
   useEffect(() => {
@@ -99,14 +180,17 @@ export default function Nav() {
       if (drawerOpen) {
         setDrawerOpen(false);
         hamburgerRef.current?.focus();
-      } else if (megaOpen) {
-        closeMega();
-        triggerRef.current?.focus();
+      } else if (openMenu === "workflows") {
+        closeMenu();
+        workflowsTriggerRef.current?.focus();
+      } else if (openMenu === "tools") {
+        closeMenu();
+        toolsTriggerRef.current?.focus();
       }
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [megaOpen, drawerOpen, closeMega]);
+  }, [openMenu, drawerOpen, closeMenu]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -116,6 +200,9 @@ export default function Nav() {
       document.body.style.overflow = original;
     };
   }, [drawerOpen]);
+
+  const workflowsOpen = openMenu === "workflows";
+  const toolsOpen = openMenu === "tools";
 
   return (
     <header className="relative">
@@ -127,24 +214,99 @@ export default function Nav() {
 
           <nav className="hidden md:flex items-center gap-1 text-sm">
             <button
-              ref={triggerRef}
+              ref={workflowsTriggerRef}
               type="button"
-              aria-expanded={megaOpen}
+              aria-expanded={workflowsOpen}
               aria-haspopup="menu"
               aria-controls="workflows-mega"
-              onClick={() => (megaOpen ? closeMega() : openMega())}
-              onMouseEnter={openMega}
-              onMouseLeave={scheduleCloseMega}
+              onClick={() => (workflowsOpen ? closeMenu() : openMenuFor("workflows"))}
+              onMouseEnter={() => openMenuFor("workflows")}
+              onMouseLeave={scheduleCloseMenu}
               className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
             >
               Workflows
               <ChevronDown
                 className={`h-3.5 w-3.5 transition-transform duration-150 ${
-                  megaOpen ? "rotate-180" : ""
+                  workflowsOpen ? "rotate-180" : ""
                 }`}
                 aria-hidden
               />
             </button>
+
+            <div className="relative">
+              <button
+                ref={toolsTriggerRef}
+                type="button"
+                aria-expanded={toolsOpen}
+                aria-haspopup="menu"
+                aria-controls="tools-dropdown"
+                onClick={() => (toolsOpen ? closeMenu() : openMenuFor("tools"))}
+                onMouseEnter={() => openMenuFor("tools")}
+                onMouseLeave={scheduleCloseMenu}
+                className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              >
+                Tools
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform duration-150 ${
+                    toolsOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden
+                />
+              </button>
+
+              <AnimatePresence>
+                {toolsOpen && (
+                  <motion.div
+                    id="tools-dropdown"
+                    role="menu"
+                    aria-label="Tools"
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                    onMouseEnter={() => openMenuFor("tools")}
+                    onMouseLeave={scheduleCloseMenu}
+                    className="absolute top-full right-0 z-50 mt-3 w-[min(560px,calc(100vw-3rem))]"
+                  >
+                    <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-2 shadow-[0_24px_48px_-24px_rgba(15,23,42,0.18)]">
+                      <ul className="grid sm:grid-cols-2">
+                        {toolItems.map(({ slug, label, desc, Icon }) => (
+                          <li key={slug}>
+                            <a
+                              href={`/tools/${slug}`}
+                              onClick={closeMenu}
+                              className="group flex gap-3 rounded-[var(--radius-md)] p-2.5 hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                            >
+                              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-canvas)] text-[var(--color-tide-deep)] group-hover:border-[var(--color-tide)] transition-colors">
+                                <Icon className="h-3.5 w-3.5" aria-hidden />
+                              </span>
+                              <span className="grid gap-0.5 min-w-0">
+                                <span className="text-sm font-medium text-[var(--color-text)]">
+                                  {label}
+                                </span>
+                                <span className="text-xs text-[var(--color-text-muted)] leading-snug">
+                                  {desc}
+                                </span>
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-1 border-t border-[var(--color-border)] px-2.5 pt-2.5 pb-1">
+                        <a
+                          href="/tools"
+                          onClick={closeMenu}
+                          className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-tide-deep)] hover:gap-2 transition-all"
+                        >
+                          See all tools <ArrowRight className="h-3 w-3" aria-hidden />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <a
               href="/customers"
               className="px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
@@ -180,7 +342,7 @@ export default function Nav() {
       </Section>
 
       <AnimatePresence>
-        {megaOpen && (
+        {workflowsOpen && (
           <motion.div
             id="workflows-mega"
             role="region"
@@ -189,8 +351,8 @@ export default function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            onMouseEnter={openMega}
-            onMouseLeave={scheduleCloseMega}
+            onMouseEnter={() => openMenuFor("workflows")}
+            onMouseLeave={scheduleCloseMenu}
             className="absolute inset-x-0 top-full z-50 hidden md:block px-6 md:px-10 pt-3"
           >
             <div className="mx-auto w-full max-w-[1100px]">
@@ -205,7 +367,7 @@ export default function Nav() {
                         <li key={slug}>
                           <a
                             href={`/workflows#${slug}`}
-                            onClick={closeMega}
+                            onClick={closeMenu}
                             className="group flex gap-3 rounded-[var(--radius-md)] p-3 hover:bg-[var(--color-canvas-tinted)] transition-colors"
                           >
                             <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-canvas)] text-[var(--color-tide-deep)] group-hover:border-[var(--color-tide)] transition-colors">
@@ -227,49 +389,42 @@ export default function Nav() {
                     <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-border)] pt-4 text-xs">
                       <a
                         href="/for-solo-clinics"
-                        onClick={closeMega}
+                        onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
                         For solo →
                       </a>
                       <a
                         href="/for-multi-clinic"
-                        onClick={closeMega}
+                        onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
                         For DSOs →
                       </a>
                       <a
                         href="/compare"
-                        onClick={closeMega}
+                        onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
                         Compare →
                       </a>
                       <a
-                        href="/tools"
-                        onClick={closeMega}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Tools →
-                      </a>
-                      <a
                         href="/articles"
-                        onClick={closeMega}
+                        onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
                         Articles →
                       </a>
                       <a
                         href="/lead-magnets"
-                        onClick={closeMega}
+                        onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
                         References →
                       </a>
                       <a
                         href="/faq"
-                        onClick={closeMega}
+                        onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
                         FAQ →
@@ -279,7 +434,7 @@ export default function Nav() {
 
                   <a
                     href="/customers/dfi-synergy"
-                    onClick={closeMega}
+                    onClick={closeMenu}
                     className="group relative grid content-between gap-6 border-t border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 md:p-7 md:border-l md:border-t-0 hover:bg-[oklch(0.95_0.005_240)] transition-colors"
                   >
                     <div>
@@ -401,6 +556,65 @@ export default function Nav() {
                   )}
                 </AnimatePresence>
 
+                <button
+                  type="button"
+                  onClick={() => setToolsExpanded((v) => !v)}
+                  aria-expanded={toolsExpanded}
+                  aria-controls="drawer-tools"
+                  className="flex w-full items-center justify-between rounded-[var(--radius-md)] px-3 py-3 text-base font-medium hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                >
+                  Tools
+                  <ChevronDown
+                    className={`h-4 w-4 text-[var(--color-text-soft)] transition-transform duration-150 ${
+                      toolsExpanded ? "rotate-180" : ""
+                    }`}
+                    aria-hidden
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {toolsExpanded && (
+                    <motion.ul
+                      id="drawer-tools"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="mb-2 grid gap-1 overflow-hidden"
+                    >
+                      {toolItems.map(({ slug, label, desc, Icon }) => (
+                        <li key={slug}>
+                          <a
+                            href={`/tools/${slug}`}
+                            onClick={() => setDrawerOpen(false)}
+                            className="flex gap-3 rounded-[var(--radius-md)] px-3 py-2.5 hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                          >
+                            <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-tide-deep)]">
+                              <Icon className="h-3.5 w-3.5" aria-hidden />
+                            </span>
+                            <span className="grid gap-0.5">
+                              <span className="text-sm font-medium text-[var(--color-text)]">
+                                {label}
+                              </span>
+                              <span className="text-xs leading-snug text-[var(--color-text-muted)]">
+                                {desc}
+                              </span>
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                      <li>
+                        <a
+                          href="/tools"
+                          onClick={() => setDrawerOpen(false)}
+                          className="flex items-center gap-1 rounded-[var(--radius-md)] px-3 py-2.5 text-xs font-medium text-[var(--color-tide-deep)]"
+                        >
+                          See all tools <ArrowRight className="h-3 w-3" aria-hidden />
+                        </a>
+                      </li>
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+
                 <DrawerLink href="/for-solo-clinics" onNavigate={() => setDrawerOpen(false)}>
                   For solo & small clinics
                 </DrawerLink>
@@ -415,9 +629,6 @@ export default function Nav() {
                 </DrawerLink>
                 <DrawerLink href="/compare" onNavigate={() => setDrawerOpen(false)}>
                   Compare
-                </DrawerLink>
-                <DrawerLink href="/tools" onNavigate={() => setDrawerOpen(false)}>
-                  Tools
                 </DrawerLink>
                 <DrawerLink href="/articles" onNavigate={() => setDrawerOpen(false)}>
                   Articles
