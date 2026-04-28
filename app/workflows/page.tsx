@@ -20,13 +20,21 @@ export const metadata: Metadata = {
   alternates: { canonical: "/workflows" },
 };
 
-const visualsBySlug: Record<string, React.ComponentType[]> = {
-  "front-desk": [ScheduleMock],
-  billing: [CheckoutMock],
-  charting: [OdontogramMock],
-  imaging: [ImagingMock, DicomViewerMock],
-  recall: [RecallMock, MessagingMock],
-  operations: [AnalyticsMock],
+type VisualEntry = { id: string; Component: React.ComponentType };
+
+const visualsBySlug: Record<string, VisualEntry[]> = {
+  "front-desk": [{ id: "schedule", Component: ScheduleMock }],
+  billing: [{ id: "checkout", Component: CheckoutMock }],
+  charting: [{ id: "odontogram", Component: OdontogramMock }],
+  imaging: [
+    { id: "imaging-summary", Component: ImagingMock },
+    { id: "dicom-viewer", Component: DicomViewerMock },
+  ],
+  recall: [
+    { id: "recall-list", Component: RecallMock },
+    { id: "messaging", Component: MessagingMock },
+  ],
+  operations: [{ id: "analytics", Component: AnalyticsMock }],
 };
 
 export default function WorkflowsPage() {
@@ -111,8 +119,8 @@ export default function WorkflowsPage() {
                           visualSide === "right" ? "lg:justify-self-end" : "lg:justify-self-start"
                         }`}
                       >
-                        {Visuals.map((V, vi) => (
-                          <V key={vi} />
+                        {Visuals.map(({ id, Component }) => (
+                          <Component key={id} />
                         ))}
                       </div>
                     )}

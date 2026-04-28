@@ -42,8 +42,8 @@ export default function DfiSynergyCaseStudy() {
           {study.sections.slice(0, 2).map((s) => (
             <div key={s.heading} className="grid gap-5">
               <h2>{s.heading}</h2>
-              {s.paragraphs.map((p, i) => (
-                <p key={i} className="text-base md:text-lg">
+              {s.paragraphs.map((p) => (
+                <p key={p} className="text-base md:text-lg">
                   {p}
                 </p>
               ))}
@@ -81,8 +81,8 @@ export default function DfiSynergyCaseStudy() {
           {study.sections.slice(2, 3).map((s) => (
             <div key={s.heading} className="grid gap-5">
               <h2>{s.heading}</h2>
-              {s.paragraphs.map((p, i) => (
-                <p key={i} className="text-base md:text-lg">
+              {s.paragraphs.map((p) => (
+                <p key={p} className="text-base md:text-lg">
                   {p}
                 </p>
               ))}
@@ -132,8 +132,8 @@ export default function DfiSynergyCaseStudy() {
           {study.sections.slice(3).map((s) => (
             <div key={s.heading} className="grid gap-5">
               <h2>{s.heading}</h2>
-              {s.paragraphs.map((p, i) => (
-                <p key={i} className="text-base md:text-lg">
+              {s.paragraphs.map((p) => (
+                <p key={p} className="text-base md:text-lg">
                   {p}
                 </p>
               ))}

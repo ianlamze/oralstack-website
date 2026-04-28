@@ -47,8 +47,8 @@ export default function ChangelogPage() {
 
       <Section className="pb-24 md:pb-32">
         <ul className="grid gap-10 max-w-[820px] border-l border-[var(--color-border)] pl-6 md:pl-8">
-          {changelog.map((entry, i) => (
-            <li key={`${entry.date}-${i}`} className="relative">
+          {changelog.map((entry) => (
+            <li key={`${entry.date}-${entry.title}`} className="relative">
               <span
                 aria-hidden
                 className="absolute -left-[31px] md:-left-[39px] top-2 inline-block h-2 w-2 rounded-full bg-[var(--color-accent-deep)]"
