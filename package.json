@@ -14,8 +14,7 @@
     "test:smoke:update": "playwright test --update-snapshots",
     "check:content": "node scripts/check-content.mjs",
     "build:cf": "next build && rm -rf out/functions && cp -r functions out/functions",
-    "deploy:manual": "npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true",
-    "deploy": "echo '\\nProduction deploys are GitHub-integrated. Push to main to deploy.' && echo 'For a one-off out-of-band deploy: npm run deploy:manual\\n' && exit 1",
+    "deploy": "npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main",
     "deck:pdf": "bash scripts/generate-deck-pdf.sh",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
   },

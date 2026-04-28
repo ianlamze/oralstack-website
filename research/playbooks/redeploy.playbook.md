@@ -26,7 +26,7 @@ The site lives at https://oralstack.com (Cloudflare Pages, project name `oralsta
    npm run deploy
    ```
 
-   Which is `next build && wrangler pages deploy out --project-name=oralstack --commit-dirty=true`. Takes ~30–60 seconds.
+   Which is `npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main`. Takes ~30–60 seconds and always targets production.
 
 2. Wrangler returns a deployment URL like `https://abc12345.oralstack.pages.dev` — that's the immutable preview for this deploy.
 

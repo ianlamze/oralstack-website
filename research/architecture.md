@@ -161,7 +161,7 @@ content/  →  components/visuals/  →  components/primitives/  →  components
 ```
 npm run dev        # local dev server at :3000
 npm run build      # static export to out/
-npm run deploy     # next build && wrangler pages deploy out --project-name=oralstack
+npm run deploy     # build:cf && wrangler pages deploy out --project-name=oralstack --branch=main (ships to oralstack.com)
 npm run typecheck  # tsc --noEmit
 npm run deck:pdf   # headless Chrome → oralstack-deck.pdf from /dev/deck
 ```

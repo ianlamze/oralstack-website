@@ -35,7 +35,7 @@ Once you're authenticated, I run:
 npm run deploy
 ```
 
-Which is `next build && wrangler pages deploy out --project-name=oralstack --commit-dirty=true`. First run prompts to create the Pages project — Wrangler accepts the `--project-name=oralstack` flag and creates it without further input. Returns a URL like `https://oralstack.pages.dev`.
+Which is `npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main` — always ships to production. First run prompts to create the Pages project — Wrangler accepts the `--project-name=oralstack` flag and creates it without further input. Returns a URL like `https://oralstack.pages.dev`.
 
 The Pages project is now live. Subsequent deploys are the same single command.
 

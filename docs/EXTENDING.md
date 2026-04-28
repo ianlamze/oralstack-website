@@ -148,13 +148,13 @@ Both screenshots save to `/tmp/browse-<ts>.png`. Open and eyeball.
 The deploy script is in [package.json](package.json):
 
 ```bash
-npm run deploy   # runs `next build && wrangler pages deploy out --project-name=oralstack`
+npm run deploy   # runs `npm run build:cf && wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main`
 ```
 
-By default this deploys to a preview branch. To push to production (oralstack.com), append `--branch=main`:
+This always ships to production (oralstack.com). For a preview / branch deploy, run wrangler directly without `--branch`:
 
 ```bash
-npx wrangler pages deploy out --project-name=oralstack --commit-dirty=true --branch=main
+npm run build:cf && npx wrangler pages deploy out --project-name=oralstack --commit-dirty=true
 ```
 
 Notes:
