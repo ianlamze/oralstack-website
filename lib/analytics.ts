@@ -30,7 +30,12 @@ export type AnalyticsEvent =
   // Treatment plan builder
   | "treatment_plan_procedure_added"
   | "treatment_plan_procedure_removed"
-  | "treatment_plan_cta_click";
+  | "treatment_plan_cta_click"
+  // Waitlist auto-fill
+  | "waitlist_cancel_simulated"
+  | "waitlist_autofill_opened"
+  | "waitlist_candidate_picked"
+  | "waitlist_reset";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

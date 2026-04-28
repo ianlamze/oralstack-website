@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight, Calculator, Clock, Stethoscope } from "lucide-react";
+import { ArrowRight, Calculator, Clock, Stethoscope, Users } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 
@@ -43,6 +43,14 @@ const TOOLS: Tool[] = [
     body: "The spine of every dental treatment conversation. Pick from twelve common procedures across preventive, restorative, endo, surgical, and prosthetic. The plan card auto-phases by clinical priority and splits insurance from patient portion live, so you can present to the patient at the chair — not after.",
     Icon: Stethoscope,
     takes: "~ 1 minute",
+  },
+  {
+    href: "/tools/waitlist-auto-fill",
+    title: "Waitlist auto-fill",
+    blurb: "Patient cancels at 11:00 — see the slot fill itself.",
+    body: "When a cancel hits, the front desk has minutes — not hours — to fill the slot. Oralstack ranks the waitlist by procedure fit, slot length, distance, and recall age, then drafts a WhatsApp confirmation. Click ✕ on the 11:00 hygiene slot to walk through it.",
+    Icon: Users,
+    takes: "~ 30 seconds",
   },
 ];
 

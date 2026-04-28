@@ -33,6 +33,10 @@ const ALLOWED_EVENTS = new Set([
   "treatment_plan_procedure_added",
   "treatment_plan_procedure_removed",
   "treatment_plan_cta_click",
+  "waitlist_cancel_simulated",
+  "waitlist_autofill_opened",
+  "waitlist_candidate_picked",
+  "waitlist_reset",
 ]);
 
 type EventPayload = {
