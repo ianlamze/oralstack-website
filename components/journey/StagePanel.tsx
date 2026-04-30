@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 import type { FeatureRef, JourneyStage } from "@/content/journey";
+import { track } from "@/lib/analytics";
 import BeforeAfterSplit from "./BeforeAfterSplit";
 import MetricTicker from "./MetricTicker";
 
@@ -142,6 +143,30 @@ export default function StagePanel({ stage, totalStages, builtDemo }: StagePanel
               </div>
             </div>
           )}
+
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-6 py-7 sm:px-8 sm:py-9 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
+            <div className="grid gap-3">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--color-tide-deep)] font-semibold">
+                Demo · focused on {stage.name.toLowerCase()}
+              </p>
+              <h3 className="text-xl md:text-2xl font-semibold tracking-tight max-w-[28ch] leading-[1.2]">
+                {stage.cta.headline}
+              </h3>
+              <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
+                {stage.cta.body}
+              </p>
+            </div>
+            <div className="md:justify-self-end">
+              <a
+                href={`/book-a-demo?stage=${stage.id}`}
+                onClick={() => track("journey_stage_cta_click", { stage: stage.id })}
+                className="inline-flex items-center gap-2 min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
+              >
+                <span>{stage.cta.buttonLabel}</span>
+                <span aria-hidden>→</span>
+              </a>
+            </div>
+          </div>
         </motion.div>
       </AnimatePresence>
     </section>

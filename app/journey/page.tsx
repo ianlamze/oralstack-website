@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import JourneyExplorer from "@/components/journey/JourneyExplorer";
-import Button from "@/components/primitives/Button";
+import CompoundEffect from "@/components/journey/CompoundEffect";
 
 export const metadata: Metadata = {
   title: "The patient journey",
@@ -34,22 +34,7 @@ export default function JourneyPage() {
       </Section>
 
       <Section className="pb-24 md:pb-32">
-        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-              See the journey running on a sample clinic.
-            </h2>
-            <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              A 30-minute demo walks every stage from a real Singapore practice — booking through
-              recall — on a sample dataset that mirrors a typical 3-chair clinic.
-            </p>
-          </div>
-          <div className="md:justify-self-end">
-            <Button href="/book-a-demo" variant="primary" withArrow>
-              Book a demo
-            </Button>
-          </div>
-        </div>
+        <CompoundEffect />
       </Section>
     </main>
   );

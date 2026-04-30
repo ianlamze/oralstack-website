@@ -105,7 +105,8 @@ export type AnalyticsEvent =
   | "alerts_acknowledged"
   | "alerts_reset"
   // Patient journey explorer
-  | "journey_stage_selected";
+  | "journey_stage_selected"
+  | "journey_stage_cta_click";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

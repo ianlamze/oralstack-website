@@ -73,6 +73,15 @@ export type StageMetric = {
   sourceNote: string;
 };
 
+export type StageCta = {
+  /** Headline for the in-panel stage CTA. Stage-specific concrete promise. */
+  headline: string;
+  /** Supporting body line, ~30 words. */
+  body: string;
+  /** Button label. Stage-specific. */
+  buttonLabel: string;
+};
+
 export type JourneyStage = {
   /** Stable id, kebab-case. Used as URL anchor and analytics tag. */
   id: string;
@@ -96,6 +105,8 @@ export type JourneyStage = {
   features: FeatureRef[];
   /** Gaps — things product should build to round out this stage. */
   gaps: Gap[];
+  /** Stage-keyed CTA copy, surfaced at the bottom of the stage panel. */
+  cta: StageCta;
 };
 
 export type CrossCutting = {
@@ -175,6 +186,11 @@ export const journeyStages: JourneyStage[] = [
         priority: "medium",
       },
     ],
+    cta: {
+      headline: "See where new patients actually come from on your clinic.",
+      body: "30-min walkthrough on a real Singapore practice — Google reviews synced, referrer captured at intake, source tied to the patient record from visit one.",
+      buttonLabel: "Book a demo focused on Discovery",
+    },
   },
 
   {
@@ -277,6 +293,11 @@ export const journeyStages: JourneyStage[] = [
         priority: "medium",
       },
     ],
+    cta: {
+      headline: "See booking with no double-booking risk and no phone tag.",
+      body: "30-min walkthrough on a real Singapore practice — drag-to-reschedule on a live diary, online slot search, WhatsApp Business confirmations from a clinic-owned number.",
+      buttonLabel: "Book a demo focused on Booking",
+    },
   },
 
   {
@@ -344,6 +365,11 @@ export const journeyStages: JourneyStage[] = [
         priority: "medium",
       },
     ],
+    cta: {
+      headline: "See pre-visit form completion go from 30% to 85%.",
+      body: "30-min walkthrough on a real Singapore practice — WhatsApp intake link, mobile-first form, eligibility (Private / CHAS / Pioneer / Merdeka) resolved before the patient walks in.",
+      buttonLabel: "Book a demo focused on Pre-visit",
+    },
   },
 
   {
@@ -412,6 +438,11 @@ export const journeyStages: JourneyStage[] = [
           "Medical-alerts tool exists; escalation behavior closes the loop from passive display to active prevention.",
       },
     ],
+    cta: {
+      headline: "See arrival → chair drop below 5 minutes.",
+      body: "30-min walkthrough on a real Singapore practice — patient check-in card, medical alerts surfaced chairside with severity tiers, daily huddle dashboard live across staff.",
+      buttonLabel: "Book a demo focused on Arrival",
+    },
   },
 
   {
@@ -531,6 +562,11 @@ export const journeyStages: JourneyStage[] = [
         priority: "medium",
       },
     ],
+    cta: {
+      headline: "See the case-note parser turn prose into chart + bill.",
+      body: "30-min walkthrough on a real Singapore practice — '46MOD filling A3 CR done' becomes a tooth-46 MOD composite finding plus an SVC121 line, no double entry.",
+      buttonLabel: "Book a demo focused on Chair",
+    },
   },
 
   {
@@ -626,6 +662,11 @@ export const journeyStages: JourneyStage[] = [
         priority: "low",
       },
     ],
+    cta: {
+      headline: "See same-day-bill rate go from 60% to 85%.",
+      body: "30-min walkthrough on a real Singapore practice — case note becomes coded billing lines, tier inferred (Private / CHAS / Pioneer / Merdeka), payment + receipt + recall in one flow.",
+      buttonLabel: "Book a demo focused on Discharge",
+    },
   },
 
   {
@@ -707,6 +748,11 @@ export const journeyStages: JourneyStage[] = [
         priority: "medium",
       },
     ],
+    cta: {
+      headline: "See recall coverage go from 41% to 85%.",
+      body: "30-min walkthrough on a real Singapore practice — overdue patients surface 3 weeks ahead, WhatsApp templated outreach audit-logged, lapsed patients no longer invisible.",
+      buttonLabel: "Book a demo focused on Follow-up",
+    },
   },
 ];
 
