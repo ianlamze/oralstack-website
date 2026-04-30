@@ -103,7 +103,9 @@ export type AnalyticsEvent =
   // Medical alerts
   | "alerts_patient_opened"
   | "alerts_acknowledged"
-  | "alerts_reset";
+  | "alerts_reset"
+  // Patient journey explorer
+  | "journey_stage_selected";
 
 type Props = Record<string, string | number | boolean | null | undefined>;
 

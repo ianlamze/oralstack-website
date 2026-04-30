@@ -38,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: `${base}/`, lastModified: now, priority: 1.0 },
+    { url: `${base}/journey/`, lastModified: now, priority: 0.9 },
     { url: `${base}/workflows/`, lastModified: now, priority: 0.9 },
     { url: `${base}/articles/`, lastModified: now, priority: 0.8 },
     ...articleUrls,
