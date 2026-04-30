@@ -308,6 +308,13 @@ export default function Nav() {
               />
             </button>
 
+            <a
+              href="/journey"
+              className="px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+            >
+              Journey
+            </a>
+
             <div className="relative">
               <button
                 ref={toolsTriggerRef}
@@ -695,6 +702,9 @@ export default function Nav() {
                 </DrawerLink>
                 <DrawerLink href="/for-multi-clinic" onNavigate={() => setDrawerOpen(false)}>
                   For multi-clinic & DSO
+                </DrawerLink>
+                <DrawerLink href="/journey" onNavigate={() => setDrawerOpen(false)}>
+                  Patient journey
                 </DrawerLink>
                 <DrawerLink href="/customers" onNavigate={() => setDrawerOpen(false)}>
                   Customers

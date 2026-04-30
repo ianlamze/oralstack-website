@@ -125,8 +125,8 @@ export default function StagePanel({ stage, totalStages, builtDemo }: StagePanel
 
           {!builtDemo && (
             <p className="text-[11px] text-[var(--color-text-soft)] italic tracking-[0.04em] -mt-4">
-              Interactive demo for this stage is in progress. Discharge has the fully wired
-              before/after — try the timeline above to see it.
+              Interactive demo for this stage is in progress. Stages marked &ldquo;Live&rdquo; in
+              the timeline above have the fully wired before/after.
             </p>
           )}
 

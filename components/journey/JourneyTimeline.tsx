@@ -20,6 +20,15 @@ export default function JourneyTimeline({
 }: JourneyTimelineProps) {
   const reduceMotion = useReducedMotion();
   const built = new Set(builtStageIds);
+  const builtNames = stages.filter((s) => built.has(s.id)).map((s) => s.name);
+  const builtSummary =
+    builtNames.length === 0
+      ? null
+      : builtNames.length === 1
+        ? `${builtNames[0]} is fully built`
+        : builtNames.length === 2
+          ? `${builtNames[0]} and ${builtNames[1]} are fully built`
+          : `${builtNames.slice(0, -1).join(", ")}, and ${builtNames[builtNames.length - 1]} are fully built`;
 
   return (
     <div role="tablist" aria-label="Patient journey stages" className="grid gap-2 lg:gap-3">
@@ -99,8 +108,8 @@ export default function JourneyTimeline({
         })}
       </ol>
       <p className="text-[11px] text-[var(--color-text-soft)] tracking-[0.04em]">
-        Click any stage. Discharge is fully built; the others show before/after copy and metrics
-        while the interactive demos are in progress.
+        Click any stage.{builtSummary ? ` ${builtSummary}; ` : " "}the others show before/after copy
+        and metrics while the interactive demos are in progress.
       </p>
     </div>
   );

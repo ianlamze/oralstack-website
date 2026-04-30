@@ -4,6 +4,9 @@ import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
+import BeforeBookingMock from "@/components/visuals/BeforeBookingMock";
+import BeforeChairMock from "@/components/visuals/BeforeChairMock";
+import BeforeDischargeMock from "@/components/visuals/BeforeDischargeMock";
 import ImagingMock from "@/components/visuals/ImagingMock";
 import RecallMock from "@/components/visuals/RecallMock";
 import MessagingMock from "@/components/visuals/MessagingMock";
@@ -114,8 +117,29 @@ const entries: Entry[] = [
     name: "CaseNoteParseMock",
     file: "components/visuals/CaseNoteParseMock.tsx",
     source: "apps/app/app/(authenticated)/patients/[id]/ (case-note → chart + billing parser)",
-    used: ["/workflows#charting"],
+    used: ["/workflows#charting", "/journey (Chair)"],
     Component: CaseNoteParseMock,
+  },
+  {
+    name: "BeforeBookingMock",
+    file: "components/visuals/BeforeBookingMock.tsx",
+    source: "Legacy reality — paper diary, phone tag, no audit trail",
+    used: ["/journey (Booking, before pane)"],
+    Component: BeforeBookingMock,
+  },
+  {
+    name: "BeforeChairMock",
+    file: "components/visuals/BeforeChairMock.tsx",
+    source: "Legacy reality — form-led PMS modal + separate DICOM desktop app",
+    used: ["/journey (Chair, before pane)"],
+    Component: BeforeChairMock,
+  },
+  {
+    name: "BeforeDischargeMock",
+    file: "components/visuals/BeforeDischargeMock.tsx",
+    source: "Legacy reality — paper invoice, EOD reconciliation, follow-up call list",
+    used: ["/journey (Discharge, before pane)"],
+    Component: BeforeDischargeMock,
   },
   {
     name: "CheckoutMock",

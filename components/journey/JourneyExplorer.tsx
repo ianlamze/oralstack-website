@@ -2,16 +2,28 @@
 
 import { useEffect, useState } from "react";
 import { journeyStages } from "@/content/journey";
+import BeforeBookingMock from "@/components/visuals/BeforeBookingMock";
+import BeforeChairMock from "@/components/visuals/BeforeChairMock";
 import BeforeDischargeMock from "@/components/visuals/BeforeDischargeMock";
+import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
+import ScheduleMock from "@/components/visuals/ScheduleMock";
 import JourneyTimeline from "./JourneyTimeline";
 import StagePanel from "./StagePanel";
 
-const DEFAULT_STAGE_ID = "discharge";
-const BUILT_STAGE_IDS = ["discharge"];
+const DEFAULT_STAGE_ID = "discovery";
+const BUILT_STAGE_IDS = ["booking", "chair", "discharge"];
 
 const builtDemos: Record<string, { before: React.ReactNode; after: React.ReactNode } | undefined> =
   {
+    booking: {
+      before: <BeforeBookingMock />,
+      after: <ScheduleMock />,
+    },
+    chair: {
+      before: <BeforeChairMock />,
+      after: <CaseNoteParseMock />,
+    },
     discharge: {
       before: <BeforeDischargeMock />,
       after: <CheckoutMock />,
