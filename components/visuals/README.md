@@ -31,9 +31,16 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 | `OdontogramMock` | [OdontogramMock.tsx](OdontogramMock.tsx) | `apps/app/app/(authenticated)/patients/[id]/` (dental-chart, odontogram, tooth-detail-panel) | 520px | "Charting & case notes" workflow section; case study charting visual |
 | `CaseNoteParseMock` | [CaseNoteParseMock.tsx](CaseNoteParseMock.tsx) | `apps/app/app/(authenticated)/patients/[id]/` (case-note → chart + billing parser) | 560px | "Charting & case notes" workflow section; pairs naturally with `OdontogramMock` (note → chart shading); journey page Chair stage |
 | `CheckoutMock` | [CheckoutMock.tsx](CheckoutMock.tsx) | `apps/app/app/(authenticated)/checkout/` (invoice editor, payment panel) | 480px | "Billing & discharge" workflow section; case study billing visual; journey page Discharge stage |
+| `BeforeDiscoveryMock` | [BeforeDiscoveryMock.tsx](BeforeDiscoveryMock.tsx) | Legacy reality — handwritten attribution + ad-spend black box | 480px | Journey page Discovery stage "before" pane |
+| `AfterDiscoveryMock` | [AfterDiscoveryMock.tsx](AfterDiscoveryMock.tsx) | Reviews & referrals dashboard — Google sync, referral-at-intake (live feature) | 480px | Journey page Discovery stage "after" pane |
 | `BeforeBookingMock` | [BeforeBookingMock.tsx](BeforeBookingMock.tsx) | Legacy reality (paper diary + phone tag) — counterpart to `ScheduleMock` | 560px | Journey page Booking stage "before" pane |
+| `BeforePreVisitMock` | [BeforePreVisitMock.tsx](BeforePreVisitMock.tsx) | Legacy reality — PDF intake queue + manual eligibility hold-ups | 480px | Journey page Pre-visit stage "before" pane |
+| `AfterPreVisitMock` | [AfterPreVisitMock.tsx](AfterPreVisitMock.tsx) | WhatsApp Business intake link + form completion + tier resolved | 480px | Journey page Pre-visit stage "after" pane |
+| `BeforeArrivalMock` | [BeforeArrivalMock.tsx](BeforeArrivalMock.tsx) | Legacy reality — sticky-note allergies on paper chart, manual eligibility verification at the desk | 480px | Journey page Arrival stage "before" pane |
+| `AfterArrivalMock` | [AfterArrivalMock.tsx](AfterArrivalMock.tsx) | Arrival check-in card + medical alerts surfaced chairside + chair-ready countdown | 480px | Journey page Arrival stage "after" pane |
 | `BeforeChairMock` | [BeforeChairMock.tsx](BeforeChairMock.tsx) | Legacy reality (form-led PMS modal + separate DICOM viewer) — counterpart to `CaseNoteParseMock` | 560px | Journey page Chair stage "before" pane |
 | `BeforeDischargeMock` | [BeforeDischargeMock.tsx](BeforeDischargeMock.tsx) | Legacy reality (hand-corrected paper invoice + EOD reconciliation) — counterpart to `CheckoutMock` | 480px | Journey page Discharge stage "before" pane |
+| `BeforeFollowUpMock` | [BeforeFollowUpMock.tsx](BeforeFollowUpMock.tsx) | Legacy reality — stale recall spreadsheet, personal-WhatsApp outreach — counterpart to `RecallMock` | 560px | Journey page Follow-up stage "before" pane |
 | `ImagingMock` | [ImagingMock.tsx](ImagingMock.tsx) | `apps/app/app/(authenticated)/imaging/` (asset grid + categories) | 480px | "Clinical imaging" workflow section |
 | `RecallMock` | [RecallMock.tsx](RecallMock.tsx) | `apps/app/app/(authenticated)/reminders/recall-table.tsx` | 560px | "Recall & messaging" workflow section; case study lifecycle visual |
 | `MessagingMock` | [MessagingMock.tsx](MessagingMock.tsx) | `apps/app/app/(authenticated)/reminders/` + WhatsApp Business API | 440px | Patient communication / two-way messaging story; pairs naturally with `RecallMock` (queue → conversation) |
@@ -49,9 +56,14 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 | `CaseNoteParseMock` | `/workflows#charting` (paired with `OdontogramMock`); `/journey` (Chair stage) |
 | `CheckoutMock` | `/workflows#billing`, `/customers/dfi-synergy`, `/` (homepage Workflows card); `/journey` (Discharge stage) |
 | `ScheduleMock` (re-use) | adds `/journey` (Booking stage) |
+| `RecallMock` (re-use) | adds `/journey` (Follow-up stage) |
+| `BeforeDiscoveryMock` / `AfterDiscoveryMock` | `/journey` (Discovery stage) |
 | `BeforeBookingMock` | `/journey` (Booking stage, before pane) |
+| `BeforePreVisitMock` / `AfterPreVisitMock` | `/journey` (Pre-visit stage) |
+| `BeforeArrivalMock` / `AfterArrivalMock` | `/journey` (Arrival stage) |
 | `BeforeChairMock` | `/journey` (Chair stage, before pane) |
 | `BeforeDischargeMock` | `/journey` (Discharge stage, before pane) |
+| `BeforeFollowUpMock` | `/journey` (Follow-up stage, before pane) |
 | `ImagingMock` | `/workflows#imaging`, `/` (homepage Workflows card) |
 | `RecallMock` | `/workflows#recall`, `/customers/dfi-synergy` |
 | `MessagingMock` | `/workflows#recall` (paired with `RecallMock`) |

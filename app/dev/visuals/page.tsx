@@ -4,9 +4,16 @@ import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
+import AfterArrivalMock from "@/components/visuals/AfterArrivalMock";
+import AfterDiscoveryMock from "@/components/visuals/AfterDiscoveryMock";
+import AfterPreVisitMock from "@/components/visuals/AfterPreVisitMock";
+import BeforeArrivalMock from "@/components/visuals/BeforeArrivalMock";
 import BeforeBookingMock from "@/components/visuals/BeforeBookingMock";
 import BeforeChairMock from "@/components/visuals/BeforeChairMock";
+import BeforeDiscoveryMock from "@/components/visuals/BeforeDiscoveryMock";
 import BeforeDischargeMock from "@/components/visuals/BeforeDischargeMock";
+import BeforeFollowUpMock from "@/components/visuals/BeforeFollowUpMock";
+import BeforePreVisitMock from "@/components/visuals/BeforePreVisitMock";
 import ImagingMock from "@/components/visuals/ImagingMock";
 import RecallMock from "@/components/visuals/RecallMock";
 import MessagingMock from "@/components/visuals/MessagingMock";
@@ -121,11 +128,53 @@ const entries: Entry[] = [
     Component: CaseNoteParseMock,
   },
   {
+    name: "BeforeDiscoveryMock",
+    file: "components/visuals/BeforeDiscoveryMock.tsx",
+    source: "Legacy reality — handwritten attribution, ad-spend black box",
+    used: ["/journey (Discovery, before pane)"],
+    Component: BeforeDiscoveryMock,
+  },
+  {
+    name: "AfterDiscoveryMock",
+    file: "components/visuals/AfterDiscoveryMock.tsx",
+    source: "Reviews & referrals (live tool) — Google sync, referrer at intake",
+    used: ["/journey (Discovery, after pane)"],
+    Component: AfterDiscoveryMock,
+  },
+  {
     name: "BeforeBookingMock",
     file: "components/visuals/BeforeBookingMock.tsx",
     source: "Legacy reality — paper diary, phone tag, no audit trail",
     used: ["/journey (Booking, before pane)"],
     Component: BeforeBookingMock,
+  },
+  {
+    name: "BeforePreVisitMock",
+    file: "components/visuals/BeforePreVisitMock.tsx",
+    source: "Legacy reality — PDF intake unfilled, manual eligibility hold-ups",
+    used: ["/journey (Pre-visit, before pane)"],
+    Component: BeforePreVisitMock,
+  },
+  {
+    name: "AfterPreVisitMock",
+    file: "components/visuals/AfterPreVisitMock.tsx",
+    source: "WhatsApp Business intake link + intake checklist + tier resolved",
+    used: ["/journey (Pre-visit, after pane)"],
+    Component: AfterPreVisitMock,
+  },
+  {
+    name: "BeforeArrivalMock",
+    file: "components/visuals/BeforeArrivalMock.tsx",
+    source: "Legacy reality — sticky-note allergies, eligibility verification at desk",
+    used: ["/journey (Arrival, before pane)"],
+    Component: BeforeArrivalMock,
+  },
+  {
+    name: "AfterArrivalMock",
+    file: "components/visuals/AfterArrivalMock.tsx",
+    source: "Arrival check-in card + medical alerts surfaced to chairside",
+    used: ["/journey (Arrival, after pane)"],
+    Component: AfterArrivalMock,
   },
   {
     name: "BeforeChairMock",
@@ -140,6 +189,13 @@ const entries: Entry[] = [
     source: "Legacy reality — paper invoice, EOD reconciliation, follow-up call list",
     used: ["/journey (Discharge, before pane)"],
     Component: BeforeDischargeMock,
+  },
+  {
+    name: "BeforeFollowUpMock",
+    file: "components/visuals/BeforeFollowUpMock.tsx",
+    source: "Legacy reality — stale recall spreadsheet, personal-WhatsApp outreach",
+    used: ["/journey (Follow-up, before pane)"],
+    Component: BeforeFollowUpMock,
   },
   {
     name: "CheckoutMock",

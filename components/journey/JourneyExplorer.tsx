@@ -2,23 +2,51 @@
 
 import { useEffect, useState } from "react";
 import { journeyStages } from "@/content/journey";
+import AfterArrivalMock from "@/components/visuals/AfterArrivalMock";
+import AfterDiscoveryMock from "@/components/visuals/AfterDiscoveryMock";
+import AfterPreVisitMock from "@/components/visuals/AfterPreVisitMock";
+import BeforeArrivalMock from "@/components/visuals/BeforeArrivalMock";
 import BeforeBookingMock from "@/components/visuals/BeforeBookingMock";
 import BeforeChairMock from "@/components/visuals/BeforeChairMock";
+import BeforeDiscoveryMock from "@/components/visuals/BeforeDiscoveryMock";
 import BeforeDischargeMock from "@/components/visuals/BeforeDischargeMock";
+import BeforeFollowUpMock from "@/components/visuals/BeforeFollowUpMock";
+import BeforePreVisitMock from "@/components/visuals/BeforePreVisitMock";
 import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
+import RecallMock from "@/components/visuals/RecallMock";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import JourneyTimeline from "./JourneyTimeline";
 import StagePanel from "./StagePanel";
 
 const DEFAULT_STAGE_ID = "discovery";
-const BUILT_STAGE_IDS = ["booking", "chair", "discharge"];
+const BUILT_STAGE_IDS = [
+  "discovery",
+  "booking",
+  "pre-visit",
+  "arrival",
+  "chair",
+  "discharge",
+  "follow-up",
+];
 
 const builtDemos: Record<string, { before: React.ReactNode; after: React.ReactNode } | undefined> =
   {
+    discovery: {
+      before: <BeforeDiscoveryMock />,
+      after: <AfterDiscoveryMock />,
+    },
     booking: {
       before: <BeforeBookingMock />,
       after: <ScheduleMock />,
+    },
+    "pre-visit": {
+      before: <BeforePreVisitMock />,
+      after: <AfterPreVisitMock />,
+    },
+    arrival: {
+      before: <BeforeArrivalMock />,
+      after: <AfterArrivalMock />,
     },
     chair: {
       before: <BeforeChairMock />,
@@ -27,6 +55,10 @@ const builtDemos: Record<string, { before: React.ReactNode; after: React.ReactNo
     discharge: {
       before: <BeforeDischargeMock />,
       after: <CheckoutMock />,
+    },
+    "follow-up": {
+      before: <BeforeFollowUpMock />,
+      after: <RecallMock />,
     },
   };
 

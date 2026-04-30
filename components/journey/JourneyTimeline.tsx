@@ -108,8 +108,9 @@ export default function JourneyTimeline({
         })}
       </ol>
       <p className="text-[11px] text-[var(--color-text-soft)] tracking-[0.04em]">
-        Click any stage.{builtSummary ? ` ${builtSummary}; ` : " "}the others show before/after copy
-        and metrics while the interactive demos are in progress.
+        {builtStageIds.length === stages.length
+          ? "Click any stage. Every stage has a fully wired before/after demo — scrub through the linear journey from discovery to recall."
+          : `Click any stage.${builtSummary ? ` ${builtSummary}; ` : " "}the others show before/after copy and metrics while the interactive demos are in progress.`}
       </p>
     </div>
   );
