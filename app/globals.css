@@ -12,6 +12,55 @@
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/*
+ * ============================================================================
+ * MASTER TYPOGRAPHY TOKENS — mirrored from
+ * oralstack-v2/apps/app/app/globals.css. When this block changes here or in
+ * v2, copy across both ("option 3" sync — manual copy + diff).
+ *
+ * The dense scale (--text-2xs through --text-2xl) is shared with the product
+ * and lets components reference the same vocabulary on both surfaces. The
+ * marketing-only display sizes live further down in the @theme block
+ * (--text-display-sm, --text-display) — kept there because Tailwind v4
+ * exposes @theme tokens as utility classes.
+ *
+ * Vars here intentionally live outside @theme so they don't override
+ * Tailwind defaults (text-sm, text-base, tracking-tight, leading-tight all
+ * have built-in values). Reference these tokens explicitly via var() or
+ * arbitrary properties (`text-[length:var(--text-base)]`); existing
+ * utility-class usage continues to render at Tailwind defaults.
+ *
+ * See `research/brand/typography.md` for the rules,
+ * `oralstack-v2/docs/TYPOGRAPHY.md` for role-per-surface guidance.
+ * ============================================================================
+ */
+:root {
+  /* Type scale. */
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+
+  /* Weights — three only. No 700/800. */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Tracking. */
+  --tracking-eyebrow: 0.18em;
+  --tracking-tight: -0.011em;
+  --tracking-tighter: -0.02em;
+
+  /* Leading. */
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+}
+
 @theme {
   /* canvas — warm near-white, kept for warmth on a cool palette */
   --color-canvas: oklch(0.99 0.005 90);
