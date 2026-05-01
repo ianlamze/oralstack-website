@@ -8,7 +8,7 @@ export default function CTA() {
     <Section id="contact" className="py-24 md:py-32">
       <AnimateInView>
         <div
-          className="relative overflow-hidden rounded-[var(--radius-xl)] px-8 py-14 md:px-14 md:py-20 text-[var(--color-canvas)]"
+          className="relative overflow-hidden rounded-[var(--radius-xl)] px-8 py-14 md:px-14 md:py-20 text-[var(--color-canvas)] max-w-3xl mx-auto"
           style={{ background: "var(--color-ink)" }}
         >
           {/* soft accent backdrop */}

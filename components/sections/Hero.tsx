@@ -41,6 +41,23 @@ export default function Hero() {
               </Button>
             </div>
           </HeroItem>
+          <HeroItem>
+            <ul className="mt-8 flex flex-wrap items-center gap-2 text-xs">
+              {[
+                "Live at DFI Synergy, Singapore",
+                "Tenant-isolated, region-hosted",
+                "Audit-logged by default",
+                "Singapore PDPA + HIPAA-aware",
+              ].map((p) => (
+                <li
+                  key={p}
+                  className="rounded-full border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-3 py-1.5 tracking-[0.02em] text-[var(--color-text-muted)]"
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </HeroItem>
         </HeroStagger>
         <HeroStagger className="md:justify-self-end w-full md:pt-2">
           <HeroItem>
