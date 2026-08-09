@@ -157,7 +157,8 @@ export default function AboutPage() {
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
               A 30-minute demo with a real engineer, on a sample dataset that matches your
-              clinic&apos;s shape. We follow up within two working days with a pilot proposal.
+              clinic&apos;s shape. We follow up with availability and any setup questions needed to
+              make the walkthrough useful.
             </p>
           </div>
           <div className="md:justify-self-end">

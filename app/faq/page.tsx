@@ -296,7 +296,7 @@ export default function FAQPage() {
           >
             hello@oralstack.com
           </a>{" "}
-          — we reply within one working day.
+          — include the clinic context that would make the answer useful.
         </p>
       </Section>
 

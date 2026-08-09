@@ -4,7 +4,7 @@ export const dfiSynergy: CaseStudy = {
   slug: "dfi-synergy",
   customerId: "dfi-synergy",
 
-  eyebrow: "Customer story · Pilot · Singapore",
+  eyebrow: "Historical customer story · April 2026 pilot · Singapore",
   title: "How DFI Synergy moved their front desk into Oralstack in three days.",
   outcome:
     "A three-chair, four-provider clinic in Singapore piloted Oralstack's appointment, reception, and reviewed checkout workflows alongside its clinic operations.",

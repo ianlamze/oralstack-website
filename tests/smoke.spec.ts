@@ -69,6 +69,15 @@ async function expectNoForbiddenClinicFitClaims(page: Page) {
   }
 }
 
+async function fillEvidencePilotProposal(page: Page, suffix: string) {
+  await page.getByLabel(/Your name/).fill(`Demo Practice Manager ${suffix}`);
+  await page.getByLabel(/Email/).fill(`practice.manager.${suffix}@example.invalid`);
+  await page.getByLabel(/Clinic \/ group name/).fill(`Synthetic Dental Clinic ${suffix}`);
+  await page.getByLabel(/Number of locations/).fill("1");
+  await page.getByLabel(/Current clinic system/).selectOption("Plato");
+  await expect(page.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
+}
+
 for (const route of ROUTES) {
   test(`${route.path} loads cleanly`, async ({ page }) => {
     const { response, errors } = await gotoAndCollect(page, route.path);
@@ -250,6 +259,233 @@ test("focused demo requests keep context and ask for four essentials", async ({ 
 
   await page.getByText("Add clinic setup details").click();
   await expect(page.getByLabel("Your role (optional)")).toBeVisible();
+});
+
+test("customers page presents one named historical pilot and contextual request paths", async ({
+  page,
+}) => {
+  await page.goto("/customers/", { waitUntil: "networkidle" });
+
+  await expect(
+    page.getByRole("heading", { name: "One named pilot, documented in detail." }),
+  ).toBeVisible();
+  const evidenceIndex = page.getByTestId("customer-evidence-index");
+  await expect(evidenceIndex.getByRole("article")).toHaveCount(1);
+  await expect(evidenceIndex.getByText("Historical pilot", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("not a broader customer roster or a general performance promise", {
+      exact: false,
+    }),
+  ).toBeVisible();
+  await expect(
+    evidenceIndex.getByRole("link", { name: "Read the case study and methodology" }),
+  ).toHaveAttribute("href", "/customers/dfi-synergy");
+  await expect(
+    evidenceIndex.getByRole("link", { name: "Request a pilot proposal" }),
+  ).toHaveAttribute("href", "/contact/?intent=pilot&source=dfi-synergy#request");
+  await expect(
+    evidenceIndex.getByRole("link", { name: "See the front-desk workflow" }),
+  ).toHaveAttribute("href", "/book-a-demo/?focus=run-the-day&source=dfi-synergy");
+  await expect(evidenceIndex.locator("a[href^='mailto:']")).toHaveCount(0);
+
+  const body = await page.locator("main").innerText();
+  expect(body).not.toMatch(/Early pilots across APAC|small group of dental clinics|each quarter/i);
+});
+
+test("DFI evidence carries qualified context into demo and pilot requests", async ({ page }) => {
+  await page.goto("/customers/dfi-synergy/", { waitUntil: "networkidle" });
+
+  const earlyActions = page.getByTestId("case-study-early-actions");
+  const historicalBoundary = page.getByText(
+    "Historical customer story · April 2026 pilot · Singapore",
+    { exact: true },
+  );
+  const proposal = earlyActions.getByRole("link", { name: "Request a scoped pilot proposal" });
+  const walkthrough = earlyActions.getByRole("link", { name: "See the front-desk workflow" });
+  await expect(historicalBoundary).toBeVisible();
+  await expect(proposal).toHaveAttribute(
+    "href",
+    "/contact/?intent=pilot&source=dfi-synergy#request",
+  );
+  await expect(walkthrough).toHaveAttribute(
+    "href",
+    "/book-a-demo/?focus=run-the-day&source=dfi-synergy",
+  );
+
+  const viewport = page.viewportSize();
+  const actionsBox = await earlyActions.boundingBox();
+  const historicalBoundaryBox = await historicalBoundary.boundingBox();
+  expect(actionsBox).not.toBeNull();
+  expect(historicalBoundaryBox).not.toBeNull();
+  if (actionsBox && viewport) {
+    expect(actionsBox.y + actionsBox.height).toBeLessThanOrEqual(viewport.height * 2);
+  }
+  if (actionsBox && historicalBoundaryBox) {
+    expect(historicalBoundaryBox.y).toBeLessThan(actionsBox.y);
+  }
+  for (const action of [proposal, walkthrough]) {
+    const box = await action.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+  }
+
+  await expect(page.getByRole("link", { name: "ask about the methodology" })).toHaveAttribute(
+    "href",
+    "/contact/?intent=question&source=dfi-synergy#request",
+  );
+  await expect(earlyActions.locator("a[href^='mailto:']")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "All customers" })).toHaveCount(0);
+  expect(await page.locator("main").innerText()).not.toMatch(/each quarter|quarterly cohort/i);
+
+  await walkthrough.click();
+  await expect(page).toHaveURL(/\/book-a-demo\/\?focus=run-the-day&source=dfi-synergy$/);
+  const demoContext = page.getByTestId("request-context");
+  await expect(demoContext).toContainText("Continuing from DFI Synergy · April 2026 pilot");
+  await expect(demoContext).toContainText("historical and clinic-specific");
+  await expect(page.getByLabel("Start the walkthrough with")).toHaveValue("run-the-day");
+  await expect(page.locator("form [required]").first()).toHaveAccessibleName(/Clinic name/);
+  if ((page.viewportSize()?.width ?? 0) < 640) {
+    const firstRequired = page.locator("form [required]").first();
+    await expect(firstRequired).toBeInViewport();
+    const firstRequiredBox = await firstRequired.boundingBox();
+    expect(
+      (firstRequiredBox?.y ?? Number.POSITIVE_INFINITY) + (firstRequiredBox?.height ?? 0),
+    ).toBeLessThanOrEqual(page.viewportSize()?.height ?? 0);
+  }
+
+  await page.goto("/customers/dfi-synergy/", { waitUntil: "networkidle" });
+  await page
+    .getByTestId("case-study-early-actions")
+    .getByRole("link", { name: "Request a scoped pilot proposal" })
+    .click();
+  await expect(page).toHaveURL(/\/contact\/\?intent=pilot&source=dfi-synergy#request$/);
+  await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  const pilotContext = page.getByTestId("request-context");
+  await expect(pilotContext).toContainText("Continuing from DFI Synergy · April 2026 pilot");
+  await expect(pilotContext).toContainText("historical and clinic-specific");
+  await expect(page.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
+});
+
+test("contact tabs keep keyboard focus visible and below the sticky navigation", async ({
+  page,
+}) => {
+  await page.goto("/contact/?intent=pilot&source=dfi-synergy#request", {
+    waitUntil: "networkidle",
+  });
+
+  const questionTab = page.getByRole("tab", { name: "Quick question" });
+  const migrationTab = page.getByRole("tab", { name: "Connection & rollout" });
+  const pilotTab = page.getByRole("tab", { name: "Pilot proposal" });
+  await pilotTab.focus();
+  await pilotTab.press("ArrowLeft");
+  await expect(migrationTab).toBeFocused();
+  await expect(migrationTab).toHaveAttribute("aria-selected", "true");
+  await migrationTab.press("Home");
+  await expect(questionTab).toBeFocused();
+  await expect(questionTab).toHaveAttribute("aria-selected", "true");
+  await questionTab.press("End");
+  await expect(pilotTab).toBeFocused();
+  await expect(pilotTab).toHaveAttribute("aria-selected", "true");
+
+  await pilotTab.press("Tab");
+  const panel = page.getByRole("tabpanel", { name: "Pilot proposal" });
+  await expect(panel).toBeFocused();
+  const hasVisibleFocus = await panel.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return (
+      (style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) > 0) ||
+      style.boxShadow !== "none"
+    );
+  });
+  expect(hasVisibleFocus).toBe(true);
+
+  const banner = page.getByRole("banner");
+  await expect
+    .poll(async () => {
+      const [panelBox, bannerBox] = await Promise.all([panel.boundingBox(), banner.boundingBox()]);
+      if (!panelBox || !bannerBox) return Number.NEGATIVE_INFINITY;
+      return panelBox.y - (bannerBox.y + bannerBox.height);
+    })
+    .toBeGreaterThanOrEqual(0);
+});
+
+test("request feedback focuses success and error states without losing form values", async ({
+  page,
+}) => {
+  let deliveredPayload: Record<string, string> | undefined;
+  await page.route("**/api/contact", async (route) => {
+    deliveredPayload = route.request().postDataJSON() as Record<string, string>;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true, message: "Pilot request received." }),
+    });
+  });
+  await page.goto("/contact/?intent=pilot&source=dfi-synergy#request", {
+    waitUntil: "networkidle",
+  });
+  await fillEvidencePilotProposal(page, "success");
+  await page.getByRole("button", { name: "Request a pilot proposal" }).click();
+
+  const status = page.locator("main").getByRole("status");
+  await expect(status).toBeFocused();
+  await expect(status).toContainText("Request received.");
+  expect(deliveredPayload).toEqual(
+    expect.objectContaining({
+      intent: "pilot",
+      sourcePage: "dfi-synergy",
+      workflowGoal: "run-the-day",
+    }),
+  );
+
+  await page.unroute("**/api/contact");
+  await page.route("**/api/contact", async (route) => {
+    await route.fulfill({
+      status: 502,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: false, message: "Request service unavailable for this test." }),
+    });
+  });
+  await page.goto("/contact/?intent=pilot&source=dfi-synergy#request", {
+    waitUntil: "networkidle",
+  });
+  await fillEvidencePilotProposal(page, "preserved");
+  await page.getByRole("button", { name: "Request a pilot proposal" }).click();
+
+  const alert = page.locator("form").getByRole("alert");
+  await expect(alert).toBeFocused();
+  await expect(alert).toContainText("Request service unavailable for this test.");
+  await expect(
+    alert.getByRole("link", { name: "Email hello@oralstack.com instead" }),
+  ).toHaveAttribute("href", "mailto:hello@oralstack.com");
+  await expect(page.getByLabel(/Your name/)).toHaveValue("Demo Practice Manager preserved");
+  await expect(page.getByLabel(/Email/)).toHaveValue("practice.manager.preserved@example.invalid");
+  await expect(page.getByLabel(/Clinic \/ group name/)).toHaveValue(
+    "Synthetic Dental Clinic preserved",
+  );
+  await expect(page.getByLabel(/Number of locations/)).toHaveValue("1");
+  await expect(page.getByLabel(/Current clinic system/)).toHaveValue("Plato");
+  await expect(page.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
+});
+
+test("evidence request journey reflows without horizontal overflow at 320px", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  const paths = [
+    "/customers/",
+    "/customers/dfi-synergy/",
+    "/book-a-demo/?focus=run-the-day&source=dfi-synergy",
+    "/contact/?intent=pilot&source=dfi-synergy#request",
+  ];
+
+  for (const path of paths) {
+    await page.goto(path, { waitUntil: "networkidle" });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      `horizontal overflow at 320px on ${path}`,
+    ).toBe(true);
+  }
 });
 
 test("pricing carries one-clinic buyers into a structured pilot proposal", async ({ page }) => {
@@ -695,6 +931,55 @@ for (const region of CLINIC_FIT_SNAPSHOT_REGIONS) {
     });
   });
 }
+
+const EVIDENCE_REQUEST_SNAPSHOT_REGIONS = [
+  {
+    path: "/customers/",
+    testId: "customer-evidence-index",
+    snapshot: "customer-evidence-index.png",
+  },
+  {
+    path: "/customers/dfi-synergy/",
+    testId: "case-study-early-actions",
+    snapshot: "case-study-early-actions.png",
+  },
+  {
+    path: "/contact/?intent=pilot&source=dfi-synergy#request",
+    testId: "request-context",
+    snapshot: "request-context.png",
+  },
+] as const;
+
+for (const region of EVIDENCE_REQUEST_SNAPSHOT_REGIONS) {
+  test(`${region.path} evidence-request region has focused visual regression coverage`, async ({
+    page,
+  }) => {
+    await page.goto(region.path, { waitUntil: "networkidle" });
+    await page.addStyleTag({
+      content:
+        "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+    });
+
+    await expect(page.getByTestId(region.testId)).toHaveScreenshot(region.snapshot, {
+      animations: "disabled",
+    });
+  });
+}
+
+test("source-aware demo form has focused visual regression coverage", async ({ page }) => {
+  await page.goto("/book-a-demo/?focus=run-the-day&source=dfi-synergy", {
+    waitUntil: "networkidle",
+  });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+
+  const formCard = page.locator("main form").locator("..");
+  await expect(formCard).toHaveScreenshot("source-aware-demo-form.png", {
+    animations: "disabled",
+  });
+});
 
 test("tablet navigation stays compact and exposes keyboard escape", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 900 });

@@ -10,9 +10,8 @@
  *   CONTACT_FROM      — optional override of the From: address (must be on a
  *                       Resend-verified domain; defaults to noreply@oralstack.com)
  *
- * If RESEND_API_KEY is not set, the function still accepts and validates the
- * submission, logs it to the Pages console, and returns ok:true with a note.
- * That keeps the form usable in pre-launch / dev mode while you wire up Resend.
+ * If RESEND_API_KEY is not set, the function fails closed with a user-facing
+ * 503. It never logs the submitted clinic or contact details.
  */
 
 interface Env {
@@ -50,11 +49,47 @@ interface ContactPayload {
   providers?: string | number;
   preferredTimes?: string;
   focus?: string;
+  sourcePage?: string;
   // honeypot — bots fill, humans don't see
   website?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function textField(value: unknown, maxLength = 500): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const cleaned = value.trim();
+  return cleaned ? cleaned.slice(0, maxLength) : undefined;
+}
+
+function numberField(value: unknown): string | number | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  return textField(value, 32);
+}
+
+function normalizePayload(raw: Record<string, unknown>): ContactPayload {
+  return {
+    intent: textField(raw.intent, 24) as Intent,
+    name: textField(raw.name, 120),
+    email: textField(raw.email, 254),
+    message: textField(raw.message, 5000),
+    clinicName: textField(raw.clinicName, 200),
+    currentPms: textField(raw.currentPms, 120),
+    workflowGoal: textField(raw.workflowGoal, 120),
+    numChairs: numberField(raw.numChairs),
+    timeline: textField(raw.timeline, 120),
+    numLocations: numberField(raw.numLocations),
+    numChairsTotal: numberField(raw.numChairsTotal),
+    startDate: textField(raw.startDate, 120),
+    role: textField(raw.role, 120),
+    location: textField(raw.location, 200),
+    providers: numberField(raw.providers),
+    preferredTimes: textField(raw.preferredTimes, 1000),
+    focus: textField(raw.focus, 120),
+    sourcePage: textField(raw.sourcePage, 120),
+    website: textField(raw.website, 200),
+  };
+}
 
 function bad(message: string, status = 400): Response {
   return Response.json({ ok: false, message }, { status });
@@ -78,6 +113,14 @@ function row(label: string, value: string | number | undefined): string {
   return `<tr><td style="padding:6px 12px 6px 0;color:#666;vertical-align:top">${escapeHtml(label)}</td><td style="padding:6px 0">${escapeHtml(String(value))}</td></tr>`;
 }
 
+const SOURCE_LABELS: Record<string, string> = {
+  "dfi-synergy": "DFI Synergy · April 2026 pilot evidence",
+};
+
+function sourceLabel(sourcePage: string | undefined): string | undefined {
+  return sourcePage ? SOURCE_LABELS[sourcePage] : undefined;
+}
+
 function buildEmail(p: ContactPayload): { subject: string; html: string; text: string } {
   const intentLabel: Record<Intent, string> = {
     question: "Quick question",
@@ -85,9 +128,12 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     pilot: "Pilot proposal request",
     demo: "Demo request",
   };
-  const subject = `[oralstack contact] ${intentLabel[p.intent]} — ${p.name ?? "(no name)"}`;
+  const source = sourceLabel(p.sourcePage);
+  const subjectName = p.name?.replace(/[\r\n]+/g, " ") ?? "(no name)";
+  const subject = `[oralstack contact] ${intentLabel[p.intent]} — ${subjectName}`;
   const rows = [
     row("Intent", intentLabel[p.intent]),
+    row("Request source", source),
     row("Name", p.name),
     row("Role", p.role),
     row("Email", p.email),
@@ -112,6 +158,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     `New contact-form submission via oralstack.com`,
     ``,
     `Intent: ${intentLabel[p.intent]}`,
+    source && `Request source: ${source}`,
     p.name && `Name: ${p.name}`,
     p.role && `Role: ${p.role}`,
     p.email && `Email: ${p.email}`,
@@ -166,30 +213,39 @@ async function sendViaResend(env: Env, p: ContactPayload): Promise<Response> {
   const { subject, html, text } = buildEmail(p);
   const to = env.CONTACT_INBOX ?? "hello@oralstack.com";
   const from = env.CONTACT_FROM ?? "Oralstack contact <noreply@oralstack.com>";
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      subject,
-      html,
-      text,
-      reply_to: p.email,
-    }),
-  });
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    console.error("Resend send failed:", res.status, detail);
-    return bad(
-      "Sorry — couldn't deliver that just now. Please email hello@oralstack.com directly.",
-      502,
-    );
+  let res: Response;
+  try {
+    res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject,
+        html,
+        text,
+        reply_to: p.email,
+      }),
+    });
+  } catch {
+    console.error("[contact] Resend request failed before provider acceptance.");
+    return bad("Online delivery is temporarily unavailable. Your request was not sent.", 502);
   }
-  return ok("Message received — we'll reply within one working day.");
+  if (!res.ok) {
+    console.error("[contact] Resend rejected the send.", res.status);
+    return bad("Online delivery is temporarily unavailable. Your request was not sent.", 502);
+  }
+  const successMessage: Record<Intent, string> = {
+    question: "Question received. We'll reply by email.",
+    migration:
+      "Assessment request received. We'll reply with the setup questions for the next step.",
+    pilot: "Pilot request received. We'll reply with the setup questions needed to scope it.",
+    demo: "Demo request received. We'll reply with availability and any setup questions.",
+  };
+  return ok(successMessage[p.intent]);
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
@@ -200,7 +256,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return bad("Could not parse request body.");
   }
 
-  const payload = raw as unknown as ContactPayload;
+  const payload = normalizePayload(raw);
 
   // Honeypot: bots fill the hidden `website` field; real users never see it.
   if (payload.website && payload.website.trim() !== "") {
@@ -212,11 +268,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (error) return bad(error);
 
   if (!env.RESEND_API_KEY) {
-    // Email pipeline not yet wired up — log the submission and tell the user.
-    console.log("[contact] RESEND_API_KEY not set; submission:", JSON.stringify(payload));
-    return ok(
-      "Message received. (Email forwarding is being wired up — we'll get back to you via the address you provided.)",
-    );
+    console.error("[contact] RESEND_API_KEY is not configured; request was not sent.");
+    return bad("Online delivery is temporarily unavailable. Your request was not sent.", 503);
   }
 
   return sendViaResend(env, payload);

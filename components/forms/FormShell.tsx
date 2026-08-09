@@ -1,7 +1,15 @@
 "use client";
 
-import { useState, type ChangeEventHandler, type FormEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEventHandler,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { getRequestSourceId } from "./contact-options";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -19,6 +27,18 @@ type Props = {
 export default function FormShell({ intent, submitLabel = "Send", children }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string>("");
+  const successRef = useRef<HTMLDivElement>(null);
+  const errorRef = useRef<HTMLDivElement>(null);
+  const submittingRef = useRef(false);
+
+  useEffect(() => {
+    const target =
+      status === "success" ? successRef.current : status === "error" ? errorRef.current : null;
+    if (!target) return;
+
+    const frame = window.requestAnimationFrame(() => target.focus());
+    return () => window.cancelAnimationFrame(frame);
+  }, [status]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,7 +48,9 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
       formEl.reportValidity();
       return;
     }
+    if (submittingRef.current) return;
 
+    submittingRef.current = true;
     setStatus("submitting");
     setMessage("");
 
@@ -37,6 +59,10 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
     formData.forEach((v, k) => {
       if (typeof v === "string") data[k] = v;
     });
+    const sourcePage = getRequestSourceId(
+      new URLSearchParams(window.location.search).get("source"),
+    );
+    if (sourcePage) data.sourcePage = sourcePage;
 
     try {
       const res = await fetch("/api/contact", {
@@ -44,31 +70,43 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      const json = (await res.json()) as { ok: boolean; message: string };
-      if (json.ok) {
+      const responseText = await res.text();
+      let json: { ok?: boolean; message?: string } | null = null;
+      try {
+        json = JSON.parse(responseText) as { ok?: boolean; message?: string };
+      } catch {
+        // A proxy or upstream may return non-JSON. The fallback below stays actionable.
+      }
+
+      if (res.ok && json?.ok === true) {
+        submittingRef.current = false;
         setStatus("success");
-        setMessage(json.message);
+        setMessage(json.message ?? "Request received. We'll reply by email with the next step.");
         formEl.reset();
       } else {
+        submittingRef.current = false;
         setStatus("error");
-        setMessage(json.message ?? "Something went wrong. Please try again.");
+        setMessage(json?.message ?? "Online delivery is temporarily unavailable.");
       }
     } catch {
+      submittingRef.current = false;
       setStatus("error");
-      setMessage("Couldn't reach the server. Please email hello@oralstack.com directly.");
+      setMessage("We couldn't reach the request service.");
     }
   }
 
   if (status === "success") {
     return (
       <div
+        ref={successRef}
         role="status"
         aria-live="polite"
-        className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 grid gap-3"
+        tabIndex={-1}
+        className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 grid gap-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-tide-deep)] focus:ring-offset-4"
       >
         <div className="flex items-center gap-2 text-[var(--color-tide-deep)]">
           <CheckCircle2 className="size-5" aria-hidden />
-          <p className="font-semibold tracking-tight">Got it.</p>
+          <p className="font-semibold tracking-tight">Request received.</p>
         </div>
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{message}</p>
       </div>
@@ -76,7 +114,7 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
+    <form onSubmit={handleSubmit} aria-busy={status === "submitting"} className="grid gap-4">
       {children}
 
       {/* Honeypot — bots fill, humans never see */}
@@ -89,6 +127,25 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
         className="absolute left-[-9999px] top-[-9999px] h-0 w-0 opacity-0"
       />
 
+      {status === "error" && (
+        <div
+          ref={errorRef}
+          role="alert"
+          aria-live="assertive"
+          tabIndex={-1}
+          className="grid gap-2 rounded-[var(--radius-lg)] border border-red-200 bg-red-50 p-4 text-sm text-red-900 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-offset-4"
+        >
+          <p className="font-semibold">We couldn&apos;t send your request.</p>
+          <p>{message}</p>
+          <a
+            href="mailto:hello@oralstack.com"
+            className="w-fit font-medium underline underline-offset-4"
+          >
+            Email hello@oralstack.com instead
+          </a>
+        </div>
+      )}
+
       <div className="flex items-center gap-3 mt-1">
         <button
           type="submit"
@@ -98,11 +155,6 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
           <span>{status === "submitting" ? "Sending…" : submitLabel}</span>
           {status !== "submitting" && <ArrowRight className="size-4" aria-hidden />}
         </button>
-        {status === "error" && (
-          <p className="text-sm text-red-700" role="alert">
-            {message}
-          </p>
-        )}
       </div>
     </form>
   );

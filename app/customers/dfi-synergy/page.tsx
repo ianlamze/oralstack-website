@@ -29,6 +29,23 @@ export default function DfiSynergyCaseStudy() {
               quote={study.pullQuoteHero.quote}
               attribution={study.pullQuoteHero.attribution}
             />
+            <div
+              data-testid="case-study-early-actions"
+              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+            >
+              <a
+                href="/contact/?intent=pilot&source=dfi-synergy#request"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
+              >
+                Request a scoped pilot proposal →
+              </a>
+              <a
+                href="/book-a-demo/?focus=run-the-day&source=dfi-synergy"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
+              >
+                See the front-desk workflow
+              </a>
+            </div>
           </div>
           <div className="lg:justify-self-end w-full">
             <ScheduleMock />
@@ -173,10 +190,10 @@ export default function DfiSynergyCaseStudy() {
             <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em] mt-1">
               Buyers reviewing this case study are welcome to ask for the underlying queries —{" "}
               <a
-                href="mailto:hello@oralstack.com?subject=DFI%20Synergy%20case%20study%20methodology"
+                href="/contact/?intent=question&source=dfi-synergy#request"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
-                hello@oralstack.com
+                ask about the methodology
               </a>
               .
             </p>
@@ -231,29 +248,29 @@ export default function DfiSynergyCaseStudy() {
         <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              Pilot programme
+              Your next step
             </p>
             <h2 className="mt-3 text-2xl md:text-3xl font-semibold tracking-tight max-w-[26ch]">
-              Want to see Oralstack in your clinic?
+              See whether this workflow fits your clinic.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              We&apos;re onboarding a small group of clinics across Singapore and APAC each quarter.
-              If you&apos;re considering a workflow layer around Plato or moving paper-led
-              operations into a reviewed workspace, we&apos;d like to hear how your front desk runs.
+              DFI Synergy&apos;s results reflect one named April 2026 pilot. Share your clinic shape
+              and first workflow for a scoped proposal, or request a walkthrough of the current
+              Plato-connected run-the-day path.
             </p>
           </div>
           <div className="md:justify-self-end flex flex-col gap-3">
             <a
-              href="/book-a-demo"
+              href="/contact/?intent=pilot&source=dfi-synergy#request"
               className="inline-flex items-center justify-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
             >
-              Book a demo →
+              Request a scoped pilot proposal →
             </a>
             <a
-              href="/customers"
+              href="/book-a-demo/?focus=run-the-day&source=dfi-synergy"
               className="inline-flex items-center justify-center min-h-[44px] rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] hover:bg-white transition-colors"
             >
-              All customers
+              Request a workflow walkthrough
             </a>
           </div>
         </div>

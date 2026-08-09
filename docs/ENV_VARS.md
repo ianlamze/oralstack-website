@@ -10,11 +10,10 @@ Master inventory of every env var the Oralstack site reads at runtime. Two scope
 | Name | Scope | Required | Used by | Purpose |
 |---|---|---|---|---|
 | `NEXT_PUBLIC_CF_BEACON_TOKEN` | Client | Optional | [app/layout.tsx](../app/layout.tsx) | Cloudflare Web Analytics beacon token. If unset, the analytics script is not injected. |
-| `NEXT_PUBLIC_CALCOM_USERNAME` | Client | Optional | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com username for the booking iframe at `/book-a-demo`. If unset, page falls back to `DemoRequestForm`. |
+| `NEXT_PUBLIC_CALCOM_USERNAME` | Client | Optional | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com username for the booking iframe at `/book-a-demo`. The embed preserves allowlisted source and workflow context as booking metadata and UTM values. If unset, the page falls back to `DemoRequestForm`. |
 | `NEXT_PUBLIC_CALCOM_EVENT` | Client | Optional (default `demo`) | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com event slug appended to the booking URL. |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Client | Optional | [app/layout.tsx](../app/layout.tsx) | Google Search Console HTML-tag verification value. Skip if you used DNS verification (see [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md)). |
-| `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` | Client | Optional (default `/api/contact`) | [components/sections/DemoRequestForm.tsx](components/sections/DemoRequestForm.tsx) | POST endpoint for `DemoRequestForm`. Override to use a third-party form service (Formspree, Web3Forms) instead of the in-repo Pages Function. |
-| `RESEND_API_KEY` | Server | Optional (skips email send) | [functions/api/contact.ts](../functions/api/contact.ts) | Resend API key for outbound email. Without it, the endpoint validates and logs submissions instead of emailing. Required before launch. |
+| `RESEND_API_KEY` | Server | Required for successful form delivery | [functions/api/contact.ts](../functions/api/contact.ts) | Resend API key for outbound email. Without it, the endpoint returns `503` and does not log submitted clinic or contact details. |
 | `CONTACT_INBOX` | Server | Optional (default `hello@oralstack.com`) | [functions/api/contact.ts](../functions/api/contact.ts) | Destination address for contact-form notifications. |
 | `CONTACT_FROM` | Server | Optional (default `Oralstack contact <noreply@oralstack.com>`) | [functions/api/contact.ts](../functions/api/contact.ts) | `From:` header on outbound emails. Must be on a Resend-verified domain. |
 
@@ -26,8 +25,8 @@ cp .env.example .env.local
 
 Fill in only what you need. None are required to boot `npm run dev`. Common dev setups:
 
-- **Booking iframe** — set `NEXT_PUBLIC_CALCOM_USERNAME` to see the real Cal.com embed; otherwise `/book-a-demo` shows the fallback form.
-- **Form testing without Cloudflare Functions** — set `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` to a Formspree URL, or run `wrangler pages dev` for the in-repo `/api/contact`.
+- **Booking iframe** — set `NEXT_PUBLIC_CALCOM_USERNAME` to see the real Cal.com embed; otherwise `/book-a-demo` shows the fallback form. Both paths preserve allowlisted `source` and `focus` context.
+- **Form delivery testing** — run `npm run build`, then `npx wrangler pages dev out` with a test Resend key and controlled destination inbox.
 
 Server-only vars (`RESEND_API_KEY` etc.) are not read from `.env.local` — they only apply when functions execute on Cloudflare. Test the email path against the deployed preview.
 

@@ -3,7 +3,11 @@
 import FormShell, { Field, Select, TextArea } from "./FormShell";
 import { PMS_OPTIONS, WORKFLOW_OPTIONS } from "./contact-options";
 
-export default function PilotProposalForm() {
+export default function PilotProposalForm({
+  defaultWorkflowGoal,
+}: {
+  defaultWorkflowGoal?: string;
+}) {
   return (
     <FormShell intent="pilot" submitLabel="Request a pilot proposal">
       <div className="grid gap-4 md:grid-cols-2">
@@ -24,6 +28,7 @@ export default function PilotProposalForm() {
           name="workflowGoal"
           required
           options={WORKFLOW_OPTIONS}
+          defaultValue={defaultWorkflowGoal}
         />
         <Field
           label="Chairs across all locations"

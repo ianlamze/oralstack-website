@@ -1,4 +1,6 @@
-export type CustomerStatus = "live" | "pilot" | "in-conversation";
+import { dfiSynergy } from "@/content/case-studies/dfi-synergy";
+
+export type CustomerStatus = "historical-pilot";
 
 export type Customer = {
   id: string;
@@ -10,19 +12,39 @@ export type Customer = {
   pilotStart?: string;
   blurb: string;
   caseStudySlug?: string;
+  pilotScope: string[];
+  notIncluded: string[];
+  quote: {
+    text: string;
+    attribution: string;
+  };
+  evidence: Array<{
+    value: string;
+    label: string;
+    qualifier?: string;
+  }>;
+  evidenceNote: string;
 };
 
 export const customers: Customer[] = [
   {
     id: "dfi-synergy",
     name: "DFI Synergy",
-    location: "Singapore",
-    status: "pilot",
-    specialty: "General + hygiene",
-    size: "3 chairs · 4 providers",
-    pilotStart: "April 2026",
-    blurb:
-      "A named April 2026 pilot of Oralstack's appointment, reception, and reviewed checkout workflows for a three-chair clinic.",
-    caseStudySlug: "dfi-synergy",
+    location: dfiSynergy.profile.location,
+    status: "historical-pilot",
+    specialty: dfiSynergy.profile.specialty,
+    size: `${dfiSynergy.profile.chairs} chairs · ${dfiSynergy.profile.providers} providers`,
+    pilotStart: dfiSynergy.profile.pilotStart,
+    blurb: dfiSynergy.outcome,
+    caseStudySlug: dfiSynergy.slug,
+    pilotScope: dfiSynergy.profile.inProduction,
+    notIncluded: dfiSynergy.profile.notYet ?? [],
+    quote: {
+      text: dfiSynergy.pullQuoteMid?.quote ?? dfiSynergy.pullQuoteHero.quote,
+      attribution: dfiSynergy.pullQuoteMid?.attribution ?? dfiSynergy.pullQuoteHero.attribution,
+    },
+    evidence: dfiSynergy.stats,
+    evidenceNote:
+      "Historical results from DFI Synergy's named April 2026 pilot. The full case study documents the definitions, baseline, measurement window, and underlying event sources. These results describe that clinic and pilot scope, not a general performance promise.",
   },
 ];

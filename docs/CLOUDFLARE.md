@@ -91,7 +91,7 @@ You can also create a catch-all rule that forwards `*@oralstack.com` to your inb
 
 ## Step 6 — Cal.com demo booking (~5 minutes)
 
-Optional but recommended — `/book-a-demo` falls back to a mailto card without it.
+Optional — `/book-a-demo` uses the structured first-party request form without it.
 
 1. Sign up at [cal.com](https://cal.com) (free tier)
 2. Create an event type called "Demo" (or whatever) — 30 minutes, no payment, your availability rules
@@ -105,11 +105,15 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 5. Tell me — I rebuild and redeploy. `/book-a-demo` now embeds Cal.com directly.
 
+The embed forwards the site's allowlisted evidence source and workflow focus as booking metadata
+and UTM values. This keeps a DFI case-study request contextual without putting personal data in the
+page URL.
+
 ## Step 7 — Form endpoints + Resend (~5 minutes)
 
 The site has one Cloudflare Pages Function handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo), plus an allowlisted interaction-event sink at [`/api/event`](../functions/api/event.ts). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
-Without `RESEND_API_KEY` set, the endpoint still validates submissions and logs to the Cloudflare console instead of sending email. The form UI works either way.
+Without `RESEND_API_KEY` set, the endpoint returns `503 {ok:false}`. It does not log submitted clinic or contact details, and the form offers a direct email fallback.
 
 To activate real email forwarding:
 
@@ -120,22 +124,8 @@ To activate real email forwarding:
    - `RESEND_API_KEY` (encrypted) — the key from step 3
    - `CONTACT_INBOX` — destination address (default: `hello@oralstack.com`)
    - `CONTACT_FROM` — From: header (default: `Oralstack contact <noreply@oralstack.com>`)
-5. Redeploy. Submissions land in `CONTACT_INBOX` within a second.
-
-### Optional: route DemoRequestForm at a third-party service
-
-If you'd rather use Formspree / Web3Forms / similar instead of the in-repo Pages Function:
-
-1. Sign up at [formspree.io](https://formspree.io) (free tier: 50 submissions/month).
-2. Create a form, destination email `hello@oralstack.com`.
-3. Copy the endpoint URL (e.g., `https://formspree.io/f/xxxxxxxx`).
-4. Add to `.env.local` to override the default `/api/contact`:
-
-```bash
-NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
-```
-
-5. Redeploy.
+5. Redeploy. A successful form response is returned only after Resend accepts the message for
+   sending to `CONTACT_INBOX`; final inbox delivery is not confirmed by this response.
 
 The DemoRequestForm payload uses the shared contact shape: `{ intent: "demo", clinicName, name, email, location, focus, role, numChairs, providers, currentPms, preferredTimes, message }`. `focus` records the workflow selected before the request; the remaining clinic setup fields are optional.
 
@@ -158,11 +148,12 @@ When a deploy fails, the cause is almost always one of these. Check in order.
 
 ### Form returns 502 in production
 
-`502` means Resend rejected the send. Causes:
+`502` means Resend rejected the send or could not be reached. Causes:
 
-- **`RESEND_API_KEY` not set** in Cloudflare Pages env vars (Step 7). Without it, the function returns `200` with a dev-mode log line — not a 502 — so 502 means the key *is* set but invalid.
 - **Sending domain not verified** in Resend. Resend → Domains → check status. DNS propagation can take 5–10 min after adding records.
 - **`CONTACT_FROM` doesn't match a verified domain.** Resend rejects sends from unverified domains.
+
+If **`RESEND_API_KEY` is not set**, the function returns `503`, not `502`; no submission data is logged.
 
 Real-time logs: Cloudflare dashboard → **Workers & Pages → oralstack-website → Functions → Real-time logs**. Look for the `[contact]` prefix.
 
