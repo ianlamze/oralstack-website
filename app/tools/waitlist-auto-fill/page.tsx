@@ -20,7 +20,7 @@ export default function WaitlistAutoFillPage() {
           When a patient cancels, the front desk has minutes — not hours — to fill the slot before
           it&apos;s lost revenue. Oralstack ranks the waitlist on procedure fit, slot length,
           distance, and recall age, then sends a templated WhatsApp confirmation in one click. Click{" "}
-          <span aria-hidden>×</span> on Mei Lin Tan&apos;s 11:00 hygiene slot to see it.
+          <span aria-hidden>×</span> on Demo patient 102&apos;s 11:00 hygiene slot to see it.
         </p>
       </Section>
 

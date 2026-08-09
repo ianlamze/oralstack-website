@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, ArrowRight, Check, MessageCircle, RotateCcw } from "lucide-react";
 import { initialOrders, stages } from "@/content/lab-orders/data";
 import type { LabOrder, LabStage } from "@/content/lab-orders/types";
@@ -26,8 +26,6 @@ const DEMO_SLIPPED_ID = "lo3";
 export default function LabOrderTracker() {
   const [orders, setOrders] = useState<LabOrder[]>(initialOrders);
   const [selectedId, setSelectedId] = useState<string | null>(DEMO_SLIPPED_ID);
-  const reduceMotion = useReducedMotion();
-
   const selected = useMemo(
     () => orders.find((o) => o.id === selectedId) ?? null,
     [orders, selectedId],
@@ -84,7 +82,7 @@ export default function LabOrderTracker() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · 6 active cases
+          Sample Dental Clinic · 6 active cases
         </span>
       </div>
 
@@ -110,10 +108,10 @@ export default function LabOrderTracker() {
                         return (
                           <motion.li
                             key={o.id}
-                            layout={!reduceMotion}
-                            initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                            layout
+                            initial={{ opacity: 0, y: 4 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                            exit={{ opacity: 0, y: -4 }}
                             transition={{ duration: 0.18 }}
                           >
                             <button
@@ -186,7 +184,7 @@ export default function LabOrderTracker() {
 
               {selected.slipped && selected.suggestedReschedule && (
                 <motion.div
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.18 }}
                   className="rounded-[var(--radius-md)] border border-[oklch(0.62_0.18_25/0.4)] bg-[oklch(0.62_0.18_25/0.06)] p-3 grid gap-2"

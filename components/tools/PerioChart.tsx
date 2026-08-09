@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { type SiteCode, type ToothPerio, depthSeverity } from "@/content/perio/types";
 import { track } from "@/lib/analytics";
 
@@ -32,8 +32,6 @@ export default function PerioChart() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   function markInteracted() {
     if (!hasInteractedRef.current) hasInteractedRef.current = true;
     setPostDemoNudge(false);
@@ -129,7 +127,6 @@ export default function PerioChart() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -146,7 +143,7 @@ export default function PerioChart() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -175,7 +172,7 @@ export default function PerioChart() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Lim Wei Jian · #1042
+          Demo patient 103 · #1042
         </span>
       </div>
 
@@ -211,7 +208,7 @@ export default function PerioChart() {
                         >
                           <motion.span
                             key={mm}
-                            initial={reduceMotion ? false : { scale: 0.7, opacity: 0 }}
+                            initial={{ scale: 0.7, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.15 }}
                             className="text-[10px] font-semibold tabular-nums"
@@ -266,9 +263,9 @@ export default function PerioChart() {
               {postDemoNudge ? (
                 <motion.span
                   key="nudge"
-                  initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+                  initial={{ opacity: 0, y: 2 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }}
+                  exit={{ opacity: 0, y: -2 }}
                   transition={{ duration: 0.18 }}
                   className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
                 >
@@ -278,7 +275,7 @@ export default function PerioChart() {
               ) : (
                 <motion.span
                   key="default"
-                  initial={reduceMotion ? false : { opacity: 0 }}
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.18 }}

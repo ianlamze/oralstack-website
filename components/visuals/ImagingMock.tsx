@@ -88,7 +88,7 @@ export default function ImagingMock() {
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
         <span>Imaging · Visit timeline</span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Devi Krishnan · 4 assets
+          Demo patient 102 · 4 assets
         </span>
       </div>
 

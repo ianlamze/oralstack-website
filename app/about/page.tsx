@@ -7,7 +7,7 @@ import Bullet from "@/components/ui/Bullet";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Oralstack is the operating system for modern dental clinics — APAC-first, region-hosted in Singapore, built around the workflows the front desk, clinical team, and clinic owner live in every day.",
+    "oralstack is the Plato-connected workflow and clinical operations layer for dental clinics, built in Singapore around reception, patient care, checkout, and clinic management.",
   alternates: { canonical: "/about" },
 };
 
@@ -38,10 +38,10 @@ export default function AboutPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack is the operating system for modern dental clinics — APAC-first, region-hosted in
-          Singapore, designed around the eight workflows that the front desk, clinical team, and
-          clinic owner live in every day. We&apos;re early — pre-revenue, hands-on with our first
-          pilot clinics, and shipping weekly.
+          oralstack is the workflow and clinical operations layer for Plato-connected dental
+          clinics. It is APAC-first, region-hosted in Singapore, and designed around seven audited
+          capability groups spanning reception, patient care, checkout, patient access, clinic
+          operations, insights, and organization security.
         </p>
       </Section>
 
@@ -50,17 +50,17 @@ export default function AboutPage() {
           <Reason
             eyebrow="Why we're building this"
             title="The dental clinic stack hasn't kept up with the clinic."
-            body="The dominant practice management systems in this region are 20-year-old Windows desktop clients, supplemented by spreadsheets and personal phones. The front desk fights the software; reschedules and recall slip; billing reconciles end-of-day. We're building Oralstack on the premise that clinical work shouldn't have to fight the system around it — and that an APAC-first cloud PMS, built around real clinic workflows, is the version of this category that should exist in 2026."
+            body="Dental clinics often supplement their practice management system with spreadsheets, paper handoffs, and personal phones. The front desk tracks arrivals, clinicians document care, and managers reconcile the day across separate surfaces. We are building oralstack to connect that work around the existing Plato record, not to pretend a reviewed integration is a complete replacement for it."
           />
           <Reason
             eyebrow="What we're optimising for"
-            title="Defensible claims, real customers, weekly ships."
-            body="Every claim on this site is qualified — a real customer, a real integration, a real compliance fact. We do not say all-in-one or seamless. We deploy continuously to one version that every clinic is on. We're a small team, and the engineer who writes the schedule is also the person on the customer call when it breaks. That's the trade-off you're making with us — and the reason we ship at the pace we do."
+            title="Defensible claims and reviewed product boundaries."
+            body="We separate what is available now, what requires clinic setup, and what remains behind a controlled rollout gate. The public product story stops at shipped workflows. DICOM, public booking, automated outreach, external clinical AI, direct claims, and online payment rails do not become live claims just because code exists for them."
           />
           <Reason
             eyebrow="Where we are"
-            title="Singapore-first, with one cornerstone clinic live."
-            body="We're region-hosted in asia-southeast1 (Singapore), tenant-isolated, and PDPA-aware by design. Our first cornerstone clinic — DFI Synergy, a three-chair Singapore practice — moved its front desk onto Oralstack in three days. The next pilot cohort opens in the v13 imaging release. APAC-first does not mean APAC-only: we'll cross the Pacific when the product warrants it."
+            title="Singapore-first, focused on the current app."
+            body="The production boundary uses Singapore-region services, tenant-scoped Postgres access, origin checks, encryption requirements, and chained audit evidence. Clinic workflows remain grounded in the Plato connection. Controlled integrations are evaluated separately and are not bundled into the current product promise."
           />
         </div>
       </Section>
@@ -121,9 +121,11 @@ export default function AboutPage() {
               when something breaks.
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Continuous deployment.</span>{" "}
-              Every clinic is on the same version every week. No version drift. No held-back
-              features per tier.
+              <span className="font-medium text-[var(--color-text)]">
+                Reviewed rollout boundaries.
+              </span>{" "}
+              Shipped workflows, clinic-configured capabilities, and controlled rollouts are
+              described separately.
             </Bullet>
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">
@@ -140,8 +142,8 @@ export default function AboutPage() {
             </Bullet>
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Defensible claims only.</span>{" "}
-              Every workflow on this site replaces a specific tool a real clinic was using. Every
-              metric we cite has a source.
+              Every current workflow maps to implemented product paths. Disabled integrations and
+              prototypes stay labeled as controlled or historical.
             </Bullet>
           </ul>
         </div>

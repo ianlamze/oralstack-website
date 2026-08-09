@@ -7,14 +7,14 @@ export const periods: Period[] = [
 ];
 
 // Numbers calibrated to a 3-chair Singapore clinic doing roughly SGD 52k
-// production a month — DFI Synergy's actual band. Owner takes draws (no
+// production a month — Sample Dental Clinic's actual band. Owner takes draws (no
 // commission), associate is 40% of collection on her cases, hygienists
 // are hourly plus a 15% bonus on recall conversions.
 
 export const initialProviders: Provider[] = [
   {
     id: "pr1",
-    name: "Dr Wong",
+    name: "Provider A",
     role: "owner",
     ruleDescription: "Owner · draws against profit · no commission line.",
     productionSgd: 25400,
@@ -30,7 +30,7 @@ export const initialProviders: Provider[] = [
   },
   {
     id: "pr2",
-    name: "Dr Lim",
+    name: "Provider B",
     role: "associate",
     ruleDescription: "Associate · 40% of collection on her cases · paid monthly.",
     productionSgd: 18200,
@@ -45,7 +45,7 @@ export const initialProviders: Provider[] = [
   },
   {
     id: "pr3",
-    name: "Sara Lim",
+    name: "Provider C",
     role: "hygienist",
     ruleDescription:
       "Hygienist · SGD 35/hour base · 15% credit on procedures booked from her recall reminders.",
@@ -58,15 +58,15 @@ export const initialProviders: Provider[] = [
       { category: "Perio", productionSgd: 400 },
     ],
     recallCredits: [
-      { patientName: "Hafiz Yusof", procedure: "Composite filling · 36", productionSgd: 280 },
-      { patientName: "Lim Wei Jian", procedure: "RCT · 36", productionSgd: 1280 },
-      { patientName: "K. Lee", procedure: "Veneer · 11", productionSgd: 1450 },
-      { patientName: "Pavithra R", procedure: "Polish & scale", productionSgd: 110 },
+      { patientName: "Demo patient 101", procedure: "Composite filling · 36", productionSgd: 280 },
+      { patientName: "Demo patient 103", procedure: "RCT · 36", productionSgd: 1280 },
+      { patientName: "Demo patient 107", procedure: "Veneer · 11", productionSgd: 1450 },
+      { patientName: "Demo patient 105", procedure: "Polish & scale", productionSgd: 110 },
     ],
   },
   {
     id: "pr4",
-    name: "Daniel Tan",
+    name: "Provider D",
     role: "hygienist",
     ruleDescription:
       "Hygienist · SGD 35/hour base · 15% credit on procedures booked from his recall reminders.",
@@ -79,9 +79,13 @@ export const initialProviders: Provider[] = [
       { category: "Perio", productionSgd: 300 },
     ],
     recallCredits: [
-      { patientName: "Mei Lin Tan", procedure: "Polish & scale", productionSgd: 110 },
-      { patientName: "Tan Boon Hwee", procedure: "Crown · 24", productionSgd: 1450 },
-      { patientName: "Daniel Ong", procedure: "Surgical extraction · 47", productionSgd: 800 },
+      { patientName: "Demo patient 102", procedure: "Polish & scale", productionSgd: 110 },
+      { patientName: "Demo patient 104", procedure: "Crown · 24", productionSgd: 1450 },
+      {
+        patientName: "Demo patient 106",
+        procedure: "Surgical extraction · 47",
+        productionSgd: 800,
+      },
     ],
   },
 ];

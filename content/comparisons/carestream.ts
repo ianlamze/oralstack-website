@@ -31,7 +31,7 @@ export const carestream: Comparison = {
     {
       capability: "Find next available slot",
       them: "Fill-gap and pending-state features available; procedure-aware slot search varies by deployment.",
-      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+      us: "Type 'endo, 60 min, Provider B' and see the next three openings ranked by earliest. One query, no calendar scanning.",
     },
     {
       capability: "Patient self-booking",

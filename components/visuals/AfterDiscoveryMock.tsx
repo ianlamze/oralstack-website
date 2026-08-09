@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 // "After Oralstack" counterpart to BeforeDiscoveryMock — depicts the
@@ -17,19 +17,19 @@ type Review = {
 
 const reviews: Review[] = [
   {
-    patient: "Lim Wei Jian",
+    patient: "Demo patient 101",
     stars: 5,
     excerpt: "Calm chairside manner, painless extraction.",
     status: "responded",
   },
   {
-    patient: "Devi Krishnan",
+    patient: "Demo patient 102",
     stars: 5,
     excerpt: "Same-day filling, clear explanation of cost upfront.",
     status: "queued",
   },
   {
-    patient: "Aaron Teo",
+    patient: "Demo patient 103",
     stars: 4,
     excerpt: "Quick scaling visit, friendly desk.",
     status: "queued",
@@ -39,9 +39,17 @@ const reviews: Review[] = [
 type Referral = { patient: string; source: string; capturedAt: string };
 
 const referrals: Referral[] = [
-  { patient: "Mei Lin Tan · #1042", source: "Friend · Devi Krishnan", capturedAt: "Intake form" },
-  { patient: "Hafiz Yusof · #1112", source: "Google search", capturedAt: "Intake form" },
-  { patient: "Mrs Wong · #1098", source: "Carousell ad", capturedAt: "Intake form" },
+  {
+    patient: "Demo patient 104 · DEMO-1042",
+    source: "Friend · Demo patient 102",
+    capturedAt: "Intake form",
+  },
+  { patient: "Demo patient 105 · DEMO-1112", source: "Google search", capturedAt: "Intake form" },
+  {
+    patient: "Demo patient 106 · DEMO-1098",
+    source: "Carousell ad",
+    capturedAt: "Intake form",
+  },
 ];
 
 function Stars({ count }: { count: number }) {
@@ -64,12 +72,10 @@ function Stars({ count }: { count: number }) {
 
 export default function AfterDiscoveryMock() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
   const hasDemoedRef = useRef(false);
-  const [shown, setShown] = useState(reduceMotion);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -84,7 +90,7 @@ export default function AfterDiscoveryMock() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, []);
 
   return (
     <div
@@ -135,7 +141,7 @@ export default function AfterDiscoveryMock() {
           {reviews.map((r, i) => (
             <motion.li
               key={r.patient}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.22, delay: shown ? i * 0.07 : 0 }}
               className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-white px-2.5 py-2"
@@ -173,7 +179,7 @@ export default function AfterDiscoveryMock() {
           {referrals.map((r, i) => (
             <motion.li
               key={r.patient}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.22, delay: shown ? 0.2 + i * 0.07 : 0 }}
               className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-white px-2.5 py-2"

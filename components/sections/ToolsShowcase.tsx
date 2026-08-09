@@ -1,252 +1,215 @@
 import {
-  Activity,
   ArrowRight,
-  BadgeDollarSign,
   BarChart3,
-  CalendarCheck,
-  Calculator,
-  Clock,
-  FileCheck,
-  FileSignature,
-  FlaskConical,
-  LayoutGrid,
-  type LucideIcon,
-  MessageSquare,
-  Package,
-  ReceiptCent,
-  ReceiptText,
-  ShieldAlert,
+  Boxes,
+  Building2,
+  CalendarClock,
+  ClipboardList,
+  FileText,
+  FolderOpen,
+  Inbox,
+  Landmark,
+  PackageSearch,
+  Receipt,
   ShieldCheck,
-  Star,
   Stethoscope,
+  UserRoundCheck,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 import Section from "@/components/primitives/Section";
 
-type ToolCard = {
+type ModuleCard = {
   href: string;
   title: string;
   blurb: string;
   Icon: LucideIcon;
 };
 
-type Band = {
+type ModuleBand = {
   id: string;
   heading: string;
   blurb: string;
-  accent: string; // CSS color expression for the band marker
-  tools: ToolCard[];
+  modules: ModuleCard[];
 };
 
-// Source-of-truth blurbs match the long-form versions on /tools but are
-// trimmed to a single line for homepage density. Update both if you change
-// the framing of a tool.
-const BANDS: Band[] = [
+const moduleBands: ModuleBand[] = [
   {
-    id: "front-desk",
-    heading: "For the front desk",
-    blurb: "Patients book themselves in. Slots fill themselves. The clinic phone goes quiet.",
-    accent: "color-mix(in oklch, var(--color-sea), var(--color-ink) 25%)",
-    tools: [
+    id: "clinic-day",
+    heading: "Run the clinic day",
+    blurb: "The same operational surfaces staff see in the current app.",
+    modules: [
       {
-        href: "/tools/online-booking",
-        title: "Online booking",
-        blurb: "Patients pick from real chair availability — no double-bookings.",
-        Icon: CalendarCheck,
+        href: "/tools#run-the-day",
+        title: "My Day & Command",
+        blurb: "Personal queue, clinic status, risks, and next actions.",
+        Icon: CalendarClock,
       },
       {
-        href: "/tools/waitlist-auto-fill",
-        title: "Waitlist auto-fill",
-        blurb: "Patient cancels at 11:00 — see the slot fill itself.",
-        Icon: Users,
+        href: "/tools#run-the-day",
+        title: "Appointments",
+        blurb: "Plato-connected staff booking, availability, and schedule work.",
+        Icon: ClipboardList,
       },
       {
-        href: "/tools/patient-communications",
-        title: "Patient communications",
-        blurb: "WhatsApp threads, templated replies, audit-logged on send.",
-        Icon: MessageSquare,
+        href: "/tools#run-the-day",
+        title: "Inbox & Requests",
+        blurb: "Patient messages, admin tasks, and treatment follow-up.",
+        Icon: Inbox,
       },
       {
-        href: "/tools/eligibility-estimate",
-        title: "Eligibility & estimate",
-        blurb: "CHAS + insurance + procedures — patient portion live.",
-        Icon: ReceiptText,
+        href: "/tools#run-the-day",
+        title: "Reception to checkout",
+        blurb: "Arrival, queue, chair hand-off, payment recording, and receipt.",
+        Icon: Receipt,
       },
     ],
   },
   {
-    id: "clinical",
-    heading: "For the clinical team",
-    blurb: "Charting, planning, presenting, tracking — every step ties back to the patient.",
-    accent: "color-mix(in oklch, var(--color-sunset), var(--color-ink) 25%)",
-    tools: [
+    id: "patient-care",
+    heading: "Work with the patient",
+    blurb: "One folder for the clinical record and the visit context around it.",
+    modules: [
       {
-        href: "/tools/treatment-plan-builder",
-        title: "Treatment plan builder",
-        blurb: "Click teeth, add procedures, see the bill before treatment.",
+        href: "/tools#patient-care",
+        title: "Patient folder",
+        blurb: "Timeline, visits, billing, subsidy, membership, and admin.",
+        Icon: FolderOpen,
+      },
+      {
+        href: "/tools#patient-care",
+        title: "Chart, perio & notes",
+        blurb: "FDI charting, full-mouth perio sessions, and signed notes.",
         Icon: Stethoscope,
       },
       {
-        href: "/tools/plan-presentation",
-        title: "Plan presentation & e-sign",
-        blurb: "Patient toggles phases, signs on the iPad — clinic notified.",
-        Icon: FileSignature,
+        href: "/tools#patient-care",
+        title: "Plans, Rx & letters",
+        blurb: "Staff-side treatment planning, prescriptions, and correspondence.",
+        Icon: FileText,
       },
       {
-        href: "/tools/perio-chart",
-        title: "Periodontal chart",
-        blurb: "Click any site to record probing depth.",
-        Icon: Activity,
-      },
-      {
-        href: "/tools/medical-alerts",
-        title: "Patient medical alerts",
-        blurb: "Allergies, meds, conditions — surfaced where it matters.",
-        Icon: ShieldAlert,
-      },
-      {
-        href: "/tools/lab-orders",
-        title: "Lab order tracking",
-        blurb: "Crowns and bridges from sent to seated — slip-aware.",
-        Icon: FlaskConical,
-      },
-      {
-        href: "/tools/sterilization",
-        title: "Sterilisation traceability",
-        blurb: "Cycle to tray to patient — recall list ready in seconds.",
-        Icon: ShieldCheck,
+        href: "/tools#patient-access",
+        title: "Patient access",
+        blurb: "Intake, portal, find-a-time requests, and secure messages.",
+        Icon: UserRoundCheck,
       },
     ],
   },
   {
-    id: "back-office",
-    heading: "Billing, claims & back office",
-    blurb: "What the bookkeeper, the practice manager, and the auditor each need — settled.",
-    accent: "color-mix(in oklch, var(--color-tide-deep), var(--color-ink) 10%)",
-    tools: [
+    id: "operations",
+    heading: "Manage clinic operations",
+    blurb: "Purpose-built workspaces for the practice manager and back office.",
+    modules: [
       {
-        href: "/tools/end-of-day-reconciliation",
-        title: "End-of-day reconciliation",
-        blurb: "Variance flagged → matched → ledger pushed to Xero.",
-        Icon: ReceiptCent,
+        href: "/tools#checkout-money",
+        title: "Money & receivables",
+        blurb: "Billing, deposits, claims tracking, and AR follow-up worklists.",
+        Icon: Receipt,
       },
       {
-        href: "/tools/insurance-claims",
-        title: "Insurance claims & MediSave",
-        blurb: "Procedure done → claim auto-packaged → status flows back.",
-        Icon: FileCheck,
+        href: "/tools#clinic-operations",
+        title: "Finance & labs",
+        blurb: "Lab suppliers, invoices, cases, contracts, and payroll runs.",
+        Icon: Landmark,
       },
       {
-        href: "/tools/inventory",
-        title: "Inventory & consumables",
-        blurb: "Auto-deduct on procedure; reorder before stock runs out.",
-        Icon: Package,
+        href: "/tools#clinic-operations",
+        title: "Inventory",
+        blurb: "Stock, receiving, reorders, recipes, and estimated usage.",
+        Icon: Boxes,
       },
       {
-        href: "/tools/provider-productivity",
-        title: "Provider productivity",
-        blurb: "Associate production, commission, hygienist recall credit.",
-        Icon: BadgeDollarSign,
+        href: "/tools#clinic-operations",
+        title: "Staff ops",
+        blurb: "Time, corrections, timesheets, commissions, and payroll export.",
+        Icon: Users,
       },
     ],
   },
   {
-    id: "owner",
-    heading: "For the owner",
-    blurb: "Morning view, strategic view, ROI math — the same data, different lenses.",
-    accent: "color-mix(in oklch, var(--color-violet), var(--color-ink) 25%)",
-    tools: [
+    id: "management",
+    heading: "See and govern the group",
+    blurb: "Manager visibility with clinic scope and access controls attached.",
+    modules: [
       {
-        href: "/tools/daily-huddle",
-        title: "Daily huddle dashboard",
-        blurb: "Schedule, recall, AR, production — at a glance.",
-        Icon: LayoutGrid,
-      },
-      {
-        href: "/tools/management-report",
-        title: "Management report",
-        blurb: "KPIs over time, AR aging, provider × procedure heatmap.",
+        href: "/tools#insights",
+        title: "Insights & reports",
+        blurb: "KPIs, daily close, receivables, provider views, and CSV export.",
         Icon: BarChart3,
       },
       {
-        href: "/tools/no-show-calculator",
-        title: "No-show revenue calculator",
-        blurb: "Model the revenue your clinic loses to no-shows.",
-        Icon: Calculator,
+        href: "/tools#organization-security",
+        title: "Organization",
+        blurb: "Staff access, authorized clinic switching, and group rollups.",
+        Icon: Building2,
       },
       {
-        href: "/tools/day-in-the-life",
-        title: "Day in the life",
-        blurb: "Walk through a typical clinic day, station by station.",
-        Icon: Clock,
+        href: "/tools#organization-security",
+        title: "Sync & audit",
+        blurb: "Connection health, reviewed writebacks, and action history.",
+        Icon: ShieldCheck,
       },
       {
-        href: "/tools/reviews-referrals",
-        title: "Reviews & referrals",
-        blurb: "Visit ends → review request fires → referrer credited.",
-        Icon: Star,
+        href: "/tools#clinic-operations",
+        title: "Inventory usage",
+        blurb: "Estimated material consumption from completed procedures.",
+        Icon: PackageSearch,
       },
     ],
   },
 ];
 
-const TOTAL_TOOLS = BANDS.reduce((sum, b) => sum + b.tools.length, 0);
-
 export default function ToolsShowcase() {
   return (
-    <Section className="py-20 md:py-24">
-      <div className="grid gap-3 mb-10 max-w-[760px]">
+    <Section className="border-b border-[var(--color-border)] bg-[var(--color-surface-raised)] py-20 md:py-24">
+      <div className="mb-10 grid max-w-[760px] gap-3">
         <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-          Try before you talk
+          Inside the app
         </p>
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-          {numberWord(TOTAL_TOOLS)} interactive tools, every role on your team.
+        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+          The modules your team can actually open.
         </h2>
-        <p className="text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
-          Drag the schedule, sign the plan, mark the spore-test, settle the commission — every
-          persona on the clinic has something to play with before a demo call. Each one runs live in
-          your browser.
+        <p className="max-w-[64ch] leading-relaxed text-[var(--color-text-muted)]">
+          This inventory follows Oralstack v2&apos;s real navigation. It deliberately excludes
+          dark-launched integrations and interactive marketing concepts from the shipped feature
+          count.
         </p>
       </div>
 
       <div className="grid gap-12 md:gap-14">
-        {BANDS.map((band) => (
-          <section key={band.id} aria-labelledby={`band-${band.id}`}>
-            <header className="mb-4 flex items-baseline gap-3 flex-wrap">
-              <span
-                aria-hidden
-                className="inline-block h-1.5 w-1.5 rounded-full shrink-0 translate-y-[-2px]"
-                style={{ backgroundColor: band.accent }}
-              />
+        {moduleBands.map((band) => (
+          <section key={band.id} aria-labelledby={`module-band-${band.id}`}>
+            <header className="mb-4 flex flex-wrap items-baseline gap-3">
               <h3
-                id={`band-${band.id}`}
-                className="text-base md:text-lg font-semibold tracking-tight text-[var(--color-text)]"
+                id={`module-band-${band.id}`}
+                className="text-base font-semibold tracking-tight text-[var(--color-text)] md:text-lg"
               >
                 {band.heading}
               </h3>
-              <p className="text-[13px] text-[var(--color-text-muted)] leading-snug max-w-[60ch]">
+              <p className="max-w-[60ch] text-[13px] leading-snug text-[var(--color-text-muted)]">
                 {band.blurb}
               </p>
             </header>
 
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {band.tools.map(({ href, title, blurb, Icon }) => (
-                <li key={href}>
+              {band.modules.map(({ href, title, blurb, Icon }) => (
+                <li key={`${href}-${title}`}>
                   <a
                     href={href}
-                    className="card-hover group block h-full rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-5"
+                    className="card-hover group block h-full rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-5 shadow-[var(--shadow-1)]"
                   >
-                    <span className="flex size-9 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] text-[var(--color-tide-deep)] mb-3">
+                    <span className="mb-3 flex size-9 items-center justify-center rounded-[var(--radius-md)] border border-[color-mix(in_srgb,var(--color-tide)_28%,transparent)] bg-[var(--color-canvas-tinted)] text-[var(--color-tide-deep)]">
                       <Icon className="size-4" aria-hidden />
                     </span>
-                    <h4 className="text-base font-semibold tracking-tight text-[var(--color-text)] leading-snug">
+                    <h4 className="text-base font-semibold leading-snug tracking-tight text-[var(--color-text)]">
                       {title}
                     </h4>
-                    <p className="mt-1.5 text-sm text-[var(--color-text-muted)] leading-snug">
+                    <p className="mt-1.5 text-sm leading-snug text-[var(--color-text-muted)]">
                       {blurb}
                     </p>
-                    <p className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-tide-deep)] card-arrow">
-                      Try the demo <ArrowRight className="size-3" aria-hidden />
+                    <p className="card-arrow mt-4 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-tide-deep)]">
+                      See current scope <ArrowRight className="size-3" aria-hidden />
                     </p>
                   </a>
                 </li>
@@ -256,31 +219,17 @@ export default function ToolsShowcase() {
         ))}
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 flex flex-wrap items-center gap-4">
         <a
           href="/tools"
           className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-tide-deep)] underline underline-offset-4 hover:decoration-2"
         >
-          See all {TOTAL_TOOLS} tools <ArrowRight className="size-3" aria-hidden />
+          Open the complete feature guide <ArrowRight className="size-3" aria-hidden />
         </a>
+        <p className="text-xs text-[var(--color-text-soft)]">
+          Availability can depend on clinic connection and role permissions.
+        </p>
       </div>
     </Section>
   );
-}
-
-function numberWord(n: number): string {
-  const words: Record<number, string> = {
-    10: "Ten",
-    11: "Eleven",
-    12: "Twelve",
-    13: "Thirteen",
-    14: "Fourteen",
-    15: "Fifteen",
-    16: "Sixteen",
-    17: "Seventeen",
-    18: "Eighteen",
-    19: "Nineteen",
-    20: "Twenty",
-  };
-  return words[n] ?? `${n}`;
 }

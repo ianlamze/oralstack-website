@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { track } from "@/lib/analytics";
 
 type SourceSystem = "plato" | "dentrix" | "open-dental" | "carestream" | "eaglesoft" | "paper";
@@ -106,8 +106,6 @@ export default function MigrationEstimator({
   const [source, setSource] = useState<SourceSystem>(defaultSource);
   const [chairs, setChairs] = useState<ChairsBucket>("2-3");
   const [years, setYears] = useState<YearsBucket>("3-5");
-  const reduceMotion = useReducedMotion();
-
   const sourceId = useId();
 
   const result = useMemo(() => estimate({ source, chairs, years }), [source, chairs, years]);
@@ -211,7 +209,7 @@ export default function MigrationEstimator({
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
             <motion.div
               key={`${days}d`}
-              initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.18 }}
               className="grid gap-0.5"
@@ -225,7 +223,7 @@ export default function MigrationEstimator({
             </motion.div>
             <motion.div
               key={`${weeks}w`}
-              initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.18, delay: 0.04 }}
               className="grid gap-0.5"
@@ -272,7 +270,7 @@ export default function MigrationEstimator({
               href="/customers/dfi-synergy"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              DFI Synergy&apos;s pilot
+              Sample Dental Clinic&apos;s pilot
             </a>{" "}
             and the published playbook. Pilot proposal sized in a 30-minute call.
           </p>

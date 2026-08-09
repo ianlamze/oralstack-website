@@ -37,9 +37,9 @@ export default function CaseStudyHero({ study }: CaseStudyHeroProps) {
               />
             )}
             <ProfileRow label="Pilot start" value={profile.pilotStart} />
-            <ProfileRow label="In production" value={profile.inProduction.join(" · ")} />
+            <ProfileRow label="Pilot scope" value={profile.inProduction.join(" · ")} />
             {profile.notYet && profile.notYet.length > 0 && (
-              <ProfileRow label="Pending" value={profile.notYet.join(" · ")} muted />
+              <ProfileRow label="Not included" value={profile.notYet.join(" · ")} muted />
             )}
           </dl>
         </aside>

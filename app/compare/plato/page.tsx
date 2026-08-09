@@ -4,7 +4,8 @@ import { plato } from "@/content/comparisons/plato";
 
 export const metadata: Metadata = {
   title: plato.metaTitle,
-  description: plato.metaDescription,
+  description:
+    "Archived comparison. Review Oralstack's current Plato-connected product scope and rollout boundaries before procurement.",
   alternates: { canonical: `/compare/${plato.slug}` },
 };
 

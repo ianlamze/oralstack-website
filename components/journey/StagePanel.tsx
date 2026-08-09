@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { ReactNode } from "react";
 import type { FeatureRef, JourneyStage } from "@/content/journey";
 import { track } from "@/lib/analytics";
@@ -76,7 +76,6 @@ function FeaturePill({ feature }: { feature: FeatureRef }) {
 }
 
 export default function StagePanel({ stage, totalStages, builtDemo }: StagePanelProps) {
-  const reduceMotion = useReducedMotion();
   const liveFeatures = stage.features.filter((f) => f.status === "live");
 
   return (
@@ -89,9 +88,9 @@ export default function StagePanel({ stage, totalStages, builtDemo }: StagePanel
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={stage.id}
-          initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+          exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.22 }}
           className="grid gap-8 lg:gap-10"
         >

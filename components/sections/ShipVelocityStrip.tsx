@@ -38,7 +38,7 @@ export default function ShipVelocityStrip() {
   const latest = changelog.slice(0, 2);
 
   return (
-    <Section className="py-12 md:py-14 border-b border-[var(--color-border)]">
+    <Section className="border-b border-[var(--color-border)] bg-[var(--color-surface-raised)] py-12 md:py-14">
       <div className="grid gap-6 md:grid-cols-[minmax(0,auto)_minmax(0,1fr)] md:gap-12 md:items-center">
         <div className="grid gap-1">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">

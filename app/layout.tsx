@@ -1,9 +1,21 @@
 import type { Metadata } from "next";
+import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import { siteMeta } from "@/content/site-meta";
 import Nav from "@/components/sections/Nav";
 import Footer from "@/components/sections/Footer";
 import ScrollProgress from "@/components/motion/ScrollProgress";
 import "./globals.css";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-instrument-serif",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -44,11 +56,13 @@ const organizationJsonLd = JSON.stringify({
     { "@type": "Place", name: "APAC" },
   ],
   knowsAbout: [
-    "dental practice management",
-    "DICOM imaging",
-    "clinical scheduling",
-    "dental billing",
-    "dental clinic operations",
+    "Plato-connected dental clinic operations",
+    "dental appointment workflow",
+    "patient care coordination",
+    "dental checkout and billing review",
+    "clinic inventory and staff operations",
+    "dental practice insights",
+    "healthcare access controls and audit logs",
   ],
 }).replace(/</g, "\\u003c");
 
@@ -56,7 +70,7 @@ const CF_BEACON = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${jakarta.variable} ${instrumentSerif.variable}`}>
       <body className="antialiased">
         <ScrollProgress />
         <Nav />

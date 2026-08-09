@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { candidates, initialAppointments } from "@/content/waitlist/data";
 import type { Candidate } from "@/content/waitlist/types";
 import { track } from "@/lib/analytics";
@@ -39,7 +39,7 @@ const filledStyle = {
 
 type StageId = "booked" | "cancelled" | "filling" | "filled";
 
-const TARGET_ID = "a3"; // Mei Lin Tan · Hygiene · Chair 3 · 11:00
+const TARGET_ID = "a3"; // Demo patient 102 · Hygiene · Chair 3 · 11:00
 
 export default function WaitlistAutoFill() {
   const [stage, setStage] = useState<StageId>("booked");
@@ -49,8 +49,6 @@ export default function WaitlistAutoFill() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   const target = useMemo(() => initialAppointments.find((a) => a.id === TARGET_ID), []);
 
   function markInteracted() {
@@ -131,7 +129,6 @@ export default function WaitlistAutoFill() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -148,7 +145,7 @@ export default function WaitlistAutoFill() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -177,7 +174,7 @@ export default function WaitlistAutoFill() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · Singapore
+          Sample Dental Clinic · Singapore
         </span>
       </div>
 
@@ -240,12 +237,8 @@ export default function WaitlistAutoFill() {
               return (
                 <motion.div
                   key={a.id}
-                  layout={!reduceMotion}
-                  transition={
-                    reduceMotion
-                      ? { duration: 0 }
-                      : { layout: { type: "spring", stiffness: 480, damping: 36 } }
-                  }
+                  layout
+                  transition={{ layout: { type: "spring", stiffness: 480, damping: 36 } }}
                   className="rounded-md border px-1.5 sm:px-2 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-medium leading-tight m-0.5 overflow-hidden relative"
                   style={{
                     gridColumn: a.chair + 2,
@@ -298,19 +291,19 @@ export default function WaitlistAutoFill() {
               {postDemoNudge ? (
                 <motion.span
                   key="nudge"
-                  initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+                  initial={{ opacity: 0, y: 2 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }}
+                  exit={{ opacity: 0, y: -2 }}
                   transition={{ duration: 0.18 }}
                   className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
                 >
                   <span aria-hidden>↺</span>
-                  Now you try — click ↺ to reset, then × on Mei Lin Tan
+                  Now you try — click ↺ to reset, then × on Demo patient 102
                 </motion.span>
               ) : (
                 <motion.span
                   key="default"
-                  initial={reduceMotion ? false : { opacity: 0 }}
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.18 }}
@@ -330,9 +323,9 @@ export default function WaitlistAutoFill() {
             {stage === "booked" && (
               <motion.div
                 key="booked"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
                 className="grid gap-2"
               >
@@ -358,9 +351,9 @@ export default function WaitlistAutoFill() {
             {stage === "cancelled" && (
               <motion.div
                 key="cancelled"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
                 className="grid gap-3"
               >
@@ -385,9 +378,9 @@ export default function WaitlistAutoFill() {
             {stage === "filling" && (
               <motion.div
                 key="filling"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
                 className="grid gap-2"
               >
@@ -398,9 +391,9 @@ export default function WaitlistAutoFill() {
                   {candidates.map((c, i) => (
                     <motion.li
                       key={c.id}
-                      initial={reduceMotion ? false : { opacity: 0, x: -4 }}
+                      initial={{ opacity: 0, x: -4 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.16, delay: reduceMotion ? 0 : i * 0.05 }}
+                      transition={{ duration: 0.16, delay: i * 0.05 }}
                     >
                       <button
                         type="button"
@@ -417,9 +410,9 @@ export default function WaitlistAutoFill() {
                         </div>
                         <div className="h-1 rounded-full bg-[var(--color-canvas-tinted)] overflow-hidden">
                           <motion.div
-                            initial={reduceMotion ? false : { width: 0 }}
+                            initial={{ width: 0 }}
                             animate={{ width: `${c.matchScore * 100}%` }}
-                            transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.1 + i * 0.05 }}
+                            transition={{ duration: 0.4, delay: 0.1 + i * 0.05 }}
                             className="h-full bg-[var(--color-tide-deep)]"
                           />
                         </div>
@@ -446,9 +439,9 @@ export default function WaitlistAutoFill() {
             {stage === "filled" && filledBy && (
               <motion.div
                 key="filled"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.22 }}
                 className="grid gap-2"
               >

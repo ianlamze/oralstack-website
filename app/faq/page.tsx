@@ -5,7 +5,7 @@ import Section from "@/components/primitives/Section";
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Common questions evaluators ask about Oralstack — pricing, contracts, migration, hosting, security, integrations, and what happens if we go out of business.",
+    "Common questions about how oralstack works with Plato, clinic setup, security controls, integrations, and current product availability.",
   alternates: { canonical: "/faq" },
 };
 
@@ -17,7 +17,7 @@ const groups: Group[] = [
     title: "Pricing & contracts",
     items: [
       {
-        q: "What does Oralstack cost?",
+        q: "What does oralstack cost?",
         a: (
           <>
             <p>
@@ -42,8 +42,9 @@ const groups: Group[] = [
         q: "Is there a contract or minimum term?",
         a: (
           <p>
-            No long-term contract during pilot. We invoice monthly. You can cancel any time and we
-            hand back a full export of your data within five working days.
+            No long-term contract during pilot. We invoice monthly. Cancellation and data-handover
+            terms are confirmed in each pilot agreement, including which records and formats are in
+            scope.
           </p>
         ),
       },
@@ -63,42 +64,40 @@ const groups: Group[] = [
     title: "Migration & onboarding",
     items: [
       {
-        q: "How long does migration take?",
+        q: "How long does clinic setup take?",
         a: (
           <p>
-            Three weeks from kickoff to live, in the model we run. Week 1 is audit and prep; week 2
-            is cutover; week 3 stabilises.{" "}
+            The timeline depends on Plato connector readiness, clinic configuration, data review,
+            and training. We scope it after an initial audit rather than promising a fixed cutover
+            window.{" "}
             <a
-              href="/articles/plato-to-cloud-migration"
+              href="/workflows"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              Read the playbook →
-            </a>{" "}
-            Clinics that try to keep their old system running in parallel consistently take 6–8
-            weeks instead.
+              See the current workflows →
+            </a>
           </p>
         ),
       },
       {
-        q: "Will I lose patient data?",
+        q: "Will oralstack replace or copy every patient record?",
         a: (
           <p>
-            No. We migrate patient records, appointment history (12 months minimum), treatment
-            records, and outstanding A/R balances field-for-field. Most fields map 1:1 from legacy
-            PMS schemas; the ones that don&apos;t get reviewed in the week-1 audit. The only data we
-            don&apos;t carry across is data the clinic explicitly opts out of (typically very old
-            recall lists).
+            No. For API-connected clinics, Plato remains the source of truth for patient identity,
+            schedule writes, and invoice writeback. oralstack reads mirrored records and writes
+            through reviewed paths. Any record migration is scoped separately and requires human
+            review; paper-record migration is not a current live feature.
           </p>
         ),
       },
       {
-        q: "Do you support a fallback during cutover?",
+        q: "What happens if the Plato connection is unavailable?",
         a: (
           <p>
-            We deliberately don&apos;t recommend running both systems in parallel — it&apos;s the
-            single biggest cause of stuck migrations. We do keep your old PMS read-only for
-            historical lookups for as long as you want, but the source of truth flips to Oralstack
-            at the cutover date.
+            Plato remains the source of truth for an API-connected clinic. oralstack does not swap
+            in rich demo records when a production read fails, and a locally staged fallback is
+            never described as a delivered writeback. For Plato-backed reschedules, staff review a
+            proposal, apply the change in Plato, and then resolve it in oralstack.
           </p>
         ),
       },
@@ -106,9 +105,9 @@ const groups: Group[] = [
         q: "Who handles training?",
         a: (
           <p>
-            We do, directly. A 30-minute walkthrough on day one, then real shift coverage with
-            someone available on chat for questions for the first week. Front desk staff learn by
-            doing — multi-day classroom training, in our experience, doesn&apos;t stick.
+            We do, directly. Training follows the roles and workflows the clinic plans to use, from
+            reception and chairside care to checkout and manager review. The schedule and support
+            window are agreed during pilot planning.
           </p>
         ),
       },
@@ -121,8 +120,9 @@ const groups: Group[] = [
         q: "Where is my data hosted?",
         a: (
           <p>
-            Singapore region (asia-southeast1) on Google Cloud. Your patient records do not leave
-            the Singapore region without explicit cross-border consent.{" "}
+            Core production services are configured in the Singapore region (asia-southeast1) on
+            Google Cloud. Any clinic-specific connector or external subprocessor is reviewed as part
+            of setup rather than implied by the core hosting statement.{" "}
             <a
               href="/security"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -133,13 +133,14 @@ const groups: Group[] = [
         ),
       },
       {
-        q: "Are you PDPA-compliant?",
+        q: "How does oralstack support PDPA obligations?",
         a: (
           <p>
-            Yes. PDPA-compliance is built into the data model — region-hosted, tenant-isolated via
-            Postgres row-level security, audit logs by default with full access traceability,
-            encryption in transit and at rest. We are not the data controller; the clinic remains
-            the controller and we operate as the data intermediary.
+            Product controls include Singapore-region hosting, tenant scoping with Postgres
+            row-level security, encryption requirements, origin checks, and chained audit evidence.
+            The clinic remains the data controller and oralstack operates as the data intermediary.
+            These controls support a clinic&apos;s evaluation; they are not a blanket legal
+            certification.
           </p>
         ),
       },
@@ -158,13 +159,13 @@ const groups: Group[] = [
         q: "Can I see audit logs?",
         a: (
           <p>
-            Yes. Every read and write is logged with user, clinic, resource, and timestamp. The log
-            is queryable per-clinic.{" "}
+            Supported clinical and operations workflows create tenant-scoped audit and access
+            records for review.{" "}
             <a
-              href="/articles/dental-audit-logs"
+              href="/security"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              What auditors actually look for →
+              See the security and audit posture →
             </a>
           </p>
         ),
@@ -175,11 +176,13 @@ const groups: Group[] = [
     title: "Integrations & technical",
     items: [
       {
-        q: "Which sensors and imaging hardware do you support?",
+        q: "Are DICOM and sensor capture live?",
         a: (
           <p>
-            DICOM viewer in the patient chart, with sensor-bridge integration across Carestream,
-            Dexis, Sopro, and Schick. We don&apos;t sell hardware — bring your existing sensors.{" "}
+            Not as a generally available feature. Current patient care supports clinical media
+            upload, note linking, annotations, and archiving. DICOM viewing, device ingest,
+            measurements, and the X-ray bridge remain controlled rollouts, so we do not advertise
+            specific sensor-vendor support.{" "}
             <a
               href="/integrations"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -190,12 +193,13 @@ const groups: Group[] = [
         ),
       },
       {
-        q: "What about WhatsApp recall messaging?",
+        q: "What about WhatsApp and recall messaging?",
         a: (
           <p>
-            We use the WhatsApp Business API with Singapore-region routing for templated recall and
-            confirmation messages. Two-way conversations are audit-logged with delivery and read
-            receipts.
+            Clinics with an approved Meta connection can use the staff inbox for manual two-way
+            conversations. Recall settings, campaigns, audiences, and touch queues are available for
+            staff review. Automated reminders, live recall dispatch, WhatsApp Flows, birthday
+            messages, and SMS remain outside current live claims.
           </p>
         ),
       },
@@ -203,8 +207,10 @@ const groups: Group[] = [
         q: "Can I export my data?",
         a: (
           <p>
-            Anytime. CSV and JSON exports are first-class — patient records, appointment history,
-            billing history, recall lists, audit logs. We&apos;ll never charge for an export.
+            Export availability depends on the workflow: examples include periodontal exports,
+            operational reports, and receipt records. Broader data-handover scope, format, and
+            timing are confirmed in the clinic agreement. We do not currently advertise one-click
+            CSV or JSON export for every record in the product.
           </p>
         ),
       },
@@ -212,16 +218,16 @@ const groups: Group[] = [
         q: "Do you have an API?",
         a: (
           <p>
-            Not publicly yet. We integrate where it makes sense (sensor-bridge, WhatsApp Business,
-            payment processors). A documented public API is on the roadmap once integration patterns
-            stabilise across the pilot cohort.
+            Not publicly. Current integration work centres on reviewed Plato connector paths.
+            HitPay, SmartCMS, NEHR, DICOM and sensor ingest, teleconsultation, and automated
+            external messaging remain controlled or disabled, not public live integrations.
           </p>
         ),
       },
     ],
   },
   {
-    title: "About Oralstack",
+    title: "About oralstack",
     items: [
       {
         q: "How big is the team?",
@@ -239,20 +245,19 @@ const groups: Group[] = [
         q: "Where are you based?",
         a: (
           <p>
-            Singapore. APAC-first. Our cornerstone customer is also in Singapore (DFI Synergy, a
-            3-chair general + hygiene practice).
+            Singapore. APAC-first. Product decisions start with the front-desk, clinical, billing,
+            and data-handling realities of dental clinics in this region.
           </p>
         ),
       },
       {
-        q: "What if Oralstack goes out of business?",
+        q: "What if oralstack goes out of business?",
         a: (
           <p>
-            A reasonable thing to ask of any early-stage SaaS. Two practical answers: (1) you can
-            export your full dataset (CSV/JSON) at any time — there&apos;s no lock-in, (2) we work
-            with clinics on a data-handover plan as part of every pilot agreement, including a
-            field-mapping document so a successor PMS can ingest your Oralstack data without a
-            re-keying project.
+            A reasonable thing to ask of any early-stage software company. Each pilot agreement
+            defines a data-handover plan for oralstack-owned records, including scope, format, and
+            timing. Plato remains the primary record for connected clinics. We do not promise that
+            every successor system can ingest every oralstack field without mapping work.
           </p>
         ),
       },
@@ -260,26 +265,14 @@ const groups: Group[] = [
         q: "Why not use Plato or Open Dental?",
         a: (
           <p>
-            Both are reasonable for the right clinic.{" "}
+            Both are reasonable for the right clinic. oralstack currently works with Plato as a
+            workflow and clinical operations layer rather than presenting itself as a replacement
+            source of truth.{" "}
             <a
-              href="/compare/plato"
+              href="/workflows"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              vs Plato →
-            </a>
-            {"  "}
-            <a
-              href="/compare/open-dental"
-              className="text-[var(--color-tide-deep)] underline underline-offset-4"
-            >
-              vs Open Dental →
-            </a>
-            {"  "}
-            <a
-              href="/compare"
-              className="text-[var(--color-tide-deep)] underline underline-offset-4"
-            >
-              All comparisons →
+              See the current product boundary →
             </a>
           </p>
         ),

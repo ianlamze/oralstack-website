@@ -17,19 +17,19 @@ type RecallRow = {
 
 const recallRows: RecallRow[] = [
   {
-    patient: "Lim Wei Jian · #1042",
+    patient: "Demo patient 101 · DEMO-1042",
     due: "3 months ago",
     lastContacted: "6 months ago",
     status: "stale",
   },
   {
-    patient: "Mrs Wong · #1098",
+    patient: "Demo patient 106 · DEMO-1098",
     due: "5 months ago",
     lastContacted: "never",
     status: "stale",
   },
   {
-    patient: "Mei Lin Tan · #1042",
+    patient: "Demo patient 104 · DEMO-1042",
     due: "due this week",
     lastContacted: "—",
     status: "open",

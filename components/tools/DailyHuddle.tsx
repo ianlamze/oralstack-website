@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import {
   arRedFlags,
   productionToday,
@@ -24,8 +24,6 @@ export default function DailyHuddle() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   function markInteracted() {
     if (!hasInteractedRef.current) hasInteractedRef.current = true;
   }
@@ -71,7 +69,6 @@ export default function DailyHuddle() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -88,7 +85,7 @@ export default function DailyHuddle() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -117,7 +114,7 @@ export default function DailyHuddle() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · today
+          Sample Dental Clinic · today
         </span>
       </div>
 
@@ -130,7 +127,6 @@ export default function DailyHuddle() {
           metric={`${stats.booked}/${stats.totalSlots}`}
           metricLabel="booked"
           subline={`${stats.gaps} gap${stats.gaps === 1 ? "" : "s"} · 3 chairs · 09:00–15:00`}
-          reduceMotion={!!reduceMotion}
         >
           <div className="grid grid-cols-6 gap-0.5 mt-2">
             {todaySchedule.map((s) => (
@@ -159,7 +155,6 @@ export default function DailyHuddle() {
           metric={`${recallOpportunities.length}`}
           metricLabel="due now"
           subline="Sites surface 3 weeks before due · WhatsApp templated"
-          reduceMotion={!!reduceMotion}
         >
           <ul className="grid divide-y divide-[var(--color-border)] mt-2 text-[11px]">
             {recallOpportunities.map((r) => (
@@ -187,7 +182,6 @@ export default function DailyHuddle() {
           metric={format(stats.totalAR)}
           metricLabel="outstanding"
           subline={`${arRedFlags.length} invoice${arRedFlags.length === 1 ? "" : "s"} · 30+ days`}
-          reduceMotion={!!reduceMotion}
         >
           <ul className="grid divide-y divide-[var(--color-border)] mt-2 text-[11px]">
             {arRedFlags.map((r) => (
@@ -215,12 +209,11 @@ export default function DailyHuddle() {
           metric={format(productionToday.current)}
           metricLabel={`of ${format(productionToday.goal)} goal`}
           subline={`Hygiene re-care rate · ${Math.round(productionToday.hygieneRecareRate * 100)}%`}
-          reduceMotion={!!reduceMotion}
         >
           <div className="mt-3 grid gap-1.5">
             <div className="h-2 rounded-full bg-[var(--color-canvas-tinted)] overflow-hidden">
               <motion.div
-                initial={reduceMotion ? false : { width: 0 }}
+                initial={{ width: 0 }}
                 animate={{ width: `${stats.productionPct}%` }}
                 transition={{ duration: 0.6 }}
                 className="h-full"
@@ -265,7 +258,6 @@ function Pane({
   subline,
   highlighted,
   onFocus,
-  reduceMotion,
   children,
 }: {
   id: PaneId;
@@ -275,7 +267,6 @@ function Pane({
   subline: string;
   highlighted: boolean;
   onFocus: (id: PaneId) => void;
-  reduceMotion: boolean;
   children?: React.ReactNode;
 }) {
   return (
@@ -283,16 +274,10 @@ function Pane({
       type="button"
       onClick={() => onFocus(id)}
       aria-pressed={highlighted}
-      animate={
-        reduceMotion
-          ? undefined
-          : {
-              scale: highlighted ? 1.015 : 1,
-              boxShadow: highlighted
-                ? "0 18px 40px -16px rgba(20,30,60,0.22)"
-                : "0 0 0 0 rgba(0,0,0,0)",
-            }
-      }
+      animate={{
+        scale: highlighted ? 1.015 : 1,
+        boxShadow: highlighted ? "0 18px 40px -16px rgba(20,30,60,0.22)" : "0 0 0 0 rgba(0,0,0,0)",
+      }}
       transition={{ type: "spring", stiffness: 380, damping: 32 }}
       className={`text-left rounded-[var(--radius-lg)] border p-5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
         highlighted

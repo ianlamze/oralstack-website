@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 // "After Oralstack" pane for the Pre-visit stage. Shows the WhatsApp
@@ -34,12 +34,10 @@ const intakeChecks = [
 
 export default function AfterPreVisitMock() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
   const hasDemoedRef = useRef(false);
-  const [shown, setShown] = useState(reduceMotion);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -54,7 +52,7 @@ export default function AfterPreVisitMock() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, []);
 
   return (
     <div
@@ -78,7 +76,7 @@ export default function AfterPreVisitMock() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Devi Krishnan · #1054
+          Demo patient 102 · DEMO-1054
         </span>
       </div>
 
@@ -90,7 +88,7 @@ export default function AfterPreVisitMock() {
           {messages.map((m, i) => (
             <motion.li
               key={`${m.time}-${i}`}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.22, delay: shown ? i * 0.1 : 0 }}
               className={`flex ${m.from === "clinic" ? "justify-start" : "justify-end"}`}
@@ -126,7 +124,7 @@ export default function AfterPreVisitMock() {
           {intakeChecks.map((c, i) => (
             <motion.li
               key={c.label}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.22, delay: shown ? 0.4 + i * 0.05 : 0 }}
               className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-white px-2.5 py-2"

@@ -1,15 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { initialThreads, templates } from "@/content/patient-comms/data";
 import type { Message, Thread } from "@/content/patient-comms/types";
 import { track } from "@/lib/analytics";
 
-const DEMO_THREAD_ID = "th1"; // Hafiz Yusof
+const DEMO_THREAD_ID = "th1"; // Demo patient 101
 const DEMO_TEMPLATE_ID = "offer_reschedule";
 
-function fillTemplate(body: string, name: string, procedure: string, provider = "Dr Wong") {
+function fillTemplate(body: string, name: string, procedure: string, provider = "Provider A") {
   return body
     .replace(/{name}/g, name.split(" ")[0])
     .replace(/{procedure}/g, procedure.toLowerCase())
@@ -29,8 +29,6 @@ export default function PatientCommunicationCenter() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   const activeThread = threads.find((t) => t.id === activeThreadId);
 
   function markInteracted() {
@@ -85,8 +83,8 @@ export default function PatientCommunicationCenter() {
   const messageCount = activeThread?.messages.length ?? 0;
   // biome-ignore lint/correctness/useExhaustiveDependencies: trigger-only deps
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
-  }, [activeThreadId, messageCount, reduceMotion]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [activeThreadId, messageCount]);
 
   const runDemo = useCallback(() => {
     if (hasInteractedRef.current) return;
@@ -145,7 +143,6 @@ export default function PatientCommunicationCenter() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -162,7 +159,7 @@ export default function PatientCommunicationCenter() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -191,7 +188,7 @@ export default function PatientCommunicationCenter() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · audit-logged
+          Sample Dental Clinic · audit-logged
         </span>
       </div>
 
@@ -263,8 +260,8 @@ export default function PatientCommunicationCenter() {
                 {activeThread.messages.map((m) => (
                   <motion.div
                     key={m.id}
-                    layout={!reduceMotion}
-                    initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                    layout
+                    initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
                     className={`max-w-[88%] sm:max-w-[78%] rounded-[var(--radius-md)] px-3 py-2 grid gap-0.5 ${
@@ -294,9 +291,9 @@ export default function PatientCommunicationCenter() {
                   {pickerOpen && (
                     <motion.div
                       key="picker"
-                      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
+                      exit={{ opacity: 0, y: 6 }}
                       transition={{ duration: 0.16 }}
                       className="absolute bottom-full left-5 right-5 mb-2 rounded-md border border-[var(--color-border-strong)] bg-white shadow-[0_18px_60px_-24px_rgba(20,30,60,0.35)] p-2 z-10"
                     >
@@ -377,9 +374,9 @@ export default function PatientCommunicationCenter() {
           {postDemoNudge ? (
             <motion.span
               key="nudge"
-              initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+              initial={{ opacity: 0, y: 2 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }}
+              exit={{ opacity: 0, y: -2 }}
               transition={{ duration: 0.18 }}
               className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
             >
@@ -389,7 +386,7 @@ export default function PatientCommunicationCenter() {
           ) : (
             <motion.span
               key="default"
-              initial={reduceMotion ? false : { opacity: 0 }}
+              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}

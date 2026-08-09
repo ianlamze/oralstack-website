@@ -13,13 +13,13 @@ export default function DicomViewerMock() {
   return (
     <div
       role="img"
-      aria-label="Illustrative oralstack DICOM viewer: a bitewing radiograph for Devi Krishnan with a pan/zoom/rotate/measure toolbar and a measurement line drawn between two contact points."
+      aria-label="Illustrative oralstack DICOM viewer: a bitewing radiograph for Demo patient 102 with a pan/zoom/rotate/measure toolbar and a measurement line drawn between two contact points."
       className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[520px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
     >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
         <span>DICOM viewer · Bitewing</span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Devi Krishnan · 22 Apr 2026
+          Demo patient 102 · 22 Apr 2026
         </span>
       </div>
 

@@ -1,5 +1,5 @@
 // Demo data for the daily huddle dashboard. All names + numbers are
-// illustrative; calibrated to a 3-chair single-clinic day at DFI Synergy.
+// illustrative; calibrated to a 3-chair single-clinic day at Sample Dental Clinic.
 
 export type ScheduleSlot = {
   time: string;
@@ -30,15 +30,15 @@ export const todaySchedule: ScheduleSlot[] = [
 ];
 
 export const recallOpportunities = [
-  { name: "Hafiz Yusof", overdueWeeks: 8, lastVisit: "20 Feb", procedure: "Hygiene" },
-  { name: "Mei Lin Tan", overdueWeeks: 5, lastVisit: "1 Mar", procedure: "Polish & scale" },
-  { name: "Lim Wei Jian", overdueWeeks: 6, lastVisit: "31 Oct", procedure: "Hygiene" },
+  { name: "Demo patient 101", overdueWeeks: 8, lastVisit: "20 Feb", procedure: "Hygiene" },
+  { name: "Demo patient 102", overdueWeeks: 5, lastVisit: "1 Mar", procedure: "Polish & scale" },
+  { name: "Demo patient 103", overdueWeeks: 6, lastVisit: "31 Oct", procedure: "Hygiene" },
 ];
 
 export const arRedFlags = [
-  { name: "K. Lee", invoice: "INV-0398", daysOutstanding: 47, amount: 850 },
-  { name: "Aaron Teo", invoice: "INV-0412", daysOutstanding: 32, amount: 420 },
-  { name: "Devi Krishnan", invoice: "INV-0405", daysOutstanding: 31, amount: 280 },
+  { name: "Demo patient 107", invoice: "INV-0398", daysOutstanding: 47, amount: 850 },
+  { name: "Demo patient 110", invoice: "INV-0412", daysOutstanding: 32, amount: 420 },
+  { name: "Demo patient 109", invoice: "INV-0405", daysOutstanding: 31, amount: 280 },
 ];
 
 export const productionToday = {

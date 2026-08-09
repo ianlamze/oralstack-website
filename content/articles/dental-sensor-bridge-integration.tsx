@@ -8,16 +8,17 @@ export const dentalSensorBridgeIntegration: Article = {
   excerpt:
     "Most dental sensors come with their own desktop software. Sensor-bridge integration is what removes that software from the chair-side workflow, capturing directly into the patient's visit.",
   publishedAt: "2026-04-27",
+  updatedAt: "2026-08-09",
   author: "Oralstack team",
   cluster: "clinical",
   tags: ["sensor", "imaging", "Carestream", "Dexis", "Sopro", "Schick"],
   readingMinutes: 8,
   cta: {
-    eyebrow: "Imaging integrations",
-    title: "Sensor-bridge integration in Oralstack",
-    body: 'Capture directly from Carestream, Dexis, Sopro, Schick into the visit — no separate desktop, no USB transfers, no "where\'s the radiograph" hunts.',
-    buttonLabel: "See the integrations",
-    buttonHref: "/integrations",
+    eyebrow: "Current product boundary",
+    title: "Evaluate the bridge; verify availability",
+    body: "Oralstack supports clinical media uploads and annotations today. Named sensor bridges and DICOM ingest remain gated and are not enabled for clinics.",
+    buttonLabel: "Check feature status",
+    buttonHref: "/status",
   },
   Body: ArticleBody,
 };
@@ -43,6 +44,13 @@ function ArticleBody() {
           DICOM in the chart vs a separate viewer
         </a>{" "}
         — read that first if you haven&apos;t.
+      </p>
+
+      <p>
+        <strong>Current Oralstack boundary:</strong> this article explains how clinics should
+        evaluate device integrations. It does not represent current Oralstack compatibility with
+        Carestream, Dexis, Sopro, Schick, or another sensor. Clinical media uploads and annotations
+        are available; DICOM and device ingest remain gated and are not enabled for clinics.
       </p>
 
       <h2>Why the manufacturer&apos;s desktop software is in the way</h2>
@@ -100,7 +108,10 @@ function ArticleBody() {
         <li>Capture metadata (kV, mAs, exposure) attached automatically</li>
       </ol>
 
-      <p>Total elapsed time, capture to display: under 5 seconds.</p>
+      <p>
+        Treat under five seconds from capture to display as an evaluation target, and require the
+        vendor to demonstrate it with the clinic&apos;s exact hardware and workstation setup.
+      </p>
 
       <h2>The four major sensor families</h2>
 
@@ -140,9 +151,9 @@ function ArticleBody() {
       <h3>Schick</h3>
 
       <p>
-        Schick 33, Schick AE, Schick Elite. Schick (now Patterson Dental) has a vendor SDK
-        that&apos;s well-documented. Sensor-bridge support is reliable but installation requires
-        proper driver matching to the specific sensor model.
+        Schick 33, Schick AE, Schick Elite. Schick (now Patterson Dental) has a vendor SDK available
+        to integration partners. SDK availability alone does not establish compatibility; require
+        the PMS vendor to validate the exact sensor model, driver, and workstation setup.
       </p>
 
       <h2>The fallback: DICOM C-STORE / C-FIND</h2>
@@ -150,8 +161,9 @@ function ArticleBody() {
       <p>
         For sensors not directly supported by sensor-bridge, the DICOM standard fills the gap.
         C-STORE pushes images from sensor software into the PMS; C-FIND retrieves images for
-        viewing. Slower than direct sensor-bridge (3–5 seconds vs sub-second capture-to-display) but
-        interoperable across any DICOM-compliant device.
+        viewing. In an evaluated system, compare its capture latency with a direct bridge and verify
+        the modality, viewer, metadata, and network path end to end; protocol support alone does not
+        guarantee interoperability.
       </p>
 
       <p>
@@ -220,21 +232,19 @@ function ArticleBody() {
       </p>
 
       <p>
-        See the{" "}
+        Oralstack&apos;s{" "}
         <a
-          href="/integrations"
+          href="/workflows#patient-care"
           className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
-          Oralstack integrations page
+          patient-care workflow
         </a>{" "}
-        for current sensor-bridge coverage, or{" "}
-        <a
-          href="/workflows#imaging"
-          className="text-[var(--color-tide-deep)] underline underline-offset-4"
-        >
-          the imaging workflow
+        covers the clinical media available today. Check the{" "}
+        <a href="/status" className="text-[var(--color-tide-deep)] underline underline-offset-4">
+          product status page
         </a>{" "}
-        for the in-record imaging story.
+        before planning a DICOM or named-device integration; those capabilities are not enabled for
+        clinics today.
       </p>
     </>
   );

@@ -2,28 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  BadgeDollarSign,
-  CalendarCheck,
   CalendarClock,
-  Receipt,
   ClipboardList,
-  ScanSearch,
-  MessageCircle,
   BarChart3,
-  Activity,
-  Calculator,
-  Clock,
-  FileCheck,
-  FileSignature,
-  FlaskConical,
-  LayoutGrid,
-  MessageSquare,
-  Package,
-  ReceiptCent,
-  ReceiptText,
-  ShieldAlert,
+  Receipt,
   ShieldCheck,
-  Star,
   Stethoscope,
   Users,
   Menu,
@@ -36,204 +19,72 @@ import { AnimatePresence, motion } from "motion/react";
 import Section from "@/components/primitives/Section";
 import Wordmark from "@/components/ui/Wordmark";
 
-type WorkflowItem = {
-  slug: string;
+type ProductArea = {
+  href: string;
   label: string;
   desc: string;
   Icon: LucideIcon;
 };
 
-type ToolItem = {
-  slug: string;
-  label: string;
-  desc: string;
-  Icon: LucideIcon;
-};
-
-const workflowItems: WorkflowItem[] = [
+const productAreas: ProductArea[] = [
   {
-    slug: "front-desk",
-    label: "Front desk",
-    desc: "Drag-to-reschedule, recall, and inline patient registration.",
+    href: "/workflows#run-the-day",
+    label: "Run the day",
+    desc: "Command, appointments, inbox, requests and daily huddle.",
     Icon: CalendarClock,
   },
   {
-    slug: "billing",
-    label: "Billing & discharge",
-    desc: "Treatment lines auto-populated; bill ready at discharge.",
-    Icon: Receipt,
-  },
-  {
-    slug: "charting",
-    label: "Charting & case notes",
-    desc: "Tooth-led charting; surface-specific case notes.",
-    Icon: ClipboardList,
-  },
-  {
-    slug: "imaging",
-    label: "Clinical imaging",
-    desc: "DICOM viewer in the chart; sensor-bridge capture.",
-    Icon: ScanSearch,
-  },
-  {
-    slug: "online-bookings",
-    label: "Online bookings",
-    desc: "Patients book the slot the schedule actually has open.",
-    Icon: CalendarCheck,
-  },
-  {
-    slug: "recall",
-    label: "Recall & messaging",
-    desc: "Outreach that fires three weeks before due.",
-    Icon: MessageCircle,
-  },
-  {
-    slug: "operations",
-    label: "Operations & analytics",
-    desc: "Chair utilisation, revenue, recall coverage.",
-    Icon: BarChart3,
-  },
-  {
-    slug: "compliance",
-    label: "Compliance & traceability",
-    desc: "Sterilisation cycle to tray to patient — audit chain automatic.",
-    Icon: ShieldCheck,
-  },
-];
-
-const toolItems: ToolItem[] = [
-  {
-    slug: "online-booking",
-    label: "Online booking",
-    desc: "Patients pick the slot — chair availability live.",
-    Icon: CalendarCheck,
-  },
-  {
-    slug: "treatment-plan-builder",
-    label: "Treatment plan builder",
-    desc: "Click teeth, see the bill before treatment.",
+    href: "/workflows#patient-care",
+    label: "Patient care",
+    desc: "Patient folders, charting, treatment plans and perio.",
     Icon: Stethoscope,
   },
   {
-    slug: "plan-presentation",
-    label: "Plan presentation & e-sign",
-    desc: "Patient signs on the iPad — phases live, audited.",
-    Icon: FileSignature,
+    href: "/workflows#checkout-money",
+    label: "Checkout & money",
+    desc: "Reviewed checkout, receipts, billing tasks and receivables.",
+    Icon: Receipt,
   },
   {
-    slug: "eligibility-estimate",
-    label: "Eligibility & estimate",
-    desc: "CHAS, insurance, MediSave — patient portion live.",
-    Icon: ReceiptText,
-  },
-  {
-    slug: "insurance-claims",
-    label: "Insurance claims",
-    desc: "MediSave, CHAS, IPP — auto-packaged and tracked.",
-    Icon: FileCheck,
-  },
-  {
-    slug: "perio-chart",
-    label: "Periodontal chart",
-    desc: "Click any site to record probing depth.",
-    Icon: Activity,
-  },
-  {
-    slug: "medical-alerts",
-    label: "Patient medical alerts",
-    desc: "Allergies, meds, conditions — surfaced where it matters.",
-    Icon: ShieldAlert,
-  },
-  {
-    slug: "lab-orders",
-    label: "Lab order tracking",
-    desc: "Crowns and bridges from sent to seated.",
-    Icon: FlaskConical,
-  },
-  {
-    slug: "sterilization",
-    label: "Sterilisation traceability",
-    desc: "Cycle to tray to patient — audit chain automatic.",
-    Icon: ShieldCheck,
-  },
-  {
-    slug: "patient-communications",
-    label: "Patient communications",
-    desc: "Templated WhatsApp replies, audit-logged on send.",
-    Icon: MessageSquare,
-  },
-  {
-    slug: "waitlist-auto-fill",
-    label: "Waitlist auto-fill",
-    desc: "Patient cancels — see the slot fill itself.",
+    href: "/workflows#patient-access",
+    label: "Patient access",
+    desc: "Intake, portal, find-a-time requests and secure messaging.",
     Icon: Users,
   },
   {
-    slug: "daily-huddle",
-    label: "Daily huddle",
-    desc: "Owner's morning-coffee view at a glance.",
-    Icon: LayoutGrid,
+    href: "/workflows#clinic-operations",
+    label: "Clinic operations",
+    desc: "Inventory, estimated usage, lab, suppliers and staff ops.",
+    Icon: ClipboardList,
   },
   {
-    slug: "inventory",
-    label: "Inventory & consumables",
-    desc: "Procedure deducts stock; reorder before par.",
-    Icon: Package,
-  },
-  {
-    slug: "end-of-day-reconciliation",
-    label: "End-of-day reconciliation",
-    desc: "Variance flagged, matched, synced to Xero.",
-    Icon: ReceiptCent,
-  },
-  {
-    slug: "management-report",
-    label: "Management report",
-    desc: "KPIs over time, AR aging, provider heatmap.",
+    href: "/workflows#insights",
+    label: "Insights",
+    desc: "Clinic KPIs, reports and read-only provider performance.",
     Icon: BarChart3,
   },
   {
-    slug: "provider-productivity",
-    label: "Provider productivity",
-    desc: "Associate production, commission, recall credit.",
-    Icon: BadgeDollarSign,
-  },
-  {
-    slug: "reviews-referrals",
-    label: "Reviews & referrals",
-    desc: "Visit ends → review request fires → referrer credited.",
-    Icon: Star,
-  },
-  {
-    slug: "no-show-calculator",
-    label: "No-show calculator",
-    desc: "Model revenue your clinic loses today.",
-    Icon: Calculator,
-  },
-  {
-    slug: "day-in-the-life",
-    label: "Day in the life",
-    desc: "Walk through a typical clinic day.",
-    Icon: Clock,
+    href: "/workflows#organization-security",
+    label: "Organization & security",
+    desc: "People, roles, settings, sync health and audit history.",
+    Icon: ShieldCheck,
   },
 ];
 
 export default function Nav() {
-  const [openMenu, setOpenMenu] = useState<"workflows" | "tools" | null>(null);
+  const [openMenu, setOpenMenu] = useState<"product" | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [workflowsExpanded, setWorkflowsExpanded] = useState(true);
-  const [toolsExpanded, setToolsExpanded] = useState(false);
+  const [productExpanded, setProductExpanded] = useState(true);
   const closeTimer = useRef<number | null>(null);
-  const workflowsTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const toolsTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const productTriggerRef = useRef<HTMLButtonElement | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
-  const openMenuFor = (menu: "workflows" | "tools") => {
+  const openProductMenu = () => {
     if (closeTimer.current !== null) {
       window.clearTimeout(closeTimer.current);
       closeTimer.current = null;
     }
-    setOpenMenu(menu);
+    setOpenMenu("product");
   };
 
   const scheduleCloseMenu = () => {
@@ -255,12 +106,9 @@ export default function Nav() {
       if (drawerOpen) {
         setDrawerOpen(false);
         hamburgerRef.current?.focus();
-      } else if (openMenu === "workflows") {
+      } else if (openMenu === "product") {
         closeMenu();
-        workflowsTriggerRef.current?.focus();
-      } else if (openMenu === "tools") {
-        closeMenu();
-        toolsTriggerRef.current?.focus();
+        productTriggerRef.current?.focus();
       }
     };
     document.addEventListener("keydown", onKey);
@@ -276,12 +124,11 @@ export default function Nav() {
     };
   }, [drawerOpen]);
 
-  const workflowsOpen = openMenu === "workflows";
-  const toolsOpen = openMenu === "tools";
+  const productOpen = openMenu === "product";
 
   return (
-    <header className="relative">
-      <Section className="pt-6 md:pt-8">
+    <header className="sticky top-0 z-50 border-b border-[var(--color-line)] bg-[var(--color-surface-raised)] shadow-[var(--shadow-1)]">
+      <Section className="py-2.5">
         <div className="flex items-center justify-between gap-4">
           <a href="/" aria-label="Oralstack home" className="inline-flex">
             <Wordmark size="md" />
@@ -289,121 +136,52 @@ export default function Nav() {
 
           <nav className="hidden md:flex items-center gap-1 text-sm">
             <button
-              ref={workflowsTriggerRef}
+              ref={productTriggerRef}
               type="button"
-              aria-expanded={workflowsOpen}
+              aria-expanded={productOpen}
               aria-haspopup="menu"
-              aria-controls="workflows-mega"
-              onClick={() => (workflowsOpen ? closeMenu() : openMenuFor("workflows"))}
-              onMouseEnter={() => openMenuFor("workflows")}
+              aria-controls="product-mega"
+              onClick={openProductMenu}
+              onMouseEnter={openProductMenu}
               onMouseLeave={scheduleCloseMenu}
-              className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              className="inline-flex min-h-[44px] items-center gap-1 rounded-[var(--radius-md)] px-3 py-2 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text)]"
             >
-              Workflows
+              Product
               <ChevronDown
                 className={`h-3.5 w-3.5 transition-transform duration-150 ${
-                  workflowsOpen ? "rotate-180" : ""
+                  productOpen ? "rotate-180" : ""
                 }`}
                 aria-hidden
               />
             </button>
 
             <a
-              href="/journey"
-              className="px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-            >
-              Journey
-            </a>
-
-            <div className="relative">
-              <button
-                ref={toolsTriggerRef}
-                type="button"
-                aria-expanded={toolsOpen}
-                aria-haspopup="menu"
-                aria-controls="tools-dropdown"
-                onClick={() => (toolsOpen ? closeMenu() : openMenuFor("tools"))}
-                onMouseEnter={() => openMenuFor("tools")}
-                onMouseLeave={scheduleCloseMenu}
-                className="inline-flex items-center gap-1 rounded-[var(--radius-sm)] px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-              >
-                Tools
-                <ChevronDown
-                  className={`h-3.5 w-3.5 transition-transform duration-150 ${
-                    toolsOpen ? "rotate-180" : ""
-                  }`}
-                  aria-hidden
-                />
-              </button>
-
-              <AnimatePresence>
-                {toolsOpen && (
-                  <motion.div
-                    id="tools-dropdown"
-                    role="menu"
-                    aria-label="Tools"
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                    onMouseEnter={() => openMenuFor("tools")}
-                    onMouseLeave={scheduleCloseMenu}
-                    className="absolute top-full right-0 z-50 mt-3 w-[min(560px,calc(100vw-3rem))]"
-                  >
-                    <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-2 shadow-[0_24px_48px_-24px_rgba(15,23,42,0.18)]">
-                      <ul className="grid sm:grid-cols-2">
-                        {toolItems.map(({ slug, label, desc, Icon }) => (
-                          <li key={slug}>
-                            <a
-                              href={`/tools/${slug}`}
-                              onClick={closeMenu}
-                              className="group flex gap-3 rounded-[var(--radius-md)] p-2.5 hover:bg-[var(--color-canvas-tinted)] transition-colors"
-                            >
-                              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-canvas)] text-[var(--color-tide-deep)] group-hover:border-[var(--color-tide)] transition-colors">
-                                <Icon className="h-3.5 w-3.5" aria-hidden />
-                              </span>
-                              <span className="grid gap-0.5 min-w-0">
-                                <span className="text-sm font-medium text-[var(--color-text)]">
-                                  {label}
-                                </span>
-                                <span className="text-xs text-[var(--color-text-muted)] leading-snug">
-                                  {desc}
-                                </span>
-                              </span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="mt-1 border-t border-[var(--color-border)] px-2.5 pt-2.5 pb-1">
-                        <a
-                          href="/tools"
-                          onClick={closeMenu}
-                          className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-tide-deep)] hover:gap-2 transition-all"
-                        >
-                          See all tools <ArrowRight className="h-3 w-3" aria-hidden />
-                        </a>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <a
               href="/customers"
-              className="px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] px-3 py-2 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text)]"
             >
               Customers
             </a>
             <a
+              href="/integrations"
+              className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] px-3 py-2 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text)]"
+            >
+              Integrations
+            </a>
+            <a
+              href="/security"
+              className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] px-3 py-2 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text)]"
+            >
+              Security
+            </a>
+            <a
               href="/pricing"
-              className="px-3 py-2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] px-3 py-2 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text)]"
             >
               Pricing
             </a>
             <a
               href="/book-a-demo"
-              className="ml-2 inline-flex items-center min-h-[40px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-2 text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
+              className="ml-2 inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-2 text-[var(--color-canvas)] shadow-[var(--shadow-1)] transition-colors hover:bg-[var(--color-tide-deep)]"
             >
               Book a 30-min walkthrough
             </a>
@@ -416,7 +194,7 @@ export default function Nav() {
             aria-label="Open menu"
             aria-expanded={drawerOpen}
             aria-controls="mobile-drawer"
-            className="md:hidden inline-flex items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)] md:hidden"
           >
             <Menu className="h-6 w-6" aria-hidden />
           </button>
@@ -424,31 +202,31 @@ export default function Nav() {
       </Section>
 
       <AnimatePresence>
-        {workflowsOpen && (
+        {productOpen && (
           <motion.div
-            id="workflows-mega"
+            id="product-mega"
             role="region"
-            aria-label="Workflows"
+            aria-label="Product"
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            onMouseEnter={() => openMenuFor("workflows")}
+            onMouseEnter={openProductMenu}
             onMouseLeave={scheduleCloseMenu}
             className="absolute inset-x-0 top-full z-50 hidden md:block px-6 md:px-10 pt-3"
           >
             <div className="mx-auto w-full max-w-[1100px]">
-              <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)] shadow-[0_24px_48px_-24px_rgba(15,23,42,0.18)]">
+              <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[var(--shadow-elevated)]">
                 <div className="grid md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
                   <div className="p-6 md:p-7">
                     <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                      Workflows
+                      Clinic workspace
                     </p>
                     <ul className="grid gap-1 sm:grid-cols-2">
-                      {workflowItems.map(({ slug, label, desc, Icon }) => (
-                        <li key={slug}>
+                      {productAreas.map(({ href, label, desc, Icon }) => (
+                        <li key={label}>
                           <a
-                            href={`/workflows#${slug}`}
+                            href={href}
                             onClick={closeMenu}
                             className="group flex gap-3 rounded-[var(--radius-md)] p-3 hover:bg-[var(--color-canvas-tinted)] transition-colors"
                           >
@@ -470,39 +248,25 @@ export default function Nav() {
 
                     <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-border)] pt-4 text-xs">
                       <a
-                        href="/for-solo-clinics"
+                        href="/customers"
                         onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
-                        For solo →
+                        Customers →
                       </a>
                       <a
-                        href="/for-multi-clinic"
+                        href="/integrations"
                         onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
-                        For DSOs →
+                        Integrations →
                       </a>
                       <a
-                        href="/compare"
+                        href="/security"
                         onClick={closeMenu}
                         className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
                       >
-                        Compare →
-                      </a>
-                      <a
-                        href="/articles"
-                        onClick={closeMenu}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Articles →
-                      </a>
-                      <a
-                        href="/lead-magnets"
-                        onClick={closeMenu}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        References →
+                        Security →
                       </a>
                       <a
                         href="/faq"
@@ -515,31 +279,41 @@ export default function Nav() {
                   </div>
 
                   <a
-                    href="/customers/dfi-synergy"
+                    href="/integrations"
                     onClick={closeMenu}
-                    className="group relative grid content-between gap-6 border-t border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 md:p-7 md:border-l md:border-t-0 hover:bg-[oklch(0.95_0.005_240)] transition-colors"
+                    className="group relative grid content-between gap-6 border-t border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 transition-colors hover:bg-[var(--color-surface-hover)] md:border-l md:border-t-0 md:p-7"
                   >
                     <div>
                       <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                        Featured · customer story
+                        Connection model
                       </p>
                       <h3 className="mt-3 text-base font-semibold leading-snug text-[var(--color-text)]">
-                        DFI Synergy moved their front desk in three days.
+                        One clinic workspace. Plato stays the system of record.
                       </h3>
                       <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
-                        Three chairs, four providers, no fallback diary. Same-day billing rate from
-                        60% → 85%.
+                        Oralstack mirrors clinic data, surfaces the next action, and returns
+                        approved work through reviewed writebacks.
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2">
-                      <Stat value="3 wks" label="To live" />
-                      <Stat value="0" label="Lost appts" />
-                      <Stat value="85%" label="Same-day" />
+                    <div className="grid gap-2 text-xs text-[var(--color-text-muted)]">
+                      {[
+                        "Clinic data mirrored",
+                        "Writeback state stays visible",
+                        "Sync health and audit history visible",
+                      ].map((point) => (
+                        <span key={point} className="flex items-center gap-2">
+                          <ShieldCheck
+                            className="h-3.5 w-3.5 text-[var(--color-tide-deep)]"
+                            aria-hidden
+                          />
+                          {point}
+                        </span>
+                      ))}
                     </div>
 
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-tide-deep)] transition-all group-hover:gap-2">
-                      Read case study <ArrowRight className="h-3 w-3" aria-hidden />
+                      See how Oralstack connects <ArrowRight className="h-3 w-3" aria-hidden />
                     </span>
                   </a>
                 </div>
@@ -561,7 +335,7 @@ export default function Nav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className="md:hidden fixed inset-0 z-40 bg-[oklch(0.20_0.05_250/0.4)]"
+              className="fixed inset-0 z-40 bg-[color-mix(in_srgb,var(--color-ink-deep)_44%,transparent)] md:hidden"
             />
             <motion.div
               key="drawer"
@@ -573,7 +347,7 @@ export default function Nav() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="md:hidden fixed inset-y-0 right-0 z-50 flex w-[88vw] max-w-[380px] flex-col bg-[var(--color-canvas)] shadow-[-12px_0_36px_-12px_rgba(15,23,42,0.18)]"
+              className="fixed inset-y-0 right-0 z-50 flex w-[88vw] max-w-[380px] flex-col bg-[var(--color-surface-raised)] shadow-[var(--shadow-elevated)] md:hidden"
             >
               <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 pb-3 pt-5">
                 <Wordmark size="sm" />
@@ -581,7 +355,7 @@ export default function Nav() {
                   type="button"
                   onClick={() => setDrawerOpen(false)}
                   aria-label="Close menu"
-                  className="inline-flex items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                  className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
                 >
                   <X className="h-5 w-5" aria-hidden />
                 </button>
@@ -590,33 +364,33 @@ export default function Nav() {
               <nav className="flex-1 overflow-y-auto px-3 py-4">
                 <button
                   type="button"
-                  onClick={() => setWorkflowsExpanded((v) => !v)}
-                  aria-expanded={workflowsExpanded}
-                  aria-controls="drawer-workflows"
+                  onClick={() => setProductExpanded((v) => !v)}
+                  aria-expanded={productExpanded}
+                  aria-controls="drawer-product"
                   className="flex w-full items-center justify-between rounded-[var(--radius-md)] px-3 py-3 text-base font-medium hover:bg-[var(--color-canvas-tinted)] transition-colors"
                 >
-                  Workflows
+                  Product
                   <ChevronDown
                     className={`h-4 w-4 text-[var(--color-text-soft)] transition-transform duration-150 ${
-                      workflowsExpanded ? "rotate-180" : ""
+                      productExpanded ? "rotate-180" : ""
                     }`}
                     aria-hidden
                   />
                 </button>
                 <AnimatePresence initial={false}>
-                  {workflowsExpanded && (
+                  {productExpanded && (
                     <motion.ul
-                      id="drawer-workflows"
+                      id="drawer-product"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                       className="mb-2 grid gap-1 overflow-hidden"
                     >
-                      {workflowItems.map(({ slug, label, desc, Icon }) => (
-                        <li key={slug}>
+                      {productAreas.map(({ href, label, desc, Icon }) => (
+                        <li key={label}>
                           <a
-                            href={`/workflows#${slug}`}
+                            href={href}
                             onClick={() => setDrawerOpen(false)}
                             className="flex gap-3 rounded-[var(--radius-md)] px-3 py-2.5 hover:bg-[var(--color-canvas-tinted)] transition-colors"
                           >
@@ -637,101 +411,23 @@ export default function Nav() {
                     </motion.ul>
                   )}
                 </AnimatePresence>
-
-                <button
-                  type="button"
-                  onClick={() => setToolsExpanded((v) => !v)}
-                  aria-expanded={toolsExpanded}
-                  aria-controls="drawer-tools"
-                  className="flex w-full items-center justify-between rounded-[var(--radius-md)] px-3 py-3 text-base font-medium hover:bg-[var(--color-canvas-tinted)] transition-colors"
-                >
-                  Tools
-                  <ChevronDown
-                    className={`h-4 w-4 text-[var(--color-text-soft)] transition-transform duration-150 ${
-                      toolsExpanded ? "rotate-180" : ""
-                    }`}
-                    aria-hidden
-                  />
-                </button>
-                <AnimatePresence initial={false}>
-                  {toolsExpanded && (
-                    <motion.ul
-                      id="drawer-tools"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className="mb-2 grid gap-1 overflow-hidden"
-                    >
-                      {toolItems.map(({ slug, label, desc, Icon }) => (
-                        <li key={slug}>
-                          <a
-                            href={`/tools/${slug}`}
-                            onClick={() => setDrawerOpen(false)}
-                            className="flex gap-3 rounded-[var(--radius-md)] px-3 py-2.5 hover:bg-[var(--color-canvas-tinted)] transition-colors"
-                          >
-                            <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-tide-deep)]">
-                              <Icon className="h-3.5 w-3.5" aria-hidden />
-                            </span>
-                            <span className="grid gap-0.5">
-                              <span className="text-sm font-medium text-[var(--color-text)]">
-                                {label}
-                              </span>
-                              <span className="text-xs leading-snug text-[var(--color-text-muted)]">
-                                {desc}
-                              </span>
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                      <li>
-                        <a
-                          href="/tools"
-                          onClick={() => setDrawerOpen(false)}
-                          className="flex items-center gap-1 rounded-[var(--radius-md)] px-3 py-2.5 text-xs font-medium text-[var(--color-tide-deep)]"
-                        >
-                          See all tools <ArrowRight className="h-3 w-3" aria-hidden />
-                        </a>
-                      </li>
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-
-                <DrawerLink href="/for-solo-clinics" onNavigate={() => setDrawerOpen(false)}>
-                  For solo & small clinics
-                </DrawerLink>
-                <DrawerLink href="/for-multi-clinic" onNavigate={() => setDrawerOpen(false)}>
-                  For multi-clinic & DSO
-                </DrawerLink>
-                <DrawerLink href="/journey" onNavigate={() => setDrawerOpen(false)}>
-                  Patient journey
-                </DrawerLink>
                 <DrawerLink href="/customers" onNavigate={() => setDrawerOpen(false)}>
                   Customers
-                </DrawerLink>
-                <DrawerLink href="/pricing" onNavigate={() => setDrawerOpen(false)}>
-                  Pricing
-                </DrawerLink>
-                <DrawerLink href="/compare" onNavigate={() => setDrawerOpen(false)}>
-                  Compare
-                </DrawerLink>
-                <DrawerLink href="/articles" onNavigate={() => setDrawerOpen(false)}>
-                  Articles
-                </DrawerLink>
-                <DrawerLink href="/lead-magnets" onNavigate={() => setDrawerOpen(false)}>
-                  References
-                </DrawerLink>
-                <DrawerLink href="/faq" onNavigate={() => setDrawerOpen(false)}>
-                  FAQ
                 </DrawerLink>
                 <DrawerLink href="/integrations" onNavigate={() => setDrawerOpen(false)}>
                   Integrations
                 </DrawerLink>
-                <DrawerLink href="/about" onNavigate={() => setDrawerOpen(false)}>
-                  About
-                </DrawerLink>
                 <DrawerLink href="/security" onNavigate={() => setDrawerOpen(false)}>
                   Security
+                </DrawerLink>
+                <DrawerLink href="/pricing" onNavigate={() => setDrawerOpen(false)}>
+                  Pricing
+                </DrawerLink>
+                <DrawerLink href="/faq" onNavigate={() => setDrawerOpen(false)}>
+                  FAQ
+                </DrawerLink>
+                <DrawerLink href="/about" onNavigate={() => setDrawerOpen(false)}>
+                  About
                 </DrawerLink>
                 <DrawerLink href="/changelog" onNavigate={() => setDrawerOpen(false)}>
                   Changelog
@@ -752,17 +448,6 @@ export default function Nav() {
         )}
       </AnimatePresence>
     </header>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-2 text-center">
-      <div className="text-sm font-semibold text-[var(--color-text)]">{value}</div>
-      <div className="mt-0.5 text-[10px] uppercase tracking-[0.1em] text-[var(--color-text-soft)]">
-        {label}
-      </div>
-    </div>
   );
 }
 

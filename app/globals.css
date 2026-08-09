@@ -62,22 +62,32 @@
 }
 
 @theme {
-  /* canvas — warm near-white, kept for warmth on a cool palette */
-  --color-canvas: oklch(0.99 0.005 90);
-  --color-canvas-tinted: oklch(0.97 0.004 240);
+  /* Oralstack app palette — mirrored from oralstack-v2/admin-app. */
+  --color-canvas: #f5f9fb;
+  --color-canvas-tinted: #eef6f9;
+  --color-surface-raised: #ffffff;
+  --color-surface-inset: #f5f9fb;
+  --color-surface-hover: #eef6f9;
+  --color-surface-overlay: rgb(255 255 255 / 0.88);
 
-  /* ink — navy, the new primary text + button colour */
-  --color-ink: oklch(0.30 0.07 250);
-  --color-ink-deep: oklch(0.22 0.08 250);
-  --color-ink-muted: oklch(0.46 0.03 240);
-  --color-ink-soft: oklch(0.50 0.025 240);
+  --color-ink: #123056;
+  --color-ink-deep: #0a2444;
+  --color-ink-muted: #5c6f7d;
+  --color-ink-soft: #6f818d;
 
-  --color-line: oklch(0.91 0.005 240);
-  --color-line-strong: oklch(0.83 0.01 240);
+  --color-line: rgb(18 48 86 / 0.14);
+  --color-line-strong: rgb(18 48 86 / 0.24);
 
-  /* tide — teal, the new brand accent */
-  --color-tide: oklch(0.60 0.10 218);
-  --color-tide-deep: oklch(0.48 0.10 218);
+  --color-tide: #1190ab;
+  --color-tide-deep: #0f7897;
+
+  --color-sidebar: #0a2444;
+  --color-sidebar-foreground: #f5f9fb;
+  --color-sidebar-border: rgb(255 255 255 / 0.1);
+  --color-success: #168064;
+  --color-success-bg: #e3f5ef;
+  --color-warning: #b8791f;
+  --color-warning-bg: #f7efe1;
 
   /* warm semantic colours, retained for product visualisations */
   /* sunset = caries, overdue, warning, pilot */
@@ -98,17 +108,16 @@
   --color-accent: var(--color-tide);
   --color-accent-deep: var(--color-tide-deep);
 
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial,
-    sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument-serif), Georgia, serif;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     monospace;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
 
   /* Display type scale — for one or two breakthrough moments per page.
      Use sparingly; default headings stay at text-{2,3,4,5,6}xl. */
@@ -117,10 +126,11 @@
 
   /* Elevation system — used on cards, drawers, and hero objects.
      Calibrated to feel like soft daylight, not heavy shadow. */
-  --shadow-1: 0 1px 2px 0 oklch(0.20 0.05 250 / 0.04), 0 1px 3px 0 oklch(0.20 0.05 250 / 0.06);
-  --shadow-2: 0 4px 8px -2px oklch(0.20 0.05 250 / 0.06), 0 2px 4px -2px oklch(0.20 0.05 250 / 0.04);
-  --shadow-3: 0 12px 24px -6px oklch(0.20 0.05 250 / 0.08), 0 6px 12px -4px oklch(0.20 0.05 250 / 0.06);
-  --shadow-elevated: 0 24px 48px -16px oklch(0.20 0.05 250 / 0.18);
+  --shadow-1: 0 1px 3px rgb(13 53 93 / 0.08);
+  --shadow-2: 0 4px 16px rgb(13 53 93 / 0.1);
+  --shadow-3: 0 16px 36px -18px rgb(13 53 93 / 0.2);
+  --shadow-elevated: 0 28px 70px -28px rgb(13 53 93 / 0.32);
+  --shadow-hero: 0 24px 64px -24px rgb(13 53 93 / 0.28);
 
   /* Warmth — activated sunset-deep for human/clinical moments. Reserved for
      marketing visuals (BrandMotif, hero accents). */
@@ -178,8 +188,26 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at top left, rgb(17 144 171 / 0.1), transparent 30%),
+    radial-gradient(circle at 85% 12%, rgb(18 48 86 / 0.08), transparent 24%),
+    linear-gradient(180deg, rgb(255 255 255 / 0.6), rgb(245 249 251 / 0.95));
+  background-attachment: fixed;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  color: var(--color-ink-deep);
+  background: color-mix(in srgb, var(--color-tide) 24%, white);
 }
 
 :where(a, button, [role="button"], input, select, textarea):focus-visible {

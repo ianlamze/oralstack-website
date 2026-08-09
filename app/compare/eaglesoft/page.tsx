@@ -4,7 +4,8 @@ import { eaglesoft } from "@/content/comparisons/eaglesoft";
 
 export const metadata: Metadata = {
   title: eaglesoft.metaTitle,
-  description: eaglesoft.metaDescription,
+  description:
+    "Archived comparison. Review Oralstack's current Plato-connected product scope and rollout boundaries before procurement.",
   alternates: { canonical: `/compare/${eaglesoft.slug}` },
 };
 

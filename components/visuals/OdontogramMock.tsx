@@ -35,7 +35,7 @@ export default function OdontogramMock() {
         showSelectedDetail
         toothSize={28}
         caption="Patient chart"
-        patientLabel="Lim Wei Jian · #1042"
+        patientLabel="Demo patient 201 · DEMO-1042"
       />
     </div>
   );

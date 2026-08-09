@@ -6,7 +6,7 @@ const slots: Slot[] = [
   { day: "Thu", date: "30 Apr", start: "09:00", end: "10:00", chair: "Chair 3" },
 ];
 
-const filters = ["Endo", "60 min", "Dr Pereira"] as const;
+const filters = ["Endo", "60 min", "Provider C"] as const;
 
 export default function OnlineBookingMock() {
   return (
@@ -16,7 +16,7 @@ export default function OnlineBookingMock() {
       className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[420px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
     >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
-        <span>Online booking · DFI Synergy</span>
+        <span>Online booking · Sample Dental Clinic</span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
           New patient
         </span>

@@ -41,7 +41,7 @@ export default function BeforeArrivalMock() {
 
       <div className="mt-5 rounded-[var(--radius-md)] border border-dashed border-[var(--color-border-strong)] bg-white p-3">
         <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-          Paper chart · Mei Lin Tan · #1042
+          Paper chart · Demo patient 104 · DEMO-1042
         </p>
         <ul className="mt-2 grid gap-1.5">
           {stickyNotes.map((s) => (
@@ -86,7 +86,7 @@ export default function BeforeArrivalMock() {
               Morning huddle · whiteboard
             </span>
             <span className="text-[11px] text-[var(--color-text-muted)] italic">
-              Half-erased from yesterday · Dr Lim was off · today&apos;s chairs not assigned
+              Half-erased from yesterday · Provider B was off · today&apos;s chairs not assigned
             </span>
           </div>
         </div>

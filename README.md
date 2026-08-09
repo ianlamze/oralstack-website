@@ -1,6 +1,6 @@
 # oralstack — Marketing Website
 
-Local-first marketing site for **oralstack** (the dental clinic OS, formerly Dentologic). This is a standalone Next.js project that will eventually be ported into the Dentologic monorepo at `apps/website/`.
+Local-first marketing site for **oralstack**, the Plato-connected clinic operations workspace. This is a standalone Next.js project that will eventually be ported into the Dentologic monorepo at `apps/website/`.
 
 ## Stack
 

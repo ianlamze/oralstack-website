@@ -39,7 +39,7 @@ export default function BeforeChairMock() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Devi Krishnan · #1054
+          Demo patient 102 · DEMO-1054
         </span>
       </div>
 

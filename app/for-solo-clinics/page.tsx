@@ -8,7 +8,7 @@ import AnimateInView from "@/components/motion/AnimateInView";
 export const metadata: Metadata = {
   title: "For solo & small dental clinics",
   description:
-    "Oralstack for solo practitioners and small dental clinics — drag-driven schedule, discharge-flow billing, recall that fires on its own, on a flat $200 per clinic per month.",
+    "Oralstack for solo practitioners and small dental clinics — a Plato-connected workspace for the clinic day, patient care, reviewed checkout, and operations.",
   alternates: { canonical: "/for-solo-clinics" },
 };
 
@@ -17,15 +17,15 @@ export default function ForSoloClinicsPage() {
     <main>
       <PageHeader
         eyebrow="For solo & small clinics"
-        title="The clinic OS that runs in a browser tab."
+        title="A calmer operating layer for a small clinic."
         variant="display"
       />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          For one to three chairs, one to four providers, and a front desk that owns the schedule,
-          the calls, and the bills. Oralstack replaces the paper diary, the WhatsApp confirmations,
-          and the end-of-day billing spreadsheet — without a server in the back room.
+          For one to three chairs, one to four providers, and a team that moves between the
+          schedule, reception, chairside care, and checkout. Oralstack brings those Plato-connected
+          workflows into one browser-based staff workspace.
         </p>
       </Section>
 
@@ -49,18 +49,18 @@ export default function ForSoloClinicsPage() {
         <div className="grid gap-12 md:gap-14 max-w-[760px]">
           <Reason
             eyebrow="What changes day-one"
-            title="Three workflows the front desk feels immediately."
-            body="A drag-driven schedule that responds in three seconds. Treatment lines that pull from the chart at discharge so the bill is ready before the patient stands up. Recall candidates that surface three weeks before due, sorted by recall age, with WhatsApp templates ready to send. None of this requires a separate window, login, or desktop app."
+            title="The clinic day becomes one visible flow."
+            body="My Day, Appointments, Inbox, Requests, Daily huddle, Reception, Queue, and Checkout share the same shell. Staff can see what needs review, who is ready for the chair, and who is waiting at checkout without treating every step as a separate tool."
           />
           <Reason
             eyebrow="What changes month-one"
-            title="The metrics owners actually look at start moving."
-            body="Same-day billing rate typically rises from ~60% to ~85% inside the first month. No-show rate trends down because recall fires on time and confirmations are templated. The owner's weekly digest lands in the inbox without anyone running an end-of-month report."
+            title="Patient, money, and operations context stay together."
+            body="The patient folder links clinical work with visits, billing, subsidy, membership, and audit context. Reviewed checkout, receivables, inventory, finance, and operational reports give the owner a consistent place to follow the work."
           />
           <Reason
             eyebrow="What stays familiar"
-            title="FDI numbering, surface notation, the way you already chart."
-            body="Charting stays close to muscle memory — FDI tooth numbering, surface notes (M/D/B/L/O), procedure codes. We don't change the clinical model, just the speed at which you move through it. Front-desk staff are productive on Oralstack inside a week."
+            title="Plato remains the connected boundary."
+            body="Oralstack extends the existing clinic workflow through reviewed connections and writebacks. It does not ask a current Plato clinic to assume that native patient identity, scheduling, invoicing, or payer rails have already been replaced."
           />
         </div>
       </Section>
@@ -100,13 +100,14 @@ export default function ForSoloClinicsPage() {
           </p>
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Migration:</span> front desk
-              live in three days, full migration in three weeks, no fallback diary kept in parallel.{" "}
+              <span className="font-medium text-[var(--color-text)]">Onboarding:</span> the Plato
+              connection, clinic scope, roles, and rollout plan are confirmed for each pilot. This
+              page does not promise a full PMS or paper-record migration.{" "}
               <a
-                href="/articles/plato-to-cloud-migration"
+                href="/workflows"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
-                The playbook →
+                Current product scope →
               </a>
             </Bullet>
             <Bullet>
@@ -120,13 +121,14 @@ export default function ForSoloClinicsPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Imaging:</span> DICOM viewer in
-              chart, sensor-bridge across Carestream, Dexis, Sopro, Schick.{" "}
+              <span className="font-medium text-[var(--color-text)]">Clinical media:</span> staff
+              can upload and annotate photos, radiographs, scans, and documents. DICOM/device ingest
+              is a controlled rollout, not generally enabled.{" "}
               <a
-                href="/workflows#imaging"
+                href="/workflows#patient-care"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
-                Imaging workflow →
+                Patient-care workflow →
               </a>
             </Bullet>
             <Bullet>

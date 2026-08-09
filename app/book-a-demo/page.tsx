@@ -6,7 +6,7 @@ import DemoRequestForm from "@/components/forms/DemoRequestForm";
 export const metadata: Metadata = {
   title: "Book a demo",
   description:
-    "Book a 30-minute Oralstack demo for your dental clinic — front desk and clinical workflows, on a sample dataset that mirrors a typical Singapore practice.",
+    "Book a 30-minute oralstack demo covering the current Plato-connected workflows for a dental clinic.",
   alternates: { canonical: "/book-a-demo" },
 };
 
@@ -20,9 +20,10 @@ export default function BookDemoPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          We&apos;ll walk the front desk and a clinician through every workflow on a sample dataset
-          that mirrors a typical Singapore clinic. Scheduling, billing, charting, imaging, recall,
-          owner analytics — all of it.
+          We&apos;ll follow the front desk, clinician, and clinic manager through the current app on
+          a representative Singapore clinic dataset. The walkthrough covers Plato-connected
+          reception, patient care, checkout, patient access, clinic operations, and insights, with
+          setup-dependent paths called out clearly.
         </p>
       </Section>
 
@@ -85,13 +86,14 @@ export default function BookDemoPage() {
               </p>
               <ul className="grid gap-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
                 <li>
-                  <span className="text-[var(--color-text)] font-medium">Migration:</span> three
-                  weeks from kickoff to live.{" "}
+                  <span className="text-[var(--color-text)] font-medium">Plato boundary:</span> we
+                  review connector readiness, clinic setup, and any data-handover scope before
+                  proposing a timeline.{" "}
                   <a
-                    href="/articles/plato-to-cloud-migration"
+                    href="/workflows"
                     className="text-[var(--color-tide-deep)] underline underline-offset-4"
                   >
-                    The playbook →
+                    Current workflows →
                   </a>
                 </li>
                 <li>

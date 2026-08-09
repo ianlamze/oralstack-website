@@ -20,14 +20,14 @@ const TIMELINE_OPTIONS = [
 
 export default function MigrationAssessmentForm() {
   return (
-    <FormShell intent="migration" submitLabel="Request migration assessment">
+    <FormShell intent="migration" submitLabel="Request rollout assessment">
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Your name" name="name" required autoComplete="name" />
         <Field label="Email" name="email" type="email" required autoComplete="email" />
         <Field label="Clinic name" name="clinicName" required autoComplete="organization" />
-        <Select label="Current PMS" name="currentPms" required options={PMS_OPTIONS} />
+        <Select label="Current clinic system" name="currentPms" required options={PMS_OPTIONS} />
         <Field label="# chairs" name="numChairs" type="number" placeholder="e.g. 4" />
-        <Select label="Migration timeline" name="timeline" options={TIMELINE_OPTIONS} />
+        <Select label="Rollout timeline" name="timeline" options={TIMELINE_OPTIONS} />
       </div>
       <TextArea
         label="Anything specific we should know? (optional)"

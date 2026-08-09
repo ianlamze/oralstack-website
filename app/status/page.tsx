@@ -6,185 +6,192 @@ import Section from "@/components/primitives/Section";
 export const metadata: Metadata = {
   title: "Status",
   description:
-    "Current platform status, target uptime, maintenance window policy, and incident response posture for Oralstack — region-hosted in Singapore, on Cloudflare Pages and Google Cloud.",
+    "A dated Oralstack capability snapshot that separates available platform surfaces, configured pilots, and capabilities that are not enabled.",
   alternates: { canonical: "/status" },
 };
 
-type ServiceStatus = "operational" | "degraded" | "outage" | "maintenance";
+type CapabilityStatus = "available" | "configured-pilot" | "not-enabled";
 
-type Service = {
+type Capability = {
   name: string;
   detail: string;
-  status: ServiceStatus;
+  status: CapabilityStatus;
 };
 
-const services: Service[] = [
+const capabilities: Capability[] = [
   {
-    name: "Marketing site",
-    detail: "oralstack.com · Cloudflare Pages",
-    status: "operational",
+    name: "Core application API and tenant database",
+    detail:
+      "Tenant RLS, a non-owner database role, and request-scoped clinic binding are evidenced.",
+    status: "available",
   },
   {
-    name: "Application API",
-    detail: "Singapore (asia-southeast1) · Google Cloud",
-    status: "operational",
+    name: "Organization console and multi-clinic access",
+    detail: "Organization RBAC, membership administration, and exact clinic access are evidenced.",
+    status: "available",
   },
   {
-    name: "Database & audit log",
-    detail: "Postgres + tenant RLS · Singapore",
-    status: "operational",
+    name: "Clinic insights and group rollups",
+    detail: "Data-backed dashboards are available; inferred metrics are identified in the product.",
+    status: "available",
   },
   {
-    name: "Email delivery",
-    detail: "Resend · transactional + recall",
-    status: "operational",
+    name: "Meta WhatsApp shared inbox",
+    detail:
+      "Requires clinic-owned Meta credentials, configuration, and a readiness review; automation is off.",
+    status: "configured-pilot",
   },
   {
-    name: "WhatsApp Business API",
-    detail: "Singapore-routed · templated messages",
-    status: "operational",
+    name: "External AI provider workflows",
+    detail:
+      "Provider-backed transcription, note drafts, and perio assistance are not enabled in the latest snapshot.",
+    status: "not-enabled",
   },
   {
-    name: "Sensor bridge",
-    detail: "Carestream · Dexis · Sopro · Schick",
-    status: "operational",
+    name: "Generic DICOMweb ingest and viewer",
+    detail:
+      "Built behind dark-launch controls; base, ingest, and calibrated-measurement flags are off.",
+    status: "not-enabled",
+  },
+  {
+    name: "SmartCMS, CHAS, and MediSave electronic submission",
+    detail:
+      "Local claim workflow exists, but the outbound government submission gateway is not connected.",
+    status: "not-enabled",
+  },
+  {
+    name: "Direct Xero posting",
+    detail:
+      "No direct OAuth or posting connection; reviewed finance CSV handoff is the supported path.",
+    status: "not-enabled",
+  },
+  {
+    name: "Google or Microsoft SSO and SCIM",
+    detail: "External staff identity federation and SCIM provisioning are not enabled.",
+    status: "not-enabled",
   },
 ];
 
 export default function StatusPage() {
-  const allOperational = services.every((s) => s.status === "operational");
-  const updatedAt = "28 Apr 2026 · checked manually";
-
   return (
     <main>
-      <PageHeader eyebrow="Status" title="Platform status." />
+      <PageHeader eyebrow="Status" title="Published capability snapshot." />
 
       <Section className="pb-10">
-        <div
-          className={`rounded-[var(--radius-xl)] border p-6 md:p-8 grid gap-3 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center ${
-            allOperational
-              ? "border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)] bg-[color-mix(in_oklch,var(--color-tide-deep),white_92%)]"
-              : "border-[oklch(0.62_0.18_25/0.4)] bg-[oklch(0.62_0.18_25/0.06)]"
-          }`}
-        >
+        <div className="grid gap-3 rounded-[var(--radius-xl)] border border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)] bg-[color-mix(in_oklch,var(--color-tide-deep),white_92%)] p-6 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:p-8">
           <span
-            className={`inline-flex items-center justify-center h-11 w-11 rounded-[var(--radius-md)] ${
-              allOperational
-                ? "bg-white text-[var(--color-tide-deep)]"
-                : "bg-white text-[oklch(0.45_0.18_25)]"
-            }`}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] bg-white text-[var(--color-tide-deep)]"
             aria-hidden
           >
             <CheckCircle2 className="size-5" />
           </span>
           <div>
-            <p className="text-xl md:text-2xl font-semibold tracking-tight text-[var(--color-text)]">
-              {allOperational ? "All systems operational" : "Degraded service"}
+            <p className="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">
+              Evidence reviewed, not live-monitored
             </p>
-            <p className="mt-1 text-sm text-[var(--color-text-muted)]">Last checked {updatedAt}.</p>
+            <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+              Source reviewed through 6 August 2026 · production-flag snapshot recorded 20 July
+              2026.
+            </p>
           </div>
-          <p className="md:justify-self-end text-xs text-[var(--color-text-muted)] tracking-[0.04em]">
-            Reports update on incident · email{" "}
+          <p className="text-xs tracking-[0.04em] text-[var(--color-text-muted)] md:justify-self-end md:max-w-[32ch] md:text-right">
+            This page has no automated uptime feed. Email{" "}
             <a
               href="mailto:status@oralstack.com"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
               status@oralstack.com
             </a>{" "}
-            for live confirmation.
+            for current deployment confirmation.
           </p>
         </div>
       </Section>
 
       <Section className="pb-12">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)] mb-4">
-          Services
+        <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+          Capability evidence
         </p>
-        <ul className="grid gap-2 max-w-[820px]">
-          {services.map((s) => (
+        <ul className="grid max-w-[920px] gap-2">
+          {capabilities.map((capability) => (
             <li
-              key={s.name}
-              className="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-4 items-center rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-4 py-3"
+              key={capability.name}
+              className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-4 py-3"
             >
-              <StatusDot status={s.status} />
-              <div className="grid gap-0.5 min-w-0">
-                <p className="text-sm font-semibold text-[var(--color-text)]">{s.name}</p>
-                <p className="text-xs text-[var(--color-text-muted)] truncate">{s.detail}</p>
+              <StatusDot status={capability.status} />
+              <div className="grid min-w-0 gap-0.5">
+                <p className="text-sm font-semibold text-[var(--color-text)]">{capability.name}</p>
+                <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
+                  {capability.detail}
+                </p>
               </div>
-              <StatusPill status={s.status} />
+              <StatusPill status={capability.status} />
             </li>
           ))}
         </ul>
       </Section>
 
       <Section className="pb-16">
-        <div className="grid gap-8 md:grid-cols-2 max-w-[820px]">
+        <div className="grid max-w-[920px] gap-8 md:grid-cols-2">
           <Block
-            heading="Target uptime"
-            body="Our target is 99.9% monthly uptime across the application API and database, measured from successful health-check responses every 60 seconds. Pre-production today; the first paid clinic goes live on the v13 cohort, and from that date this page logs every incident."
+            heading="Available"
+            body="The surface is implemented and its required base controls are evidenced in the dated repository and production-state snapshot. This label does not assert current uptime for a particular deployment."
           />
           <Block
-            heading="Scheduled maintenance"
-            body="Maintenance windows are announced at least 48 hours in advance via email to the named clinic contact. Routine deploys (multiple per day) ship continuously and never require downtime — the static site rolls forward atomically; the API is rolled with zero-downtime deploys."
+            heading="Configured pilot"
+            body="The code path exists, but a clinic still needs external credentials, deployment configuration, and a readiness review. It is not represented as generally enabled."
           />
           <Block
-            heading="Backup & recovery"
-            body="Daily encrypted backups with point-in-time recovery. Restore RPO target: 15 minutes. RTO target: 1 hour. We run integrity-verified restore drills on a fixed cadence — see the backup section on the security page."
+            heading="Not enabled"
+            body="The capability is unavailable in the latest recorded production configuration. Source code, tests, or a local workflow may exist without a live external connection."
           />
           <Block
-            heading="Incident response"
-            body="The on-call engineer is paged on health-check failure, error-rate spikes, or a sustained latency regression. Acknowledgment within 15 minutes for severity-1 incidents during operating hours; within 60 minutes outside them. Customer-affecting incidents are reported here within an hour and post-mortems published within seven days."
+            heading="Source of truth"
+            body="Repository tests and the checked-in production-state record support this page. Because the flag snapshot is dated, current deployment state must be verified directly before a rollout decision."
           />
         </div>
       </Section>
 
       <Section className="pb-12">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)] mb-4">
-          Recent history
+        <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+          Incident history
         </p>
-        <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-canvas-tinted)] p-6 md:p-8 max-w-[820px] grid gap-2">
-          <p className="text-sm text-[var(--color-text)] inline-flex items-center gap-2">
+        <div className="grid max-w-[920px] gap-2 rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-canvas-tinted)] p-6 md:p-8">
+          <p className="inline-flex items-center gap-2 text-sm text-[var(--color-text)]">
             <Clock className="size-4 text-[var(--color-text-soft)]" aria-hidden />
-            No customer-affecting incidents to report.
+            No live incident history is asserted from this page.
           </p>
-          <p className="text-xs text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
-            Pre-revenue today; this log starts from the first paid clinic going live on the v13
-            cohort. Each incident, once logged, gets a timeline (detected → mitigated → resolved)
-            and a post-mortem link.
+          <p className="max-w-[68ch] text-xs leading-relaxed text-[var(--color-text-muted)]">
+            Without an automated telemetry and incident feed, a static marketing page cannot prove
+            current availability or the absence of an incident. Customer-specific incident records
+            and notices are handled through the agreed support channel.
           </p>
         </div>
       </Section>
 
       <Section className="pb-24 md:pb-32">
-        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white px-8 py-10 md:px-12 md:py-12 grid gap-4 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center max-w-[920px]">
+        <div className="grid max-w-[920px] gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white px-8 py-10 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:px-12 md:py-12">
           <span
             aria-hidden
-            className="inline-flex items-center justify-center h-11 w-11 rounded-[var(--radius-md)] bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]"
           >
             <RotateCcw className="size-5" />
           </span>
           <div>
-            <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
-              Subscribing to status updates
+            <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
+              Need a current deployment check?
             </h2>
-            <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-              Customer admins are notified by email and (optionally) WhatsApp Business when an
-              incident is opened on a service their clinic depends on. Email{" "}
-              <a
-                href="mailto:status@oralstack.com"
-                className="text-[var(--color-tide-deep)] underline underline-offset-4"
-              >
-                status@oralstack.com
-              </a>{" "}
-              to enrol another address or to ask for the post-mortem template.
+            <p className="mt-2 max-w-[58ch] text-sm leading-relaxed text-[var(--color-text-muted)]">
+              Ask for live confirmation before relying on this dated snapshot for procurement,
+              rollout, or incident decisions. We will identify which evidence is current and which
+              controls still require configuration.
             </p>
           </div>
           <div className="md:justify-self-end">
             <a
-              href="/security"
-              className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-ink)] transition-colors"
+              href="mailto:status@oralstack.com?subject=Current%20deployment%20status%20request"
+              className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-ink)]"
             >
-              Security posture →
+              Request confirmation →
             </a>
           </div>
         </div>
@@ -193,55 +200,47 @@ export default function StatusPage() {
   );
 }
 
-function StatusDot({ status }: { status: ServiceStatus }) {
+function StatusDot({ status }: { status: CapabilityStatus }) {
   const tone =
-    status === "operational"
+    status === "available"
       ? "bg-[var(--color-tide-deep)]"
-      : status === "degraded"
+      : status === "configured-pilot"
         ? "bg-[oklch(0.78_0.13_75)]"
-        : status === "outage"
-          ? "bg-[oklch(0.62_0.18_25)]"
-          : "bg-[var(--color-text-soft)]";
+        : "bg-[var(--color-text-soft)]";
   return (
     <span aria-hidden className="inline-flex h-3 w-3 items-center justify-center">
-      <Circle className={`h-3 w-3 ${tone} rounded-full`} fill="currentColor" />
+      <Circle className={`h-3 w-3 rounded-full ${tone}`} fill="currentColor" />
     </span>
   );
 }
 
-function StatusPill({ status }: { status: ServiceStatus }) {
-  const map: Record<ServiceStatus, { label: string; bg: string; fg: string; border: string }> = {
-    operational: {
-      label: "Operational",
+function StatusPill({ status }: { status: CapabilityStatus }) {
+  const map: Record<CapabilityStatus, { label: string; bg: string; fg: string; border: string }> = {
+    available: {
+      label: "Available",
       bg: "bg-[color-mix(in_oklch,var(--color-tide-deep),white_88%)]",
       fg: "text-[var(--color-tide-deep)]",
       border: "border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)]",
     },
-    degraded: {
-      label: "Degraded",
+    "configured-pilot": {
+      label: "Configured pilot",
       bg: "bg-[oklch(0.95_0.06_75)]",
       fg: "text-[oklch(0.45_0.13_75)]",
       border: "border-[oklch(0.78_0.13_75/0.5)]",
     },
-    outage: {
-      label: "Outage",
-      bg: "bg-[oklch(0.62_0.18_25/0.08)]",
-      fg: "text-[oklch(0.45_0.18_25)]",
-      border: "border-[oklch(0.62_0.18_25/0.4)]",
-    },
-    maintenance: {
-      label: "Maintenance",
+    "not-enabled": {
+      label: "Not enabled",
       bg: "bg-[var(--color-canvas-tinted)]",
       fg: "text-[var(--color-text-muted)]",
       border: "border-[var(--color-border)]",
     },
   };
-  const t = map[status];
+  const tone = map[status];
   return (
     <span
-      className={`inline-flex items-center text-[10px] uppercase tracking-[0.1em] font-semibold rounded-full border px-2 py-0.5 whitespace-nowrap ${t.bg} ${t.fg} ${t.border}`}
+      className={`inline-flex items-center whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${tone.bg} ${tone.fg} ${tone.border}`}
     >
-      {t.label}
+      {tone.label}
     </span>
   );
 }
@@ -250,7 +249,7 @@ function Block({ heading, body }: { heading: string; body: string }) {
   return (
     <div className="grid gap-2">
       <h2 className="text-base font-semibold tracking-tight text-[var(--color-text)]">{heading}</h2>
-      <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{body}</p>
+      <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{body}</p>
     </div>
   );
 }

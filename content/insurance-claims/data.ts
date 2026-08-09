@@ -18,13 +18,13 @@ export const schemes: SchemeMeta[] = [
   },
 ];
 
-// Six representative claims across the five statuses. Pavithra R is the
+// Six representative claims across the five statuses. Demo patient 105 is the
 // rejected case — clicking the card shows the reason and a one-click fix.
 
 export const initialClaims: Claim[] = [
   {
     id: "cl1",
-    patientName: "Hafiz Yusof",
+    patientName: "Demo patient 101",
     procedure: "Surgical wisdom tooth · 38",
     procedureCode: "SF813A",
     scheme: "medisave",
@@ -35,7 +35,7 @@ export const initialClaims: Claim[] = [
   },
   {
     id: "cl2",
-    patientName: "Mei Lin Tan",
+    patientName: "Demo patient 102",
     procedure: "Polish & scale",
     procedureCode: "PR101",
     scheme: "chas",
@@ -46,7 +46,7 @@ export const initialClaims: Claim[] = [
   },
   {
     id: "cl3",
-    patientName: "Lim Wei Jian",
+    patientName: "Demo patient 103",
     procedure: "Root canal · 36",
     procedureCode: "EN302",
     scheme: "ipp",
@@ -57,7 +57,7 @@ export const initialClaims: Claim[] = [
   },
   {
     id: "cl4",
-    patientName: "Tan Boon Hwee",
+    patientName: "Demo patient 104",
     procedure: "Crown · 24 zirconia",
     procedureCode: "PR402",
     scheme: "ipp",
@@ -69,7 +69,7 @@ export const initialClaims: Claim[] = [
   },
   {
     id: "cl5",
-    patientName: "Pavithra R",
+    patientName: "Demo patient 105",
     procedure: "Polish & scale",
     procedureCode: "PR101",
     scheme: "chas",
@@ -82,7 +82,7 @@ export const initialClaims: Claim[] = [
   },
   {
     id: "cl6",
-    patientName: "Daniel Ong",
+    patientName: "Demo patient 106",
     procedure: "Surgical extraction · 47",
     procedureCode: "SF811A",
     scheme: "medisave",

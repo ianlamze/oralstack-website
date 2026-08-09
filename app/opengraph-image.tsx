@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
-export const alt = "Oralstack — The operating system for modern dental clinics";
+export const alt = "Oralstack — The Plato-connected workspace for dental clinics";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -59,7 +59,7 @@ export default async function Image() {
             color: "#15375D",
           }}
         >
-          Book, chart, bill,
+          Run the clinic day
         </div>
         <div
           style={{
@@ -70,18 +70,20 @@ export default async function Image() {
             color: "#15375D",
           }}
         >
-          image, message.
+          from one workspace.
         </div>
         <div
           style={{
-            fontSize: 38,
+            fontSize: 30,
             fontWeight: 400,
             color: "#5C6B85",
             marginTop: 24,
             letterSpacing: "-0.01em",
+            maxWidth: 980,
+            lineHeight: 1.25,
           }}
         >
-          The operating system for modern dental clinics.
+          Appointments, patient care, checkout and operations—connected to Plato.
         </div>
       </div>
 

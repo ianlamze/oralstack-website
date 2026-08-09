@@ -130,7 +130,7 @@ export const days: BookingDay[] = [
 // Mock returning patient — typing this phone number into step 3 triggers
 // a "welcome back" lookup that pre-fills name and shows last visit.
 export const returningPatient: ReturningPatient = {
-  phone: "9123 4567",
-  name: "Hafiz Yusof",
+  phone: "9XXX XXXX",
+  name: "Demo patient 101",
   lastVisit: "Hygiene · 28 Oct 2025",
 };

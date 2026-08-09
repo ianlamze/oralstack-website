@@ -14,10 +14,9 @@ Master inventory of every env var the Oralstack site reads at runtime. Two scope
 | `NEXT_PUBLIC_CALCOM_EVENT` | Client | Optional (default `demo`) | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com event slug appended to the booking URL. |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Client | Optional | [app/layout.tsx](../app/layout.tsx) | Google Search Console HTML-tag verification value. Skip if you used DNS verification (see [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md)). |
 | `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` | Client | Optional (default `/api/contact`) | [components/sections/DemoRequestForm.tsx](components/sections/DemoRequestForm.tsx) | POST endpoint for `DemoRequestForm`. Override to use a third-party form service (Formspree, Web3Forms) instead of the in-repo Pages Function. |
-| `RESEND_API_KEY` | Server | Optional (skips email send) | [functions/api/contact.ts](../functions/api/contact.ts), [functions/api/lead-magnet.ts](../functions/api/lead-magnet.ts) | Resend API key for outbound email. Without it, both endpoints validate and log submissions instead of emailing. Required before launch. |
-| `CONTACT_INBOX` | Server | Optional (default `hello@oralstack.com`) | [functions/api/contact.ts](../functions/api/contact.ts), [functions/api/lead-magnet.ts](../functions/api/lead-magnet.ts) | Destination address for contact-form and lead-magnet notifications. |
-| `CONTACT_FROM` | Server | Optional (default `Oralstack contact <noreply@oralstack.com>`) | [functions/api/contact.ts](../functions/api/contact.ts), [functions/api/lead-magnet.ts](../functions/api/lead-magnet.ts) | `From:` header on outbound emails. Must be on a Resend-verified domain. |
-| `SITE_URL` | Server | Optional (default `https://oralstack.com`) | [functions/api/lead-magnet.ts](../functions/api/lead-magnet.ts) | Public site origin used to build absolute lead-magnet URLs in capture emails. |
+| `RESEND_API_KEY` | Server | Optional (skips email send) | [functions/api/contact.ts](../functions/api/contact.ts) | Resend API key for outbound email. Without it, the endpoint validates and logs submissions instead of emailing. Required before launch. |
+| `CONTACT_INBOX` | Server | Optional (default `hello@oralstack.com`) | [functions/api/contact.ts](../functions/api/contact.ts) | Destination address for contact-form notifications. |
+| `CONTACT_FROM` | Server | Optional (default `Oralstack contact <noreply@oralstack.com>`) | [functions/api/contact.ts](../functions/api/contact.ts) | `From:` header on outbound emails. Must be on a Resend-verified domain. |
 
 ## Local dev
 

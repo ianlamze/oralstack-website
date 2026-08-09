@@ -9,10 +9,10 @@ export default function CustomerStoryStrip() {
   return (
     <Section className="py-20 md:py-24">
       <AnimateInView>
-        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white px-8 py-12 md:px-14 md:py-16 grid gap-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
+        <div className="grid gap-10 rounded-[var(--radius-xl)] border border-[var(--color-border)] border-t-[3px] border-t-[var(--color-tide)] bg-[var(--color-surface-raised)] px-8 py-12 shadow-[var(--shadow-2)] md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:px-14 md:py-16">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              Customer story
+              Customer pilot · April 2026
             </p>
             <h2 className="mt-4 text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
               {featured.name} moved their front desk into Oralstack in three days.

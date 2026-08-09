@@ -1,6 +1,5 @@
 import Hero from "@/components/sections/Hero";
 import StatBand from "@/components/sections/StatBand";
-import ShipVelocityStrip from "@/components/sections/ShipVelocityStrip";
 import Workflows from "@/components/sections/Workflows";
 import WorkflowWizard from "@/components/tools/WorkflowWizard";
 import ToolsShowcase from "@/components/sections/ToolsShowcase";
@@ -14,7 +13,6 @@ export default function HomePage() {
       <WorkflowWizard />
       <Workflows />
       <StatBand />
-      <ShipVelocityStrip />
       <ToolsShowcase />
       <CustomerStoryStrip />
       <CTA />

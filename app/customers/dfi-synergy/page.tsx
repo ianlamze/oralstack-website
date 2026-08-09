@@ -6,7 +6,6 @@ import StatGrid from "@/components/ui/StatGrid";
 import ScheduleMock from "@/components/visuals/ScheduleMock";
 import OdontogramMock from "@/components/visuals/OdontogramMock";
 import CheckoutMock from "@/components/visuals/CheckoutMock";
-import RecallMock from "@/components/visuals/RecallMock";
 import { dfiSynergy } from "@/content/case-studies/dfi-synergy";
 
 export const metadata: Metadata = {
@@ -106,9 +105,9 @@ export default function DfiSynergyCaseStudy() {
 
       <Section className="pb-20 md:pb-24">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-8">
-          What&apos;s running today, visualised
+          Pilot workflow illustrations
         </p>
-        <ul className="grid gap-6 md:grid-cols-3">
+        <ul className="grid gap-6 md:grid-cols-2">
           <li className="bg-[var(--color-canvas-tinted)] rounded-[var(--radius-lg)] p-5 md:p-6 flex items-center justify-center min-h-[280px]">
             <div className="w-full max-w-[440px]">
               <CheckoutMock />
@@ -117,11 +116,6 @@ export default function DfiSynergyCaseStudy() {
           <li className="bg-[var(--color-canvas-tinted)] rounded-[var(--radius-lg)] p-5 md:p-6 flex items-center justify-center min-h-[280px]">
             <div className="w-full max-w-[440px]">
               <OdontogramMock />
-            </div>
-          </li>
-          <li className="bg-[var(--color-canvas-tinted)] rounded-[var(--radius-lg)] p-5 md:p-6 flex items-center justify-center min-h-[280px]">
-            <div className="w-full max-w-[440px]">
-              <RecallMock />
             </div>
           </li>
         </ul>
@@ -198,21 +192,23 @@ export default function DfiSynergyCaseStudy() {
           <ul className="grid gap-3 md:grid-cols-2">
             {[
               {
-                slug: "plato-to-cloud-migration",
-                cluster: "Migration & operations",
-                title: "Migrating from Plato to a cloud PMS",
-                excerpt: "The cutover playbook this clinic followed.",
+                href: "/security",
+                key: "security",
+                cluster: "Operations & trust",
+                title: "Security and audit posture",
+                excerpt: "How tenant boundaries, access records, and reviewed actions are handled.",
               },
               {
-                slug: "same-day-billing-dental",
+                href: "/workflows#checkout-money",
+                key: "checkout-money",
                 cluster: "Billing & revenue",
-                title: "Same-day billing for dental clinics",
-                excerpt: "How DFI Synergy moved 60% → 85% same-day rate.",
+                title: "Checkout and money workflows",
+                excerpt: "See the current reviewed checkout, payer-estimate, and receipt boundary.",
               },
             ].map((r) => (
-              <li key={r.slug}>
+              <li key={r.key}>
                 <a
-                  href={`/articles/${r.slug}`}
+                  href={r.href}
                   className="group block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 hover:border-[var(--color-border-strong)] transition-colors h-full"
                 >
                   <span className="inline-flex items-center text-[10px] font-medium uppercase tracking-[0.14em] rounded-full px-2 py-0.5 bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)]">
@@ -242,8 +238,8 @@ export default function DfiSynergyCaseStudy() {
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
               We&apos;re onboarding a small group of clinics across Singapore and APAC each quarter.
-              If you&apos;re considering a switch from Plato, Open Dental, or a paper-led workflow,
-              we&apos;d like to hear how your front desk runs.
+              If you&apos;re considering a workflow layer around Plato or moving paper-led
+              operations into a reviewed workspace, we&apos;d like to hear how your front desk runs.
             </p>
           </div>
           <div className="md:justify-self-end flex flex-col gap-3">

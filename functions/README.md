@@ -1,22 +1,22 @@
 # functions/
 
-Cloudflare Pages Functions. The site is a Next.js static export (`output: "export"` in `next.config.ts`) deployed to Cloudflare Pages, so this directory is the **entire** dynamic surface — no Node server, no API routes under `app/`, no database. The `npm run deploy` script copies `functions/` into `out/functions/` before `wrangler pages deploy` runs, so anything outside this directory is static HTML/JS.
+Cloudflare Pages Functions. The site is a Next.js static export (`output: "export"` in `next.config.ts`) deployed to Cloudflare Pages, so this directory is the **entire** dynamic surface — no Node server, no API routes under `app/`, no database. Cloudflare discovers this directory at the project root; it must not be copied into the static `out/` directory.
 
-Both endpoints below send mail via [Resend](https://resend.com) and ship a no-key fallback path: if `RESEND_API_KEY` is unset, the function still validates the payload, logs it to the Pages console, and returns `200 { ok: true }` so the form UI works in dev.
+The contact endpoint sends mail via [Resend](https://resend.com) and ships a no-key fallback path: if `RESEND_API_KEY` is unset, it still validates the payload, logs it to the Pages console, and returns `200 { ok: true }` so the form UI works in dev.
 
 ## Files
 
 - [`api/contact.ts`](api/contact.ts) → `POST /api/contact`
-- [`api/lead-magnet.ts`](api/lead-magnet.ts) → `POST /api/lead-magnet`
+- [`api/event.ts`](api/event.ts) → `POST /api/event`
 
-The route maps directly from the file path under `functions/` (Cloudflare Pages convention). Both files export `onRequestPost` for the happy path and `onRequest` returning `405 Allow: POST` for any other method.
+The route maps directly from the file path under `functions/` (Cloudflare Pages convention). The file exports `onRequestPost` for the happy path and `onRequest` returning `405 Allow: POST` for any other method.
 
 ## Endpoints
 
 | Route | Purpose | Callers | Env vars consumed |
 |---|---|---|---|
 | `POST /api/contact` | Multi-intent contact form. Validates, builds an email, sends one message to `CONTACT_INBOX` with `Reply-To` set to the submitter. Subject is `[oralstack contact] <intent label> — <name>`. | `FormShell` (used on `/contact` for `question` / `migration` / `pilot` intents); `DemoRequestForm` on `/book-a-demo` (intent `demo`, posts in its own `{clinic, notes, …}` shape — auto-detected and normalized). | `RESEND_API_KEY`, `CONTACT_INBOX` (default `hello@oralstack.com`), `CONTACT_FROM` (default `Oralstack contact <noreply@oralstack.com>`) |
-| `POST /api/lead-magnet` | Lead-magnet email capture. Emails the visitor a link to `${SITE_URL}/lead-magnets/<slug>/`. Best-effort internal notification to `CONTACT_INBOX` if set — its failure is logged but does not fail the visitor response. | `InlineMagnetCapture` on article pages and the related-reading sections. | `RESEND_API_KEY`, `CONTACT_FROM` (default `Oralstack <noreply@oralstack.com>`), `CONTACT_INBOX` (optional internal CC), `SITE_URL` (default `https://oralstack.com`) |
+| `POST /api/event` | Allowlisted, vendor-neutral product-marketing interaction events. Logs primitive properties plus request country and user agent to Cloudflare runtime logs. | `lib/analytics.ts` | None |
 
 ### Request shapes
 
@@ -41,8 +41,6 @@ Per-intent required fields (see `validate()` in `api/contact.ts`):
 - `pilot`: `clinicName`, `numLocations`.
 - `demo`: `clinicName`, `location`.
 
-`/api/lead-magnet` — JSON: `{ email, magnetSlug, magnetTitle, website? }`. `magnetSlug` must match `/^[a-z0-9-]+$/`.
-
 ### Response shape
 
 Always JSON, always `{ ok: boolean, message: string }`.
@@ -62,7 +60,6 @@ Always JSON, always `{ ok: boolean, message: string }`.
 
    ```bash
    npm run build
-   rm -rf out/functions && cp -r functions out/functions
    npx wrangler pages dev out
    ```
 
@@ -74,7 +71,7 @@ Always JSON, always `{ ok: boolean, message: string }`.
      -d '{"intent":"question","name":"Ada","email":"a@b.co","message":"ten chars please"}'
    ```
 
-   Without `RESEND_API_KEY` in your shell, you get `200 {ok:true}` plus a `[contact]` log line in the wrangler stdout. To exercise the real send path, export `RESEND_API_KEY=re_…` (and optionally `CONTACT_INBOX` / `CONTACT_FROM` / `SITE_URL`) before starting wrangler. The sending domain must be verified in Resend or the API returns 4xx and the function returns `502`.
+   Without `RESEND_API_KEY` in your shell, you get `200 {ok:true}` plus a `[contact]` log line in the wrangler stdout. To exercise the real send path, export `RESEND_API_KEY=re_…` (and optionally `CONTACT_INBOX` / `CONTACT_FROM`) before starting wrangler. The sending domain must be verified in Resend or the API returns 4xx and the function returns `502`.
 
 2. **Skip the function entirely.** For `DemoRequestForm` only, set `NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/...` in `.env.local` and run `npm run dev`. The form posts to that URL instead of `/api/contact`. There is no equivalent escape hatch for the other forms.
 
@@ -83,9 +80,8 @@ Always JSON, always `{ ok: boolean, message: string }`.
 - **Bad JSON body** → `400 {ok:false,message:"Could not parse request body."}`.
 - **Missing / invalid field** → `400 {ok:false,message:<human reason>}`. The form components render `message` directly to the user.
 - **Honeypot tripped** (`website` non-empty) → `200 {ok:true,message:"Message received."}`. No mail sent. No log line. Bots don't retry.
-- **`RESEND_API_KEY` unset** → `200 {ok:true}` with a dev-mode note in `message`. Submission body is logged with prefix `[contact]` or `[lead-magnet]` via `console.log`. Visible in the Cloudflare dashboard under **Workers & Pages → oralstack → Functions → Real-time logs**, or in `wrangler pages dev` stdout locally.
-- **Resend API rejects the send** → `502 {ok:false,message}`. Status + Resend response body logged via `console.error`. For `/api/lead-magnet`, the user-facing message includes the magnet URL so the visitor can still read it directly.
-- **Internal-notification failure on `/api/lead-magnet`** → logged via `console.error`, visitor response stays `200`. The visitor email is the source of truth; the internal CC is best-effort.
+- **`RESEND_API_KEY` unset** → `200 {ok:true}` with a dev-mode note in `message`. Submission body is logged with prefix `[contact]` via `console.log`. Visible in the Cloudflare dashboard under **Workers & Pages → oralstack → Functions → Real-time logs**, or in `wrangler pages dev` stdout locally.
+- **Resend API rejects the send** → `502 {ok:false,message}`. Status + response body are logged via `console.error`.
 - **Unverified Resend sending domain** → surfaces as the `502` case above.
 
 ## Setup pointers

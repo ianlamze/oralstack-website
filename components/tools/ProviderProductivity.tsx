@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Crown, MessageCircle, Sparkles, Stethoscope } from "lucide-react";
 import { initialProviders, periods } from "@/content/provider-productivity/data";
 import type { Period, Provider, ProviderRole } from "@/content/provider-productivity/types";
 import { track } from "@/lib/analytics";
 
-const DEMO_PROVIDER_ID = "pr2"; // Dr Lim · associate — most demoable opening view
+const DEMO_PROVIDER_ID = "pr2"; // Provider B · associate — most demoable opening view
 
 const ROLE_LABEL: Record<ProviderRole, string> = {
   owner: "Owner",
@@ -45,8 +45,6 @@ function scaleProvider(p: Provider, scale: number): Provider {
 export default function ProviderProductivity() {
   const [selectedId, setSelectedId] = useState<string>(DEMO_PROVIDER_ID);
   const [periodId, setPeriodId] = useState<Period["id"]>("mtd");
-  const reduceMotion = useReducedMotion();
-
   const period = periods.find((p) => p.id === periodId) ?? periods[1];
 
   const providers = useMemo(
@@ -93,7 +91,7 @@ export default function ProviderProductivity() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · {period.daysLabel}
+          Sample Dental Clinic · {period.daysLabel}
         </span>
       </div>
 
@@ -181,9 +179,9 @@ export default function ProviderProductivity() {
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={`${selected.id}-${periodId}`}
-              initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+              exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
               className="grid gap-4 content-start"
             >

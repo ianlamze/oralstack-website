@@ -19,12 +19,12 @@ const invoiceLines: ManualLine[] = [
 
 const followUps = [
   {
-    name: "Aaron Teo · #1067",
+    name: "Demo patient 103 · DEMO-1067",
     note: "Walked out · bill not ready · call Mon 09:00",
     amount: "S$245",
   },
   {
-    name: "Mei Lin Tan · #1042",
+    name: "Demo patient 104 · DEMO-1042",
     note: "GST line missing · patient queried · re-issue",
     amount: "S$96",
   },
@@ -58,7 +58,7 @@ export default function BeforeDischargeMock() {
 
       <div className="mt-5 rounded-[var(--radius-md)] border border-dashed border-[var(--color-border-strong)] bg-white p-3">
         <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-          Devi Krishnan · #1054
+          Demo patient 102 · DEMO-1054
         </p>
         <ul className="mt-2 grid divide-y divide-[var(--color-border)]">
           {invoiceLines.map((it, i) => {

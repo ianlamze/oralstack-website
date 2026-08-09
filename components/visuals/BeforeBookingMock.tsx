@@ -16,27 +16,35 @@ type DiaryEntry = {
 };
 
 const diary: DiaryEntry[] = [
-  { time: "09:00", status: "booked", patient: "Lim Wei Jian", note: "polish & scale" },
+  { time: "09:00", status: "booked", patient: "Demo patient 101", note: "polish & scale" },
   {
     time: "09:30",
     status: "rebooked",
-    patient: "Devi Krishnan",
+    patient: "Demo patient 102",
     note: "moved from Tue · ✗ then ✓",
   },
   { time: "10:00", status: "open" },
   {
     time: "10:30",
     status: "tentative",
-    patient: "Aaron Teo?",
+    patient: "Demo patient 103?",
     note: "waiting on insurance confirm",
   },
-  { time: "11:00", status: "callback", patient: "Mei Lin Tan", note: "voicemail · try 14:00" },
+  { time: "11:00", status: "callback", patient: "Demo patient 104", note: "voicemail · try 14:00" },
   { time: "11:30", status: "open" },
 ];
 
 const phoneTag = [
-  { name: "Mrs Wong · #1098", attempts: 2, note: "asked Tuesday — slot taken before callback" },
-  { name: "Hafiz Yusof · #1112", attempts: 3, note: "WhatsApp on staff phone — no reply yet" },
+  {
+    name: "Demo patient 106 · DEMO-1098",
+    attempts: 2,
+    note: "asked Tuesday — slot taken before callback",
+  },
+  {
+    name: "Demo patient 105 · DEMO-1112",
+    attempts: 3,
+    note: "WhatsApp on staff phone — no reply yet",
+  },
   { name: "New patient · walk-in form", attempts: 1, note: "left number, no source captured" },
 ];
 

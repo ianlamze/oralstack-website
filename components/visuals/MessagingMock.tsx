@@ -19,7 +19,7 @@ const conversation: Message[] = [
   },
   {
     from: "clinic",
-    text: "Booked: Thu 2 May, 3:00 PM with Dr Lim. Confirmation + intake form sent. See you soon.",
+    text: "Booked: Thu 2 May, 3:00 PM with Provider B. Confirmation + intake form sent. See you soon.",
     time: "Mon · 2:34 PM",
     status: "delivered",
   },
@@ -35,7 +35,7 @@ export default function MessagingMock() {
   return (
     <div
       role="img"
-      aria-label="Illustrative oralstack patient messaging: a WhatsApp Business recall conversation with the clinic confirming a hygiene appointment with Lim Wei Jian."
+      aria-label="Illustrative oralstack patient messaging: a WhatsApp Business recall conversation with the clinic confirming a hygiene appointment with Demo patient 101."
       className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[440px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
     >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
@@ -55,10 +55,10 @@ export default function MessagingMock() {
           </div>
           <div className="grid gap-0.5">
             <p className="text-sm font-medium text-[var(--color-text)] leading-tight">
-              Lim Wei Jian
+              Demo patient 101
             </p>
             <p className="text-[10px] text-[var(--color-text-soft)] tabular-nums">
-              +65 9123 4567 · #1042
+              +65 0000 0000 · DEMO-1042
             </p>
           </div>
         </div>

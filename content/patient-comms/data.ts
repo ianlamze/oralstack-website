@@ -6,8 +6,8 @@ import type { Template, Thread } from "./types";
 export const initialThreads: Thread[] = [
   {
     id: "th1",
-    patientName: "Hafiz Yusof",
-    patientPhone: "+65 9123 4567",
+    patientName: "Demo patient 101",
+    patientPhone: "+65 9XXX XXXX",
     procedure: "Hygiene · recall",
     unread: true,
     lastTime: "14:08",
@@ -15,7 +15,7 @@ export const initialThreads: Thread[] = [
       {
         id: "m1",
         from: "clinic",
-        body: "Hi Hafiz, your six-month hygiene visit is due this week. We have a slot Wed 27 Apr at 11:00 — shall I confirm? — DFI Synergy",
+        body: "Hi Demo patient 101, your six-month hygiene visit is due this week. We have a slot Wed 27 Apr at 11:00 — shall I confirm? — Sample Dental Clinic",
         time: "09:30",
         fromTemplate: "recall_hygiene_due",
       },
@@ -29,8 +29,8 @@ export const initialThreads: Thread[] = [
   },
   {
     id: "th2",
-    patientName: "Mei Lin Tan",
-    patientPhone: "+65 9234 5678",
+    patientName: "Demo patient 102",
+    patientPhone: "+65 9XXX XXXX",
     procedure: "Polish & scale",
     unread: false,
     lastTime: "11:42",
@@ -38,7 +38,7 @@ export const initialThreads: Thread[] = [
       {
         id: "m1",
         from: "clinic",
-        body: "Hi Mei Lin, confirming your polish & scale on Mon 28 Apr at 10:00 with Dr Wong. Reply YES to confirm. — DFI Synergy",
+        body: "Hi Demo patient 102, confirming your polish & scale on Mon 28 Apr at 10:00 with Provider A. Reply YES to confirm. — Sample Dental Clinic",
         time: "11:30",
         fromTemplate: "confirm_appointment",
       },
@@ -47,8 +47,8 @@ export const initialThreads: Thread[] = [
   },
   {
     id: "th3",
-    patientName: "Lim Wei Jian",
-    patientPhone: "+65 9345 6789",
+    patientName: "Demo patient 103",
+    patientPhone: "+65 9XXX XXXX",
     procedure: "RCT · post-op",
     unread: false,
     lastTime: "Yesterday",
@@ -56,7 +56,7 @@ export const initialThreads: Thread[] = [
       {
         id: "m1",
         from: "clinic",
-        body: "Hi Lim, hope you're doing well after your RCT yesterday. Mild discomfort for 24-48h is normal. Avoid hard food on tooth 36 until your crown visit. Pain >7/10 or swelling — reply here. — DFI Synergy",
+        body: "Hi Demo patient 103, hope you're doing well after your RCT yesterday. Mild discomfort for 24-48h is normal. Avoid hard food on tooth 36 until your crown visit. Pain >7/10 or swelling — reply here. — Sample Dental Clinic",
         time: "Yesterday",
         fromTemplate: "post_op_care",
       },
@@ -70,8 +70,8 @@ export const initialThreads: Thread[] = [
   },
   {
     id: "th4",
-    patientName: "K. Lee",
-    patientPhone: "+65 9456 7890",
+    patientName: "Demo patient 107",
+    patientPhone: "+65 9XXX XXXX",
     procedure: "Implant follow-up",
     unread: false,
     lastTime: "2 days ago",
@@ -79,7 +79,7 @@ export const initialThreads: Thread[] = [
       {
         id: "m1",
         from: "clinic",
-        body: "Hi K., your implant 3-month review is due. Shall I book Tue 6 May at 14:00 with Dr Lim? — DFI Synergy",
+        body: "Hi Demo patient 107, your implant 3-month review is due. Shall I book Tue 6 May at 14:00 with Provider B? — Sample Dental Clinic",
         time: "2 days ago",
         fromTemplate: "implant_review",
       },
@@ -92,7 +92,7 @@ export const initialThreads: Thread[] = [
       {
         id: "m3",
         from: "clinic",
-        body: "Confirmed for Tue 6 May at 14:00. We'll send a reminder the day before. — DFI Synergy",
+        body: "Confirmed for Tue 6 May at 14:00. We'll send a reminder the day before. — Sample Dental Clinic",
         time: "2 days ago",
         fromTemplate: "confirm_appointment",
       },
@@ -104,27 +104,27 @@ export const templates: Template[] = [
   {
     id: "confirm_appointment",
     label: "Confirm appointment",
-    body: "Hi {name}, confirming your {procedure} on {date} at {time} with {provider}. Reply YES to confirm. — DFI Synergy",
+    body: "Hi {name}, confirming your {procedure} on {date} at {time} with {provider}. Reply YES to confirm. — Sample Dental Clinic",
     hasDatePlaceholder: true,
   },
   {
     id: "offer_reschedule",
     label: "Offer reschedule slots",
-    body: "Hi {name}, no problem — here are 3 slots that match: Wed 27 Apr 15:00 · Thu 28 Apr 14:30 · Fri 29 Apr 16:00. Reply with the one that works. — DFI Synergy",
+    body: "Hi {name}, no problem — here are 3 slots that match: Wed 27 Apr 15:00 · Thu 28 Apr 14:30 · Fri 29 Apr 16:00. Reply with the one that works. — Sample Dental Clinic",
   },
   {
     id: "recall_hygiene_due",
     label: "Recall — hygiene due",
-    body: "Hi {name}, your six-month hygiene visit is due this week. Shall we book {procedure} with {provider}? — DFI Synergy",
+    body: "Hi {name}, your six-month hygiene visit is due this week. Shall we book {procedure} with {provider}? — Sample Dental Clinic",
   },
   {
     id: "post_op_care",
     label: "Post-op care reminder",
-    body: "Hi {name}, hope you're recovering well after {procedure}. Mild discomfort for 24-48h is normal. Pain >7/10 or swelling — reply here. — DFI Synergy",
+    body: "Hi {name}, hope you're recovering well after {procedure}. Mild discomfort for 24-48h is normal. Pain >7/10 or swelling — reply here. — Sample Dental Clinic",
   },
   {
     id: "thank_you_visit",
     label: "Thank you for your visit",
-    body: "Hi {name}, thanks for visiting today. If you have a moment, a Google review really helps a small Singapore clinic like ours: dfisynergy.sg/review — DFI Synergy",
+    body: "Hi {name}, thanks for visiting today. If you have a moment, a Google review really helps a small Singapore clinic like ours: example.invalid/review — Sample Dental Clinic",
   },
 ];

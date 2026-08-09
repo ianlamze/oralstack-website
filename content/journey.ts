@@ -275,7 +275,7 @@ export const journeyStages: JourneyStage[] = [
       {
         id: "ai-whatsapp-booking",
         label: "AI booking via WhatsApp",
-        body: "Patient messages the clinic number in plain language ('can I see Dr Lim Friday afternoon?') and an agent proposes slots, confirms, and books — front desk reviews the queue rather than typing every booking.",
+        body: "Patient messages the clinic number in plain language ('can I see Provider B Friday afternoon?') and an agent proposes slots, confirms, and books — front desk reviews the queue rather than typing every booking.",
         priority: "high",
         rationale:
           "Largest staff-time sink at the front desk is conversational booking. WhatsApp Business API is already wired; layering an LLM agent is incremental.",

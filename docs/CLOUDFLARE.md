@@ -107,9 +107,9 @@ NEXT_PUBLIC_CALCOM_EVENT=demo
 
 ## Step 7 — Form endpoints + Resend (~5 minutes)
 
-The site has two Cloudflare Pages Functions handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo) and [`/api/lead-magnet`](../functions/api/lead-magnet.ts) (email capture). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
+The site has one Cloudflare Pages Function handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo), plus an allowlisted interaction-event sink at [`/api/event`](../functions/api/event.ts). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
-Without `RESEND_API_KEY` set, both endpoints still validate submissions and log to the Cloudflare console instead of sending email. The form UI works either way.
+Without `RESEND_API_KEY` set, the endpoint still validates submissions and logs to the Cloudflare console instead of sending email. The form UI works either way.
 
 To activate real email forwarding:
 
@@ -120,7 +120,6 @@ To activate real email forwarding:
    - `RESEND_API_KEY` (encrypted) — the key from step 3
    - `CONTACT_INBOX` — destination address (default: `hello@oralstack.com`)
    - `CONTACT_FROM` — From: header (default: `Oralstack contact <noreply@oralstack.com>`)
-   - `SITE_URL` — public origin for absolute lead-magnet URLs (default: `https://oralstack.com`)
 5. Redeploy. Submissions land in `CONTACT_INBOX` within a second.
 
 ### Optional: route DemoRequestForm at a third-party service
@@ -165,7 +164,7 @@ When a deploy fails, the cause is almost always one of these. Check in order.
 - **Sending domain not verified** in Resend. Resend → Domains → check status. DNS propagation can take 5–10 min after adding records.
 - **`CONTACT_FROM` doesn't match a verified domain.** Resend rejects sends from unverified domains.
 
-Real-time logs: Cloudflare dashboard → **Workers & Pages → oralstack-website → Functions → Real-time logs**. Look for `[contact]` or `[lead-magnet]` prefixes.
+Real-time logs: Cloudflare dashboard → **Workers & Pages → oralstack-website → Functions → Real-time logs**. Look for the `[contact]` prefix.
 
 ### Custom domain SSL pending
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   Check,
   ExternalLink,
@@ -49,14 +49,12 @@ const SOURCE_ICON: Record<ReferralSourceType, typeof Star> = {
   returning: RotateCcw,
 };
 
-const DEMO_VISIT_ID = "rv1"; // Mei Lin Tan · awaiting — best demo opener
+const DEMO_VISIT_ID = "rv1"; // Demo patient 102 · awaiting — best demo opener
 
 export default function ReviewsReferrals() {
   const [visits, setVisits] = useState<ReviewVisit[]>(initialVisits);
   const [selectedId, setSelectedId] = useState<string>(DEMO_VISIT_ID);
   const [filter, setFilter] = useState<Filter>("all");
-  const reduceMotion = useReducedMotion();
-
   const sorted = useMemo(() => [...visits].sort((a, b) => b.sortKey - a.sortKey), [visits]);
 
   const filtered = useMemo(
@@ -138,7 +136,7 @@ export default function ReviewsReferrals() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · last 30 days
+          Sample Dental Clinic · last 30 days
         </span>
       </div>
 
@@ -203,10 +201,10 @@ export default function ReviewsReferrals() {
               return (
                 <motion.li
                   key={v.id}
-                  layout={!reduceMotion}
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  layout
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
                 >
                   <button
@@ -259,9 +257,9 @@ export default function ReviewsReferrals() {
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={selected.id}
-              initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+              exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
               className="grid gap-4 content-start"
             >
