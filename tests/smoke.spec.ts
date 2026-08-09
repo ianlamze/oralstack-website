@@ -2004,6 +2004,14 @@ const TRUST_REVIEW_SNAPSHOT_REGIONS = [
   },
 ] as const;
 
+async function removeFixedPageChrome(page: Page) {
+  await page
+    .locator('body > a[href="#main-content"], body > header, body > [aria-hidden="true"]')
+    .evaluateAll((elements) => {
+      for (const element of elements) element.remove();
+    });
+}
+
 for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
   test(`${region.path} trust action region has focused visual regression coverage`, async ({
     page,
@@ -2014,11 +2022,10 @@ for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
     }
     await page.goto(region.path, { waitUntil: "networkidle" });
     await page.addStyleTag({
-      content: `
-        *, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }
-        body > a[href="#main-content"], body > header, body > [aria-hidden="true"] { visibility: hidden !important; }
-      `,
+      content:
+        "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
     });
+    await removeFixedPageChrome(page);
 
     await expect(page.getByTestId(region.testId)).toHaveScreenshot(region.snapshot, {
       animations: "disabled",
@@ -2036,11 +2043,10 @@ test("security review form has focused visual regression coverage", async ({ pag
     { waitUntil: "networkidle" },
   );
   await page.addStyleTag({
-    content: `
-      *, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }
-      body > a[href="#main-content"], body > header, body > [aria-hidden="true"] { visibility: hidden !important; }
-    `,
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
   });
+  await removeFixedPageChrome(page);
 
   const reviewForm = page.locator("#contact-panel-security form");
   await expect(reviewForm.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
