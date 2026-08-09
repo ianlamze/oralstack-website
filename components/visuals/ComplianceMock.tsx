@@ -8,7 +8,7 @@ export default function ComplianceMock() {
   return (
     <div
       role="img"
-      aria-label="Illustrative Oralstack audit chain: autoclave cycle 042-A linked to Tray B (Hygiene), used on Mei Lin Tan for a polish and scale at 10:30."
+      aria-label="Illustrative Oralstack audit chain: autoclave cycle 042-A linked to Tray B (Hygiene), used on Demo patient 104 for a polish and scale at 10:30."
       className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-4 sm:p-5 md:p-6 max-w-[560px] shadow-[0_1px_0_rgba(0,0,0,0.02),0_18px_60px_-30px_rgba(20,30,60,0.18)]"
     >
       <div className="flex items-center justify-between text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[var(--color-text-soft)] gap-3">
@@ -45,7 +45,7 @@ export default function ComplianceMock() {
         <li>
           <ChainCard
             eyebrow="Patient"
-            title="Mei Lin Tan"
+            title="Demo patient 104"
             line1="Polish & scale"
             line2="Used 10:30"
           />

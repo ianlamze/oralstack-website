@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, ArrowRight, Check, RotateCcw } from "lucide-react";
 import { initialClaims } from "@/content/insurance-claims/data";
 import type { Claim, ClaimStatus } from "@/content/insurance-claims/types";
@@ -32,8 +32,6 @@ export default function InsuranceClaims() {
   const [claims, setClaims] = useState<Claim[]>(initialClaims);
   const [selectedId, setSelectedId] = useState<string | null>(DEMO_DRAFT_ID);
   const [filter, setFilter] = useState<Filter>("all");
-  const reduceMotion = useReducedMotion();
-
   const filtered = useMemo(
     () => (filter === "all" ? claims : claims.filter((c) => c.status === filter)),
     [claims, filter],
@@ -113,7 +111,7 @@ export default function InsuranceClaims() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · Singapore
+          Sample Dental Clinic · Singapore
         </span>
       </div>
 
@@ -166,10 +164,10 @@ export default function InsuranceClaims() {
               return (
                 <motion.li
                   key={c.id}
-                  layout={!reduceMotion}
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  layout
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
                 >
                   <button
@@ -249,7 +247,7 @@ export default function InsuranceClaims() {
 
               {selected.status === "rejected" && selected.rejectionReason && (
                 <motion.div
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.18 }}
                   className="rounded-[var(--radius-md)] border border-[oklch(0.62_0.18_25/0.4)] bg-[oklch(0.62_0.18_25/0.06)] p-3 grid gap-2"

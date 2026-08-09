@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { track } from "@/lib/analytics";
 
 type Tone = "sea" | "violet" | "sunset";
@@ -16,16 +16,37 @@ type Appointment = {
 };
 
 const initialAppointments: Appointment[] = [
-  { id: "a1", chair: 0, start: 8, len: 2, label: "Recall · A. Tan", tone: "sea" },
-  { id: "a2", chair: 1, start: 9, len: 3, label: "Implant review · Dr Lim", tone: "violet" },
-  { id: "a3", chair: 2, start: 10, len: 2, label: "Hygiene · M. Devi", tone: "sea" },
-  { id: "a4", chair: 0, start: 11, len: 3, label: "Crown prep · J. Ong", tone: "sunset" },
-  { id: "a5", chair: 1, start: 13, len: 2, label: "New patient · K. Lee", tone: "sea" },
-  { id: "a6", chair: 2, start: 14, len: 2, label: "Endo · Dr Pereira", tone: "violet" },
+  { id: "a1", chair: 0, start: 8, len: 2, label: "Recall · Demo patient 101", tone: "sea" },
+  {
+    id: "a2",
+    chair: 1,
+    start: 9,
+    len: 3,
+    label: "Implant review · Demo patient 102",
+    tone: "violet",
+  },
+  { id: "a3", chair: 2, start: 10, len: 2, label: "Hygiene · Demo patient 103", tone: "sea" },
+  {
+    id: "a4",
+    chair: 0,
+    start: 11,
+    len: 3,
+    label: "Crown prep · Demo patient 104",
+    tone: "sunset",
+  },
+  {
+    id: "a5",
+    chair: 1,
+    start: 13,
+    len: 2,
+    label: "New patient · Demo patient 105",
+    tone: "sea",
+  },
+  { id: "a6", chair: 2, start: 14, len: 2, label: "Endo · Demo patient 106", tone: "violet" },
 ];
 
 // Demo move chosen for visibility: diagonal (chair AND time change), lands in
-// a clearly empty slot, no collisions. New patient · K. Lee: chair 1 / 13:00
+// a clearly empty slot, no collisions. Demo patient 105: chair 1 / 13:00
 // → chair 2 / 12:00 (slot 12-14 is free between Hygiene 10-12 and Endo 14-16).
 const DEMO_APPT_ID = "a5";
 const DEMO_TARGET = { chair: 2 as const, start: 12 };
@@ -98,7 +119,6 @@ export default function ScheduleMock() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
 
   // Detect touch-only devices so the post-demo pulse fires only where the
   // hover-lift affordance is unavailable. Mirrors `@media (hover: none)`.
@@ -214,10 +234,9 @@ export default function ScheduleMock() {
 
   // Auto-demo: when the schedule scrolls into view for the first time, briefly
   // move one appointment to a free slot and back. Visible motion → "things move
-  // here" without copy. Skipped under prefers-reduced-motion or if the user
-  // already interacted (drag/hover/focus) before the demo had a chance to fire.
+  // here" without copy. Skipped if the user already interacted (drag/hover/focus)
+  // before the demo had a chance to fire.
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -237,7 +256,7 @@ export default function ScheduleMock() {
     return () => {
       observer.disconnect();
     };
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   // Cleanup any pending demo timers on unmount.
   useEffect(() => {
@@ -267,7 +286,7 @@ export default function ScheduleMock() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · Singapore
+          Sample Dental Clinic · synthetic data
         </span>
       </div>
 
@@ -312,18 +331,13 @@ export default function ScheduleMock() {
           const t = toneStyles[a.tone];
           const isDragging = draggingId === a.id;
           const dragEnabled = !demoActive;
-          const shouldPulse =
-            postDemoNudge && isTouchOnly && a.id === DEMO_APPT_ID && !reduceMotion;
+          const shouldPulse = postDemoNudge && isTouchOnly && a.id === DEMO_APPT_ID;
           return (
             <motion.button
               key={a.id}
               type="button"
-              layout={!reduceMotion}
-              transition={
-                reduceMotion
-                  ? { duration: 0 }
-                  : { layout: { type: "spring", stiffness: 480, damping: 36 } }
-              }
+              layout
+              transition={{ layout: { type: "spring", stiffness: 480, damping: 36 } }}
               animate={
                 shouldPulse
                   ? {
@@ -343,16 +357,12 @@ export default function ScheduleMock() {
               dragSnapToOrigin
               dragMomentum={false}
               dragElastic={0.18}
-              whileHover={
-                reduceMotion
-                  ? undefined
-                  : {
-                      scale: 1.03,
-                      y: -1,
-                      boxShadow: "0 8px 18px -8px rgba(20,30,60,0.22)",
-                      zIndex: 10,
-                    }
-              }
+              whileHover={{
+                scale: 1.03,
+                y: -1,
+                boxShadow: "0 8px 18px -8px rgba(20,30,60,0.22)",
+                zIndex: 10,
+              }}
               whileDrag={{
                 scale: 1.04,
                 cursor: "grabbing",
@@ -392,9 +402,9 @@ export default function ScheduleMock() {
             {toast ? (
               <motion.span
                 key={toast.text}
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
                 className={
                   toast.kind === "ok"
@@ -407,9 +417,9 @@ export default function ScheduleMock() {
             ) : postDemoNudge ? (
               <motion.span
                 key="nudge"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.18 }}
                 className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
               >
@@ -419,7 +429,7 @@ export default function ScheduleMock() {
             ) : (
               <motion.span
                 key="default"
-                initial={reduceMotion ? false : { opacity: 0 }}
+                initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}

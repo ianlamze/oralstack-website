@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { StageMetric } from "@/content/journey";
 
 export type MetricTickerProps = {
@@ -13,8 +13,6 @@ export type MetricTickerProps = {
 };
 
 export default function MetricTicker({ metric, stageId }: MetricTickerProps) {
-  const reduceMotion = useReducedMotion();
-
   return (
     <div
       key={stageId}
@@ -31,7 +29,7 @@ export default function MetricTicker({ metric, stageId }: MetricTickerProps) {
             Industry baseline
           </span>
           <motion.span
-            initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+            initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             className="text-base sm:text-lg font-semibold text-[var(--color-text-muted)] tabular-nums"
@@ -50,7 +48,7 @@ export default function MetricTicker({ metric, stageId }: MetricTickerProps) {
             With Oralstack
           </span>
           <motion.span
-            initial={reduceMotion ? false : { opacity: 0, y: 4, scale: 0.96 }}
+            initial={{ opacity: 0, y: 4, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
               duration: 0.45,

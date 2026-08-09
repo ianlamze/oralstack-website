@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { track } from "@/lib/analytics";
 
 type LineItem = { code: string; name: string; qty: number; price: number };
@@ -46,7 +46,6 @@ export default function CheckoutMock() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
 
   function markInteracted() {
     if (!hasInteractedRef.current) hasInteractedRef.current = true;
@@ -105,7 +104,6 @@ export default function CheckoutMock() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -122,7 +120,7 @@ export default function CheckoutMock() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -151,7 +149,7 @@ export default function CheckoutMock() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Devi Krishnan · #1054
+          Demo patient 202 · DEMO-1054
         </span>
       </div>
 
@@ -204,7 +202,7 @@ export default function CheckoutMock() {
                 onFocus={markInteracted}
                 disabled={isDisabled}
                 aria-pressed={isSelected}
-                whileHover={reduceMotion || isDisabled || isSelected ? undefined : { y: -1 }}
+                whileHover={isDisabled || isSelected ? undefined : { y: -1 }}
                 className={`text-[11px] font-medium rounded-md border px-2.5 py-1.5 transition-colors disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
                   isSelected
                     ? "bg-[var(--color-ink)] text-[var(--color-canvas)] border-[var(--color-ink)]"
@@ -224,7 +222,7 @@ export default function CheckoutMock() {
             {paid ? (
               <motion.div
                 key="paid"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.22 }}
@@ -251,7 +249,7 @@ export default function CheckoutMock() {
             ) : (
               <motion.div
                 key="pending"
-                initial={reduceMotion ? false : { opacity: 0 }}
+                initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}
@@ -263,7 +261,7 @@ export default function CheckoutMock() {
                   onPointerEnter={markInteracted}
                   onFocus={markInteracted}
                   disabled={!selected}
-                  whileHover={reduceMotion || !selected ? undefined : { scale: 1.02 }}
+                  whileHover={!selected ? undefined : { scale: 1.02 }}
                   className="justify-self-start inline-flex items-center min-h-[36px] rounded-md bg-[var(--color-ink)] text-[var(--color-canvas)] text-[11px] font-medium px-3 py-1.5 hover:bg-[var(--color-tide-deep)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
                   aria-disabled={!selected}
                 >

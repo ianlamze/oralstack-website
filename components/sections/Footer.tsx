@@ -3,36 +3,37 @@ import Wordmark from "@/components/ui/Wordmark";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--color-border)]">
+    <footer className="border-t border-[var(--color-sidebar-border)] bg-[var(--color-sidebar)] text-[var(--color-sidebar-foreground)]">
       <Section className="py-12 md:py-16">
         <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
-            <Wordmark size="md" />
-            <p className="mt-3 text-xs text-[var(--color-text-muted)] max-w-[36ch] leading-relaxed">
-              The operating system for modern dental clinics.
+            <Wordmark size="md" tone="inverse" />
+            <p className="mt-3 max-w-[36ch] text-xs leading-relaxed text-[color-mix(in_srgb,var(--color-sidebar-foreground)_60%,transparent)]">
+              The Plato-connected clinic workspace for the front desk, chairside team and practice
+              manager.
             </p>
           </div>
 
           <FooterColumn
             title="Product"
             links={[
-              { label: "Workflows", href: "/workflows" },
-              { label: "Integrations", href: "/integrations" },
-              { label: "Pricing", href: "/pricing" },
-              { label: "Compare", href: "/compare" },
-              { label: "Tools", href: "/tools" },
-              { label: "Changelog", href: "/changelog" },
+              { label: "Run the day", href: "/workflows#run-the-day" },
+              { label: "Patient care", href: "/workflows#patient-care" },
+              { label: "Checkout & money", href: "/workflows#checkout-money" },
+              { label: "Patient access", href: "/workflows#patient-access" },
+              { label: "Clinic operations", href: "/workflows#clinic-operations" },
+              { label: "Insights", href: "/workflows#insights" },
+              { label: "Organization & security", href: "/workflows#organization-security" },
             ]}
           />
 
           <FooterColumn
-            title="Solutions"
+            title="Resources"
             links={[
-              { label: "For solo & small clinics", href: "/for-solo-clinics" },
-              { label: "For multi-clinic & DSO", href: "/for-multi-clinic" },
               { label: "Customers", href: "/customers" },
-              { label: "Articles", href: "/articles" },
-              { label: "References", href: "/lead-magnets" },
+              { label: "Integrations", href: "/integrations" },
+              { label: "Pricing", href: "/pricing" },
+              { label: "Changelog", href: "/changelog" },
               { label: "FAQ", href: "/faq" },
             ]}
           />
@@ -51,7 +52,7 @@ export default function Footer() {
           />
         </div>
 
-        <p className="mt-12 text-xs text-[var(--color-text-soft)]">
+        <p className="mt-12 text-xs text-[color-mix(in_srgb,var(--color-sidebar-foreground)_48%,transparent)]">
           © {new Date().getFullYear()} Oralstack
         </p>
       </Section>
@@ -68,13 +69,16 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+      <p className="text-xs font-medium uppercase tracking-[0.16em] text-[color-mix(in_srgb,var(--color-sidebar-foreground)_48%,transparent)]">
         {title}
       </p>
-      <ul className="mt-4 grid gap-2.5 text-sm text-[var(--color-text-muted)]">
+      <ul className="mt-4 grid gap-2.5 text-sm text-[color-mix(in_srgb,var(--color-sidebar-foreground)_66%,transparent)]">
         {links.map((l) => (
           <li key={l.href}>
-            <a className="hover:text-[var(--color-text)]" href={l.href}>
+            <a
+              className="transition-colors hover:text-[var(--color-sidebar-foreground)]"
+              href={l.href}
+            >
               {l.label}
             </a>
           </li>

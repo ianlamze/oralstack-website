@@ -1,4 +1,7 @@
+/** @deprecated Kept for the legacy StatusBadge component. */
 export type IntegrationStatus = "Live" | "Beta" | "Roadmap";
+
+export type IntegrationAvailability = "Available" | "Configured pilot" | "Not enabled";
 
 export type IntegrationIcon =
   | "Camera"
@@ -11,7 +14,7 @@ export type IntegrationIcon =
 
 export type Integration = {
   name: string;
-  status: IntegrationStatus;
+  status: IntegrationAvailability;
   description: string;
 };
 
@@ -24,127 +27,129 @@ export type IntegrationCategory = {
 
 export const integrationCategories: IntegrationCategory[] = [
   {
-    title: "Imaging sensors & devices",
-    description:
-      "Direct sensor-bridge integration so chairside imagery captures into the patient chart, not a parallel folder on a separate desktop.",
-    icon: "Camera",
-    items: [
-      { name: "Carestream sensors", status: "Beta", description: "Intraoral and panoramic." },
-      { name: "Dexis sensors", status: "Beta", description: "Intraoral series." },
-      { name: "Sopro intraoral cameras", status: "Beta", description: "SoproCare and SoproLife." },
-      { name: "Planmeca sensors", status: "Roadmap", description: "ProSensor and ProMax." },
-      { name: "Schick sensors", status: "Roadmap", description: "Schick 33 and Schick AE." },
-      {
-        name: "Generic TWAIN",
-        status: "Roadmap",
-        description: "Fallback for legacy or unsupported devices.",
-      },
-    ],
-  },
-  {
-    title: "Imaging exchange & viewers",
-    description:
-      "DICOM-native exchange so radiographs and 3D scans move between Oralstack and external viewers without lossy conversion.",
-    icon: "Aperture",
-    items: [
-      {
-        name: "DICOM C-STORE / C-FIND",
-        status: "Live",
-        description: "Standard DICOM network protocol.",
-      },
-      { name: "OHIF Viewer", status: "Live", description: "Embedded open-source DICOM viewer." },
-      {
-        name: "Romexis",
-        status: "Roadmap",
-        description: "Planmeca viewer + workflow integration.",
-      },
-      {
-        name: "Dolphin",
-        status: "Roadmap",
-        description: "Orthodontic imaging + treatment planning.",
-      },
-    ],
-  },
-  {
     title: "Patient communication",
     description:
-      "Region-routed messaging so reminders, recalls, and intake forms reach patients on the channel they use.",
+      "The transport, credentials, consent, and sending mode determine what can be enabled for each clinic.",
     icon: "MessageSquare",
     items: [
       {
-        name: "WhatsApp Business API",
-        status: "Beta",
-        description: "Singapore-region routing, templated messaging.",
+        name: "Meta WhatsApp Business Cloud API",
+        status: "Configured pilot",
+        description:
+          "Clinic-owned Meta credentials can enable webhooks, a shared inbox, manual replies, and approved templates after a readiness review.",
       },
-      { name: "SMS via Twilio", status: "Live", description: "Worldwide SMS delivery." },
       {
-        name: "Email (SMTP / SendGrid)",
-        status: "Live",
-        description: "Transactional and templated email.",
+        name: "WhatsApp Flows and reminder automation",
+        status: "Not enabled",
+        description:
+          "Automated intake, reminder, and live-send worker controls are off in the latest recorded production configuration.",
       },
     ],
   },
   {
-    title: "Payments",
-    description: "Take payment at discharge, in the same flow as billing.",
+    title: "Payer workflows",
+    description:
+      "Oralstack can support the clinic-side estimate and reconciliation workflow without claiming an external government submission.",
     icon: "CreditCard",
     items: [
-      { name: "Stripe", status: "Beta", description: "Card payments in supported regions." },
       {
-        name: "PayNow (Singapore)",
-        status: "Roadmap",
-        description: "Local instant transfer via QR.",
+        name: "CHAS estimate and payer tracking",
+        status: "Available",
+        description:
+          "Tier guidance, an Oralstack estimate, checkout splitting, and manual reconciliation. CHAS and the clinic's existing system remain authoritative.",
       },
       {
-        name: "Card terminal integration",
-        status: "Roadmap",
-        description: "Tap-to-pay devices via partner.",
+        name: "SmartCMS electronic submission",
+        status: "Not enabled",
+        description:
+          "The claim lifecycle is implemented locally, but the outbound SmartCMS gateway is deliberately not connected.",
       },
-    ],
-  },
-  {
-    title: "Identity & SSO",
-    description: "Sign in with what your team and patients already use.",
-    icon: "KeyRound",
-    items: [
-      { name: "Google Workspace SSO", status: "Live", description: "OAuth-based staff sign-in." },
-      { name: "Microsoft 365 SSO", status: "Live", description: "Azure AD / Entra ID." },
       {
-        name: "SingPass",
-        status: "Beta",
-        description: "Patient identity verification for Singapore deployments.",
+        name: "MediSave electronic claims",
+        status: "Not enabled",
+        description:
+          "Eligibility can be represented in the local workflow; no production MediSave submission transport is claimed.",
       },
     ],
   },
   {
-    title: "Accounting & exports",
-    description: "Hand financial data to the systems your accountants already run.",
+    title: "Accounting and exports",
+    description:
+      "Reviewed exports are available for handoff. Direct accounting-system posting is a separate capability and is not implied.",
     icon: "FileSpreadsheet",
     items: [
-      { name: "Xero", status: "Beta", description: "Daily revenue + invoice export." },
-      { name: "QuickBooks", status: "Roadmap", description: "Daily revenue + invoice export." },
       {
-        name: "CSV / JSON export",
-        status: "Live",
-        description: "Audit-ready exports of any clinical or financial table.",
+        name: "Finance reconciliation CSV",
+        status: "Available",
+        description:
+          "Copy reviewed finance reconciliation data as CSV for an accountant or an existing accounting workflow.",
+      },
+      {
+        name: "Clinic insights CSV",
+        status: "Available",
+        description:
+          "Export the currently displayed clinic-insights view for local review and analysis.",
+      },
+      {
+        name: "Direct Xero OAuth and posting",
+        status: "Not enabled",
+        description:
+          "There is no direct Xero connection or automatic posting. Use the reviewed CSV handoff instead.",
       },
     ],
   },
   {
-    title: "Migration",
-    description: "Move from legacy PMS to Oralstack without losing patient history.",
-    icon: "ArrowRightLeft",
+    title: "Identity and access",
+    description:
+      "Current access controls are native to Oralstack. External identity-provider support is listed separately so it is not mistaken for active SSO.",
+    icon: "KeyRound",
     items: [
       {
-        name: "Plato → Oralstack",
-        status: "Beta",
-        description: "Field-for-field migration tooling for the dominant Singapore PMS.",
+        name: "Password sign-in and TOTP MFA",
+        status: "Available",
+        description:
+          "TOTP enrolment and sign-in checks are implemented. Clinic-wide MFA enforcement is not enabled in the latest recorded production configuration.",
       },
-      { name: "Open Dental CSV import", status: "Live", description: "Standard schema import." },
       {
-        name: "Generic CSV import",
-        status: "Live",
-        description: "For clinics on home-grown systems or spreadsheets.",
+        name: "Organization and clinic access",
+        status: "Available",
+        description:
+          "Authorized organization owners and managers can administer membership and exact clinic access across a multi-clinic group.",
+      },
+      {
+        name: "Google Workspace or Microsoft Entra SSO",
+        status: "Not enabled",
+        description: "No production Google or Microsoft staff SSO is currently represented.",
+      },
+      {
+        name: "SCIM provisioning",
+        status: "Not enabled",
+        description: "The route surface is dark and the latest recorded production flag is off.",
+      },
+    ],
+  },
+  {
+    title: "Imaging exchange",
+    description:
+      "Generic DICOM work has been built and tested behind dark-launch controls; that is not the same as a production imaging integration.",
+    icon: "Aperture",
+    items: [
+      {
+        name: "Generic DICOMweb ingest and viewer",
+        status: "Not enabled",
+        description:
+          "Tenant-scoped ingest and viewing exist for controlled evaluation, but the latest recorded production flags are off.",
+      },
+      {
+        name: "Calibrated image measurements",
+        status: "Not enabled",
+        description:
+          "Requires calibration metadata plus clinical and regulatory approval; uncalibrated images do not fabricate millimetre values.",
+      },
+      {
+        name: "Named sensor-device bridges",
+        status: "Not enabled",
+        description: "No production sensor SDK connector is currently advertised as available.",
       },
     ],
   },

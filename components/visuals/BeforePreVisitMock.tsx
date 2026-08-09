@@ -8,19 +8,19 @@
 // phones with no audit trail.
 
 const intakeQueue = [
-  { name: "Lim Wei Jian · #1042", status: "returned", note: "complete · arrived" },
+  { name: "Demo patient 101 · DEMO-1042", status: "returned", note: "complete · arrived" },
   {
-    name: "Devi Krishnan · #1054",
+    name: "Demo patient 102 · DEMO-1054",
     status: "pending",
     note: "PDF emailed Mon · no reply · arriving in 25 min",
   },
   {
-    name: "Aaron Teo · #1067",
+    name: "Demo patient 103 · DEMO-1067",
     status: "pending",
     note: "form printed but not filled · paper at desk",
   },
   {
-    name: "Mei Lin Tan · #1042",
+    name: "Demo patient 104 · DEMO-1042",
     status: "pending",
     note: "needs to call HSA to verify CHAS tier",
   },

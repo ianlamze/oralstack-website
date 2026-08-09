@@ -4,7 +4,8 @@ import { openDental } from "@/content/comparisons/open-dental";
 
 export const metadata: Metadata = {
   title: openDental.metaTitle,
-  description: openDental.metaDescription,
+  description:
+    "Archived comparison. Review Oralstack's current Plato-connected product scope and rollout boundaries before procurement.",
   alternates: { canonical: `/compare/${openDental.slug}` },
 };
 

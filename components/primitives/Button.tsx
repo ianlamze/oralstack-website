@@ -10,12 +10,13 @@ type ButtonProps = ComponentPropsWithoutRef<"a"> & {
 };
 
 const base =
-  "inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-[var(--radius-md)] transition-colors duration-150 min-h-[44px]";
+  "inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-semibold transition-[background-color,color,border-color,box-shadow,transform] duration-150";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-[var(--color-ink)] text-[var(--color-canvas)] hover:bg-[var(--color-accent-deep)]",
+  primary:
+    "bg-[var(--color-ink)] text-[var(--color-canvas)] shadow-[var(--shadow-1)] hover:-translate-y-px hover:bg-[var(--color-accent-deep)] hover:shadow-[var(--shadow-2)]",
   ghost:
-    "text-[var(--color-ink)] border border-[var(--color-border-strong)] hover:bg-[var(--color-canvas-tinted)]",
+    "border border-[var(--color-border-strong)] bg-[var(--color-surface-raised)] text-[var(--color-ink)] hover:bg-[var(--color-canvas-tinted)]",
 };
 
 export default function Button({

@@ -32,57 +32,56 @@ type CardItem = {
 const whereDataLives: CardItem[] = [
   {
     icon: Globe,
-    title: "Region hosting · Singapore",
-    body: "Production runs in Google Cloud's asia-southeast1 region (Singapore). Patient data does not leave the region without explicit consent. The marketing site is on Cloudflare Pages with the same APAC-first edge profile.",
+    title: "Documented deployment · Singapore",
+    body: "The latest repository deployment record places the application and primary data services in Google Cloud's Singapore region. Deployment-specific processors and outbound data paths are reconfirmed during procurement.",
   },
   {
     icon: Layers,
-    title: "Tenant isolation · row-level",
-    body: "Every clinic record is tagged with a tenant ID at the database row level. Postgres Row-Level Security policies enforce isolation in the database, not just the application — a missing tenant filter in code cannot cross clinics.",
+    title: "Tenant isolation · database-enforced",
+    body: "Postgres Row-Level Security, a non-owner application role, and request-scoped clinic binding enforce tenant boundaries in the database. Isolation tests cover missing scope and cross-clinic access.",
   },
   {
     icon: FileLock2,
-    title: "Encryption · in transit and at rest",
-    body: "TLS 1.3 in transit; AES-256 at rest for database, backups, and uploaded imaging. Sensor-bridge integration uses the OS-level secure channel; no patient data is written to local disk.",
+    title: "Encryption · layered controls",
+    body: "Transport encryption and cloud-managed encryption at rest cover the deployed data services. Selected high-risk fields also use application-layer AES-256-GCM. We do not claim that every field is application-encrypted.",
   },
 ];
 
 const accessControl: CardItem[] = [
   {
     icon: ShieldCheck,
-    title: "Multi-factor authentication",
-    body: "MFA is required for all user accounts, with TOTP support out of the box. Recovery flows route through a verified channel — never the email address that lost MFA in the first place.",
+    title: "Multi-factor authentication · supported",
+    body: "TOTP enrolment, encrypted secret storage, and sign-in gates are implemented. The latest recorded production state does not enforce MFA for every staff account.",
   },
   {
     icon: Network,
-    title: "Role-based access · least privilege",
-    body: "Roles are defined per clinic — front desk, hygienist, clinician, owner. The role determines which routes the user can reach and which audit-log entries they can read. SSO via Google Workspace and Microsoft 365 is in production; SingPass is in beta.",
+    title: "Role and clinic-scoped access",
+    body: "Active organization membership, bounded organization roles, and exact clinic access protect multi-clinic routes. Google and Microsoft SSO, SCIM, and granular custom-permission enforcement are not enabled in the latest recorded configuration.",
   },
   {
     icon: ScrollText,
-    title: "Audit log · append-only",
-    body: "Reads and writes against patient data are written to an append-only audit log: who, what, when, from where. The log is queryable by clinic admins. Engineers cannot disable the audit log; entries are retained for 7 years unless a clinic explicitly requests purge.",
+    title: "Audit integrity · tamper-evident",
+    body: "Audited actions are linked with an HMAC chain so integrity checks can detect alteration. The latest recorded production evidence also marks audit verification and immutable backup controls as active.",
   },
 ];
 
 const reliability: CardItem[] = [
   {
     icon: DatabaseBackup,
-    title: "Backups · daily, integrity-verified",
-    body: "Daily encrypted backups with point-in-time recovery. Restore RPO target: 15 minutes. RTO target: 1 hour. Integrity-verified restore drills run on a fixed cadence — not just backups taken, backups tested.",
+    title: "Backups · recorded controls",
+    body: "The latest production-state record marks immutable backup storage and audit-integrity verification as active. Recovery objectives, restore cadence, and deployment-specific evidence are confirmed during procurement.",
   },
   {
     icon: Activity,
     title: "Status & uptime",
     body: (
       <>
-        Live platform status, target uptime, scheduled maintenance, and the incident-response
-        posture live on the{" "}
+        The{" "}
         <a href="/status" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           status page
-        </a>
-        . Customer admins are notified by email when an incident affects a service their clinic
-        depends on.
+        </a>{" "}
+        publishes a dated capability snapshot and its evidence boundary. It is not presented as a
+        live telemetry or uptime monitor.
       </>
     ),
   },
@@ -98,48 +97,44 @@ const reliability: CardItem[] = [
         >
           security@oralstack.com
         </a>
-        . We acknowledge within 2 working days and confirm a fix or mitigation timeline within 7.
+        . Include a concise reproduction and a safe contact method. Response timing depends on
+        severity and will be confirmed when the report is triaged.
       </>
     ),
   },
 ];
 
 type ComplianceItem = {
-  status: "live" | "available" | "roadmap";
+  status: "implemented" | "in-progress" | "not-held";
   title: string;
   body: string;
 };
 
 const complianceItems: ComplianceItem[] = [
   {
-    status: "live",
-    title: "Singapore PDPA",
-    body: "The data model is designed against Singapore PDPA from day one — clinics remain the data controller; Oralstack acts as data intermediary. Tenant-isolated, region-hosted, consent-tracked.",
+    status: "implemented",
+    title: "Security controls in the deployed stack",
+    body: "Tenant RLS, audit-integrity checks, origin controls, managed encryption, and selected-field application encryption are evidenced in the latest recorded platform snapshot. These controls are not a certification.",
   },
   {
-    status: "live",
-    title: "HIPAA Privacy & Security Rule alignment",
-    body: "The platform is built against HIPAA Privacy/Security Rule requirements (administrative, physical, and technical safeguards). Not yet HIPAA-attested by a third party — that is on the 2026 roadmap.",
+    status: "in-progress",
+    title: "Singapore PDPA and CE-HIMS readiness",
+    body: "The product is being developed to support Singapore privacy and health-system obligations. Formal CE-HIMS readiness work still has material open items, so Oralstack does not claim CE-HIMS certification or blanket PDPA compliance.",
   },
   {
-    status: "available",
-    title: "Business Associate Agreement (BAA)",
-    body: "A BAA is available for clinics that require one. Contact hello@oralstack.com to request the current draft for legal review before pilot signing.",
+    status: "in-progress",
+    title: "External vulnerability assessment",
+    body: "Internal security rehearsals and automated checks exist. A formal, accepted independent vulnerability assessment and penetration test is not yet evidenced as complete.",
   },
   {
-    status: "available",
-    title: "Data Processing Agreement (DPA)",
-    body: "A DPA is available for clinics with PDPA, GDPR, or other data-protection-regulation obligations. Includes the controller/processor role model, subprocessor list, and SCC reference where applicable.",
+    status: "not-held",
+    title: "CE-HIMS certification",
+    body: "Not currently held. Repository readiness materials record a no-go for certification submission until the remaining technical, operational, and evidence gaps are closed.",
   },
   {
-    status: "roadmap",
-    title: "SOC 2 Type II",
-    body: "Targeted for second half of 2026. We're tracking the controls today, with a third-party auditor selection in Q3.",
-  },
-  {
-    status: "roadmap",
-    title: "HIPAA third-party attestation",
-    body: "Targeted alongside the SOC 2 audit — a single audit window covering both frameworks where the controls overlap.",
+    status: "not-held",
+    title: "SOC 2, ISO 27001, and HIPAA attestation",
+    body: "No SOC 2 report, ISO 27001 certification, or independent HIPAA attestation is claimed on this page.",
   },
 ];
 
@@ -155,27 +150,27 @@ const legalDocs = [
     href: "/terms",
   },
   {
-    label: "Master Service Agreement (product)",
-    detail: "Pilot and production customer contract. Sent on request.",
+    label: "Product agreement",
+    detail: "Request the current pilot or production terms for legal review.",
     href: "mailto:hello@oralstack.com?subject=Oralstack%20MSA%20request",
     external: true,
   },
   {
-    label: "Data Processing Agreement",
-    detail: "Controller / processor role model, subprocessors, SCCs. Sent on request.",
+    label: "Data processing terms",
+    detail:
+      "Confirm the current controller/intermediary terms and deployment scope during procurement.",
     href: "mailto:hello@oralstack.com?subject=Oralstack%20DPA%20request",
     external: true,
   },
   {
-    label: "Business Associate Agreement",
-    detail: "For clinics requiring HIPAA-aligned safeguards.",
-    href: "mailto:hello@oralstack.com?subject=Oralstack%20BAA%20request",
+    label: "Security evidence pack",
+    detail: "Request the current control summary, open-gap register, and evidence review boundary.",
+    href: "mailto:security@oralstack.com?subject=Oralstack%20security%20evidence%20request",
     external: true,
   },
   {
-    label: "Subprocessor list",
-    detail:
-      "Google Cloud (Singapore region · primary infra), Cloudflare (CDN, marketing site), Resend (transactional email), Twilio (SMS fallback), WhatsApp Business via Meta. Updated alongside the DPA.",
+    label: "Deployment-specific subprocessor information",
+    detail: "Request the current list for the services and optional providers in your deployment.",
     href: "mailto:hello@oralstack.com?subject=Subprocessor%20list%20request",
     external: true,
   },
@@ -188,17 +183,17 @@ export default function SecurityPage() {
 
       <Section className="pb-12">
         <p className="max-w-[68ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack handles dental clinic records. Security is part of how the product is built —
-          not a checkbox at the end. This page describes our current posture honestly. Where we are
-          working toward a control rather than already meeting it, we say so. Reviewed quarterly;
-          last reviewed 28 April 2026.
+          Oralstack handles dental clinic records, so its security claims need evidence and clear
+          boundaries. This summary reflects repository evidence reviewed through 6 August 2026; the
+          latest recorded production-flag snapshot is dated 20 July 2026. Deployment details must be
+          reconfirmed during procurement.
         </p>
       </Section>
 
       <Section className="pb-12">
         <SectionGroup
           eyebrow="Where data lives"
-          heading="Region-hosted, tenant-isolated, encrypted end-to-end."
+          heading="Documented deployment, database-enforced tenant scope, layered encryption."
           items={whereDataLives}
         />
       </Section>
@@ -206,7 +201,7 @@ export default function SecurityPage() {
       <Section className="pb-12">
         <SectionGroup
           eyebrow="How access is controlled"
-          heading="MFA, role-based access, an audit log engineers cannot disable."
+          heading="MFA support, scoped access, and tamper-evident audit integrity."
           items={accessControl}
         />
       </Section>
@@ -214,7 +209,7 @@ export default function SecurityPage() {
       <Section className="pb-12">
         <SectionGroup
           eyebrow="Backups, recovery, and incidents"
-          heading="Daily backups, tested restores, public status, vulnerability disclosure."
+          heading="Recorded backup controls, a dated status snapshot, and a disclosure channel."
           items={reliability}
         />
       </Section>
@@ -225,7 +220,7 @@ export default function SecurityPage() {
             Compliance posture
           </p>
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[40ch]">
-            What's in place today, what's available on request, what's on the roadmap.
+            Implemented controls are separate from readiness work and certifications not held.
           </h2>
           <ul className="grid gap-3">
             {complianceItems.map((c) => (
@@ -242,8 +237,8 @@ export default function SecurityPage() {
             ))}
           </ul>
           <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-            We don't claim certifications we haven't earned. The roadmap items above are tracked
-            transparently and updated on this page.
+            “Implemented” describes evidenced product controls, not legal compliance, certification,
+            or an independent attestation.
           </p>
         </div>
       </Section>
@@ -287,7 +282,7 @@ export default function SecurityPage() {
           </ul>
           <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
             The marketing-site Privacy and Terms cover oralstack.com only. Product customers sign
-            the MSA and any required BAA / DPA before pilot start.
+            the current commercial and data-processing terms agreed for their deployment.
           </p>
         </div>
       </Section>
@@ -305,9 +300,9 @@ export default function SecurityPage() {
               Security questionnaire or controls walkthrough?
             </h2>
             <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-              Procurement teams can request a completed security questionnaire (CAIQ-Lite or your
-              own template) and a 30-minute controls walkthrough with the engineer who runs the
-              infrastructure. Two working days for a first response.
+              Procurement teams can request the current evidence boundary, open-gap register, a
+              security questionnaire, and a controls walkthrough. We will distinguish implemented
+              controls from planned work in the response.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -367,22 +362,22 @@ function ComplianceStatusPill({ status }: { status: ComplianceItem["status"] }) 
     ComplianceItem["status"],
     { label: string; bg: string; fg: string; border: string; Icon: typeof BadgeCheck }
   > = {
-    live: {
-      label: "Live",
+    implemented: {
+      label: "Implemented",
       bg: "bg-[color-mix(in_oklch,var(--color-tide-deep),white_88%)]",
       fg: "text-[var(--color-tide-deep)]",
       border: "border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)]",
       Icon: BadgeCheck,
     },
-    available: {
-      label: "Available",
+    "in-progress": {
+      label: "In progress",
       bg: "bg-white",
       fg: "text-[var(--color-text)]",
       border: "border-[var(--color-border-strong)]",
       Icon: BadgeCheck,
     },
-    roadmap: {
-      label: "Roadmap",
+    "not-held": {
+      label: "Not held",
       bg: "bg-[oklch(0.95_0.06_75)]",
       fg: "text-[oklch(0.45_0.13_75)]",
       border: "border-[oklch(0.78_0.13_75/0.5)]",

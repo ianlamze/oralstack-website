@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, ArrowRight, Check, type LucideIcon, RotateCcw, Truck } from "lucide-react";
 import { initialItems, todaysDeductions } from "@/content/inventory/data";
 import type { InventoryItem, InventoryStatus } from "@/content/inventory/types";
@@ -34,8 +34,6 @@ export default function Inventory() {
   const [items, setItems] = useState<InventoryItem[]>(initialItems);
   const [selectedId, setSelectedId] = useState<string | null>(DEMO_ITEM_ID);
   const [filter, setFilter] = useState<Filter>("all");
-  const reduceMotion = useReducedMotion();
-
   const filtered = useMemo(
     () => (filter === "all" ? items : items.filter((i) => i.status === filter)),
     [items, filter],
@@ -95,7 +93,7 @@ export default function Inventory() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · 8 SKUs tracked
+          Sample Dental Clinic · 8 SKUs tracked
         </span>
       </div>
 
@@ -148,10 +146,10 @@ export default function Inventory() {
               return (
                 <motion.li
                   key={i.id}
-                  layout={!reduceMotion}
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  layout
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
                 >
                   <button

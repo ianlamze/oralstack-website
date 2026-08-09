@@ -7,7 +7,7 @@ export const dfiSynergy: CaseStudy = {
   eyebrow: "Customer story · Pilot · Singapore",
   title: "How DFI Synergy moved their front desk into Oralstack in three days.",
   outcome:
-    "A three-chair, four-provider clinic in Singapore replaced a paper diary and WhatsApp-led rescheduling with Oralstack's drag-driven schedule and discharge-flow billing — with no migration downtime and no fallback diary in parallel.",
+    "A three-chair, four-provider clinic in Singapore piloted Oralstack's appointment, reception, and reviewed checkout workflows alongside its clinic operations.",
 
   profile: {
     location: "Singapore",
@@ -15,8 +15,8 @@ export const dfiSynergy: CaseStudy = {
     providers: 4,
     specialty: "General dentistry + hygiene",
     pilotStart: "April 2026",
-    inProduction: ["Scheduling", "Billing", "Charting", "Recall"],
-    notYet: ["Imaging (v13 rollout)", "Patient portal", "WhatsApp recall templates"],
+    inProduction: ["Appointments", "Reception", "Reviewed checkout"],
+    notYet: ["DICOM/device imaging", "Automated WhatsApp recall", "Public self-booking"],
   },
 
   pullQuoteHero: {
@@ -27,7 +27,7 @@ export const dfiSynergy: CaseStudy = {
 
   pullQuoteMid: {
     quote:
-      "The drag-to-reschedule was the moment it clicked. We move a patient from 10:00 to 14:00 in three seconds, and the confirmation message goes out before they've hung up the phone.",
+      "The drag-to-reschedule was the moment it clicked. We could move a patient while keeping the day visible to the rest of the front desk.",
     attribution: "Clinical director, DFI Synergy",
   },
 
@@ -47,26 +47,26 @@ export const dfiSynergy: CaseStudy = {
       heading: "Why Oralstack",
       paragraphs: [
         "DFI Synergy evaluated three options to replace the paper-and-WhatsApp setup: continue with Plato (the dominant Singapore PMS), Open Dental, or Oralstack. The shortlist came down to two requirements neither legacy option met cleanly.",
-        "The first was a schedule the front desk could drive in seconds, not consult through forms — drag-to-reschedule with timezone-correct commits, inline new-patient registration, recall candidates surfaced before they aged. The second was billing tied to the chart so treatment lines populated themselves at discharge, with insurance and patient portion structurally separate.",
-        "Oralstack was chosen on a third factor as well: APAC region hosting, with a tenant-isolated data model designed against Singapore PDPA from day one. The clinic agreed to a three-day front-desk cutover with no fallback diary kept in parallel — a deliberate forcing function. Legacy paper-and-WhatsApp records reconciled into Oralstack in the background over the following weeks.",
+        "The first was a schedule and reception view the front desk could work from throughout the day. The second was a reviewed checkout flow that kept billable lines, payer estimates, payment recording, and receipts together while preserving the Plato connection boundary.",
+        "Oralstack was chosen on a third factor as well: APAC region hosting and a tenant-isolated data model. The clinic agreed to a focused front-desk pilot; this case study does not claim that every legacy record or native PMS workflow was migrated into Oralstack.",
       ],
     },
     {
-      heading: "What's running today",
+      heading: "What ran in the pilot",
       paragraphs: [
-        "Schedule and billing went live on day three. Charting followed within the first week, recall in week two.",
+        "The initial pilot focused on the staff-facing clinic day and checkout hand-off.",
       ],
       bullets: [
-        "Schedule — 3 chairs, 4 providers, drag-to-reschedule with timezone-correct commits.",
-        "Billing — discharge-and-bill in the same flow, with treatment lines auto-populated from the chart.",
-        "Charting — tooth-led charting; case notes link to specific surfaces.",
-        "Recall — hygiene candidates surface three weeks before the due date, sorted by recall age.",
+        "Appointments — a shared provider schedule with staff booking and rescheduling.",
+        "Reception — arrival, queue, chair hand-off, and checkout status in one workboard.",
+        "Checkout — staff-reviewed line items, payer estimates, payment recording, and receipts.",
+        "Patient context — directory access and a unified folder for visits, billing, and clinical work.",
       ],
     },
     {
       heading: "What's next",
       paragraphs: [
-        "DFI Synergy is the v13 imaging cohort: DICOM viewer in the patient chart, plus sensor-bridge integration for chairside capture. WhatsApp-templated recall messaging and insurance-line separation in billing follow in the next phase.",
+        "DICOM/device ingest, automated WhatsApp recall, and other controlled rollouts are not included in the generally available scope described by this case study.",
       ],
     },
   ],

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, PenLine, RotateCcw } from "lucide-react";
 import { conversion, initialPhases, planContext } from "@/content/plan-presentation/data";
 import type { PlanPhase, PlanPriority } from "@/content/plan-presentation/types";
@@ -27,8 +27,6 @@ export default function PlanPresentation() {
   const [phases, setPhases] = useState<PhaseState[]>(() => buildInitial());
   const [signed, setSigned] = useState(false);
   const [accepted, setAccepted] = useState(false);
-  const reduceMotion = useReducedMotion();
-
   const totals = useMemo(() => {
     const acceptedPhases = phases.filter((p) => p.accepted);
     const procedures = acceptedPhases.flatMap((p) => p.procedures);
@@ -88,7 +86,7 @@ export default function PlanPresentation() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · Dr Wong
+          Sample Dental Clinic · Provider A
         </span>
       </div>
 
@@ -188,14 +186,14 @@ export default function PlanPresentation() {
           {accepted && (
             <motion.div
               key="accepted-overlay"
-              initial={reduceMotion ? false : { opacity: 0 }}
+              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
               className="absolute inset-0 grid place-items-center rounded-[var(--radius-lg)] bg-[oklch(0.99_0.005_240/0.92)] backdrop-blur-sm p-5"
             >
               <motion.div
-                initial={reduceMotion ? false : { y: 6, opacity: 0 }}
+                initial={{ y: 6, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.22 }}
                 className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 max-w-[440px] w-full text-center grid gap-3"

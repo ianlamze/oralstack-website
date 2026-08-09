@@ -1,17 +1,17 @@
 import type { PatientProfile } from "./types";
 
-// Five patients across the severity spectrum. Hafiz Yusof opens the demo —
+// Five patients across the severity spectrum. Demo patient 101 opens the demo —
 // penicillin allergy + amoxicillin pre-med = blocked, must acknowledge a
-// substitution before booking proceeds. Tan Boon Hwee shows the warfarin
-// case (warn). Daniel Ong shows a benign info-level alert.
+// substitution before booking proceeds. Demo patient 104 shows the warfarin
+// case (warn). Demo patient 106 shows a benign info-level alert.
 
 export const initialPatients: PatientProfile[] = [
   {
     id: "ma1",
-    name: "Hafiz Yusof",
+    name: "Demo patient 101",
     age: 29,
     bookedProcedure: "Surgical extraction · 38",
-    bookedAt: "Tomorrow · 14:00 · Dr Wong",
+    bookedAt: "Tomorrow · 14:00 · Provider A",
     allergies: [
       {
         agent: "Penicillin",
@@ -34,10 +34,10 @@ export const initialPatients: PatientProfile[] = [
   },
   {
     id: "ma2",
-    name: "Tan Boon Hwee",
+    name: "Demo patient 104",
     age: 62,
     bookedProcedure: "Surgical extraction · 47",
-    bookedAt: "Thu 1 May · 09:00 · Dr Wong",
+    bookedAt: "Thu 1 May · 09:00 · Provider A",
     allergies: [],
     medications: [
       {
@@ -48,7 +48,10 @@ export const initialPatients: PatientProfile[] = [
       { name: "Metformin 500 mg BD", reason: "Type 2 diabetes" },
     ],
     conditions: [
-      { name: "Atrial fibrillation", detail: "Cardiologist: Dr Goh · NHCS" },
+      {
+        name: "Atrial fibrillation",
+        detail: "Cardiologist: External specialist A · specialist centre",
+      },
       { name: "Type 2 diabetes", detail: "HbA1c 7.2% (Mar)" },
     ],
     alerts: [
@@ -63,7 +66,7 @@ export const initialPatients: PatientProfile[] = [
         severity: "info",
         title: "Coordinate with cardiologist on warfarin hold",
         detail:
-          "Dr Goh (NHCS) typically advises continuing warfarin through routine extractions; confirm before chair.",
+          "External specialist A (specialist centre) typically advises continuing warfarin through routine extractions; confirm before chair.",
         reason: "Anticoagulation management",
       },
     ],
@@ -71,10 +74,10 @@ export const initialPatients: PatientProfile[] = [
   },
   {
     id: "ma3",
-    name: "Pavithra R",
+    name: "Demo patient 105",
     age: 54,
     bookedProcedure: "Implant placement · 36",
-    bookedAt: "Mon 4 May · 10:00 · Dr Lim",
+    bookedAt: "Mon 4 May · 10:00 · Provider B",
     allergies: [],
     medications: [
       {
@@ -97,10 +100,10 @@ export const initialPatients: PatientProfile[] = [
   },
   {
     id: "ma4",
-    name: "Daniel Ong",
+    name: "Demo patient 106",
     age: 38,
     bookedProcedure: "Composite filling · 26",
-    bookedAt: "Today · 15:00 · Dr Lim",
+    bookedAt: "Today · 15:00 · Provider B",
     allergies: [
       {
         agent: "Latex",
@@ -123,10 +126,10 @@ export const initialPatients: PatientProfile[] = [
   },
   {
     id: "ma5",
-    name: "Mei Lin Tan",
+    name: "Demo patient 102",
     age: 34,
     bookedProcedure: "Polish & scale",
-    bookedAt: "Today · 11:30 · Sara Lim",
+    bookedAt: "Today · 11:30 · Provider C",
     allergies: [],
     medications: [{ name: "Prenatal multivitamin" }],
     conditions: [{ name: "Pregnant", detail: "T2 · 22 weeks" }],

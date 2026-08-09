@@ -8,7 +8,7 @@ import AnimateInView from "@/components/motion/AnimateInView";
 export const metadata: Metadata = {
   title: "For multi-clinic & DSO",
   description:
-    "Oralstack for multi-location dental groups and DSOs — tenant-isolated SaaS, single-login multi-clinic consolidation, version consistency, and operations-grade analytics.",
+    "Oralstack for multi-location dental groups — authorized organization access, clinic switching, group health, today-KPI rollups, and tenant-scoped workflows.",
   alternates: { canonical: "/for-multi-clinic" },
 };
 
@@ -17,7 +17,7 @@ export default function ForMultiClinicPage() {
     <main>
       <PageHeader
         eyebrow="For multi-clinic & DSO"
-        title="One PMS, every clinic, one version."
+        title="One operating view across authorized clinics."
         variant="display"
       />
 
@@ -25,8 +25,8 @@ export default function ForMultiClinicPage() {
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           For groups operating two to twenty clinics under one organisation — where the office
           manager runs the chair and the COO runs the spreadsheet that consolidates everything.
-          Oralstack&apos;s tenant model is built for this from day one, not bolted on after a
-          single-clinic install became popular.
+          Oralstack adds organization access, clinic switching, group rollups, and a shared
+          operating workspace around the connected clinic systems.
         </p>
       </Section>
 
@@ -50,8 +50,8 @@ export default function ForMultiClinicPage() {
         <div className="grid gap-12 md:gap-14 max-w-[760px]">
           <Reason
             eyebrow="What multi-clinic ops actually need · 1"
-            title="Tenant isolation, not multi-database juggling."
-            body="Most legacy PMS were built for one clinic and adapted to multi-clinic later — typically by running a separate database per clinic, with reconciliation reports that pull from each one. Oralstack uses Postgres row-level security to enforce per-clinic data separation in a single database, with one login that surfaces every clinic the operator has access to. No DBAs, no consolidation pipelines, no reporting drift."
+            title="Clinic-scoped access, enforced in the data layer."
+            body="Oralstack uses PostgreSQL row-level security to enforce tenant scope and only surfaces clinics an organization user is authorized to reach. Organization staff and access management support onboarding, offboarding, and clinic switching without treating every location as an unrelated login."
           />
           <Reason
             eyebrow="What multi-clinic ops actually need · 2"
@@ -61,7 +61,7 @@ export default function ForMultiClinicPage() {
           <Reason
             eyebrow="What multi-clinic ops actually need · 3"
             title="Operations analytics that surface where operators look."
-            body="Chair utilisation across all locations, by chair and day. Revenue per chair by clinic, week-over-week, with delta callouts. Recall coverage rate per location. No-show rate trended in clinic-local timezones. Daily snapshot in the dashboard, weekly digest in the inbox — built for the COO who wants the punch list, not the spreadsheet pull."
+            body="Authorized managers can review group health and today-KPI rollups, then move into clinic-level booked and collected trends, outstanding payer amounts, daily-close work, and today-only provider and chair utilisation. Estimated or inferred measures stay labeled as such."
           />
         </div>
       </Section>
@@ -116,29 +116,29 @@ export default function ForMultiClinicPage() {
               and write is logged with user, clinic, and resource. Queryable per-clinic for PDPC,
               IRAS, or internal audits.{" "}
               <a
-                href="/articles/dental-audit-logs"
+                href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
-                What auditors look for →
+                Security and audit posture →
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Migration:</span> we run group
-              migrations clinic-by-clinic, on a three-week cadence per location, no fallback diary
-              kept in parallel.{" "}
+              <span className="font-medium text-[var(--color-text)]">Rollout:</span> clinic
+              connections, access scope, and enabled modules are planned location by location. We do
+              not present a fixed full-PMS migration timeline as a product feature.{" "}
               <a
-                href="/articles/plato-to-cloud-migration"
+                href="/workflows"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
-                The migration playbook →
+                Current product scope →
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Reporting:</span> chair
-              utilisation heatmap, revenue per chair, recall coverage, no-show trend — all
-              timezone-correct per clinic.{" "}
+              <span className="font-medium text-[var(--color-text)]">Reporting:</span> booked and
+              collected trends, outstanding payer amounts, daily-close views, provider performance,
+              today-only utilisation, and CSV where exposed.{" "}
               <a
-                href="/workflows#operations"
+                href="/workflows#insights"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
                 Operations workflow →

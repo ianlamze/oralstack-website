@@ -2,6 +2,11 @@
 
 How to add the most common content surfaces. Each pattern is copy-paste-able and matches the conventions already in the codebase. If you're touching shared components or adding a new pattern type, see [MAINTAINABILITY.md](MAINTAINABILITY.md) first for the architectural shape.
 
+> **Release boundary:** comparison, article, lead-magnet, journey, and tool-detail
+> routes are retained as local source but removed from the production export by
+> `scripts/finalize-export.mjs`. Releasing one requires a current product-truth
+> review, navigation and sitemap updates, and removal from the exclusion contract.
+
 ## Conventions, in three lines
 
 - Pages live at `app/<route>/page.tsx`. Each exports `metadata` (Next-typed) and a default component returning `<main>` with `<PageHeader>` first.
@@ -35,9 +40,11 @@ How to add the most common content surfaces. Each pattern is copy-paste-able and
    }
    ```
 
-4. **Add to sitemap** in [app/sitemap.ts](../app/sitemap.ts), priority 0.8.
+4. **Keep it local by default.** Do not add it to the sitemap until its competitor
+   claims have been reverified and the route is approved for release.
 
-5. **Surface in nav** if relevant — the mega panel already links to `/compare` (the index, which auto-includes new comparisons via `comparisons` array).
+5. **Release deliberately.** A published comparison also needs navigation review,
+   sitemap inclusion, smoke coverage, and a finalizer-policy change.
 
 That's it. The page renders with the standard 11-row table, three Reason blocks, concession card, and CTA. No JSX changes needed.
 
@@ -78,12 +85,15 @@ That's it. The page renders with the standard 11-row table, three Reason blocks,
    }
    ```
 
-3. **Register it** in [content/articles/index.ts](content/articles/index.ts) — add the import + array entry. The page route at `/articles/[slug]` auto-generates from the array.
+3. **Register it** in [content/articles/index.ts](content/articles/index.ts) — add the
+   import + array entry. The local route auto-generates from the array, but remains
+   excluded from production until it passes a current product-truth review.
 
 **Article voice rules:**
 - Lead with the dental job, not the SaaS abstraction. "Recall fires three weeks before due" beats "leverage automation to drive engagement".
 - Every numeric claim has a source (a customer, an article, a vendor doc). Use the dental industry numbers consistently across the site (60% → 85% same-day-bill, three weeks to live, asia-southeast1).
-- Cross-link to other articles, /compare/X, /workflows#section, /security where it helps the reader's next step.
+- Cross-link only to released routes. `/workflows` and `/security` are safe defaults;
+  archived article and comparison URLs will return 404 in production.
 - Use `&apos;` for apostrophes and `&ldquo;`/`&rdquo;` for quotes inside JSX text. Plain `'` works inside string literals (data files), not inside JSX text content.
 
 ## Add a vertical landing page (~1 hour)

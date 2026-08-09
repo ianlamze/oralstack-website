@@ -11,18 +11,18 @@ Static Next.js 16 marketing site at https://oralstack.com. Static export to `out
 1. **Brand name** — "Oralstack" in prose (capital O), `oralstack` in code/URLs. Never "Dentologic" in user-facing copy.
 2. **DFI Synergy framing** — DFI Synergy is an arms-length cornerstone customer, never the operator-founder. No "our own clinic", "built where it ships", "operator-founder", "design partner". Quote attribution uses roles only ("Practice manager", "Clinical director"), never "Founder, DFI Synergy & Oralstack".
 3. **Banned SaaS words** — "all-in-one", "seamless", "supercharge", "unlock", "transform", "best-in-class", "effortless". `npm run check:content` catches these.
-4. **Content is data, not JSX** — articles, comparisons, customers, workflows, case studies, lead magnets all live in [content/](content/) as typed `.ts`/`.tsx`. Pages in [app/](app/) are thin shells consuming that data. **Edit the data file, not the page.**
+4. **Content is data, not JSX** — customers, workflows, and case studies live in [content/](content/) as typed `.ts`/`.tsx`. Pages in [app/](app/) are thin shells consuming that data. Articles, comparisons, and lead magnets are archived source and are removed from the production export. **Edit the data file, not the page.**
 5. **Sentence case** for headings and buttons. CTAs name the action ("Book a demo", not "Get started").
 
 ## Where to find what
 
 | Need to change | Edit here |
 |---|---|
-| Article copy | [content/articles/<slug>.tsx](content/articles/) |
-| Comparison page | [content/comparisons/<slug>.ts](content/comparisons/) — `/compare/<slug>` page is auto-generated |
+| Archived article copy | [content/articles/<slug>.tsx](content/articles/) — not released without a new product-truth review |
+| Archived comparison | [content/comparisons/<slug>.ts](content/comparisons/) — not released without current competitor verification |
 | Customer / case study | [content/case-studies/<slug>.ts](content/case-studies/), [content/customers.ts](content/customers.ts) |
 | Workflow copy or order | [content/workflows.ts](content/workflows.ts) (homepage) + [content/workflows-detailed.ts](content/workflows-detailed.ts) (`/workflows`) |
-| Lead magnet | [content/lead-magnets/<slug>.tsx](content/lead-magnets/) |
+| Archived lead magnet | [content/lead-magnets/<slug>.tsx](content/lead-magnets/) — capture endpoint is not deployed |
 | Nav / footer links | [components/sections/Nav.tsx](components/sections/Nav.tsx), [components/sections/Footer.tsx](components/sections/Footer.tsx) |
 | Visual mock | [components/visuals/](components/visuals/) — CSS-only, no images |
 | Brand colors / motion / type | [research/brand/](research/brand/) (color, logo, motion, typography) |
@@ -39,7 +39,7 @@ When adding a comparison, article, vertical page, or workflow — **read [EXTEND
 npm run dev              # local server on :3000
 npm run lint             # Biome — exits 0 if no errors
 npm run typecheck        # tsc --noEmit
-npm run build            # static export to out/
+npm run build            # static export to out/ + removal of archived/internal routes
 npm run test:smoke       # Playwright smoke + visual snapshots
 npm run check:content    # voice rules + content schema validation
 npm run deploy           # manual fallback only — see Deploy below
@@ -57,8 +57,8 @@ Cloudflare Pages is **Git-connected**. Pushing to `main` auto-builds and ships i
 
 - `/predeploy` — runs lint + typecheck + build + content check, reports each
 - `/preview <route>` — screenshots a local route at desktop + mobile widths
-- `/new-comparison <slug>` — scaffolds a `/compare/<slug>` page from the comparison template
-- `/new-article <slug>` — scaffolds a content/articles entry
+- `/new-comparison <slug>` — scaffolds archived comparison source; it is not published automatically
+- `/new-article <slug>` — scaffolds archived article source; it is not published automatically
 
 ## Pre-push checklist
 
@@ -74,7 +74,7 @@ CI runs all of these on every PR and on every push to `main` ([.github/workflows
 
 ## Out of bounds (do not do)
 
-- No backend, database, or API routes — this is a **static export**. Cloudflare Pages Functions live in [functions/](functions/) for the contact / lead-magnet endpoints; that's the entire dynamic surface.
+- No backend, database, or API routes — this is a **static export**. Cloudflare Pages Functions in [functions/](functions/) handle contact submissions and allowlisted interaction events; that's the entire dynamic surface.
 - No CMS until non-engineers need to edit copy.
 - No Storybook or visual regression beyond the existing Playwright snapshots.
 - No new shared components until a pattern is duplicated across 3+ pages with ≥30 LOC each (see [EXTENDING.md](docs/EXTENDING.md) "When to factor out").

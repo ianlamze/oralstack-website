@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 type ChartMatch = {
   id: string;
@@ -74,10 +74,9 @@ type Stage = "empty" | "typed" | "matched";
 
 export default function CaseNoteParseMock() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
   const hasDemoedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const [stage, setStage] = useState<Stage>(reduceMotion ? "matched" : "empty");
+  const [stage, setStage] = useState<Stage>("empty");
 
   const runDemo = useCallback(() => {
     const t1 = setTimeout(() => setStage("typed"), 700);
@@ -86,7 +85,6 @@ export default function CaseNoteParseMock() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -103,7 +101,7 @@ export default function CaseNoteParseMock() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -137,7 +135,7 @@ export default function CaseNoteParseMock() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Devi Krishnan · #1054
+          Demo patient 102 · DEMO-1054
         </span>
       </div>
 
@@ -146,7 +144,7 @@ export default function CaseNoteParseMock() {
           {noteLines.map((line, i) => (
             <motion.li
               key={line}
-              initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+              initial={{ opacity: 0, y: 2 }}
               animate={showText ? { opacity: 1, y: 0 } : { opacity: 0, y: 2 }}
               transition={{ duration: 0.18, delay: showText ? i * 0.08 : 0 }}
               className="whitespace-pre-wrap"
@@ -164,7 +162,7 @@ export default function CaseNoteParseMock() {
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={showMatches ? "matched-c" : "pending-c"}
-                initial={reduceMotion ? false : { opacity: 0 }}
+                initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}
@@ -181,7 +179,7 @@ export default function CaseNoteParseMock() {
           {chartMatches.map((m, i) => (
             <motion.li
               key={m.id}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={showMatches ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.2, delay: showMatches ? i * 0.08 : 0 }}
               className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-white px-2.5 py-2"
@@ -215,7 +213,7 @@ export default function CaseNoteParseMock() {
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={showMatches ? "matched-b" : "pending-b"}
-                initial={reduceMotion ? false : { opacity: 0 }}
+                initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}
@@ -233,7 +231,7 @@ export default function CaseNoteParseMock() {
           {billingMatches.map((m, i) => (
             <motion.li
               key={m.id}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={showMatches ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.2, delay: showMatches ? 0.15 + i * 0.07 : 0 }}
               className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-white px-2.5 py-2"

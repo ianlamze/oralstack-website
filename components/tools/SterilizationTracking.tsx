@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   AlertTriangle,
   Check,
@@ -28,8 +28,6 @@ export default function SterilizationTracking() {
   const [loads, setLoads] = useState<AutoclaveLoad[]>(initialLoads);
   const [selectedId, setSelectedId] = useState<string>(DEMO_LOAD_ID);
   const [notified, setNotified] = useState(false);
-  const reduceMotion = useReducedMotion();
-
   const selected = useMemo(
     () => loads.find((l) => l.id === selectedId) ?? loads[0],
     [loads, selectedId],
@@ -94,7 +92,7 @@ export default function SterilizationTracking() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · 28 Apr
+          Sample Dental Clinic · 28 Apr
         </span>
       </div>
 
@@ -146,9 +144,9 @@ export default function SterilizationTracking() {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={selected.id}
-          initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+          initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+          exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.18 }}
           className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-5 grid gap-4"
         >
@@ -228,9 +226,9 @@ export default function SterilizationTracking() {
         {recallPatients.length > 0 && (
           <motion.div
             key="recall"
-            initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+            exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
             className="mt-4 rounded-[var(--radius-lg)] border border-[oklch(0.62_0.18_25/0.4)] bg-[oklch(0.62_0.18_25/0.06)] p-5 grid gap-3"
           >

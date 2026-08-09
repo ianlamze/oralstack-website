@@ -197,11 +197,10 @@ function ArticleBody() {
 
       <p>
         If you&apos;re evaluating Oralstack as one of the shortlist, the{" "}
-        <a href="/compare" className="text-[var(--color-tide-deep)] underline underline-offset-4">
-          comparison hub
+        <a href="/workflows" className="text-[var(--color-tide-deep)] underline underline-offset-4">
+          current product scope
         </a>{" "}
-        gives you our line-by-line answers against Plato, Open Dental, Dentrix, Eaglesoft, and
-        Carestream. The{" "}
+        explains which workflows are available, configured pilots, or not enabled. The{" "}
         <a href="/security" className="text-[var(--color-tide-deep)] underline underline-offset-4">
           security posture
         </a>{" "}

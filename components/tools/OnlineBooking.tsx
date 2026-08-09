@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, MessageCircle, Phone, RotateCcw } from "lucide-react";
 import { days, reasons, returningPatient } from "@/content/online-booking/data";
 import type { BookingReason, TimeSlot } from "@/content/online-booking/types";
@@ -27,8 +27,6 @@ export default function OnlineBooking() {
   const [dayDate, setDayDate] = useState<string>(days[1].date); // default Tomorrow
   const [slotTime, setSlotTime] = useState<string | null>(null);
   const [form, setForm] = useState<PatientForm>(initialForm);
-  const reduceMotion = useReducedMotion();
-
   const reason = useMemo<BookingReason | null>(
     () => reasons.find((r) => r.id === reasonId) ?? null,
     [reasonId],
@@ -98,7 +96,7 @@ export default function OnlineBooking() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · /book
+          Sample Dental Clinic · /book
         </span>
       </div>
 
@@ -110,9 +108,9 @@ export default function OnlineBooking() {
             {step === 1 && (
               <motion.div
                 key="step1"
-                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
               >
                 <h3 className="text-base font-semibold text-[var(--color-text)]">
@@ -153,9 +151,9 @@ export default function OnlineBooking() {
             {step === 2 && reason && (
               <motion.div
                 key="step2"
-                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
               >
                 <div className="flex items-baseline justify-between gap-3">
@@ -247,9 +245,9 @@ export default function OnlineBooking() {
             {step === 3 && reason && slotTime && (
               <motion.div
                 key="step3"
-                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
               >
                 <h3 className="text-base font-semibold text-[var(--color-text)]">Your details</h3>
@@ -279,7 +277,7 @@ export default function OnlineBooking() {
                         autoComplete="tel"
                         value={form.phone}
                         onChange={(e) => updatePhone(e.target.value)}
-                        placeholder="+65 9123 4567"
+                        placeholder="+65 9XXX XXXX"
                         className="w-full rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-white pl-9 pr-3 py-2 text-[13px] text-[var(--color-text)] placeholder:text-[var(--color-text-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
                       />
                     </div>
@@ -289,9 +287,9 @@ export default function OnlineBooking() {
                     {recognised && (
                       <motion.div
                         key="recognised"
-                        initial={reduceMotion ? false : { opacity: 0, y: -4 }}
+                        initial={{ opacity: 0, y: -4 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                        exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.18 }}
                         className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-3 py-2"
                       >
@@ -353,9 +351,9 @@ export default function OnlineBooking() {
             {step === 4 && reason && slotTime && (
               <motion.div
                 key="step4"
-                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
               >
                 <div className="flex items-center gap-2.5">
@@ -376,13 +374,16 @@ export default function OnlineBooking() {
                   <SummaryRow label="Patient" value={form.name} />
                   <SummaryRow label="Phone" value={form.phone} />
                   {form.email && <SummaryRow label="Email" value={form.email} />}
-                  <SummaryRow label="Clinic" value="DFI Synergy · 12 Tras St, S079025" />
+                  <SummaryRow
+                    label="Clinic"
+                    value="Sample Dental Clinic · 1 Synthetic Clinic Street"
+                  />
                 </div>
 
                 <motion.div
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.22, delay: reduceMotion ? 0 : 0.12 }}
+                  transition={{ duration: 0.22, delay: 0.12 }}
                   className="mt-3 inline-flex items-center gap-2 rounded-full border border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)] bg-[color-mix(in_oklch,var(--color-tide-deep),white_88%)] px-3 py-1.5 text-[11px] text-[var(--color-tide-deep)]"
                 >
                   <MessageCircle className="h-3 w-3" aria-hidden />

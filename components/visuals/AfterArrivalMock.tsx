@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 // "After Oralstack" pane for the Arrival & huddle stage. Shows the
@@ -31,12 +31,10 @@ const severityLabel: Record<Severity, string> = {
 
 export default function AfterArrivalMock() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
   const hasDemoedRef = useRef(false);
-  const [shown, setShown] = useState(reduceMotion);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -51,7 +49,7 @@ export default function AfterArrivalMock() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, []);
 
   return (
     <div
@@ -75,7 +73,7 @@ export default function AfterArrivalMock() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          Mei Lin Tan · #1042
+          Demo patient 104 · DEMO-1042
         </span>
       </div>
 
@@ -88,7 +86,7 @@ export default function AfterArrivalMock() {
             Arrived · 09:28
           </span>
           <span className="text-[11px] text-[var(--color-text-muted)] truncate">
-            CHAS Blue resolved · intake complete · Dr Lim · chair 2
+            CHAS Blue resolved · intake complete · Provider B · chair 2
           </span>
         </div>
         <span className="text-[10px] uppercase tracking-[0.12em] text-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_55%)] font-semibold">
@@ -109,7 +107,7 @@ export default function AfterArrivalMock() {
           {alerts.map((a, i) => (
             <motion.li
               key={a.label}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 3 }}
               transition={{ duration: 0.22, delay: shown ? i * 0.08 : 0 }}
               className={`grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[var(--radius-sm)] border px-2.5 py-2 ${severityStyles[a.severity]}`}

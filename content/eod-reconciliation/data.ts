@@ -10,7 +10,7 @@ export const transactions: Transaction[] = [
     time: "09:14",
     mode: "PayNow",
     amount: 180,
-    patientName: "A. Tan",
+    patientName: "Demo patient 108",
     invoice: "INV-0418",
   },
   {
@@ -18,7 +18,7 @@ export const transactions: Transaction[] = [
     time: "09:42",
     mode: "Card",
     amount: 220,
-    patientName: "Devi K.",
+    patientName: "Demo patient 109",
     invoice: "INV-0419",
   },
   {
@@ -26,7 +26,7 @@ export const transactions: Transaction[] = [
     time: "10:18",
     mode: "Cash",
     amount: 80,
-    patientName: "Aaron T.",
+    patientName: "Demo patient 110",
     invoice: "INV-0420",
   },
   {
@@ -34,7 +34,7 @@ export const transactions: Transaction[] = [
     time: "10:55",
     mode: "PayNow",
     amount: 1700,
-    patientName: "Lim Wei Jian",
+    patientName: "Demo patient 103",
     invoice: "INV-0421",
   },
   {
@@ -42,7 +42,7 @@ export const transactions: Transaction[] = [
     time: "11:30",
     mode: "Card",
     amount: 450,
-    patientName: "Mei Lin Tan",
+    patientName: "Demo patient 102",
     invoice: "INV-0422",
   },
   {
@@ -50,7 +50,7 @@ export const transactions: Transaction[] = [
     time: "12:05",
     mode: "Cash",
     amount: 120,
-    patientName: "Hafiz Y.",
+    patientName: "Demo patient 101",
     invoice: "INV-0423",
   },
   {
@@ -58,7 +58,7 @@ export const transactions: Transaction[] = [
     time: "13:22",
     mode: "PayNow",
     amount: 380,
-    patientName: "K. Lee",
+    patientName: "Demo patient 107",
     invoice: "INV-0424",
   },
   {
@@ -66,7 +66,7 @@ export const transactions: Transaction[] = [
     time: "13:55",
     mode: "Card",
     amount: 220,
-    patientName: "J. Ong",
+    patientName: "Demo patient 111",
     invoice: "INV-0425",
   },
   // The mismatch — PayNow received but no invoice on file
@@ -83,7 +83,7 @@ export const transactions: Transaction[] = [
     time: "14:50",
     mode: "Bank",
     amount: 850,
-    patientName: "Dr Pereira (provider draw)",
+    patientName: "Provider C (provider draw)",
     invoice: "INV-0426",
   },
   {
@@ -91,7 +91,7 @@ export const transactions: Transaction[] = [
     time: "15:20",
     mode: "Cash",
     amount: 60,
-    patientName: "M. Devi",
+    patientName: "Demo patient 112",
     invoice: "INV-0427",
   },
   {
@@ -99,7 +99,7 @@ export const transactions: Transaction[] = [
     time: "15:48",
     mode: "Card",
     amount: 980,
-    patientName: "Dr Lim's patient",
+    patientName: "Provider B's patient",
     invoice: "INV-0428",
   },
   {
@@ -107,7 +107,7 @@ export const transactions: Transaction[] = [
     time: "16:30",
     mode: "PayNow",
     amount: 140,
-    patientName: "Aaron T. (recall)",
+    patientName: "Demo patient 110 (recall)",
     invoice: "INV-0429",
   },
   {
@@ -115,7 +115,7 @@ export const transactions: Transaction[] = [
     time: "17:05",
     mode: "PayNow",
     amount: 280,
-    patientName: "S. Chong",
+    patientName: "Demo patient 113",
     invoice: "INV-0430",
   },
 ];

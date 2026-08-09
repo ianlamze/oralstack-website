@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   categoryLabel,
   phaseLabel,
@@ -94,8 +94,6 @@ export default function TreatmentPlanBuilder() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   const totals = useMemo(() => computeTotals(items), [items]);
   const itemCount = items.length;
 
@@ -209,7 +207,6 @@ export default function TreatmentPlanBuilder() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -226,7 +223,7 @@ export default function TreatmentPlanBuilder() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -293,7 +290,6 @@ export default function TreatmentPlanBuilder() {
               onPick={pickTooth}
               pickerRef={pickerRef}
               onAdd={addProcedure}
-              reduceMotion={!!reduceMotion}
             />
             <Quadrant
               label="Upper left"
@@ -304,7 +300,6 @@ export default function TreatmentPlanBuilder() {
               onPick={pickTooth}
               pickerRef={pickerRef}
               onAdd={addProcedure}
-              reduceMotion={!!reduceMotion}
             />
           </div>
           <div className="border-t border-[var(--color-border)] my-1" />
@@ -318,7 +313,6 @@ export default function TreatmentPlanBuilder() {
               onPick={pickTooth}
               pickerRef={pickerRef}
               onAdd={addProcedure}
-              reduceMotion={!!reduceMotion}
             />
             <Quadrant
               label="Lower left"
@@ -329,7 +323,6 @@ export default function TreatmentPlanBuilder() {
               onPick={pickTooth}
               pickerRef={pickerRef}
               onAdd={addProcedure}
-              reduceMotion={!!reduceMotion}
             />
           </div>
           <p className="text-[10px] tracking-[0.04em] mt-2 min-h-[14px]">
@@ -337,9 +330,9 @@ export default function TreatmentPlanBuilder() {
               {postDemoNudge ? (
                 <motion.span
                   key="nudge"
-                  initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+                  initial={{ opacity: 0, y: 2 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }}
+                  exit={{ opacity: 0, y: -2 }}
                   transition={{ duration: 0.18 }}
                   className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
                 >
@@ -349,7 +342,7 @@ export default function TreatmentPlanBuilder() {
               ) : (
                 <motion.span
                   key="default"
-                  initial={reduceMotion ? false : { opacity: 0 }}
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.18 }}
@@ -393,12 +386,8 @@ export default function TreatmentPlanBuilder() {
                   return (
                     <motion.div
                       key={phase}
-                      layout={!reduceMotion}
-                      transition={
-                        reduceMotion
-                          ? { duration: 0 }
-                          : { layout: { type: "spring", stiffness: 420, damping: 36 } }
-                      }
+                      layout
+                      transition={{ layout: { type: "spring", stiffness: 420, damping: 36 } }}
                       className="grid gap-1.5 rounded-md bg-white border border-[var(--color-border)] p-3"
                     >
                       <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-text-soft)] font-semibold">
@@ -412,10 +401,10 @@ export default function TreatmentPlanBuilder() {
                             return (
                               <motion.li
                                 key={it.id}
-                                layout={!reduceMotion}
-                                initial={reduceMotion ? false : { opacity: 0, x: -6 }}
+                                layout
+                                initial={{ opacity: 0, x: -6 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -6 }}
+                                exit={{ opacity: 0, x: -6 }}
                                 transition={{ duration: 0.16 }}
                                 className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] gap-2 items-center py-1.5"
                               >
@@ -452,7 +441,7 @@ export default function TreatmentPlanBuilder() {
 
           {itemCount > 0 && (
             <motion.div
-              layout={!reduceMotion}
+              layout
               className="grid gap-1 border-t border-[var(--color-border)] pt-3 text-[12px]"
             >
               <Row label="Subtotal" value={format(totals.subtotal)} muted />
@@ -520,7 +509,6 @@ function Quadrant({
   onPick,
   pickerRef,
   onAdd,
-  reduceMotion,
 }: {
   label: string;
   numbers: number[];
@@ -530,7 +518,6 @@ function Quadrant({
   onPick: (n: number) => void;
   pickerRef: React.RefObject<HTMLDivElement | null>;
   onAdd: (tooth: number, code: string) => void;
-  reduceMotion: boolean;
 }) {
   return (
     <div>
@@ -557,7 +544,6 @@ function Quadrant({
                 }
                 isOpen={isOpen}
                 onSelect={() => onPick(n)}
-                reduceMotion={reduceMotion}
               />
               {isOpen ? (
                 <ProcedurePicker
@@ -565,7 +551,6 @@ function Quadrant({
                   toothNumber={n}
                   onPick={(code) => onAdd(n, code)}
                   align={align}
-                  reduceMotion={reduceMotion}
                 />
               ) : null}
             </div>
@@ -582,14 +567,12 @@ function Tooth({
   primaryCategory,
   isOpen,
   onSelect,
-  reduceMotion,
 }: {
   num: number;
   hasItems: boolean;
   primaryCategory: ProcedureCategory | undefined;
   isOpen: boolean;
   onSelect: () => void;
-  reduceMotion: boolean;
 }) {
   const accent = primaryCategory ? categoryAccent[primaryCategory] : null;
   return (
@@ -605,8 +588,8 @@ function Tooth({
         {num}
       </span>
       <motion.span
-        animate={reduceMotion ? undefined : { scale: isOpen ? 1.08 : 1, y: isOpen ? -1 : 0 }}
-        whileHover={reduceMotion || isOpen ? undefined : { scale: 1.04, y: -0.5 }}
+        animate={{ scale: isOpen ? 1.08 : 1, y: isOpen ? -1 : 0 }}
+        whileHover={isOpen ? undefined : { scale: 1.04, y: -0.5 }}
         transition={{ type: "spring", stiffness: 520, damping: 30 }}
         className={`block h-6 w-4 sm:h-7 sm:w-6 rounded-md border bg-white transition-colors ${
           isOpen
@@ -630,13 +613,11 @@ function ProcedurePicker({
   toothNumber,
   onPick,
   align,
-  reduceMotion,
   ref,
 }: {
   toothNumber: number;
   onPick: (code: string) => void;
   align: "left" | "right";
-  reduceMotion: boolean;
   ref?: React.Ref<HTMLDivElement>;
 }) {
   const grouped = useMemo(() => {
@@ -656,9 +637,9 @@ function ProcedurePicker({
       ref={ref}
       role="dialog"
       aria-label={`Add procedure to tooth ${toothNumber}`}
-      initial={reduceMotion ? false : { opacity: 0, y: -4 }}
+      initial={{ opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+      exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.16 }}
       // On narrow viewports the popover centers on the tooth and clamps to the
       // viewport (max-w accounts for ~32px of page padding). On sm+ it falls

@@ -7,7 +7,7 @@ export type LabOrder = {
   labName: string;
   sentDate: string; // "26 Apr"
   expectedReady: string; // "Mon 4 May"
-  seatAppt: string; // "Wed 30 Apr · 14:00 · Dr Wong"
+  seatAppt: string; // "Wed 30 Apr · 14:00 · Provider A"
   stage: LabStage;
   slipped?: boolean;
   /** Suggested new seat date if slipped; shown when user clicks reschedule. */

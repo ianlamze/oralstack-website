@@ -8,16 +8,17 @@ export const dicomInChartVsSeparateViewer: Article = {
   excerpt:
     "Most dental clinics still keep imaging on a separate desktop app. That feels normal. It also costs 3–5 minutes per visit and a meaningful percentage of treatment planning errors.",
   publishedAt: "2026-04-27",
+  updatedAt: "2026-08-09",
   author: "Oralstack team",
   cluster: "clinical",
   tags: ["DICOM", "imaging", "clinical", "sensor bridge", "patient chart"],
   readingMinutes: 7,
   cta: {
-    eyebrow: "Imaging in production",
-    title: "DICOM viewer inside the patient chart",
-    body: "Open the chart, see the radiograph. Multi-frame DICOM, annotation tools, measurements — in the same surface as the case notes and the bill.",
-    buttonLabel: "See the imaging workflow",
-    buttonHref: "/workflows#imaging",
+    eyebrow: "Current product boundary",
+    title: "Clinical media today; DICOM gated",
+    body: "Oralstack supports clinical media uploads, links, and annotations. DICOM ingest and viewing, calibrated measurements, and device bridges are not enabled for clinics.",
+    buttonLabel: "Check feature status",
+    buttonHref: "/status",
   },
   Body: ArticleBody,
 };
@@ -38,6 +39,13 @@ function ArticleBody() {
         This article is for the clinic owner or clinical lead deciding how seriously to take
         in-chart imaging when evaluating PMS options. The short version: this is the single most
         consequential clinical workflow decision in a PMS migration.
+      </p>
+
+      <p>
+        <strong>Current Oralstack boundary:</strong> this is an evaluation guide, not a claim that
+        Oralstack&apos;s DICOM or device integrations are live. Clinics can upload, link, and
+        annotate clinical media today. DICOM ingest and viewing, calibrated measurements, and X-ray
+        device bridges remain gated and are not enabled for clinics.
       </p>
 
       <h2>The two architectures</h2>
@@ -137,10 +145,10 @@ function ArticleBody() {
       <h3>Sensor capture latency</h3>
 
       <p>
-        With sensor-bridge integration to the PMS, capture-to-display is well under 5 seconds. With
-        a parallel imaging app that has to be manually pointed at the right patient, the same flow
-        is 30–60 seconds and includes a manual confirmation step where the image could end up under
-        the wrong patient. Misfiled radiographs are a real failure mode.
+        For any claimed sensor bridge, ask the vendor to demonstrate capture-to-display time on your
+        exact device and workstation. Under five seconds is a useful evaluation target. A parallel
+        app also adds a manual patient-selection step, which creates a real risk of filing an image
+        against the wrong record.
       </p>
 
       <h2>Three things to look for</h2>
@@ -183,19 +191,17 @@ function ArticleBody() {
       <p>
         See the{" "}
         <a
-          href="/workflows#imaging"
+          href="/workflows#patient-care"
           className="text-[var(--color-tide-deep)] underline underline-offset-4"
         >
-          Oralstack imaging workflow
+          current patient-care workflow
         </a>{" "}
-        for the in-record implementation, or the{" "}
-        <a
-          href="/integrations"
-          className="text-[var(--color-tide-deep)] underline underline-offset-4"
-        >
-          integrations page
+        for clinical media uploads and annotations. Check the{" "}
+        <a href="/status" className="text-[var(--color-tide-deep)] underline underline-offset-4">
+          product status page
         </a>{" "}
-        for current sensor-bridge coverage.
+        before planning around DICOM or a sensor bridge; those capabilities are not enabled for
+        clinics today.
       </p>
     </>
   );

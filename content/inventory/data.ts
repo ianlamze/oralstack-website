@@ -120,7 +120,7 @@ export const todaysDeductions: DeductionLog[] = [
   {
     id: "d1",
     time: "09:30",
-    patientName: "Hafiz Yusof",
+    patientName: "Demo patient 101",
     procedure: "Composite filling · 36",
     itemsDeducted: [
       { name: "Composite syringe · A2", qty: 1, unit: "syringe" },
@@ -132,7 +132,7 @@ export const todaysDeductions: DeductionLog[] = [
   {
     id: "d2",
     time: "10:30",
-    patientName: "Mei Lin Tan",
+    patientName: "Demo patient 102",
     procedure: "Polish & scale",
     itemsDeducted: [
       { name: "Nitrile gloves · M", qty: 1, unit: "pair" },
@@ -143,7 +143,7 @@ export const todaysDeductions: DeductionLog[] = [
   {
     id: "d3",
     time: "11:30",
-    patientName: "Lim Wei Jian",
+    patientName: "Demo patient 103",
     procedure: "RCT · 36 · access cavity",
     itemsDeducted: [
       { name: "Lignocaine 2% · 1.8ml", qty: 3, unit: "carpule" },

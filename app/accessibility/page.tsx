@@ -26,9 +26,9 @@ const atTested = [
 ];
 
 const knownGaps = [
-  "JAWS (Windows) and Dragon (voice control) testing is on the 2026 roadmap; not exercised today.",
-  "The interactive tools at /tools/* render full audit-trail content visually; one or two timelines still rely on colour for hierarchy alongside text — we're auditing per quarter.",
-  "Some long demo flows (e.g. /tools/online-booking, /tools/plan-presentation) animate between steps; the reduced-motion preference disables the animation, but a few transitions still need an accessible-name update.",
+  "A third-party accessibility audit, JAWS testing, and Dragon voice-control testing have not yet been completed.",
+  "Dense product tables and clinical visuals need continued screen-reader and reflow testing beyond the marketing pages.",
+  "Some staged product demonstrations use time-based state changes; their accessible status announcements remain under review.",
 ];
 
 export default function AccessibilityPage() {
@@ -42,7 +42,7 @@ export default function AccessibilityPage() {
           with a wide range of needs and assistive technologies. We treat accessibility as part of
           how the product is built — not a checkbox at the end. This page describes our conformance
           target, what we currently test, what we know is incomplete, and how to flag an issue.
-          Reviewed quarterly; last reviewed 28 April 2026.
+          Reviewed quarterly; last reviewed 9 August 2026.
         </p>
       </Section>
 
@@ -62,10 +62,10 @@ export default function AccessibilityPage() {
               WCAG 2.2 Level AA across the marketing site and product UI.
             </h2>
             <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[68ch]">
-              Today the marketing site (oralstack.com) substantially conforms to WCAG 2.2 AA. The
-              product UI (in clinic pilot) is built against the same target; the v13 cohort is the
-              point at which we&apos;ll publish a third-party-audited statement for the product
-              specifically.
+              Oralstack targets WCAG 2.2 AA across the marketing site and product UI. Keyboard,
+              reduced-motion, contrast, and responsive checks are part of release review. A
+              third-party conformance audit has not yet been completed, so this is a target rather
+              than a certification.
             </p>
           </div>
         </div>

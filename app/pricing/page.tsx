@@ -3,7 +3,6 @@ import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import MarkBullet from "@/components/ui/MarkBullet";
 import MagneticButton from "@/components/primitives/MagneticButton";
-import RoiCalculator from "@/components/tools/RoiCalculator";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -48,8 +47,8 @@ export default function PricingPage() {
               </p>
               <ul className="grid gap-2.5 text-[var(--color-text-muted)] leading-relaxed">
                 <Bullet>
-                  All workflows in the current build — scheduling, billing, charting, recall, plus
-                  imaging on the v13 cohort.
+                  The configured pilot scope across appointments, reception, patient folders,
+                  reviewed checkout, patient access, clinic operations, and insights.
                 </Bullet>
                 <Bullet>
                   Three months of hands-on onboarding for the front desk and clinical team.
@@ -79,10 +78,6 @@ export default function PricingPage() {
       </Section>
 
       <Section className="pb-16">
-        <RoiCalculator />
-      </Section>
-
-      <Section className="pb-16">
         <div className="grid gap-6 md:grid-cols-2 lg:gap-10 max-w-[820px]">
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-7 md:p-8 grid gap-4">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
@@ -106,7 +101,8 @@ export default function PricingPage() {
               <Bullet>Self-serve sign-up — every pilot starts with a 30-minute call.</Bullet>
               <Bullet>Per-seat or per-feature gating — pricing stays flat in pilot.</Bullet>
               <Bullet>
-                Custom integrations beyond what&apos;s on the integrations page — talk to us.
+                Public self-booking, automated messaging, DICOM/device ingest, external AI,
+                integrated claims, and payment processing unless explicitly scoped in writing.
               </Bullet>
               <Bullet>Multi-region deployments outside APAC — talk to us.</Bullet>
             </ul>
@@ -133,9 +129,8 @@ export default function PricingPage() {
               renewal pricing won&apos;t exceed the GA list price for the same clinic shape.
             </Bullet>
             <Bullet>
-              No silent feature gating. Anything in your pilot stays in your pilot. New surfaces
-              built after pilot start (e.g. v13 imaging cohort) are added in scope unless they come
-              from a third-party vendor with their own per-seat cost (e.g. specialty integrations).
+              No silent feature gating. The MSA records exactly which modules, clinic connections,
+              and controlled rollouts are included in the pilot.
             </Bullet>
             <Bullet>
               Custom quotes (groups, DSOs, multi-region clinics) are written in the pilot MSA up
@@ -152,10 +147,9 @@ export default function PricingPage() {
               Your data, on the way out
             </p>
             <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-              If you leave, you take everything: full CSV / JSON export of patients, schedule,
-              billing, charting, recall, and the audit log. No export fees, no waiting list, no
-              proprietary lock-in. Standard format on request; the export tooling lives inside the
-              admin surface.
+              The MSA records the offboarding and export package for your connected deployment.
+              Operational reports support CSV where exposed in the app; broader patient, clinical,
+              billing, and audit exports are confirmed in writing rather than assumed from a demo.
             </p>
             <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
               Spelled out in the MSA · request a draft from{" "}

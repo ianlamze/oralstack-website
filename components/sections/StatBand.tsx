@@ -5,14 +5,14 @@ import { homepageStats } from "@/content/homepage-stats";
 
 export default function StatBand() {
   return (
-    <Section className="border-b border-[var(--color-border)] py-12 md:py-14">
+    <Section className="border-y border-[var(--color-border)] bg-[var(--color-canvas-tinted)] py-16 md:py-20">
       <AnimateInView>
         <div className="grid gap-3 mb-10 max-w-[60ch]">
           <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-            Numbers from a real clinic
+            Named pilot evidence
           </p>
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-            Four weeks in production, not a sandbox.
+            The first four weeks at DFI Synergy.
           </h2>
         </div>
       </AnimateInView>
@@ -20,7 +20,7 @@ export default function StatBand() {
         <StatGrid stats={homepageStats} />
       </AnimateInView>
       <p className="mt-6 text-[11px] text-[var(--color-text-soft)] tracking-[0.04em]">
-        From the{" "}
+        Historical pilot results from the{" "}
         <a
           href="/customers/dfi-synergy"
           className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4 hover:decoration-2"

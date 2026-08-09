@@ -24,12 +24,12 @@ const [csTimeToLive, csNoneLost, csDragOps, csSameDayBilling] = dfiSynergy.stats
 export const homepageStats: Stat[] = [
   {
     value: csTimeToLive.value,
-    label: "From kickoff to front desk live — schedule and billing in production.",
+    label: "From kickoff to the front-desk pilot — appointments, reception, and checkout.",
     qualifier: "DFI Synergy · Apr 2026",
   },
   {
     value: csSameDayBilling.value,
-    label: "Same-day billing rate by week four, up from 60% pre-Oralstack.",
+    label: "Same-day billing rate measured in the named pilot by week four, up from 60%.",
     qualifier: "DFI Synergy · pilot",
   },
   {

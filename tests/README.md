@@ -12,16 +12,16 @@ For every route in [`smoke.spec.ts`](smoke.spec.ts):
 - No `pageerror` events fire on load
 - No `console.error` events fire on load
 
-For a tighter list of high-traffic routes (`/`, `/workflows/`, `/compare/`,
-`/compare/plato/`, `/book-a-demo/`, `/about/`):
+For a tighter list of high-traffic routes (`/`, `/workflows/`, `/book-a-demo/`,
+`/about/`):
 
 - Full-page pixel snapshot vs committed baseline (animations disabled)
 - `maxDiffPixelRatio: 0.02`, `threshold: 0.2` (see [`playwright.config.ts`](../playwright.config.ts))
 
 ## What's not covered
 
-- **End-to-end user journeys.** No form submissions, no nav-drawer interaction,
-  no mega-panel expansion, no inter-page navigation.
+- **End-to-end user journeys.** Required-field validation is covered, but successful
+  form delivery, nav-drawer interaction, and inter-page navigation are not.
 - **Cross-browser.** Mobile uses Chromium with an iPhone 13 viewport, not real
   WebKit. Adequate for a static site without Safari-specific JS; switch to
   webkit if a Safari-specific bug surfaces.
@@ -32,12 +32,15 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/compare/`,
 
 | | Desktop | Mobile | Total |
 |---|---:|---:|---:|
-| Load tests (23 routes) | 23 | 23 | **46** |
-| Snapshot tests (6 routes) | 6 | 6 | **12** |
-| **Total** | **29** | **29** | **58** |
+| Public route loads (19 routes) | 19 | 19 | **38** |
+| Synthetic-identity checks (3 routes) | 3 | 3 | **6** |
+| Archived-route exclusions (50 routes) | 50 | 50 | **100** |
+| Released-link crawl | 1 | 1 | **2** |
+| Required-field form validation | 1 | 1 | **2** |
+| Snapshot tests (4 routes) | 4 | 4 | **8** |
+| **Total** | **78** | **78** | **156** |
 
-12 baseline PNGs in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/),
-~3 MB total.
+8 baseline PNGs live in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/).
 
 ## Viewports
 
@@ -50,7 +53,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 58 tests, ~30s on a warm cache
+npm run test:smoke    # 156 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when
@@ -90,7 +93,7 @@ const ROUTES = [
 ```
 
 Add to `SNAPSHOT_ROUTES` only if the route is a high-traffic landing page
-(homepage tier, primary comparison, demo CTA). Snapshots cost CI time and
+(homepage tier or demo CTA). Snapshots cost CI time and
 generate noise on routine content edits — keep the list tight.
 
 ```ts

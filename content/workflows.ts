@@ -1,33 +1,26 @@
-type Workflow = {
+import {
+  capabilityAvailabilityLabels,
+  productCapabilities,
+  type CapabilityAvailability,
+  type CapabilityVisual,
+} from "@/content/product-capabilities";
+
+export type Workflow = {
   slug: string;
   eyebrow: string;
   title: string;
+  summary: string;
+  availability: CapabilityAvailability;
+  availabilityLabel: string;
+  visual?: CapabilityVisual;
 };
 
-export const workflows: Workflow[] = [
-  {
-    slug: "front-desk",
-    eyebrow: "Front desk",
-    title: "Scheduling that keeps up with the front desk.",
-  },
-  {
-    slug: "billing",
-    eyebrow: "Billing & discharge",
-    title: "The bill is ready before the patient stands up.",
-  },
-  {
-    slug: "charting",
-    eyebrow: "Charting & case notes",
-    title: "Chart the tooth, not the form.",
-  },
-  {
-    slug: "imaging",
-    eyebrow: "Clinical imaging",
-    title: "DICOM in the chart, sensor in the room.",
-  },
-  {
-    slug: "online-bookings",
-    eyebrow: "Online bookings",
-    title: "Patients book the slot the schedule actually has open.",
-  },
-];
+export const workflows: Workflow[] = productCapabilities.map((capability) => ({
+  slug: capability.slug,
+  eyebrow: capability.eyebrow,
+  title: capability.title,
+  summary: capability.summary,
+  availability: capability.availability,
+  availabilityLabel: capabilityAvailabilityLabels[capability.availability],
+  visual: capability.visual,
+}));

@@ -7,7 +7,7 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 - **Source of truth: the app codebase.** When a visual stops matching the real app, update the visual — don't let them diverge.
 - **Pure CSS over screenshots.** Crisp at any size, no asset pipeline, no DPI issues, no risk of patient-data leakage.
 - **Brand tokens only.** No raw hex outside this folder. All visuals consume `--color-*` and `--radius-*` tokens from `app/globals.css` so theming/dark-mode changes propagate automatically.
-- **Singapore-fictional names.** Every visual uses the same canonical patient set (Lim Wei Jian, Devi Krishnan, Aaron Teo, Mei Lin Tan, Hafiz Yusof) so cross-visual consistency reads as "same clinic."
+- **Unmistakably synthetic labels.** Every visual uses the same canonical demo-patient set (Demo patient 101–106) so cross-visual consistency reads as "same clinic" without resembling a real identity.
 
 ## Conventions
 
@@ -75,7 +75,7 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 1. **Recon the source app surface.** Open the matching route under `apps/app/app/`. Note the data shape, distinctive UI elements, color cues. Don't guess — match what's there.
 2. **Create the file** `components/visuals/{Name}Mock.tsx`.
 3. **Match the conventions table above** — outer card classes, `role="img"`, brand tokens only.
-4. **Use the canonical patient names** (Lim Wei Jian / Devi Krishnan / Aaron Teo / Mei Lin Tan / Hafiz Yusof) for cross-visual consistency.
+4. **Use the canonical demo-patient labels** (Demo patient 101–106) for cross-visual consistency. Use Provider A/B/C for clinicians and `.invalid` addresses or `+65 0000 0000` where contact detail is unavoidable.
 5. **Add an entry** to the Catalog and Where-used tables in this README.
 6. **Add to the dev catalog page** at `/dev/visuals` (`app/dev/visuals/page.tsx`) so it shows up in visual review.
 7. **Use it.** Import from `@/components/visuals/{Name}Mock`.
@@ -90,6 +90,7 @@ Reusable, brand-consistent React visualizations of oralstack's core product surf
 
 ## Reviewing visuals
 
-The `/dev/visuals` route renders all visuals on one page for at-a-glance review. It's `noindex` (excluded from search engines), not in the sitemap, and not linked from any production page — but the URL is stable and shareable for internal review.
+The `/dev/visuals` route renders all visuals on one page for at-a-glance local review.
+It is removed from the production export, so use the localhost URL only.
 
 Run `npm run dev` and open <http://localhost:3000/dev/visuals> to view.

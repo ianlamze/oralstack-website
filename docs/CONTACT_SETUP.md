@@ -13,8 +13,6 @@ One backend Pages Function, four intents, all flowing through `POST /api/contact
 | `/contact` → Pilot proposal tab | `pilot` | [`components/forms/PilotProposalForm.tsx`](components/forms/PilotProposalForm.tsx) |
 | `/book-a-demo` (when Cal.com env not set) | `demo` (auto-detected) | [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) |
 
-Lead-magnet capture flows through a separate function `POST /api/lead-magnet` with its own request shape — see [`functions/README.md`](../functions/README.md).
-
 ## Endpoint contract
 
 Full request/response shapes, validation rules, and error modes live in [`functions/README.md`](../functions/README.md). One-line summary: every form posts JSON, the function validates, sends mail via Resend, returns `{ ok: boolean, message }`.
@@ -23,7 +21,7 @@ Without `RESEND_API_KEY` set, the endpoint validates and **logs to the Cloudflar
 
 ## Environment variables
 
-`RESEND_API_KEY`, `CONTACT_INBOX`, `CONTACT_FROM`, `SITE_URL`, plus `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` for the third-party-service escape hatch on `DemoRequestForm`. Full inventory in [`ENV_VARS.md`](ENV_VARS.md).
+`RESEND_API_KEY`, `CONTACT_INBOX`, `CONTACT_FROM`, plus `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` for the third-party-service escape hatch on `DemoRequestForm`. Full inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
 ## Setup
 

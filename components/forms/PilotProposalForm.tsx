@@ -22,7 +22,7 @@ export default function PilotProposalForm() {
       <TextArea
         label="What does success look like for the pilot? (optional)"
         name="message"
-        placeholder="E.g. eliminate Plato, unify three locations, get owner-level analytics."
+        placeholder="E.g. extend Plato workflows, unify clinic operations, improve manager visibility."
         rows={3}
       />
     </FormShell>

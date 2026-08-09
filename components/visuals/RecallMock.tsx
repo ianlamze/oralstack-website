@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { track } from "@/lib/analytics";
 
 type Status = "Overdue" | "Contacted" | "Booked";
@@ -19,7 +19,7 @@ type Row = {
 const initialRows: Row[] = [
   {
     id: "r1",
-    name: "Lim Wei Jian",
+    name: "Demo patient 101",
     monthsOverdue: 6,
     lastVisit: "31 Oct",
     lastVisitOrder: 0,
@@ -28,7 +28,7 @@ const initialRows: Row[] = [
   },
   {
     id: "r2",
-    name: "Devi Krishnan",
+    name: "Demo patient 102",
     monthsOverdue: 4,
     lastVisit: "14 Nov",
     lastVisitOrder: 1,
@@ -37,7 +37,7 @@ const initialRows: Row[] = [
   },
   {
     id: "r3",
-    name: "Aaron Teo",
+    name: "Demo patient 103",
     monthsOverdue: 3,
     lastVisit: "2 Dec",
     lastVisitOrder: 3,
@@ -46,7 +46,7 @@ const initialRows: Row[] = [
   },
   {
     id: "r4",
-    name: "Mei Lin Tan",
+    name: "Demo patient 104",
     monthsOverdue: 5,
     lastVisit: "1 Dec",
     lastVisitOrder: 2,
@@ -55,7 +55,7 @@ const initialRows: Row[] = [
   },
   {
     id: "r5",
-    name: "Hafiz Yusof",
+    name: "Demo patient 105",
     monthsOverdue: 4,
     lastVisit: "20 Dec",
     lastVisitOrder: 4,
@@ -94,7 +94,6 @@ export default function RecallMock() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -183,7 +182,6 @@ export default function RecallMock() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -200,7 +198,7 @@ export default function RecallMock() {
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -279,8 +277,7 @@ export default function RecallMock() {
         <ul className="grid divide-y divide-[var(--color-border)]">
           {sorted.map((r) => {
             const isOverdue = r.status === "Overdue";
-            const shouldPulse =
-              postDemoNudge && isTouchOnly && r.id === DEMO_ROW_ID && !reduceMotion && isOverdue;
+            const shouldPulse = postDemoNudge && isTouchOnly && r.id === DEMO_ROW_ID && isOverdue;
             const rowInner = (
               <>
                 <div className="grid gap-0.5 min-w-0">
@@ -298,7 +295,7 @@ export default function RecallMock() {
                   {r.lastVisit}
                 </span>
                 <motion.span
-                  layout={!reduceMotion}
+                  layout
                   className={`inline-flex items-center text-[10px] font-medium uppercase tracking-[0.12em] rounded-full border px-2 py-0.5 whitespace-nowrap justify-self-end transition-colors ${statusStyles[r.status]}`}
                 >
                   {r.status}
@@ -310,12 +307,8 @@ export default function RecallMock() {
             return (
               <motion.li
                 key={r.id}
-                layout={!reduceMotion}
-                transition={
-                  reduceMotion
-                    ? { duration: 0 }
-                    : { layout: { type: "spring", stiffness: 420, damping: 36 } }
-                }
+                layout
+                transition={{ layout: { type: "spring", stiffness: 420, damping: 36 } }}
               >
                 {isOverdue ? (
                   <motion.button
@@ -323,9 +316,7 @@ export default function RecallMock() {
                     onClick={() => handleRowClick(r.id)}
                     onPointerEnter={markInteracted}
                     onFocus={markInteracted}
-                    whileHover={
-                      reduceMotion ? undefined : { backgroundColor: "var(--color-canvas-tinted)" }
-                    }
+                    whileHover={{ backgroundColor: "var(--color-canvas-tinted)" }}
                     animate={
                       shouldPulse
                         ? {
@@ -360,9 +351,9 @@ export default function RecallMock() {
             {postDemoNudge ? (
               <motion.span
                 key="nudge"
-                initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+                initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -3 }}
+                exit={{ opacity: 0, y: -3 }}
                 transition={{ duration: 0.18 }}
                 className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
               >
@@ -372,7 +363,7 @@ export default function RecallMock() {
             ) : (
               <motion.span
                 key={sentCount}
-                initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+                initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.18 }}

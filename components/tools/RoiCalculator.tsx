@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { track } from "@/lib/analytics";
 
 type ChairsBucket = "1" | "2-3" | "4-6" | "7+";
@@ -75,8 +75,6 @@ function compute(chairs: ChairsBucket, currentRatePct: number): Result {
 export default function RoiCalculator() {
   const [chairs, setChairs] = useState<ChairsBucket>("2-3");
   const [rate, setRate] = useState(60);
-  const reduceMotion = useReducedMotion();
-
   const chairsId = useId();
   const rateId = useId();
 
@@ -97,7 +95,7 @@ export default function RoiCalculator() {
             href="/customers/dfi-synergy"
             className="text-[var(--color-tide-deep)] underline underline-offset-4"
           >
-            DFI Synergy&apos;s pilot
+            Sample Dental Clinic&apos;s pilot
           </a>{" "}
           (60% → 85% same-day-billing rate) and Singapore clinic averages ({APPTS_PER_CHAIR_PER_DAY}{" "}
           appts/chair/day, S${AVG_APPT_VALUE_SGD} avg visit). Conservative ranges — assumptions are
@@ -169,7 +167,7 @@ export default function RoiCalculator() {
         </div>
 
         <motion.div
-          layout={!reduceMotion}
+          layout
           transition={{ layout: { duration: 0.18 } }}
           className="grid gap-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-5 md:p-6"
         >
@@ -179,7 +177,7 @@ export default function RoiCalculator() {
             </p>
             <motion.p
               key={`${result.targetRateLow}-${result.targetRateHigh}`}
-              initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.16 }}
               className="text-2xl md:text-3xl font-semibold tracking-tight tabular-nums text-[var(--color-text)]"
@@ -202,7 +200,7 @@ export default function RoiCalculator() {
               </p>
               <motion.p
                 key={`${result.hoursReclaimedLow}-${result.hoursReclaimedHigh}h`}
-                initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+                initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.16 }}
                 className="text-xl md:text-2xl font-semibold tracking-tight tabular-nums text-[var(--color-text)]"
@@ -221,7 +219,7 @@ export default function RoiCalculator() {
               </p>
               <motion.p
                 key={`${result.revenueRecoveredLow}-${result.revenueRecoveredHigh}r`}
-                initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+                initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.16 }}
                 className="text-xl md:text-2xl font-semibold tracking-tight tabular-nums text-[var(--color-text)]"

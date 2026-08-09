@@ -4,7 +4,8 @@ import { carestream } from "@/content/comparisons/carestream";
 
 export const metadata: Metadata = {
   title: carestream.metaTitle,
-  description: carestream.metaDescription,
+  description:
+    "Archived comparison. Review Oralstack's current Plato-connected product scope and rollout boundaries before procurement.",
   alternates: { canonical: `/compare/${carestream.slug}` },
 };
 

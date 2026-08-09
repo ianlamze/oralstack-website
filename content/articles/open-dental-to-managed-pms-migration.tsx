@@ -218,12 +218,9 @@ function ArticleBody() {
       </p>
 
       <p>
-        For a feature-by-feature comparison, see{" "}
-        <a
-          href="/compare/open-dental"
-          className="text-[var(--color-tide-deep)] underline underline-offset-4"
-        >
-          Oralstack vs Open Dental
+        For the current product boundary, see{" "}
+        <a href="/workflows" className="text-[var(--color-tide-deep)] underline underline-offset-4">
+          Oralstack workflows and availability
         </a>
         . For a worked example of a managed-PMS pilot in an APAC clinic, see the{" "}
         <a

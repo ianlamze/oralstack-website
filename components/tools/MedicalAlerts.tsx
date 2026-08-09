@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, Check, HeartPulse, Info, Pill, RotateCcw, ShieldAlert } from "lucide-react";
 import { initialPatients } from "@/content/medical-alerts/data";
 import type { PatientProfile, Severity } from "@/content/medical-alerts/types";
@@ -29,8 +29,6 @@ export default function MedicalAlerts() {
   const [patients, setPatients] = useState<PatientProfile[]>(initialPatients);
   const [selectedId, setSelectedId] = useState<string>(DEMO_PATIENT_ID);
   const [filter, setFilter] = useState<Filter>("all");
-  const reduceMotion = useReducedMotion();
-
   const filtered = useMemo(() => {
     if (filter === "all") return patients;
     if (filter === "acknowledged") return patients.filter((p) => p.acknowledged);
@@ -83,7 +81,7 @@ export default function MedicalAlerts() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · upcoming chair
+          Sample Dental Clinic · upcoming chair
         </span>
       </div>
 
@@ -146,10 +144,10 @@ export default function MedicalAlerts() {
               return (
                 <motion.li
                   key={p.id}
-                  layout={!reduceMotion}
-                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                  layout
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                  exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
                 >
                   <button
@@ -201,9 +199,9 @@ export default function MedicalAlerts() {
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={selected.id}
-              initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+              exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
               className="grid gap-4 content-start"
             >

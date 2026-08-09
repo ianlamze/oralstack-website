@@ -1,6 +1,6 @@
 export const siteMeta = {
-  title: "Oralstack — The operating system for modern dental clinics",
+  title: "Oralstack — The Plato-connected workspace for dental clinics",
   description:
-    "Book, chart, bill, image, and message — Oralstack is the dental clinic operating system built for the front desk first, designed in Singapore for clinics across APAC.",
+    "Oralstack gives dental teams one workspace for appointments, patient care, checkout, clinic operations, insights, and reviewed Plato writebacks. Built in Singapore for APAC clinics.",
   url: "https://oralstack.com",
 };

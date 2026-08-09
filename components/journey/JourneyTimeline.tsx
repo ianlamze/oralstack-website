@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { JourneyStage } from "@/content/journey";
 import { track } from "@/lib/analytics";
 
@@ -18,7 +18,6 @@ export default function JourneyTimeline({
   builtStageIds,
   onStageChange,
 }: JourneyTimelineProps) {
-  const reduceMotion = useReducedMotion();
   const built = new Set(builtStageIds);
   const builtNames = stages.filter((s) => built.has(s.id)).map((s) => s.name);
   const builtSummary =
@@ -56,7 +55,7 @@ export default function JourneyTimeline({
                   onStageChange(stage.id);
                   track("journey_stage_selected", { stage: stage.id });
                 }}
-                whileHover={reduceMotion || isActive ? undefined : { y: -1 }}
+                whileHover={isActive ? undefined : { y: -1 }}
                 className={`relative w-full sm:w-auto rounded-[var(--radius-md)] border px-3 py-2.5 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] sm:min-w-[148px] md:min-w-[160px] ${
                   isActive
                     ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-canvas)]"

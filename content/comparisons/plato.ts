@@ -26,7 +26,7 @@ export const plato: Comparison = {
     {
       capability: "Find next available slot",
       them: "Calendar grid with slot rules; finding next available for a specific procedure + provider is a manual scan.",
-      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+      us: "Type 'endo, 60 min, Provider B' and see the next three openings ranked by earliest. One query, no calendar scanning.",
     },
     {
       capability: "Patient self-booking",

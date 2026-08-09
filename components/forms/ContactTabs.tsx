@@ -29,10 +29,10 @@ const TABS: TabDef[] = [
   },
   {
     id: "migration",
-    label: "Migration assessment",
-    eyebrow: "Migration assessment",
+    label: "Connection & rollout",
+    eyebrow: "Connection & rollout",
     title: "Moving from Plato, Open Dental, or another PMS?",
-    body: "Tell us your current stack and timeline. We'll come back with a migration plan specific to your PMS — what we can preserve, what needs cleaning, and an honest timeline.",
+    body: "Tell us your current clinic stack and rollout goal. We'll map the Plato connection, reviewed writebacks, enabled modules, and any work that sits outside today's product scope.",
     bestFor: "Best for: solo or small-group clinics planning a cutover within the next 6 months.",
     Form: MigrationAssessmentForm,
   },

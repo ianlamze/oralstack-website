@@ -4,7 +4,7 @@ import type { ManagementSnapshot, Period } from "./types";
 // blended SG private-rate billing. All numbers indicative — shape and ratios
 // matter more than absolute precision for a marketing demo.
 
-const PROVIDERS = ["Dr Lim", "Dr Pereira", "Dr Tan", "Dr Wong"];
+const PROVIDERS = ["Provider A", "Provider B", "Provider C", "Provider D"];
 const PROCEDURES = ["Hygiene", "Restorative", "Endo", "Surgical", "Prosthetic"];
 
 // Synthetic but plausible trend generator — gentle variance + slow drift.
@@ -103,13 +103,13 @@ function buildSnapshot(period: Period): ManagementSnapshot {
 
   // Heatmap: provider × procedure production. Each provider has a profile.
   const profiles: number[][] = [
-    // Dr Lim: implant/prosthetic specialist
+    // Provider A: implant/prosthetic specialist
     [0.12, 0.18, 0.05, 0.1, 0.55],
-    // Dr Pereira: endo + restorative
+    // Provider B: endo + restorative
     [0.1, 0.4, 0.42, 0.05, 0.03],
-    // Dr Tan: GP balanced
+    // Provider C: GP balanced
     [0.25, 0.32, 0.13, 0.18, 0.12],
-    // Dr Wong: hygiene-heavy + surgical
+    // Provider D: hygiene-heavy + surgical
     [0.55, 0.1, 0.04, 0.28, 0.03],
   ];
   const heatmap = {

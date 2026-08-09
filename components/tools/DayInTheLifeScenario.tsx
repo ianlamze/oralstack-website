@@ -35,7 +35,7 @@ const STEPS: Step[] = [
     time: "09:15",
     role: "Front desk",
     title: "Patient walks in mid-rush asking for the next endo slot.",
-    body: "Front desk types 'endo, 60 min, Dr Pereira'. Three slots come back, ranked by earliest. The patient picks one. The booking commits straight into the schedule, timezone-correct.",
+    body: "Front desk types 'endo, 60 min, Provider C'. Three slots come back, ranked by earliest. The patient picks one. The booking commits straight into the schedule, timezone-correct.",
     pmsCost:
       "Manually scan the calendar grid. Average response time on a busy morning: 90 seconds.",
     oralstackWin: "One query, three results, three-second confirm.",
@@ -49,7 +49,7 @@ const STEPS: Step[] = [
     pmsCost:
       "End-of-day reconciliation: the patient leaves now, the bill goes out tomorrow, payment lands next week.",
     oralstackWin:
-      "Discharge-flow billing. Same-day collection rate from 60% → 85% in DFI Synergy's first quarter.",
+      "Discharge-flow billing. Same-day collection rate from 60% → 85% in Sample Dental Clinic's first quarter.",
     Mock: CheckoutMock,
   },
   {

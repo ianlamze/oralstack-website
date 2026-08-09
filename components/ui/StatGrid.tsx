@@ -12,9 +12,12 @@ type StatGridProps = {
 
 export default function StatGrid({ stats }: StatGridProps) {
   return (
-    <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 border-t border-[var(--color-border)] pt-10">
+    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((s) => (
-        <li key={s.label} className="grid gap-2">
+        <li
+          key={s.label}
+          className="grid gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-5 shadow-[var(--shadow-1)]"
+        >
           <p className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)] tabular-nums">
             <CountUp value={s.value} />
           </p>

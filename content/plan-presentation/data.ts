@@ -1,10 +1,10 @@
 import type { PlanContext, PlanConversion, PlanPhase } from "./types";
 
 export const planContext: PlanContext = {
-  patientName: "Hafiz Yusof",
-  greeting: "Hi Hafiz, here's the plan we discussed.",
+  patientName: "Demo patient 101",
+  greeting: "Hi Demo patient 101, here's the plan we discussed.",
   presentedAt: "28 Apr 2026 · 11:30",
-  presentedBy: "Dr Wong",
+  presentedBy: "Provider A",
   insuranceLabel: "IPP · NTUC Plus + CHAS Blue",
 };
 

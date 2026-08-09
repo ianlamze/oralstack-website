@@ -1,50 +1,40 @@
+import Image from "next/image";
 import MagneticButton from "@/components/primitives/MagneticButton";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/motion/AnimateInView";
-import AnimatedMark from "@/components/ui/AnimatedMark";
 
 export default function CTA() {
   return (
     <Section id="contact" className="py-24 md:py-32">
       <AnimateInView>
-        <div
-          className="relative overflow-hidden rounded-[var(--radius-xl)] px-8 py-14 md:px-14 md:py-20 text-[var(--color-canvas)] max-w-3xl mx-auto"
-          style={{ background: "var(--color-ink)" }}
-        >
-          {/* soft accent backdrop */}
-          <div
-            aria-hidden
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(circle at 90% 10%, color-mix(in oklch, var(--color-tide), transparent 70%) 0%, transparent 55%)",
-            }}
+        <div className="mx-auto grid max-w-5xl gap-10 overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-sidebar-border)] bg-[var(--color-sidebar)] px-8 py-12 text-[var(--color-sidebar-foreground)] shadow-[var(--shadow-elevated)] md:grid-cols-[auto_minmax(0,1fr)] md:items-center md:px-14 md:py-16">
+          <Image
+            src="/oralstack-mark.svg"
+            alt=""
+            width={80}
+            height={80}
+            className="rounded-[var(--radius-lg)] shadow-[var(--shadow-2)]"
           />
 
-          {/* decorative animated mark in corner */}
-          <div aria-hidden className="absolute top-8 right-8 md:top-10 md:right-10 opacity-30">
-            <AnimatedMark size={64} delay={0.1} />
-          </div>
-
-          <div className="relative">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide)]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[var(--tracking-eyebrow)] text-[var(--color-tide)]">
               Pilot programme
             </p>
-            <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight max-w-[24ch]">
-              Bring Oralstack into your clinic.
+            <h2 className="mt-4 max-w-[24ch] text-3xl font-semibold tracking-tight md:text-4xl">
+              Bring the Oralstack workspace into your clinic.
             </h2>
-            <p className="mt-5 max-w-[54ch] leading-relaxed text-[color-mix(in_oklch,var(--color-canvas),transparent_25%)]">
+            <p className="mt-5 max-w-[58ch] leading-relaxed text-[color-mix(in_srgb,var(--color-sidebar-foreground)_74%,transparent)]">
               We&apos;re working with a small group of dental clinics across Singapore and APAC. If
-              you&apos;re considering a switch from Plato, Open Dental, or a paper-led workflow,
-              we&apos;d like to hear how your front desk runs.
+              you&apos;re considering a Plato-connected workflow layer or moving paper-led
+              operations into a reviewed workspace, we&apos;d like to hear how your clinic day runs.
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <MagneticButton href="/book-a-demo" variant="onDark" withArrow>
                 Book a demo
               </MagneticButton>
               <a
                 href="mailto:hello@oralstack.com?subject=Oralstack%20pilot"
-                className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] border border-[color-mix(in_oklch,var(--color-canvas),transparent_60%)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[color-mix(in_oklch,var(--color-canvas),transparent_88%)] transition-colors"
+                className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-sidebar-border)] px-5 py-3 text-sm font-semibold text-[var(--color-sidebar-foreground)] transition-colors hover:bg-[color-mix(in_srgb,var(--color-sidebar-foreground)_8%,transparent)]"
               >
                 Talk to us about a pilot
               </a>

@@ -10,13 +10,16 @@ import {
 } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import StatusBadge from "@/components/ui/StatusBadge";
-import { integrationCategories, type IntegrationIcon } from "@/content/integrations";
+import {
+  integrationCategories,
+  type IntegrationAvailability,
+  type IntegrationIcon,
+} from "@/content/integrations";
 
 export const metadata: Metadata = {
   title: "Integrations",
   description:
-    "Imaging sensors, patient communication, payments, identity, accounting, and migration — what oralstack connects with today and what's on the roadmap.",
+    "A capability-by-capability account of what Oralstack offers now, what requires a configured pilot, and what is not enabled.",
   alternates: { canonical: "/integrations" },
 };
 
@@ -33,24 +36,26 @@ const iconMap: Record<IntegrationIcon, React.ComponentType<{ className?: string 
 export default function IntegrationsPage() {
   return (
     <main>
-      <PageHeader
-        eyebrow="Integrations"
-        title="oralstack works with the tools your clinic already runs."
-      />
+      <PageHeader eyebrow="Integrations" title="Clear boundaries for every connection." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Direct integrations live today, in beta, and on the near-term roadmap. Availability can
-          vary by region and deployment — confirm specifics for your clinic during a demo.
+          This is a capability register, not a logo wall. It separates generally available workflows
+          from clinic-configured pilots and surfaces that are currently unavailable.
+          Deployment-specific readiness is confirmed before a pilot starts.
         </p>
       </Section>
 
       <Section className="pb-12">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-[var(--color-text-muted)] border-y border-[var(--color-border)] py-4">
-          <LegendDot status="Live" /> Live in production
-          <LegendDot status="Beta" /> Beta — available on request
-          <LegendDot status="Roadmap" /> Roadmap — committed, not shipped
+          <LegendDot status="Available" /> Available
+          <LegendDot status="Configured pilot" /> Configured pilot
+          <LegendDot status="Not enabled" /> Not enabled
         </div>
+        <p className="mt-3 max-w-[76ch] text-xs leading-relaxed text-[var(--color-text-soft)]">
+          “Configured pilot” means the code path exists but still requires clinic credentials,
+          deployment configuration, and a readiness review. It does not mean general availability.
+        </p>
       </Section>
 
       <Section className="pb-24 md:pb-32">
@@ -84,27 +89,17 @@ export default function IntegrationsPage() {
                           {item.description}
                         </p>
                       </div>
-                      <StatusBadge status={item.status} />
+                      <IntegrationStatusPill status={item.status} />
                     </li>
                   ))}
                 </ul>
-                {cat.title === "Migration" && (
+                {cat.title === "Imaging exchange" && (
                   <p className="text-sm mt-3">
                     <a
-                      href="/articles/plato-to-cloud-migration"
+                      href="/status"
                       className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
                     >
-                      Read: Migrating from Plato to a cloud PMS →
-                    </a>
-                  </p>
-                )}
-                {cat.title === "Imaging exchange & viewers" && (
-                  <p className="text-sm mt-3">
-                    <a
-                      href="/articles/dicom-in-chart-vs-separate-viewer"
-                      className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
-                    >
-                      Read: DICOM in the chart vs a separate viewer →
+                      See the current imaging rollout status →
                     </a>
                   </p>
                 )}
@@ -118,11 +113,12 @@ export default function IntegrationsPage() {
         <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-              Need an integration that&apos;s not listed?
+              Need a connection that is not available?
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              Tell us what your clinic already runs. We prioritise integrations by pilot demand —
-              clinics that ask for it first usually get it first.
+              Tell us the system, data direction, and workflow you need. We will distinguish a
+              supported export, a configurable pilot, and new engineering work before proposing a
+              rollout.
             </p>
           </div>
           <div className="md:justify-self-end">
@@ -139,12 +135,31 @@ export default function IntegrationsPage() {
   );
 }
 
-function LegendDot({ status }: { status: "Live" | "Beta" | "Roadmap" }) {
+function LegendDot({ status }: { status: IntegrationAvailability }) {
   const cls =
-    status === "Live"
+    status === "Available"
       ? "bg-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_30%)]"
-      : status === "Beta"
+      : status === "Configured pilot"
         ? "bg-[color-mix(in_oklch,var(--color-sunset),var(--color-ink)_30%)]"
         : "bg-[var(--color-border-strong)]";
   return <span aria-hidden className={`inline-block h-2 w-2 rounded-full ${cls}`} />;
+}
+
+function IntegrationStatusPill({ status }: { status: IntegrationAvailability }) {
+  const styles: Record<IntegrationAvailability, string> = {
+    Available:
+      "bg-[color-mix(in_oklch,var(--color-sea),white_70%)] text-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_55%)] border-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_30%)]",
+    "Configured pilot":
+      "bg-[color-mix(in_oklch,var(--color-sunset),white_72%)] text-[color-mix(in_oklch,var(--color-sunset-deep),var(--color-ink)_45%)] border-[color-mix(in_oklch,var(--color-sunset),var(--color-ink)_30%)]",
+    "Not enabled":
+      "bg-[var(--color-canvas-tinted)] text-[var(--color-text-muted)] border-[var(--color-border-strong)]",
+  };
+
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em] ${styles[status]}`}
+    >
+      {status}
+    </span>
+  );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { snapshots } from "@/content/management/data";
 import {
   type CategoryProduction,
@@ -81,8 +81,6 @@ export default function ManagementReport() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   const data = snapshots[period];
 
   function markInteracted() {
@@ -110,7 +108,6 @@ export default function ManagementReport() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -127,7 +124,7 @@ export default function ManagementReport() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -156,7 +153,7 @@ export default function ManagementReport() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · {periodLabel[period]}
+          Sample Dental Clinic · {periodLabel[period]}
         </span>
       </div>
 
@@ -197,7 +194,6 @@ export default function ManagementReport() {
             setFocusedStat((cur) => (cur === id ? null : id));
             track("mgmt_stat_focused", { stat: id });
           }}
-          reduceMotion={!!reduceMotion}
         />
         <StatCard
           id="collectionRatio"
@@ -211,7 +207,6 @@ export default function ManagementReport() {
             setFocusedStat((cur) => (cur === id ? null : id));
             track("mgmt_stat_focused", { stat: id });
           }}
-          reduceMotion={!!reduceMotion}
         />
         <StatCard
           id="newPatients"
@@ -225,7 +220,6 @@ export default function ManagementReport() {
             setFocusedStat((cur) => (cur === id ? null : id));
             track("mgmt_stat_focused", { stat: id });
           }}
-          reduceMotion={!!reduceMotion}
         />
         <StatCard
           id="hygieneRecareRate"
@@ -239,7 +233,6 @@ export default function ManagementReport() {
             setFocusedStat((cur) => (cur === id ? null : id));
             track("mgmt_stat_focused", { stat: id });
           }}
-          reduceMotion={!!reduceMotion}
         />
       </div>
 
@@ -249,7 +242,6 @@ export default function ManagementReport() {
           buckets={data.trend.buckets}
           current={data.trend.current}
           prior={data.trend.prior}
-          reduceMotion={!!reduceMotion}
         />
       </Section>
 
@@ -277,7 +269,7 @@ export default function ManagementReport() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] mt-6">
         {/* Provider scorecard */}
         <Section title="Provider scorecard" subtitle="Production · chair hours · per hour">
-          <ProviderScorecard providers={data.providers} reduceMotion={!!reduceMotion} />
+          <ProviderScorecard providers={data.providers} />
         </Section>
 
         {/* Provider × procedure heatmap */}
@@ -297,7 +289,6 @@ export default function ManagementReport() {
               );
               track("mgmt_heatmap_cell_focused", cell);
             }}
-            reduceMotion={!!reduceMotion}
           />
         </Section>
       </div>
@@ -349,7 +340,6 @@ function StatCard({
   sparkline,
   focused,
   onFocus,
-  reduceMotion,
 }: {
   id: string;
   label: string;
@@ -358,7 +348,6 @@ function StatCard({
   sparkline: number[];
   focused: boolean;
   onFocus: (id: string) => void;
-  reduceMotion: boolean;
 }) {
   const positive = deltaVal >= 0;
   const deltaText = `${positive ? "▲" : "▼"} ${Math.abs(deltaVal * 100).toFixed(1)}%`;
@@ -366,16 +355,10 @@ function StatCard({
     <motion.button
       type="button"
       onClick={() => onFocus(id)}
-      animate={
-        reduceMotion
-          ? undefined
-          : {
-              scale: focused ? 1.015 : 1,
-              boxShadow: focused
-                ? "0 18px 40px -16px rgba(20,30,60,0.22)"
-                : "0 0 0 0 rgba(0,0,0,0)",
-            }
-      }
+      animate={{
+        scale: focused ? 1.015 : 1,
+        boxShadow: focused ? "0 18px 40px -16px rgba(20,30,60,0.22)" : "0 0 0 0 rgba(0,0,0,0)",
+      }}
       transition={{ type: "spring", stiffness: 380, damping: 32 }}
       className={`text-left rounded-md border p-3 grid gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] transition-colors ${
         focused
@@ -388,7 +371,7 @@ function StatCard({
       </p>
       <motion.p
         key={value}
-        initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+        initial={{ opacity: 0, y: 2 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.18 }}
         className="text-xl md:text-2xl font-semibold tabular-nums tracking-tight text-[var(--color-text)] leading-none"
@@ -451,12 +434,10 @@ function ProductionTrendChart({
   buckets,
   current,
   prior,
-  reduceMotion,
 }: {
   buckets: string[];
   current: number[];
   prior: number[];
-  reduceMotion: boolean;
 }) {
   const W = 700;
   const H = 180;
@@ -509,7 +490,7 @@ function ProductionTrendChart({
         })}
         {/* prior period (lighter) */}
         <motion.polyline
-          initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+          initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
           transition={{ duration: 0.6 }}
           points={toPoints(prior)}
@@ -521,7 +502,7 @@ function ProductionTrendChart({
         />
         {/* current period (bold) */}
         <motion.polyline
-          initial={reduceMotion ? false : { pathLength: 0 }}
+          initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           points={toPoints(current)}
@@ -703,10 +684,8 @@ function ARAgingBar({
 
 function ProviderScorecard({
   providers,
-  reduceMotion,
 }: {
   providers: { name: string; production: number; chairHours: number; acceptanceRate?: number }[];
-  reduceMotion: boolean;
 }) {
   const max = Math.max(...providers.map((p) => p.production));
   return (
@@ -727,7 +706,7 @@ function ProviderScorecard({
             </div>
             <div className="h-2 rounded-full bg-[var(--color-canvas-tinted)] overflow-hidden">
               <motion.div
-                initial={reduceMotion ? false : { width: 0 }}
+                initial={{ width: 0 }}
                 animate={{ width: `${pct}%` }}
                 transition={{ duration: 0.45 }}
                 className="h-full"
@@ -748,12 +727,10 @@ function Heatmap({
   data,
   focused,
   onFocus,
-  reduceMotion,
 }: {
   data: { providers: string[]; procedures: string[]; matrix: number[][] };
   focused: { provider: string; procedure: string } | null;
   onFocus: (cell: { provider: string; procedure: string }) => void;
-  reduceMotion: boolean;
 }) {
   const flat = data.matrix.flat();
   const max = Math.max(...flat, 1);
@@ -792,8 +769,8 @@ function Heatmap({
                     <motion.button
                       type="button"
                       onClick={() => onFocus({ provider: prov, procedure: proc })}
-                      whileHover={reduceMotion ? undefined : { scale: 1.04 }}
-                      animate={reduceMotion ? undefined : { scale: isFocused ? 1.05 : 1 }}
+                      whileHover={{ scale: 1.04 }}
+                      animate={{ scale: isFocused ? 1.05 : 1 }}
                       aria-label={`${prov} · ${proc} · ${formatSGD(value)}`}
                       className={`w-full grid place-items-center min-h-[36px] rounded-sm border-2 tabular-nums font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-tide-deep)] transition-colors ${
                         isFocused ? "border-[var(--color-ink)]" : "border-transparent"

@@ -1,6 +1,5 @@
+import Image from "next/image";
 import Section from "@/components/primitives/Section";
-import AnimatedMark from "@/components/ui/AnimatedMark";
-import BrandMotif from "@/components/visuals/BrandMotif";
 
 type PageHeaderProps = {
   eyebrow: string;
@@ -29,29 +28,28 @@ export default function PageHeader({
   return (
     <Section
       className={
-        isDisplay ? "relative pt-16 md:pt-24 pb-12 md:pb-16 overflow-hidden" : "pt-16 md:pt-24 pb-8"
+        isDisplay ? "relative overflow-hidden pb-12 pt-16 md:pb-16 md:pt-24" : "pb-8 pt-16 md:pt-24"
       }
     >
-      {isDisplay && (
-        <div
-          aria-hidden
-          className="absolute inset-x-0 -top-20 -z-10 pointer-events-none opacity-[0.55]"
-        >
-          <BrandMotif tone="tide" intensity={0.3} aspect="wide" className="w-full h-[420px]" />
-        </div>
-      )}
       <div className={isDisplay ? "max-w-[1100px]" : "max-w-[820px]"}>
-        {showMark && <AnimatedMark size={32} className="mb-7" />}
+        {showMark && (
+          <Image
+            src="/oralstack-mark.svg"
+            alt=""
+            width={40}
+            height={40}
+            className="mb-7 rounded-[var(--radius-sm)] shadow-[var(--shadow-1)]"
+          />
+        )}
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
           {eyebrow}
         </p>
         <h1
           className={
             isDisplay
-              ? "mt-5 font-semibold tracking-[-0.02em] leading-[0.96] text-balance text-[var(--color-text)]"
-              : "mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05] text-balance"
+              ? "mt-5 text-balance text-[length:var(--text-display)] leading-[0.96] text-[var(--color-text)]"
+              : "mt-4 text-balance text-4xl leading-[1.02] text-[var(--color-text)] md:text-5xl lg:text-6xl"
           }
-          style={isDisplay ? { fontSize: "var(--text-display)" } : undefined}
         >
           {title}
         </h1>

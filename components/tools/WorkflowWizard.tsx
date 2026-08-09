@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { ArrowRight, Check } from "lucide-react";
 import Section from "@/components/primitives/Section";
 import { track } from "@/lib/analytics";
 
@@ -18,91 +19,100 @@ type Pain = {
 
 const pains: Pain[] = [
   {
-    id: "schedule",
-    question: "Reschedules eat the morning",
-    resultLead: "Drag-to-reschedule replaces the open-edit-save loop.",
-    body: "A 3-second drag from 10:00 to 14:00 commits timezone-correct on reload. Provider columns render dynamically as you add chairs. The schedule mock on the homepage is the live behaviour — try it.",
-    primaryHref: "/workflows#scheduling",
-    primaryLabel: "See the scheduling workflow →",
+    id: "run-the-day",
+    question: "Queues and calendars split the clinic day",
+    resultLead: "Run appointments, requests and chair gaps from one daily workspace.",
+    body: "My day, Command, Appointments, Inbox, Requests and Huddle give the team a shared operating view. Appointment changes still follow the clinic's Plato workflow.",
+    primaryHref: "/workflows#run-the-day",
+    primaryLabel: "See run the day",
     secondaryHref:
-      "mailto:hello@oralstack.com?subject=Demo%3A%20scheduling%20workflow&body=We%27re%20losing%20time%20on%20rescheduling.%20Can%20we%20see%20the%20schedule%20on%20our%20own%20data%3F",
-    secondaryLabel: "Book a scheduling-focused demo",
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20run%20the%20clinic%20day&body=Show%20us%20how%20appointments%2C%20requests%2C%20huddle%20and%20chair%20work%20fit%20together%20with%20Plato.",
+    secondaryLabel: "Book a run-the-day walkthrough",
   },
   {
-    id: "billing",
-    question: "Bills reconcile at end-of-day",
-    resultLead: "Discharge-flow billing closes the loop while the patient is still at the chair.",
-    body: "Treatment lines pull from the chart automatically; insurance and patient portion stay structurally separate. DFI Synergy moved their same-day-billing rate from 60% → 85% in four weeks.",
-    primaryHref: "/workflows#billing",
-    primaryLabel: "See the billing workflow →",
+    id: "patient-care",
+    question: "Patient context is scattered",
+    resultLead: "Open the patient folder from reception or chairside.",
+    body: "Review case notes, the tooth chart, treatment plans and perio work together. Imported casenote findings remain drafts until a clinician reviews them.",
+    primaryHref: "/workflows#patient-care",
+    primaryLabel: "See patient care",
     secondaryHref:
-      "mailto:hello@oralstack.com?subject=Demo%3A%20discharge-flow%20billing&body=We%27re%20stuck%20on%20end-of-day%20reconciliation.%20Show%20us%20how%20discharge-flow%20billing%20works.",
-    secondaryLabel: "Book a billing-focused demo",
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20patient%20care&body=Show%20us%20the%20patient%20folder%2C%20chairside%20charting%2C%20treatment%20plans%20and%20perio%20review.",
+    secondaryLabel: "Book a patient-care walkthrough",
   },
   {
-    id: "charting",
-    question: "Notes scattered across tabs",
-    resultLead: "Tooth-led charting with surface-specific notes (M/D/B/L/O).",
-    body: "FDI numbering, per-procedure templates editable per visit, treatment plans that write back to billing automatically. One canonical view of the patient.",
-    primaryHref: "/workflows#charting",
-    primaryLabel: "See the charting workflow →",
+    id: "checkout-money",
+    question: "Checkout handoffs stall at the desk",
+    resultLead: "Stage checkout, estimates, receipts and follow-up in one reviewed flow.",
+    body: "Plato remains the official ledger. Oralstack organizes billing tasks and queues reviewed invoice writebacks without silently posting claims or payments.",
+    primaryHref: "/workflows#checkout-money",
+    primaryLabel: "See checkout & money",
     secondaryHref:
-      "mailto:hello@oralstack.com?subject=Demo%3A%20charting&body=Show%20us%20the%20tooth-led%20charting%20on%20a%20representative%20patient.",
-    secondaryLabel: "Book a charting-focused demo",
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20checkout%20and%20money&body=Show%20us%20checkout%2C%20billing%20follow-up%20and%20reviewed%20Plato%20writebacks.",
+    secondaryLabel: "Book a checkout walkthrough",
   },
   {
-    id: "recall",
-    question: "Recall list slips through the cracks",
-    resultLead: "Recall candidates surface 3 weeks before due, sorted by recall age.",
-    body: "WhatsApp Business API templated messaging, audit-logged. The recall queue on the case study page is the live behaviour — sortable, click to send.",
-    primaryHref: "/workflows#recall",
-    primaryLabel: "See the recall workflow →",
+    id: "patient-access",
+    question: "Patient requests arrive through different channels",
+    resultLead: "Bring intake, portal requests, and secure messages into staff review.",
+    body: "The intake portal, patient portal, first-party messaging, and find-a-time requests keep staff in control. A requested time is not an automatic Plato booking.",
+    primaryHref: "/workflows#patient-access",
+    primaryLabel: "See patient access",
     secondaryHref:
-      "mailto:hello@oralstack.com?subject=Demo%3A%20recall%20+%20WhatsApp&body=Recall%20outreach%20is%20manual%20today.%20How%20does%20yours%20compare%3F",
-    secondaryLabel: "Book a recall-focused demo",
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20patient%20access&body=Show%20us%20how%20booking%2C%20intake%20and%20portal%20requests%20are%20triaged%20by%20staff.",
+    secondaryLabel: "Book a patient-access walkthrough",
   },
   {
-    id: "imaging",
-    question: "Imaging trapped in vendor desktop apps",
-    resultLead: "DICOM viewer inside the patient chart, sensor-bridge across vendors.",
-    body: "Carestream, Dexis, Sopro, Schick — equal-footing integration, no per-brand desktop app. v13 cohort opens for imaging this quarter.",
-    primaryHref: "/workflows#imaging",
-    primaryLabel: "See the imaging workflow →",
+    id: "clinic-operations",
+    question: "Stock, lab and staff work live in separate trackers",
+    resultLead: "Bring clinic operations into the same workspace.",
+    body: "Managers can review inventory, estimated material usage, lab invoices, suppliers, staff time, payroll preparation and commissions.",
+    primaryHref: "/workflows#clinic-operations",
+    primaryLabel: "See clinic operations",
     secondaryHref:
-      "mailto:hello@oralstack.com?subject=Demo%3A%20DICOM%20in%20chart&body=Our%20imaging%20lives%20in%20a%20separate%20desktop%20app.%20Show%20us%20DICOM%20in%20the%20chart.",
-    secondaryLabel: "Book an imaging-focused demo",
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20clinic%20operations&body=Show%20us%20inventory%2C%20lab%2C%20supplier%20and%20staff%20operations.",
+    secondaryLabel: "Book an operations walkthrough",
   },
   {
-    id: "multi-clinic",
-    question: "Multiple locations, no single view",
-    resultLead: "Tenant-isolated SaaS, all locations under one login.",
-    body: "Row-level data separation per clinic. Multi-clinic owners see consolidated revenue and schedule across locations at flat $200/clinic/month.",
-    primaryHref: "/for-multi-clinic",
-    primaryLabel: "See the multi-clinic page →",
+    id: "insights",
+    question: "Managers assemble the daily picture by hand",
+    resultLead: "Use Huddle, Insights and reports as one operating view.",
+    body: "See chair gaps, production, collection, receivables and provider performance from available clinic data. Derived measures stay labelled when Plato data is incomplete.",
+    primaryHref: "/workflows#insights",
+    primaryLabel: "See clinic insights",
     secondaryHref:
-      "mailto:hello@oralstack.com?subject=Demo%3A%20multi-clinic%20rollout&body=We%20run%20%5BN%5D%20locations.%20Show%20us%20the%20multi-clinic%20rollout.",
-    secondaryLabel: "Book a multi-clinic walkthrough",
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20clinic%20insights&body=Show%20us%20the%20daily%20huddle%2C%20reports%20and%20provider%20performance%20views.",
+    secondaryLabel: "Book an insights walkthrough",
+  },
+  {
+    id: "organization-security",
+    question: "Access and sync health are hard to audit",
+    resultLead: "Manage people, roles, settings, sync and audit together.",
+    body: "Role-aware controls show who can act, which clinic is active, and what is waiting for reviewed writeback.",
+    primaryHref: "/workflows#organization-security",
+    primaryLabel: "See organization & security",
+    secondaryHref:
+      "mailto:hello@oralstack.com?subject=Walkthrough%3A%20organization%20and%20security&body=Show%20us%20roles%2C%20clinic%20access%2C%20settings%2C%20sync%20health%20and%20audit%20history.",
+    secondaryLabel: "Book a security walkthrough",
   },
 ];
 
 export default function WorkflowWizard() {
   const [picked, setPicked] = useState<string | null>(null);
-  const reduceMotion = useReducedMotion();
-
   const result = picked ? pains.find((p) => p.id === picked) : null;
 
   return (
-    <Section className="py-20 md:py-24">
+    <Section className="border-y border-[var(--color-line)] bg-[var(--color-surface-raised)] py-20 md:py-24">
       <div className="grid gap-3 mb-8 max-w-[760px]">
         <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-          Find your starting point
+          Choose a product area
         </p>
         <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-          What hurts most right now?
+          Where should Oralstack meet your team first?
         </h2>
         <p className="text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
-          Pick the one that costs your front desk the most time this week. We&apos;ll point at the
-          workflow that fixes it and a demo scoped to that conversation.
+          Pick the clinic job creating the most handoffs. We&apos;ll show the current workspace, the
+          Plato boundary and the rollout path for your clinic.
         </p>
       </div>
 
@@ -120,20 +130,21 @@ export default function WorkflowWizard() {
               aria-pressed={isPicked}
               className={`flex items-center justify-between gap-3 text-left rounded-[var(--radius-lg)] border px-4 py-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
                 isPicked
-                  ? "border-[var(--color-ink)] bg-[var(--color-canvas-tinted)]"
-                  : "card-hover border-[var(--color-border)] bg-white"
+                  ? "border-[var(--color-tide)] bg-[var(--color-canvas-tinted)] shadow-[var(--shadow-1)]"
+                  : "card-hover border-[var(--color-border)] bg-[var(--color-surface-raised)]"
               }`}
             >
               <span className="text-[14px] font-semibold text-[var(--color-text)] leading-snug">
                 {p.question}
               </span>
               <span
-                aria-hidden
-                className={`shrink-0 text-[15px] leading-none text-[var(--color-tide-deep)] ${
-                  isPicked ? "" : "card-arrow"
-                }`}
+                className={`shrink-0 text-[var(--color-tide-deep)] ${isPicked ? "" : "card-arrow"}`}
               >
-                {isPicked ? "✓" : "→"}
+                {isPicked ? (
+                  <Check className="size-4" aria-hidden />
+                ) : (
+                  <ArrowRight className="size-4" aria-hidden />
+                )}
               </span>
             </button>
           );
@@ -145,14 +156,14 @@ export default function WorkflowWizard() {
           {result ? (
             <motion.div
               key={result.id}
-              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+              exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.2 }}
-              className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white p-6 md:p-8"
+              className="rounded-[var(--radius-xl)] border border-[var(--color-border)] border-t-[3px] border-t-[var(--color-tide)] bg-[var(--color-surface-raised)] p-6 shadow-[var(--shadow-2)] md:p-8"
             >
               <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                Suggested next step
+                Suggested product area
               </p>
               <p className="mt-3 text-lg md:text-xl font-semibold tracking-tight text-[var(--color-text)] max-w-[60ch]">
                 {result.resultLead}
@@ -166,12 +177,14 @@ export default function WorkflowWizard() {
                   className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
                 >
                   {result.primaryLabel}
+                  <ArrowRight className="ml-2 size-4" aria-hidden />
                 </a>
                 <a
                   href={result.secondaryHref}
                   className="text-sm font-medium text-[var(--color-tide-deep)] underline underline-offset-4 hover:decoration-2"
                 >
-                  {result.secondaryLabel} →
+                  {result.secondaryLabel}
+                  <ArrowRight className="ml-1 inline size-3.5" aria-hidden />
                 </a>
               </div>
             </motion.div>

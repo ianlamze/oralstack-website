@@ -22,10 +22,16 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const formEl = e.currentTarget;
+    if (!formEl.checkValidity()) {
+      formEl.reportValidity();
+      return;
+    }
+
     setStatus("submitting");
     setMessage("");
 
-    const formEl = e.currentTarget;
     const formData = new FormData(formEl);
     const data: Record<string, string> = { intent };
     formData.forEach((v, k) => {
@@ -66,7 +72,7 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4" noValidate>
+    <form onSubmit={handleSubmit} className="grid gap-4">
       {children}
 
       {/* Honeypot — bots fill, humans never see */}

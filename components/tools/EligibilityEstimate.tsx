@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import {
   type ChasTier,
   type InsurancePlan,
@@ -32,8 +32,6 @@ export default function EligibilityEstimate() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   function markInteracted() {
     if (!hasInteractedRef.current) hasInteractedRef.current = true;
   }
@@ -99,7 +97,6 @@ export default function EligibilityEstimate() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -116,7 +113,7 @@ export default function EligibilityEstimate() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -295,7 +292,7 @@ export default function EligibilityEstimate() {
                 <Row label="GST (9%)" value={format(result.gst)} muted />
                 <motion.div
                   key={result.total}
-                  initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+                  initial={{ opacity: 0, y: 2 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.16 }}
                   className="grid grid-cols-[1fr_auto] mt-1 font-semibold text-[13px] text-[var(--color-text)]"

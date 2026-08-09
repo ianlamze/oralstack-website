@@ -26,7 +26,7 @@ export const eaglesoft: Comparison = {
     {
       capability: "Find next available slot",
       them: "Calendar-grid scan. Procedure/duration filtering varies by version.",
-      us: "Type 'endo, 60 min, Dr. Lim' and see the next three openings ranked by earliest. One query, no calendar scanning.",
+      us: "Type 'endo, 60 min, Provider B' and see the next three openings ranked by earliest. One query, no calendar scanning.",
     },
     {
       capability: "Patient self-booking",

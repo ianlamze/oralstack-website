@@ -17,7 +17,7 @@ type MagneticButtonProps = {
 };
 
 const base =
-  "relative inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-[var(--radius-md)] transition-colors duration-150 min-h-[44px]";
+  "relative inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-sm font-semibold shadow-[var(--shadow-1)] transition-[background-color,color,box-shadow] duration-150";
 
 const variants: Record<NonNullable<MagneticButtonProps["variant"]>, string> = {
   primary: "bg-[var(--color-ink)] text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)]",

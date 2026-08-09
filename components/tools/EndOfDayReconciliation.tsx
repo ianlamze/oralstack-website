@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { summarize, transactions as initialTransactions } from "@/content/eod-reconciliation/data";
 import type { Transaction } from "@/content/eod-reconciliation/types";
 import { track } from "@/lib/analytics";
@@ -27,8 +27,6 @@ export default function EndOfDayReconciliation() {
   const hasDemoedRef = useRef(false);
   const hasInteractedRef = useRef(false);
   const demoTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const reduceMotion = useReducedMotion();
-
   const summary = useMemo(() => summarize(transactions), [transactions]);
   const variance = summary.collected - summary.expected;
 
@@ -130,7 +128,6 @@ export default function EndOfDayReconciliation() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
     if (hasDemoedRef.current) return;
     const node = containerRef.current;
     if (!node) return;
@@ -147,7 +144,7 @@ export default function EndOfDayReconciliation() {
     );
     obs.observe(node);
     return () => obs.disconnect();
-  }, [reduceMotion, runDemo]);
+  }, [runDemo]);
 
   useEffect(() => {
     return () => {
@@ -179,7 +176,7 @@ export default function EndOfDayReconciliation() {
           </span>
         </span>
         <span className="text-[var(--color-text-muted)] normal-case tracking-normal text-right">
-          DFI Synergy · today
+          Sample Dental Clinic · today
         </span>
       </div>
 
@@ -190,9 +187,9 @@ export default function EndOfDayReconciliation() {
             {!reconciled ? (
               <motion.div
                 key="warn"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.2 }}
                 className="rounded-md border-2 p-4 grid gap-2"
                 style={{
@@ -223,9 +220,9 @@ export default function EndOfDayReconciliation() {
             ) : (
               <motion.div
                 key="ok"
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.2 }}
                 className="rounded-md border-2 p-4 grid gap-2"
                 style={{
@@ -289,9 +286,9 @@ export default function EndOfDayReconciliation() {
                 return (
                   <motion.li
                     key={t.id}
-                    layout={!reduceMotion}
+                    layout
                     animate={
-                      reduceMotion || !isFlagged
+                      !isFlagged
                         ? undefined
                         : {
                             backgroundColor: [
@@ -337,9 +334,9 @@ export default function EndOfDayReconciliation() {
               {postDemoNudge ? (
                 <motion.span
                   key="nudge"
-                  initial={reduceMotion ? false : { opacity: 0, y: 2 }}
+                  initial={{ opacity: 0, y: 2 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -2 }}
+                  exit={{ opacity: 0, y: -2 }}
                   transition={{ duration: 0.18 }}
                   className="inline-flex items-center gap-1 font-semibold text-[var(--color-tide-deep)]"
                 >
@@ -349,7 +346,7 @@ export default function EndOfDayReconciliation() {
               ) : (
                 <motion.span
                   key="default"
-                  initial={reduceMotion ? false : { opacity: 0 }}
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.18 }}

@@ -2,134 +2,151 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/motion/AnimateInView";
-import ScheduleMock from "@/components/visuals/ScheduleMock";
-import OdontogramMock from "@/components/visuals/OdontogramMock";
-import CaseNoteParseMock from "@/components/visuals/CaseNoteParseMock";
-import CheckoutMock from "@/components/visuals/CheckoutMock";
-import ImagingMock from "@/components/visuals/ImagingMock";
-import RecallMock from "@/components/visuals/RecallMock";
-import MessagingMock from "@/components/visuals/MessagingMock";
-import DicomViewerMock from "@/components/visuals/DicomViewerMock";
 import AnalyticsMock from "@/components/visuals/AnalyticsMock";
-import OnlineBookingMock from "@/components/visuals/OnlineBookingMock";
-import ComplianceMock from "@/components/visuals/ComplianceMock";
+import CheckoutMock from "@/components/visuals/CheckoutMock";
+import OdontogramMock from "@/components/visuals/OdontogramMock";
+import ScheduleMock from "@/components/visuals/ScheduleMock";
+import {
+  capabilityAvailabilityLabels,
+  workflowsPageContent,
+  type CapabilityVisual,
+} from "@/content/product-capabilities";
 import { workflowsDetailed } from "@/content/workflows-detailed";
-import { getArticle } from "@/content/articles";
 
 export const metadata: Metadata = {
-  title: "Workflows",
-  description:
-    "The eight workflows Oralstack is designed around — front desk scheduling, billing, charting, clinical imaging, online bookings, patient recall, operations analytics, and the compliance audit chain.",
+  title: workflowsPageContent.metadata.title,
+  description: workflowsPageContent.metadata.description,
   alternates: { canonical: "/workflows" },
 };
 
-type VisualEntry = { id: string; Component: React.ComponentType };
-
-const visualsBySlug: Record<string, VisualEntry[]> = {
-  "front-desk": [{ id: "schedule", Component: ScheduleMock }],
-  billing: [{ id: "checkout", Component: CheckoutMock }],
-  charting: [
-    { id: "case-note-parse", Component: CaseNoteParseMock },
-    { id: "odontogram", Component: OdontogramMock },
-  ],
-  imaging: [
-    { id: "imaging-summary", Component: ImagingMock },
-    { id: "dicom-viewer", Component: DicomViewerMock },
-  ],
-  "online-bookings": [{ id: "online-booking", Component: OnlineBookingMock }],
-  recall: [
-    { id: "recall-list", Component: RecallMock },
-    { id: "messaging", Component: MessagingMock },
-  ],
-  operations: [{ id: "analytics", Component: AnalyticsMock }],
-  compliance: [{ id: "compliance", Component: ComplianceMock }],
+const visualByKey: Record<CapabilityVisual, React.ComponentType> = {
+  schedule: ScheduleMock,
+  odontogram: OdontogramMock,
+  checkout: CheckoutMock,
+  analytics: AnalyticsMock,
 };
 
 export default function WorkflowsPage() {
   return (
     <main>
-      <PageHeader eyebrow="Workflows" title="Designed around the jobs busy clinics actually run." />
+      <PageHeader eyebrow={workflowsPageContent.eyebrow} title={workflowsPageContent.title} />
 
-      <Section className="pb-12">
-        <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Eight workflows that the front desk, clinical team, and clinic owner live in — every day,
-          on every chair. None of them require a separate window, a separate login, or a separate
-          desktop app.
-        </p>
+      <Section className="pb-16 md:pb-20">
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-14">
+          <p className="max-w-[58ch] text-lg leading-relaxed text-[var(--color-text-muted)]">
+            {workflowsPageContent.intro}
+          </p>
+          <aside className="rounded-[var(--radius-xl)] border border-[var(--color-border)] border-l-2 border-l-[var(--color-tide-deep)] bg-[var(--color-surface-inset)] p-6 md:p-8">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
+              {workflowsPageContent.platoBoundary.eyebrow}
+            </p>
+            <h2 className="mt-3 text-xl font-semibold tracking-tight">
+              {workflowsPageContent.platoBoundary.title}
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+              {workflowsPageContent.platoBoundary.body}
+            </p>
+          </aside>
+        </div>
       </Section>
 
       <Section className="pb-24 md:pb-32">
-        <ul className="grid gap-24 md:gap-32">
-          {workflowsDetailed.map((w, i) => {
-            const Visuals = visualsBySlug[w.slug] ?? [];
-            const visualSide = i % 2 === 0 ? "right" : "left";
-            const article = w.articleSlug ? getArticle(w.articleSlug) : undefined;
+        <ol className="grid gap-24 md:gap-32">
+          {workflowsDetailed.map((workflow, index) => {
+            const Visual = workflow.visual ? visualByKey[workflow.visual] : undefined;
+            const visualSide = index % 2 === 0 ? "right" : "left";
+
             return (
-              <li key={w.slug} id={w.slug} className="scroll-mt-10">
+              <li key={workflow.slug} id={workflow.slug} className="scroll-mt-10">
+                {workflow.legacySlugs.map((legacySlug) => (
+                  <span
+                    key={legacySlug}
+                    id={legacySlug}
+                    aria-hidden
+                    className="block scroll-mt-10"
+                  />
+                ))}
                 <AnimateInView>
-                  <header className="grid gap-3 max-w-[42ch] mb-10 md:mb-12">
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                      {String(i + 1).padStart(2, "0")} · {w.eyebrow}
-                    </p>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight leading-[1.1]">
-                      {w.title}
+                  <header className="mb-10 grid max-w-[48ch] gap-3 md:mb-12">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+                        {String(index + 1).padStart(2, "0")} · {workflow.eyebrow}
+                      </p>
+                      <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-inset)] px-3 py-1 text-xs font-medium text-[var(--color-tide-deep)]">
+                        {workflow.availabilityLabel}
+                      </span>
+                    </div>
+                    <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight md:text-3xl lg:text-4xl">
+                      {workflow.title}
                     </h2>
                   </header>
 
                   <div
-                    className={`grid gap-10 lg:gap-16 items-start ${
-                      visualSide === "right"
-                        ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
-                        : "lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
-                    }`}
+                    className={
+                      Visual
+                        ? `grid items-start gap-10 lg:gap-16 ${
+                            visualSide === "right"
+                              ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
+                              : "lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
+                          }`
+                        : "grid items-start gap-10"
+                    }
                   >
-                    <div className={`grid gap-6 ${visualSide === "left" ? "lg:order-2" : ""}`}>
-                      <p className="text-base md:text-lg text-[var(--color-text-muted)] leading-relaxed">
-                        {w.body}
+                    <div
+                      className={`grid gap-6 ${
+                        Visual && visualSide === "left" ? "lg:order-2" : ""
+                      }`}
+                    >
+                      <p className="max-w-[62ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
+                        {workflow.body}
                       </p>
-                      <ul className="grid gap-3">
-                        {w.bullets.map((b) => (
+
+                      <ul className="grid gap-3 md:grid-cols-3">
+                        {workflow.features.map((feature) => (
                           <li
-                            key={b}
-                            className="flex gap-3 text-base text-[var(--color-text-muted)] leading-relaxed"
+                            key={feature.title}
+                            className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-5"
                           >
-                            <span
-                              aria-hidden
-                              className="mt-2.5 inline-block h-1 w-1 rounded-full bg-[var(--color-tide-deep)] shrink-0"
-                            />
-                            <span>{b}</span>
+                            <p className="text-xs font-medium text-[var(--color-tide-deep)]">
+                              {capabilityAvailabilityLabels[feature.availability]}
+                            </p>
+                            <h3 className="mt-2 text-base font-semibold tracking-tight">
+                              {feature.title}
+                            </h3>
+                            <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                              {feature.description}
+                            </p>
                           </li>
                         ))}
                       </ul>
-                      <p className="mt-2 text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)] border-t border-[var(--color-border)] pt-4">
-                        <span className="font-medium text-[var(--color-text-muted)]">
-                          Replaces:
-                        </span>{" "}
-                        <span className="normal-case tracking-normal">{w.replaces}</span>
-                      </p>
-                      {article && (
-                        <p className="text-sm">
-                          <a
-                            href={`/articles/${article.slug}`}
-                            className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
-                          >
-                            Read: {article.title.split(":")[0]} →
-                          </a>
-                        </p>
-                      )}
+
+                      <dl className="grid gap-4 border-t border-[var(--color-border)] pt-5 text-sm leading-relaxed md:grid-cols-2">
+                        <div>
+                          <dt className="font-medium text-[var(--color-ink)]">
+                            {workflowsPageContent.keepsTogetherLabel}
+                          </dt>
+                          <dd className="mt-1 text-[var(--color-text-muted)]">
+                            {workflow.keepsTogether}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="font-medium text-[var(--color-ink)]">
+                            {workflowsPageContent.boundaryLabel}
+                          </dt>
+                          <dd className="mt-1 text-[var(--color-text-muted)]">
+                            {workflow.boundary}
+                          </dd>
+                        </div>
+                      </dl>
                     </div>
 
-                    {Visuals.length > 0 && (
+                    {Visual && (
                       <div
-                        className={`${
-                          visualSide === "left" ? "lg:order-1" : ""
-                        } w-full grid gap-6 ${
+                        className={`w-full ${visualSide === "left" ? "lg:order-1" : ""} ${
                           visualSide === "right" ? "lg:justify-self-end" : "lg:justify-self-start"
                         }`}
                       >
-                        {Visuals.map(({ id, Component }) => (
-                          <Component key={id} />
-                        ))}
+                        <Visual />
                       </div>
                     )}
                   </div>
@@ -137,26 +154,55 @@ export default function WorkflowsPage() {
               </li>
             );
           })}
-        </ul>
+        </ol>
+      </Section>
+
+      <Section className="pb-16 md:pb-20">
+        <AnimateInView>
+          <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-surface-inset)] p-8 md:p-12">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+              {workflowsPageContent.rolloutPolicy.eyebrow}
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
+              {workflowsPageContent.rolloutPolicy.title}
+            </h2>
+            <p className="mt-4 max-w-[66ch] leading-relaxed text-[var(--color-text-muted)]">
+              {workflowsPageContent.rolloutPolicy.body}
+            </p>
+            <ul className="mt-6 grid gap-3 md:grid-cols-3">
+              {workflowsPageContent.rolloutPolicy.items.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-4 text-sm leading-relaxed text-[var(--color-text-muted)]"
+                >
+                  <span
+                    aria-hidden
+                    className="mt-2 inline-block h-1 w-1 shrink-0 rounded-full bg-[var(--color-tide-deep)]"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </AnimateInView>
       </Section>
 
       <Section className="pb-24 md:pb-32">
-        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
+        <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:px-14 md:py-16">
           <div>
-            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-              See these workflows in your clinic.
+            <h2 className="max-w-[28ch] text-2xl font-semibold tracking-tight md:text-3xl">
+              {workflowsPageContent.cta.title}
             </h2>
-            <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              A 30-minute demo walks the front desk and a clinician through every workflow above, on
-              a sample dataset that mirrors a typical Singapore clinic.
+            <p className="mt-4 max-w-[54ch] leading-relaxed text-[var(--color-text-muted)]">
+              {workflowsPageContent.cta.body}
             </p>
           </div>
           <div className="md:justify-self-end">
             <a
-              href="/book-a-demo"
-              className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
+              href={workflowsPageContent.cta.href}
+              className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
             >
-              Book a demo →
+              {workflowsPageContent.cta.label} →
             </a>
           </div>
         </div>

@@ -93,7 +93,7 @@ function DentalChartFull() {
     <DentalChart
       initialTeeth={fullChartSeed}
       caption="Patient chart"
-      patientLabel="Lim Wei Jian · #1042"
+      patientLabel="Demo patient 201 · DEMO-1042"
     />
   );
 }

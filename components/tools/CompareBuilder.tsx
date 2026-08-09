@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import {
   capabilities,
   competitors,
@@ -94,8 +94,6 @@ export default function CompareBuilder() {
   const [selectedComps, setSelectedComps] = useState<Set<CompetitorId>>(
     () => new Set(competitors.map((c) => c.id)),
   );
-  const reduceMotion = useReducedMotion();
-
   function toggleCap(id: CapabilityId) {
     setSelectedCaps((prev) => {
       const next = new Set(prev);
@@ -177,11 +175,7 @@ export default function CompareBuilder() {
             : "Pick at least one competitor to compare against."}
         </div>
       ) : (
-        <motion.div
-          layout={!reduceMotion}
-          transition={{ layout: { duration: 0.2 } }}
-          className="grid gap-6"
-        >
+        <motion.div layout transition={{ layout: { duration: 0.2 } }} className="grid gap-6">
           <div className="hidden md:block overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border)]">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -268,19 +262,8 @@ export default function CompareBuilder() {
           Walk through these on your data →
         </a>
         <p className="text-[11px] text-[var(--color-text-soft)] leading-snug max-w-[44ch]">
-          Want the full breakdown for one vendor? See the{" "}
-          {competitors.map((c, i, arr) => (
-            <span key={c.id}>
-              <a
-                href={`/compare/${c.id}`}
-                className="text-[var(--color-tide-deep)] underline underline-offset-4"
-              >
-                {c.label}
-              </a>
-              {i < arr.length - 2 ? ", " : i === arr.length - 2 ? ", or " : " "}
-            </span>
-          ))}
-          page.
+          Oralstack scope reflects the current app inventory. Verify competitor editions, deployment
+          options, integrations, and pricing directly with each vendor.
         </p>
       </div>
     </div>
