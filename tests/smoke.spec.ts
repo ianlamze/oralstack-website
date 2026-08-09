@@ -448,9 +448,7 @@ test("request feedback focuses success and error states without losing form valu
       body: JSON.stringify({ ok: false, message: "Request service unavailable for this test." }),
     });
   });
-  await page.goto("/contact/?intent=pilot&source=dfi-synergy#request", {
-    waitUntil: "networkidle",
-  });
+  await page.reload({ waitUntil: "networkidle" });
   await fillEvidencePilotProposal(page, "preserved");
   await page.getByRole("button", { name: "Request a pilot proposal" }).click();
 
