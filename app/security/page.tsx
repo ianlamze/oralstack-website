@@ -4,6 +4,7 @@ import {
   ArrowRight,
   BadgeCheck,
   Bug,
+  ChevronDown,
   DatabaseBackup,
   FileLock2,
   Globe,
@@ -152,28 +153,39 @@ const legalDocs = [
   {
     label: "Product agreement",
     detail: "Request the current pilot or production terms for legal review.",
-    href: "mailto:hello@oralstack.com?subject=Oralstack%20MSA%20request",
-    external: true,
+    href: "/contact/?intent=security&source=security&request=product-agreement#request",
   },
   {
     label: "Data processing terms",
     detail:
       "Confirm the current controller/intermediary terms and deployment scope during procurement.",
-    href: "mailto:hello@oralstack.com?subject=Oralstack%20DPA%20request",
-    external: true,
+    href: "/contact/?intent=security&source=security&request=data-processing-terms#request",
   },
   {
     label: "Security evidence pack",
     detail: "Request the current control summary, open-gap register, and evidence review boundary.",
-    href: "mailto:security@oralstack.com?subject=Oralstack%20security%20evidence%20request",
-    external: true,
+    href: "/contact/?intent=security&source=security&request=evidence-pack#request",
   },
   {
     label: "Deployment-specific subprocessor information",
     detail: "Request the current list for the services and optional providers in your deployment.",
-    href: "mailto:hello@oralstack.com?subject=Subprocessor%20list%20request",
-    external: true,
+    href: "/contact/?intent=security&source=security&request=subprocessor-information#request",
   },
+];
+
+const securitySections = [
+  { href: "#data", label: "Data" },
+  { href: "#access", label: "Access" },
+  { href: "#reliability", label: "Recovery" },
+  { href: "#compliance", label: "Compliance" },
+  { href: "#documents", label: "Documents" },
+];
+
+const trustAtAGlance = [
+  { term: "Evidence reviewed", detail: "Through 6 August 2026" },
+  { term: "Deployment record", detail: "Singapore region" },
+  { term: "Tenant boundary", detail: "Postgres RLS evidenced" },
+  { term: "Attestations", detail: "CE-HIMS, SOC 2 and ISO 27001 not held" },
 ];
 
 export default function SecurityPage() {
@@ -191,7 +203,77 @@ export default function SecurityPage() {
       </Section>
 
       <Section className="pb-12">
+        <div
+          data-testid="security-trust-actions"
+          className="grid max-w-[920px] gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 md:p-8"
+        >
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
+                Start a review
+              </p>
+              <h2 className="mt-2 max-w-[28ch] text-2xl font-semibold tracking-tight md:text-3xl">
+                Get the current evidence boundary for your clinic review.
+              </h2>
+              <p className="mt-3 max-w-[58ch] text-sm leading-relaxed text-[var(--color-text-muted)]">
+                Tell us whether you need a questionnaire, controls walkthrough, agreement, data
+                processing terms, subprocessor detail, or a current deployment check. The response
+                will separate implemented controls from open work.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <a
+                  href="/contact/?intent=security&source=security&request=security-questionnaire#request"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
+                >
+                  Request security review <ArrowRight className="size-4" aria-hidden />
+                </a>
+                <a
+                  href="/status"
+                  className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-white px-5 py-3 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-ink)]"
+                >
+                  View capability snapshot
+                </a>
+              </div>
+            </div>
+            <dl className="grid grid-cols-2 gap-2">
+              {trustAtAGlance.map((item) => (
+                <div
+                  key={item.term}
+                  className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white p-4"
+                >
+                  <dt className="text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+                    {item.term}
+                  </dt>
+                  <dd className="mt-1 text-sm font-semibold leading-snug text-[var(--color-text)]">
+                    {item.detail}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <nav
+            aria-label="Security page sections"
+            className="flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-border)] pt-4"
+          >
+            <span className="w-full text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-muted)] sm:w-auto">
+              On this page
+            </span>
+            {securitySections.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--color-tide-deep)] underline decoration-[var(--color-border-strong)] underline-offset-4"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </Section>
+
+      <Section className="pb-12">
         <SectionGroup
+          id="data"
           eyebrow="Where data lives"
           heading="Documented deployment, database-enforced tenant scope, layered encryption."
           items={whereDataLives}
@@ -200,6 +282,7 @@ export default function SecurityPage() {
 
       <Section className="pb-12">
         <SectionGroup
+          id="access"
           eyebrow="How access is controlled"
           heading="MFA support, scoped access, and tamper-evident audit integrity."
           items={accessControl}
@@ -208,6 +291,7 @@ export default function SecurityPage() {
 
       <Section className="pb-12">
         <SectionGroup
+          id="reliability"
           eyebrow="Backups, recovery, and incidents"
           heading="Recorded backup controls, a dated status snapshot, and a disclosure channel."
           items={reliability}
@@ -215,13 +299,12 @@ export default function SecurityPage() {
       </Section>
 
       <Section className="pb-16">
-        <div className="grid gap-6 max-w-[920px]">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-            Compliance posture
-          </p>
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[40ch]">
-            Implemented controls are separate from readiness work and certifications not held.
-          </h2>
+        <ResponsiveSection
+          id="compliance"
+          eyebrow="Compliance posture"
+          heading="Implemented controls are separate from readiness work and certifications not held."
+          disclosureLabel="Review compliance evidence"
+        >
           <ul className="grid gap-3">
             {complianceItems.map((c) => (
               <li
@@ -236,21 +319,20 @@ export default function SecurityPage() {
               </li>
             ))}
           </ul>
-          <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
+          <p className="text-xs text-[var(--color-text-muted)] tracking-[0.04em]">
             “Implemented” describes evidenced product controls, not legal compliance, certification,
             or an independent attestation.
           </p>
-        </div>
+        </ResponsiveSection>
       </Section>
 
       <Section className="pb-16">
-        <div className="grid gap-6 max-w-[920px]">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-            Legal documents
-          </p>
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[40ch]">
-            Contracts, processing agreements, and the subprocessor list.
-          </h2>
+        <ResponsiveSection
+          id="documents"
+          eyebrow="Legal documents"
+          heading="Contracts, processing agreements, and the subprocessor list."
+          disclosureLabel="Review documents and request paths"
+        >
           <ul className="grid gap-2">
             {legalDocs.map((d) => (
               <li key={d.label}>
@@ -280,11 +362,11 @@ export default function SecurityPage() {
               </li>
             ))}
           </ul>
-          <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
+          <p className="text-xs text-[var(--color-text-muted)] tracking-[0.04em]">
             The marketing-site Privacy and Terms cover oralstack.com only. Product customers sign
             the current commercial and data-processing terms agreed for their deployment.
           </p>
-        </div>
+        </ResponsiveSection>
       </Section>
 
       <Section className="pb-24 md:pb-32">
@@ -307,10 +389,10 @@ export default function SecurityPage() {
           </div>
           <div className="md:justify-self-end">
             <a
-              href="mailto:security@oralstack.com?subject=Security%20questionnaire%20request"
+              href="/contact/?intent=security&source=security&request=security-questionnaire#request"
               className="inline-flex items-center gap-1 min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
             >
-              security@oralstack.com <ArrowRight className="size-3" aria-hidden />
+              Request security review <ArrowRight className="size-3" aria-hidden />
             </a>
           </div>
         </div>
@@ -320,20 +402,24 @@ export default function SecurityPage() {
 }
 
 function SectionGroup({
+  id,
   eyebrow,
   heading,
   items,
 }: {
+  id: string;
   eyebrow: string;
   heading: string;
   items: CardItem[];
 }) {
   return (
-    <div className="grid gap-6 max-w-[920px]">
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-        {eyebrow}
-      </p>
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[40ch]">{heading}</h2>
+    <ResponsiveSection
+      id={id}
+      eyebrow={eyebrow}
+      heading={heading}
+      disclosureLabel={`Review ${eyebrow.toLowerCase()}`}
+      defaultOpen={id === "data"}
+    >
       <ul className="grid gap-4 md:grid-cols-3">
         {items.map((item) => {
           const Icon = item.icon;
@@ -353,7 +439,46 @@ function SectionGroup({
           );
         })}
       </ul>
-    </div>
+    </ResponsiveSection>
+  );
+}
+
+function ResponsiveSection({
+  id,
+  eyebrow,
+  heading,
+  disclosureLabel,
+  defaultOpen = false,
+  children,
+}: {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  disclosureLabel: string;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className="scroll-mt-28 grid max-w-[920px] gap-6">
+      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+        {eyebrow}
+      </p>
+      <h2 className="max-w-[40ch] text-2xl font-semibold tracking-tight md:text-3xl">{heading}</h2>
+      <details
+        open={defaultOpen}
+        className="group rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4 md:hidden"
+      >
+        <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-[var(--color-text)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-4">
+          {disclosureLabel}
+          <ChevronDown
+            className="size-4 shrink-0 transition-transform group-open:rotate-180"
+            aria-hidden
+          />
+        </summary>
+        <div className="mt-4">{children}</div>
+      </details>
+      <div className="hidden md:block">{children}</div>
+    </section>
   );
 }
 

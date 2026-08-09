@@ -156,12 +156,12 @@ export default function PricingPage() {
             billing, and audit exports are confirmed in writing rather than assumed from a demo.
           </p>
           <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-            Spelled out in the MSA · request a draft from{" "}
+            Spelled out in the MSA · request a draft through{" "}
             <a
-              href="mailto:hello@oralstack.com?subject=Oralstack%20MSA%20request"
+              href="/contact/?intent=security&source=pricing&request=product-agreement#request"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              hello@oralstack.com
+              the security review form
             </a>
             .
           </p>

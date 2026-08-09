@@ -8,7 +8,7 @@ import { contactChannels, mailtoLink, whatsappLink } from "@/content/contact";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Oralstack — quick questions, Plato connection and rollout assessments, pilot proposals, or a 30-minute product walkthrough.",
+    "Get in touch with Oralstack — quick questions, Plato connection assessments, pilot proposals, security reviews, or a 30-minute product walkthrough.",
   alternates: { canonical: "/contact" },
 };
 

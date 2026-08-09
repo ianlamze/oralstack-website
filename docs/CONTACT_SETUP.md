@@ -4,13 +4,14 @@ How the contact-form system is wired together. For setup walkthroughs and env-va
 
 ## What posts where
 
-One backend Pages Function, four intents, all flowing through `POST /api/contact`:
+One backend Pages Function, five intents, all flowing through `POST /api/contact`:
 
 | Surface | Intent | Form component |
 |---|---|---|
 | `/contact` → Quick question tab | `question` | [`components/forms/QuickQuestionForm.tsx`](../components/forms/QuickQuestionForm.tsx) |
 | `/contact` → Migration assessment tab | `migration` | [`components/forms/MigrationAssessmentForm.tsx`](../components/forms/MigrationAssessmentForm.tsx) |
 | `/contact` → Pilot proposal tab | `pilot` | [`components/forms/PilotProposalForm.tsx`](../components/forms/PilotProposalForm.tsx) |
+| `/contact` → Security review tab | `security` | [`components/forms/SecurityReviewForm.tsx`](../components/forms/SecurityReviewForm.tsx) |
 | `/book-a-demo` → First-party request form | `demo` (auto-detected) | [`components/forms/DemoRequestForm.tsx`](../components/forms/DemoRequestForm.tsx) |
 
 When Cal.com is configured, [`components/forms/CalDemoEmbed.tsx`](../components/forms/CalDemoEmbed.tsx)

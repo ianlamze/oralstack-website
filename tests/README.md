@@ -22,9 +22,11 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 
 - **Successful inbox delivery.** Required-field validation, workflow-to-demo context,
   evidence-to-request context, Plato-to-assessment handoff, pricing-to-pilot payload mapping,
-  shared request privacy notices, duplicate-submit prevention, accessible form feedback, retained
-  contact drafts, and mobile navigation interactions are covered, but the Cloudflare contact
-  endpoint and inbox delivery are not.
+  security/status/pricing procurement routing, shared request privacy notices, duplicate-submit
+  prevention, accessible form feedback, four-tab contact drafts/history/keyboard behavior, and
+  mobile navigation interactions are covered. The Cloudflare contact handler is also exercised
+  in-process for security-review validation, allowlist boundaries, source mapping, and provider
+  payload formatting, but Resend acceptance and inbox delivery are mocked rather than performed.
 - **Configured Cal.com network behavior in default CI.** The suite proves that the first-party
   fallback does not contact Cal.com. When the scheduler variables are present in the build, the same
   adaptive test also proves that the iframe stays absent until explicit activation and that the
@@ -32,8 +34,9 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 - **Cross-browser.** Mobile uses Chromium with an iPhone 13 viewport, not real
   WebKit. Adequate for a static site without Safari-specific JS; switch to
   webkit if a Safari-specific bug surfaces.
-- **Functions.** The Cloudflare Pages Functions in [`functions/`](../functions/)
-  are not exercised by the smoke suite.
+- **Cloudflare runtime integration.** The contact handler contract runs in Node with a mocked Resend
+  request; the suite does not reproduce Cloudflare's production runtime or make provider network
+  calls.
 
 ## Counts
 
@@ -44,14 +47,15 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 19 | 19 | **38** |
-| Focused component snapshots | 11 | 11 | **22** |
+| Journey and interaction checks | 23 | 23 | **46** |
+| Focused component snapshots | 14 | 14 | **28** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **111** | **111** | **222** |
+| **Total** | **117** | **117** | **234** |
 
-The complete suite expects 36 baseline PNGs in
+The complete suite expects 42 baseline PNGs in
 [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/). Generate new baselines on Linux so
-the committed images match CI rendering.
+the committed images match CI rendering. The security trust actions, status trust actions, and
+security review form account for six desktop/mobile baselines.
 
 ## Viewports
 
@@ -64,7 +68,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 222 tests across desktop + mobile
+npm run test:smoke    # 234 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when
@@ -114,8 +118,8 @@ const SNAPSHOT_ROUTES = [
 ];
 ```
 
-After adding a snapshot route, run `npm run test:smoke:update` once locally
-to generate the baselines, then commit the PNGs.
+After adding a snapshot route, run `npm run test:smoke:update` in the Linux snapshot workflow to
+generate the baselines, then commit the PNGs.
 
 ## CI artifacts on failure
 

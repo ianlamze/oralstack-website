@@ -42,7 +42,7 @@ The previous review (graded **B+**) flagged ten debt items split into "do this m
 - ✅ **Linter** — Biome 2.4.13 configured with sane defaults. `npm run lint` exits clean (5 warnings, 0 errors).
 - ✅ **EXTENDING.md** — patterns guide for adding comparison pages, articles, vertical landers, workflows.
 - ✅ **Smoke tests** — Playwright runner with 46 load tests across desktop + mobile, 12 visual snapshot baselines covering high-traffic routes. Failures upload screenshot diffs as CI artifacts. See [tests/smoke.spec.ts](../tests/smoke.spec.ts).
-- ✅ **Form endpoint scaffold** — the Cloudflare Pages Function at [functions/api/contact.ts](../functions/api/contact.ts) validates question, migration, pilot, and demo intents and forwards them through Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7).
+- ✅ **Form endpoint scaffold** — the Cloudflare Pages Function at [functions/api/contact.ts](../functions/api/contact.ts) validates question, migration, pilot, security, and demo intents and forwards them through Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7).
 - ✅ **Bundle pass** — Next 16 + Turbopack already tree-shakes lucide and motion to optimal; verified by inspection of `out/_next/static/chunks/`. `optimizePackageImports` config added for explicit intent though it produced no measurable delta.
 
 Two items remain, both already noted in the previous review:

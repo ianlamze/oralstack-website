@@ -11,14 +11,16 @@ import {
 import QuickQuestionForm from "./QuickQuestionForm";
 import MigrationAssessmentForm from "./MigrationAssessmentForm";
 import PilotProposalForm from "./PilotProposalForm";
+import SecurityReviewForm from "./SecurityReviewForm";
 import {
   getRequestSourceId,
+  getSecurityRequestOptionValue,
   getWorkflowOptionValue,
   REQUEST_SOURCES,
   type RequestSourceId,
 } from "./contact-options";
 
-type Intent = "question" | "migration" | "pilot";
+type Intent = "question" | "migration" | "pilot" | "security";
 
 type TabDef = {
   id: Intent;
@@ -60,9 +62,19 @@ const TABS: TabDef[] = [
       "Best for: single clinics, growing groups, DSO ops teams, and practice managers evaluating a configured pilot.",
     Form: PilotProposalForm,
   },
+  {
+    id: "security",
+    label: "Security review",
+    eyebrow: "Security review",
+    title: "Request the evidence your review needs.",
+    body: "Choose the document, questionnaire, controls walkthrough, or deployment check. We'll reply with the current evidence boundary, planned gaps, and the next procurement step.",
+    bestFor:
+      "Best for: clinic owners, IT and security reviewers, legal teams, procurement, and group operators.",
+    Form: SecurityReviewForm,
+  },
 ];
 
-const TAB_IDS: readonly Intent[] = ["question", "migration", "pilot"];
+const TAB_IDS: readonly Intent[] = ["question", "migration", "pilot", "security"];
 
 function isIntent(s: string): s is Intent {
   return (TAB_IDS as readonly string[]).includes(s);
@@ -74,7 +86,7 @@ function isIntent(s: string): s is Intent {
  * so switching intent does not discard a draft.
  *
  * Initial intent is read from `?intent=` first, with the legacy
- * #question / #migration / #pilot hashes retained as aliases. Tab changes keep
+ * #question / #migration / #pilot / #security hashes retained as aliases. Tab changes keep
  * the intent in the query string and the stable form anchor at #request.
  *
  * Accessibility: full WAI-ARIA tabs pattern — role=tablist/tab/tabpanel,
@@ -87,6 +99,7 @@ export default function ContactTabs() {
   );
   const [requestSource, setRequestSource] = useState<RequestSourceId | null>(null);
   const [defaultWorkflowGoal, setDefaultWorkflowGoal] = useState<string | undefined>();
+  const [defaultSecurityRequest, setDefaultSecurityRequest] = useState<string | undefined>();
 
   const syncFromLocation = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
@@ -94,10 +107,12 @@ export default function ContactTabs() {
     const requested = params.get("intent");
     const source = getRequestSourceId(params.get("source"));
     const requestedWorkflow = getWorkflowOptionValue(params.get("focus"));
+    const requestedSecurityReview = getSecurityRequestOptionValue(params.get("request"));
     setRequestSource(source);
     setDefaultWorkflowGoal(
       requestedWorkflow ?? (source === "dfi-synergy" ? "run-the-day" : undefined),
     );
+    setDefaultSecurityRequest(requestedSecurityReview);
     const initialTab =
       requested && isIntent(requested) ? requested : hash && isIntent(hash) ? hash : "question";
     setActive(initialTab);
@@ -151,7 +166,11 @@ export default function ContactTabs() {
 
   return (
     <div className="grid gap-8">
-      <div role="tablist" aria-label="Contact form types" className="flex flex-wrap gap-2">
+      <div
+        role="tablist"
+        aria-label="Contact form types"
+        className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
+      >
         {TABS.map((t) => {
           const isActive = t.id === active;
           return (
@@ -167,8 +186,8 @@ export default function ContactTabs() {
               onKeyDown={(e) => handleKeyDown(e, t.id)}
               className={
                 isActive
-                  ? "inline-flex items-center min-h-[44px] rounded-full bg-[var(--color-ink)] px-4 py-2 text-sm font-medium text-[var(--color-canvas)] transition-colors"
-                  : "inline-flex items-center min-h-[44px] rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                  ? "inline-flex w-full items-center justify-center min-h-[44px] rounded-full bg-[var(--color-ink)] px-4 py-2 text-sm font-medium text-[var(--color-canvas)] transition-colors sm:w-auto"
+                  : "inline-flex w-full items-center justify-center min-h-[44px] rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors sm:w-auto"
               }
             >
               {t.label}
@@ -201,7 +220,7 @@ export default function ContactTabs() {
             }
           >
             <header className="grid gap-2">
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
                 {tab.eyebrow}
               </p>
               <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
@@ -210,7 +229,7 @@ export default function ContactTabs() {
               <p className="mt-1 text-[var(--color-text-muted)] max-w-[62ch] leading-relaxed">
                 {tab.body}
               </p>
-              <p className="text-xs text-[var(--color-text-soft)]">{tab.bestFor}</p>
+              <p className="text-xs text-[var(--color-text-muted)]">{tab.bestFor}</p>
             </header>
             {requestSource && isActive && (
               <aside
@@ -228,6 +247,8 @@ export default function ContactTabs() {
             {mountedTabs.has(tab.id) &&
               (tab.id === "pilot" ? (
                 <PilotProposalForm defaultWorkflowGoal={defaultWorkflowGoal} />
+              ) : tab.id === "security" ? (
+                <SecurityReviewForm defaultRequestType={defaultSecurityRequest} />
               ) : (
                 <TabForm />
               ))}
