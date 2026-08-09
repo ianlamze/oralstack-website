@@ -78,6 +78,8 @@ export default function Nav() {
   const closeTimer = useRef<number | null>(null);
   const productTriggerRef = useRef<HTMLButtonElement | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement | null>(null);
 
   const openProductMenu = () => {
     if (closeTimer.current !== null) {
@@ -100,13 +102,15 @@ export default function Nav() {
     setOpenMenu(null);
   }, []);
 
+  const closeDrawer = useCallback(() => {
+    setDrawerOpen(false);
+    hamburgerRef.current?.focus();
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (drawerOpen) {
-        setDrawerOpen(false);
-        hamburgerRef.current?.focus();
-      } else if (openMenu === "product") {
+      if (e.key !== "Escape" || drawerOpen) return;
+      if (openMenu === "product") {
         closeMenu();
         productTriggerRef.current?.focus();
       }
@@ -117,12 +121,54 @@ export default function Nav() {
 
   useEffect(() => {
     if (!drawerOpen) return;
+
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    const focusFrame = window.requestAnimationFrame(() => drawerCloseRef.current?.focus());
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeDrawer();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const drawer = drawerRef.current;
+      if (!drawer) return;
+
+      const focusable = Array.from(
+        drawer.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.getClientRects().length > 0);
+
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && (active === first || !drawer.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !drawer.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
     return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", onKey);
       document.body.style.overflow = original;
     };
-  }, [drawerOpen]);
+  }, [drawerOpen, closeDrawer]);
 
   const productOpen = openMenu === "product";
 
@@ -245,35 +291,56 @@ export default function Nav() {
                       ))}
                     </ul>
 
-                    <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-border)] pt-4 text-xs">
-                      <a
-                        href="/customers"
-                        onClick={closeMenu}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Customers →
-                      </a>
-                      <a
-                        href="/integrations"
-                        onClick={closeMenu}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Integrations →
-                      </a>
-                      <a
-                        href="/security"
-                        onClick={closeMenu}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        Security →
-                      </a>
-                      <a
-                        href="/faq"
-                        onClick={closeMenu}
-                        className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                      >
-                        FAQ →
-                      </a>
+                    <div className="mt-5 grid gap-3 border-t border-[var(--color-border)] pt-4 text-xs">
+                      <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                        <span className="font-medium uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
+                          Clinic fit
+                        </span>
+                        <a
+                          href="/for-solo-clinics"
+                          onClick={closeMenu}
+                          className="font-medium text-[var(--color-tide-deep)] transition-colors hover:text-[var(--color-text)]"
+                        >
+                          For one clinic →
+                        </a>
+                        <a
+                          href="/for-multi-clinic"
+                          onClick={closeMenu}
+                          className="font-medium text-[var(--color-tide-deep)] transition-colors hover:text-[var(--color-text)]"
+                        >
+                          For clinic groups →
+                        </a>
+                      </div>
+                      <div className="flex flex-wrap gap-x-5 gap-y-2">
+                        <a
+                          href="/customers"
+                          onClick={closeMenu}
+                          className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                        >
+                          Customers →
+                        </a>
+                        <a
+                          href="/integrations"
+                          onClick={closeMenu}
+                          className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                        >
+                          Integrations →
+                        </a>
+                        <a
+                          href="/security"
+                          onClick={closeMenu}
+                          className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                        >
+                          Security →
+                        </a>
+                        <a
+                          href="/faq"
+                          onClick={closeMenu}
+                          className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                        >
+                          FAQ →
+                        </a>
+                      </div>
                     </div>
                   </div>
 
@@ -329,7 +396,7 @@ export default function Nav() {
               key="backdrop"
               type="button"
               aria-label="Close menu"
-              onClick={() => setDrawerOpen(false)}
+              onClick={closeDrawer}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -337,6 +404,7 @@ export default function Nav() {
               className="fixed inset-0 z-40 bg-[color-mix(in_srgb,var(--color-ink-deep)_44%,transparent)] lg:hidden"
             />
             <motion.div
+              ref={drawerRef}
               key="drawer"
               id="mobile-drawer"
               role="dialog"
@@ -351,8 +419,9 @@ export default function Nav() {
               <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 pb-3 pt-5">
                 <Wordmark size="sm" />
                 <button
+                  ref={drawerCloseRef}
                   type="button"
-                  onClick={() => setDrawerOpen(false)}
+                  onClick={closeDrawer}
                   aria-label="Close menu"
                   className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
                 >
@@ -361,6 +430,17 @@ export default function Nav() {
               </div>
 
               <nav className="flex-1 overflow-y-auto px-3 py-4">
+                <div className="mb-3 border-b border-[var(--color-border)] pb-3">
+                  <p className="px-3 pb-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+                    Choose by clinic shape
+                  </p>
+                  <DrawerLink href="/for-solo-clinics" onNavigate={closeDrawer}>
+                    For one clinic
+                  </DrawerLink>
+                  <DrawerLink href="/for-multi-clinic" onNavigate={closeDrawer}>
+                    For clinic groups
+                  </DrawerLink>
+                </div>
                 <button
                   type="button"
                   onClick={() => setProductExpanded((v) => !v)}
@@ -390,7 +470,7 @@ export default function Nav() {
                         <li key={label}>
                           <a
                             href={href}
-                            onClick={() => setDrawerOpen(false)}
+                            onClick={closeDrawer}
                             className="flex gap-3 rounded-[var(--radius-md)] px-3 py-2.5 hover:bg-[var(--color-canvas-tinted)] transition-colors"
                           >
                             <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-tide-deep)]">
@@ -410,25 +490,25 @@ export default function Nav() {
                     </motion.ul>
                   )}
                 </AnimatePresence>
-                <DrawerLink href="/customers" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/customers" onNavigate={closeDrawer}>
                   Customers
                 </DrawerLink>
-                <DrawerLink href="/integrations" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/integrations" onNavigate={closeDrawer}>
                   Integrations
                 </DrawerLink>
-                <DrawerLink href="/security" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/security" onNavigate={closeDrawer}>
                   Security
                 </DrawerLink>
-                <DrawerLink href="/pricing" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/pricing" onNavigate={closeDrawer}>
                   Pricing
                 </DrawerLink>
-                <DrawerLink href="/faq" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/faq" onNavigate={closeDrawer}>
                   FAQ
                 </DrawerLink>
-                <DrawerLink href="/about" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/about" onNavigate={closeDrawer}>
                   About
                 </DrawerLink>
-                <DrawerLink href="/changelog" onNavigate={() => setDrawerOpen(false)}>
+                <DrawerLink href="/changelog" onNavigate={closeDrawer}>
                   Changelog
                 </DrawerLink>
               </nav>
@@ -436,7 +516,7 @@ export default function Nav() {
               <div className="border-t border-[var(--color-border)] p-4">
                 <a
                   href="/book-a-demo"
-                  onClick={() => setDrawerOpen(false)}
+                  onClick={closeDrawer}
                   className="flex min-h-[48px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-3 font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
                 >
                   Request a 30-min walkthrough
@@ -463,7 +543,7 @@ function DrawerLink({
     <a
       href={href}
       onClick={onNavigate}
-      className="block rounded-[var(--radius-md)] px-3 py-3 text-base text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
+      className="flex min-h-[44px] items-center rounded-[var(--radius-md)] px-3 py-2.5 text-base text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
     >
       {children}
     </a>

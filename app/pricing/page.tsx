@@ -3,6 +3,7 @@ import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import MarkBullet from "@/components/ui/MarkBullet";
 import MagneticButton from "@/components/primitives/MagneticButton";
+import ClinicFitChooser from "@/components/sections/ClinicFitChooser";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -21,6 +22,10 @@ export default function PricingPage() {
           One flat price. Three months of hands-on onboarding included. No per-seat charges, no
           per-feature gating, no setup fees while we&apos;re in pilot.
         </p>
+      </Section>
+
+      <Section className="pb-16">
+        <ClinicFitChooser />
       </Section>
 
       <Section className="pb-16">
@@ -137,47 +142,25 @@ export default function PricingPage() {
       </Section>
 
       <Section className="pb-16">
-        <div className="grid gap-8 md:grid-cols-2 max-w-[820px]">
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 grid gap-3">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              Your data, on the way out
-            </p>
-            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-              The MSA records the offboarding and export package for your connected deployment.
-              Operational reports support CSV where exposed in the app; broader patient, clinical,
-              billing, and audit exports are confirmed in writing rather than assumed from a demo.
-            </p>
-            <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-              Spelled out in the MSA · request a draft from{" "}
-              <a
-                href="mailto:hello@oralstack.com?subject=Oralstack%20MSA%20request"
-                className="text-[var(--color-tide-deep)] underline underline-offset-4"
-              >
-                hello@oralstack.com
-              </a>
-              .
-            </p>
-          </div>
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 grid gap-3">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              Multi-clinic & DSO
-            </p>
-            <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-              Flat $200 / clinic / month applies linearly during pilot. We discount on the roll-out
-              plan, not the headcount: clinics 2–5 typically tier down once the first is live. Talk
-              to us about a multi-clinic pilot if you&apos;re running 3+ locations today.
-            </p>
-            <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-              Walk-through of the multi-clinic surface lives at{" "}
-              <a
-                href="/for-multi-clinic"
-                className="text-[var(--color-tide-deep)] underline underline-offset-4"
-              >
-                /for-multi-clinic
-              </a>
-              .
-            </p>
-          </div>
+        <div className="max-w-[820px] rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-7 md:p-8 grid gap-3">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+            Your data, on the way out
+          </p>
+          <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+            The MSA records the offboarding and export package for your connected deployment.
+            Operational reports support CSV where exposed in the app; broader patient, clinical,
+            billing, and audit exports are confirmed in writing rather than assumed from a demo.
+          </p>
+          <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
+            Spelled out in the MSA · request a draft from{" "}
+            <a
+              href="mailto:hello@oralstack.com?subject=Oralstack%20MSA%20request"
+              className="text-[var(--color-tide-deep)] underline underline-offset-4"
+            >
+              hello@oralstack.com
+            </a>
+            .
+          </p>
         </div>
       </Section>
 
@@ -189,8 +172,9 @@ export default function PricingPage() {
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
               Tell us how your front desk runs today, what your current PMS is, and what would
-              change first if Oralstack landed in the clinic next week. We reply with a proposal
-              within two working days. Procurement teams: the{" "}
+              change first if Oralstack landed in the clinic next week. We use those answers to
+              scope the clinic connection, enabled modules, and first workflow. Procurement teams:
+              the{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
