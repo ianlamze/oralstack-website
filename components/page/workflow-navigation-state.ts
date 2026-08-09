@@ -1,4 +1,5 @@
 export const WORKFLOW_CHANGE_EVENT = "oralstack:workflow-change";
+export const WORKFLOW_DESKTOP_MEDIA_QUERY = "(min-width: 80rem)";
 
 export type WorkflowChangeDetail = {
   behavior: ScrollBehavior;

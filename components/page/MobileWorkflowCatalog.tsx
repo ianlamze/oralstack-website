@@ -16,6 +16,7 @@ import {
   preferredWorkflowScrollBehavior,
   publishWorkflowChange,
   WORKFLOW_CHANGE_EVENT,
+  WORKFLOW_DESKTOP_MEDIA_QUERY,
   workflowChangeBehavior,
 } from "@/components/page/workflow-navigation-state";
 
@@ -59,14 +60,14 @@ export default function MobileWorkflowCatalog() {
   );
 
   useEffect(() => {
-    const mobileMedia = window.matchMedia("(max-width: 1279px)");
+    const desktopMedia = window.matchMedia(WORKFLOW_DESKTOP_MEDIA_QUERY);
 
     const openHashWorkflow = (event?: Event) => {
       const workflow = workflowFromHash();
       if (!workflow) return;
 
       setActive(workflow.slug);
-      if (mobileMedia.matches && (Boolean(event) || Boolean(window.location.hash))) {
+      if (!desktopMedia.matches && (Boolean(event) || Boolean(window.location.hash))) {
         setScrollRequest({
           behavior: workflowChangeBehavior(event),
           slug: workflow.slug,
@@ -75,25 +76,25 @@ export default function MobileWorkflowCatalog() {
     };
 
     const syncOnMobile = (event: MediaQueryListEvent) => {
-      if (event.matches) openHashWorkflow();
+      if (!event.matches) openHashWorkflow();
     };
 
     openHashWorkflow();
     window.addEventListener("hashchange", openHashWorkflow);
     window.addEventListener("popstate", openHashWorkflow);
     window.addEventListener(WORKFLOW_CHANGE_EVENT, openHashWorkflow);
-    mobileMedia.addEventListener("change", syncOnMobile);
+    desktopMedia.addEventListener("change", syncOnMobile);
     return () => {
       window.removeEventListener("hashchange", openHashWorkflow);
       window.removeEventListener("popstate", openHashWorkflow);
       window.removeEventListener(WORKFLOW_CHANGE_EVENT, openHashWorkflow);
-      mobileMedia.removeEventListener("change", syncOnMobile);
+      desktopMedia.removeEventListener("change", syncOnMobile);
     };
   }, []);
 
   useEffect(() => {
     if (!scrollRequest || scrollRequest.slug !== active) return;
-    if (!window.matchMedia("(max-width: 1279px)").matches) return;
+    if (window.matchMedia(WORKFLOW_DESKTOP_MEDIA_QUERY).matches) return;
 
     const frame = window.requestAnimationFrame(() => {
       document.getElementById(active)?.scrollIntoView({

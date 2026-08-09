@@ -6,6 +6,7 @@ import {
   preferredWorkflowScrollBehavior,
   publishWorkflowChange,
   WORKFLOW_CHANGE_EVENT,
+  WORKFLOW_DESKTOP_MEDIA_QUERY,
   workflowChangeBehavior,
 } from "@/components/page/workflow-navigation-state";
 
@@ -19,7 +20,7 @@ export default function WorkflowNavigator() {
   const [scrollRequest, setScrollRequest] = useState<ScrollRequest | null>(null);
 
   useEffect(() => {
-    const desktopMedia = window.matchMedia("(min-width: 1280px)");
+    const desktopMedia = window.matchMedia(WORKFLOW_DESKTOP_MEDIA_QUERY);
 
     const syncFromHash = (event?: Event) => {
       const hash = window.location.hash.replace(/^#/, "");
@@ -82,7 +83,7 @@ export default function WorkflowNavigator() {
 
   useEffect(() => {
     if (!scrollRequest || scrollRequest.slug !== active) return;
-    if (!window.matchMedia("(min-width: 1280px)").matches) return;
+    if (!window.matchMedia(WORKFLOW_DESKTOP_MEDIA_QUERY).matches) return;
 
     const frame = window.requestAnimationFrame(() => {
       document.getElementById(`desktop-${active}`)?.scrollIntoView({

@@ -780,6 +780,20 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   expect(mobileHeight).toBeLessThan(8200);
 
   await page.setViewportSize({ width: 1280, height: 800 });
+  const desktopPresentation = await page.evaluate(() => {
+    const mobile = document.querySelector<HTMLElement>('[data-testid="mobile-workflow-catalog"]');
+    const desktop = document.querySelector<HTMLElement>('[data-testid="desktop-workflow-catalog"]');
+    return {
+      desktopMatches: window.matchMedia("(min-width: 80rem)").matches,
+      desktopVisible: desktop ? window.getComputedStyle(desktop).display !== "none" : false,
+      mobileVisible: mobile ? window.getComputedStyle(mobile).display !== "none" : false,
+    };
+  });
+  expect(desktopPresentation).toEqual({
+    desktopMatches: true,
+    desktopVisible: true,
+    mobileVisible: false,
+  });
   const desktopNavigation = page.getByRole("navigation", { name: "Workflow sections" });
   await expect(desktopNavigation.getByRole("link", { name: /Checkout and money/ })).toHaveAttribute(
     "aria-current",
@@ -794,6 +808,20 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   await desktopNavigation.getByRole("link", { name: /Insights/ }).click();
   await expect(page).toHaveURL(/\/workflows\/#insights$/);
   await page.setViewportSize({ width: 390, height: 844 });
+  const mobilePresentation = await page.evaluate(() => {
+    const mobile = document.querySelector<HTMLElement>('[data-testid="mobile-workflow-catalog"]');
+    const desktop = document.querySelector<HTMLElement>('[data-testid="desktop-workflow-catalog"]');
+    return {
+      desktopMatches: window.matchMedia("(min-width: 80rem)").matches,
+      desktopVisible: desktop ? window.getComputedStyle(desktop).display !== "none" : false,
+      mobileVisible: mobile ? window.getComputedStyle(mobile).display !== "none" : false,
+    };
+  });
+  expect(mobilePresentation).toEqual({
+    desktopMatches: false,
+    desktopVisible: false,
+    mobileVisible: true,
+  });
   await expect(select).toHaveValue("insights");
   await expect(catalog.getByRole("button", { name: /Insights/ })).toHaveAttribute(
     "aria-expanded",

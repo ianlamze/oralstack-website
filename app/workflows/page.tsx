@@ -55,7 +55,7 @@ export default function WorkflowsPage() {
 
       <MobileWorkflowCatalog />
 
-      <div className="hidden xl:block">
+      <div className="hidden xl:block" data-testid="desktop-workflow-catalog">
         <WorkflowNavigator />
 
         <Section className="pb-24 pt-16 md:pb-32 md:pt-20">
