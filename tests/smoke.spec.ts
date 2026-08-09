@@ -2029,6 +2029,7 @@ for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
 
     await expect(page.getByTestId(region.testId)).toHaveScreenshot(region.snapshot, {
       animations: "disabled",
+      maxDiffPixelRatio: 0,
     });
   });
 }
@@ -2052,6 +2053,7 @@ test("security review form has focused visual regression coverage", async ({ pag
   await expect(reviewForm.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
   await expect(reviewForm).toHaveScreenshot("security-review-form.png", {
     animations: "disabled",
+    maxDiffPixelRatio: 0,
   });
 });
 
