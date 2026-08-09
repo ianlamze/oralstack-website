@@ -33,6 +33,8 @@ export default function Footer() {
               { label: "Customers", href: "/customers" },
               { label: "Integrations", href: "/integrations" },
               { label: "Pricing", href: "/pricing" },
+              { label: "For one clinic", href: "/for-solo-clinics" },
+              { label: "For clinic groups", href: "/for-multi-clinic" },
               { label: "Changelog", href: "/changelog" },
               { label: "FAQ", href: "/faq" },
             ]}

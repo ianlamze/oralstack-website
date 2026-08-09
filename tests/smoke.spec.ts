@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const ROUTES = [
   { path: "/", title: /Oralstack/ },
@@ -8,8 +8,8 @@ const ROUTES = [
   { path: "/pricing/", title: /Pricing/ },
   { path: "/integrations/", title: /Plato connection and integrations/i },
   { path: "/tools/", title: /Product feature guide/i },
-  { path: "/for-solo-clinics/", title: /solo/ },
-  { path: "/for-multi-clinic/", title: /multi-clinic/ },
+  { path: "/for-solo-clinics/", title: /one dental clinic|one clinic/i },
+  { path: "/for-multi-clinic/", title: /clinic groups/i },
   { path: "/about/", title: /About/ },
   { path: "/faq/", title: /FAQ/ },
   { path: "/book-a-demo/", title: /demo/i },
@@ -22,6 +22,23 @@ const ROUTES = [
   { path: "/terms/", title: /Terms/ },
 ];
 
+const FORBIDDEN_CLINIC_FIT_CLAIMS = [
+  "one to three chairs",
+  "one to four providers",
+  "Two people typically decide",
+  "What changes month-one",
+  "Cancel any time",
+  "two to twenty clinics",
+  "One version across every clinic",
+  "every clinic in the group is on the same version every week",
+  "every read and write is logged",
+  "No tier upcharges",
+  "usually a two-clinic pilot first",
+  "clinics 2–5 typically tier down",
+  "running 3+ locations",
+  "within two working days",
+] as const;
+
 async function gotoAndCollect(page: Page, path: string) {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
@@ -30,6 +47,26 @@ async function gotoAndCollect(page: Page, path: string) {
   });
   const response = await page.goto(path, { waitUntil: "domcontentloaded" });
   return { response, errors };
+}
+
+async function expectFirstViewportAction(page: Page, action: Locator) {
+  await expect(action).toBeVisible();
+  await expect(action).toBeInViewport();
+
+  const box = await action.boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  expect(box.y).toBeGreaterThanOrEqual(0);
+  expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize()?.height ?? 0);
+}
+
+async function expectNoForbiddenClinicFitClaims(page: Page) {
+  const body = (await page.locator("body").innerText()).toLocaleLowerCase();
+  for (const claim of FORBIDDEN_CLINIC_FIT_CLAIMS) {
+    expect(body, `forbidden clinic-fit claim: ${claim}`).not.toContain(claim.toLocaleLowerCase());
+  }
 }
 
 for (const route of ROUTES) {
@@ -277,6 +314,125 @@ test("pricing carries one-clinic buyers into a structured pilot proposal", async
   );
 });
 
+test("clinic-fit discovery carries both clinic shapes into the canonical pilot journey", async ({
+  page,
+}) => {
+  await page.goto("/pricing/", { waitUntil: "networkidle" });
+
+  const viewportWidth = page.viewportSize()?.width ?? 0;
+  if (viewportWidth >= 1024) {
+    await page.getByRole("button", { name: "Product", exact: true }).click();
+    const productMenu = page.getByRole("region", { name: "Product" });
+    await expect(productMenu).toBeVisible();
+    await expect(productMenu.getByRole("link", { name: /For one clinic/ })).toHaveAttribute(
+      "href",
+      "/for-solo-clinics",
+    );
+    await expect(productMenu.getByRole("link", { name: /For clinic groups/ })).toHaveAttribute(
+      "href",
+      "/for-multi-clinic",
+    );
+    await page.keyboard.press("Escape");
+    await expect(productMenu).toHaveCount(0);
+    await page.mouse.move(0, page.viewportSize()?.height ?? 800);
+  } else {
+    await page.getByRole("button", { name: "Open menu" }).click();
+    const drawer = page.getByRole("dialog", { name: "Site navigation" });
+    await expect(drawer).toBeVisible();
+    await expect(drawer.getByRole("link", { name: "For one clinic", exact: true })).toHaveAttribute(
+      "href",
+      "/for-solo-clinics",
+    );
+    await expect(
+      drawer.getByRole("link", { name: "For clinic groups", exact: true }),
+    ).toHaveAttribute("href", "/for-multi-clinic");
+    await page.keyboard.press("Escape");
+    await expect(drawer).toHaveCount(0);
+  }
+
+  const footer = page.locator("footer");
+  await expect(footer.getByRole("link", { name: "For one clinic", exact: true })).toHaveAttribute(
+    "href",
+    "/for-solo-clinics",
+  );
+  await expect(
+    footer.getByRole("link", { name: "For clinic groups", exact: true }),
+  ).toHaveAttribute("href", "/for-multi-clinic");
+
+  const chooser = page.getByTestId("clinic-fit-chooser");
+  const choices = chooser.getByTestId("clinic-fit-choice");
+  await expect(chooser).toBeVisible();
+  await expect(choices).toHaveCount(2);
+  const soloChoice = chooser.locator('a[href="/for-solo-clinics"]');
+  const groupChoice = chooser.locator('a[href="/for-multi-clinic"]');
+  await expect(soloChoice).toBeVisible();
+  await expect(groupChoice).toBeVisible();
+
+  const [soloChoiceBox, groupChoiceBox] = await Promise.all([
+    soloChoice.boundingBox(),
+    groupChoice.boundingBox(),
+  ]);
+  expect(soloChoiceBox).not.toBeNull();
+  expect(groupChoiceBox).not.toBeNull();
+  if (soloChoiceBox && groupChoiceBox) {
+    const minimumChoiceHeight = viewportWidth >= 768 ? 190 : 170;
+    expect(soloChoiceBox.height).toBeGreaterThanOrEqual(minimumChoiceHeight);
+    expect(groupChoiceBox.height).toBeGreaterThanOrEqual(minimumChoiceHeight);
+    expect(Math.abs(soloChoiceBox.width - groupChoiceBox.width)).toBeLessThanOrEqual(1);
+  }
+  await expectNoForbiddenClinicFitClaims(page);
+
+  const audiencePages = [
+    {
+      path: "/for-solo-clinics/",
+      crossLinkName: /See the clinic-group path/,
+      crossLinkHref: "/for-multi-clinic",
+    },
+    {
+      path: "/for-multi-clinic/",
+      crossLinkName: /See the one-clinic path/,
+      crossLinkHref: "/for-solo-clinics",
+    },
+  ] as const;
+
+  for (const audience of audiencePages) {
+    await page.goto(audience.path, { waitUntil: "networkidle" });
+    if (viewportWidth >= 1024) {
+      await page.keyboard.press("Escape");
+      await expect(page.locator("#product-mega")).toHaveCount(0);
+    }
+    await expectNoForbiddenClinicFitClaims(page);
+
+    const actions = page.getByTestId("audience-hero-actions");
+    const primary = actions.getByRole("link", { name: /Request a pilot proposal/ });
+    const secondary = actions.getByRole("link", { name: /Request a 30-min walkthrough/ });
+    await expect(primary).toHaveAttribute("href", "/contact/?intent=pilot#request");
+    await expect(secondary).toHaveAttribute("href", "/book-a-demo");
+    await expectFirstViewportAction(page, primary);
+    await expectFirstViewportAction(page, secondary);
+    await expect(page.getByRole("link", { name: audience.crossLinkName })).toHaveAttribute(
+      "href",
+      audience.crossLinkHref,
+    );
+
+    await primary.click();
+    await expect(page).toHaveURL(/\/contact\/\?intent=pilot#request$/);
+    await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  }
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  for (const path of ["/pricing/", ...audiencePages.map(({ path }) => path)]) {
+    await page.goto(path, { waitUntil: "networkidle" });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      `horizontal overflow at 320px on ${path}`,
+    ).toBe(true);
+  }
+});
+
 test("workflow deep links keep the section heading below the sticky navigation", async ({
   page,
 }) => {
@@ -506,6 +662,40 @@ test("homepage named pilot evidence has focused visual regression coverage", asy
   });
 });
 
+const CLINIC_FIT_SNAPSHOT_REGIONS = [
+  {
+    path: "/pricing/",
+    testId: "clinic-fit-chooser",
+    snapshot: "pricing-clinic-fit-chooser.png",
+  },
+  {
+    path: "/for-solo-clinics/",
+    testId: "audience-hero-actions",
+    snapshot: "solo-clinic-hero-actions.png",
+  },
+  {
+    path: "/for-multi-clinic/",
+    testId: "audience-hero-actions",
+    snapshot: "multi-clinic-hero-actions.png",
+  },
+] as const;
+
+for (const region of CLINIC_FIT_SNAPSHOT_REGIONS) {
+  test(`${region.path} clinic-fit region has focused visual regression coverage`, async ({
+    page,
+  }) => {
+    await page.goto(region.path, { waitUntil: "networkidle" });
+    await page.addStyleTag({
+      content:
+        "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+    });
+
+    await expect(page.getByTestId(region.testId)).toHaveScreenshot(region.snapshot, {
+      animations: "disabled",
+    });
+  });
+}
+
 test("tablet navigation stays compact and exposes keyboard escape", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -516,9 +706,20 @@ test("tablet navigation stays compact and exposes keyboard escape", async ({ pag
   const menuButton = page.getByRole("button", { name: "Open menu" });
   await expect(menuButton).toBeVisible();
   await menuButton.click();
-  await expect(page.getByRole("dialog", { name: "Site navigation" })).toBeVisible();
+  const drawer = page.getByRole("dialog", { name: "Site navigation" });
+  await expect(drawer).toBeVisible();
+
+  const closeButton = drawer.getByRole("button", { name: "Close menu" });
+  const finalDrawerAction = drawer.getByRole("link", { name: "Request a 30-min walkthrough" });
+  await expect(closeButton).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(finalDrawerAction).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(closeButton).toBeFocused();
+
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog", { name: "Site navigation" })).toHaveCount(0);
+  await expect(drawer).toHaveCount(0);
+  await expect(menuButton).toBeFocused();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

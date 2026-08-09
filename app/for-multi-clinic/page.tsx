@@ -6,9 +6,9 @@ import Bullet from "@/components/ui/Bullet";
 import AnimateInView from "@/components/motion/AnimateInView";
 
 export const metadata: Metadata = {
-  title: "For multi-clinic & DSO",
+  title: "For clinic groups",
   description:
-    "Oralstack for multi-location dental groups — authorized organization access, clinic switching, group health, today-KPI rollups, and tenant-scoped workflows.",
+    "Oralstack for multi-location dental groups — authorized organization access, clinic switching, group insights, and tenant-scoped workflows around connected clinic systems.",
   alternates: { canonical: "/for-multi-clinic" },
 };
 
@@ -16,17 +16,39 @@ export default function ForMultiClinicPage() {
   return (
     <main>
       <PageHeader
-        eyebrow="For multi-clinic & DSO"
+        eyebrow="For clinic groups"
         title="One operating view across authorized clinics."
         variant="display"
       />
 
-      <Section className="pb-12">
+      <Section className="pb-16">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          For groups operating two to twenty clinics under one organisation — where the office
-          manager runs the chair and the COO runs the spreadsheet that consolidates everything.
-          Oralstack adds organization access, clinic switching, group rollups, and a shared
-          operating workspace around the connected clinic systems.
+          For dental groups that need authorized clinic access, group-level signals, and a shared
+          operating workspace around connected clinic systems. Oralstack lets staff move between
+          permitted clinics while each request remains scoped to an active clinic.
+        </p>
+        <div data-testid="audience-hero-actions" className="mt-7 flex flex-wrap items-center gap-3">
+          <a
+            href="/contact/?intent=pilot#request"
+            className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
+          >
+            Request a pilot proposal →
+          </a>
+          <a
+            href="/book-a-demo"
+            className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
+          >
+            Request a 30-min walkthrough
+          </a>
+        </div>
+        <p className="mt-5 text-sm text-[var(--color-text-muted)]">
+          Running one independently managed clinic?{" "}
+          <a
+            href="/for-solo-clinics"
+            className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4"
+          >
+            See the one-clinic path →
+          </a>
         </p>
       </Section>
 
@@ -37,10 +59,10 @@ export default function ForMultiClinicPage() {
               Built for the people consolidating across clinics
             </p>
             <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-              The buyer for a multi-location group is rarely the front desk — it&apos;s a VP of Ops,
-              a COO, or a Director of Clinical Operations. They live in dashboards and consolidated
-              reports. Their question isn&apos;t &ldquo;does this work for one clinic&rdquo; —
-              it&apos;s &ldquo;does this give me one consistent view across all of them?&rdquo;
+              Practice managers, owners, operations leads, and authorized group staff can review how
+              clinic access, switching, rollups, and workflow scope should work across their
+              locations. Connections, enabled modules, and rollout sequence are agreed clinic by
+              clinic before a pilot starts.
             </p>
           </div>
         </AnimateInView>
@@ -55,8 +77,8 @@ export default function ForMultiClinicPage() {
           />
           <Reason
             eyebrow="What multi-clinic ops actually need · 2"
-            title="One version across every clinic."
-            body="Version drift is the silent killer of multi-clinic operations. Clinic A is on PMS version 14.3.1; clinic B is still on 13.8 because the upgrade got deferred. Reports don't reconcile. Front-desk staff who rotate between clinics learn two slightly different products. Oralstack deploys continuously: every clinic in the group is on the same version every week."
+            title="One organization view without flattening clinic boundaries."
+            body="Authorized staff can switch between permitted clinics and review group health or today-KPI rollups, then return to clinic-level work. Organization membership, active-clinic binding, and row-level tenant controls keep each request inside its allowed scope."
           />
           <Reason
             eyebrow="What multi-clinic ops actually need · 3"
@@ -77,8 +99,9 @@ export default function ForMultiClinicPage() {
                 $200<span className="text-2xl text-[var(--color-text-soft)]"> × clinics</span>
               </p>
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[40ch]">
-                Pilot pricing scales linearly per clinic. No tier upcharges for multi-clinic
-                features. Multi-location and group discounts on request once the pilot proves out.
+                Pilot pricing applies per clinic. Rollout sequence, clinic connections, enabled
+                modules, controlled rollouts, and any group pricing are recorded in the proposal and
+                MSA.
               </p>
             </div>
             <p className="mt-3 text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
@@ -102,8 +125,8 @@ export default function ForMultiClinicPage() {
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Tenant isolation:</span>{" "}
-              Postgres row-level security enforces per-clinic data separation at the database layer,
-              not the application layer.{" "}
+              Postgres row-level security and request-scoped clinic binding enforce tenant scope;
+              the workspace only surfaces clinics the organization user is authorized to reach.{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -112,9 +135,9 @@ export default function ForMultiClinicPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Audit logs:</span> every read
-              and write is logged with user, clinic, and resource. Queryable per-clinic for PDPC,
-              IRAS, or internal audits.{" "}
+              <span className="font-medium text-[var(--color-text)]">Audit evidence:</span> audited
+              actions are linked with an HMAC chain so integrity checks can detect alteration.
+              Deployment-specific evidence is confirmed during procurement.{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -152,12 +175,12 @@ export default function ForMultiClinicPage() {
         <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] px-8 py-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:px-14 md:py-16">
           <div>
             <h2 className="max-w-[28ch] text-2xl md:text-3xl font-semibold tracking-tight">
-              Talk to us about a group pilot.
+              Scope a clinic-group pilot.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              Tell us how many locations, what your current PMS is, and a target start date. We come
-              back with a tailored pilot proposal — usually a two-clinic pilot first, then group
-              rollout — within two working days.
+              Tell us how your locations are organized, what clinic systems are connected, and which
+              workflow should improve first. The clinic sequence, access scope, connections, and
+              enabled modules are agreed in writing for the pilot.
             </p>
             <p className="mt-4 text-sm">
               <a
@@ -170,7 +193,7 @@ export default function ForMultiClinicPage() {
           </div>
           <div className="md:justify-self-end">
             <a
-              href="/contact#pilot"
+              href="/contact/?intent=pilot#request"
               className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
             >
               Request pilot proposal →
