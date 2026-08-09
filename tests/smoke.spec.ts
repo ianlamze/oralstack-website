@@ -215,6 +215,68 @@ test("focused demo requests keep context and ask for four essentials", async ({ 
   await expect(page.getByLabel("Your role (optional)")).toBeVisible();
 });
 
+test("pricing carries one-clinic buyers into a structured pilot proposal", async ({ page }) => {
+  let pilotPayload: Record<string, string> | undefined;
+  await page.route("**/api/contact", async (route) => {
+    pilotPayload = route.request().postDataJSON() as Record<string, string>;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true, message: "Pilot request received." }),
+    });
+  });
+
+  await page.goto("/pricing/", { waitUntil: "networkidle" });
+  const proposalLinks = page.getByRole("link", { name: "Request a pilot proposal" });
+  await expect(proposalLinks).toHaveCount(2);
+  await expect(proposalLinks.first()).toHaveAttribute("href", "/contact/?intent=pilot#request");
+  await expect(proposalLinks.last()).toHaveAttribute("href", "/contact/?intent=pilot#request");
+  const proposalBox = await proposalLinks.first().boundingBox();
+  expect(proposalBox?.height).toBeGreaterThanOrEqual(44);
+  await expect(page.locator("main a[href^='mailto:'][href*='pilot']")).toHaveCount(0);
+  await proposalLinks.first().click();
+
+  await expect(page).toHaveURL(/\/contact\/\?intent=pilot#request$/);
+  await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  const pilotHeading = page.getByRole("heading", {
+    name: "Tell us the clinic shape and first workflow.",
+  });
+  await expect(pilotHeading).toBeVisible();
+  await expect(pilotHeading).toBeInViewport();
+  await expect(page.getByText("single clinics", { exact: false })).toBeVisible();
+
+  await page.getByLabel(/Your name/).fill("Demo Practice Manager");
+  await page.getByLabel(/Email/).fill("practice.manager@example.invalid");
+  await page.getByLabel(/Clinic \/ group name/).fill("Sample Dental Clinic");
+  const locationCount = page.getByLabel(/Number of locations/);
+  await expect(locationCount).toHaveAttribute("min", "1");
+  await locationCount.fill("1");
+  await page.getByLabel(/Current clinic system/).selectOption("Plato");
+  const workflowGoal = page.getByLabel(/What should improve first/);
+  await expect(workflowGoal.locator('option[value="patient-access"]')).toHaveText(
+    "Patient access, intake, or portal",
+  );
+  await expect(workflowGoal.locator('option[value="organization-security"]')).toHaveText(
+    "Organization access or security controls",
+  );
+  await workflowGoal.selectOption("run-the-day");
+  await page.getByRole("button", { name: "Request a pilot proposal" }).click();
+
+  await expect(page.getByRole("status")).toContainText("Pilot request received.");
+  expect(pilotPayload).toEqual(
+    expect.objectContaining({
+      intent: "pilot",
+      clinicName: "Sample Dental Clinic",
+      numLocations: "1",
+      currentPms: "Plato",
+      workflowGoal: "run-the-day",
+    }),
+  );
+});
+
 test("workflow deep links keep the section heading below the sticky navigation", async ({
   page,
 }) => {

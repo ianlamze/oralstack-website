@@ -63,15 +63,11 @@ export default function PricingPage() {
           </div>
 
           <div className="mt-10 pt-8 border-t border-[var(--color-border)] flex flex-wrap items-center gap-4">
-            <MagneticButton
-              href="mailto:hello@oralstack.com?subject=Oralstack%20pilot"
-              variant="primary"
-              withArrow
-            >
-              Start a pilot
+            <MagneticButton href="/contact/?intent=pilot#request" variant="primary" withArrow>
+              Request a pilot proposal
             </MagneticButton>
             <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-              Group / multi-clinic pricing on request. No long-term contract.
+              One clinic or a group · no self-serve activation · no long-term contract.
             </p>
           </div>
         </div>
@@ -189,7 +185,7 @@ export default function PricingPage() {
         <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] px-8 py-12 md:px-14 md:py-16 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center">
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-              Talk to us about a pilot.
+              Request a scoped pilot proposal.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
               Tell us how your front desk runs today, what your current PMS is, and what would
@@ -205,12 +201,8 @@ export default function PricingPage() {
             </p>
           </div>
           <div className="md:justify-self-end">
-            <MagneticButton
-              href="mailto:hello@oralstack.com?subject=Oralstack%20pilot"
-              variant="primary"
-              withArrow
-            >
-              Talk to us
+            <MagneticButton href="/contact/?intent=pilot#request" variant="primary" withArrow>
+              Request a pilot proposal
             </MagneticButton>
           </div>
         </div>

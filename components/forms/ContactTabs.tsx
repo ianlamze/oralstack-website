@@ -41,9 +41,10 @@ const TABS: TabDef[] = [
     id: "pilot",
     label: "Pilot proposal",
     eyebrow: "Pilot proposal",
-    title: "Group of clinics? Tell us the shape",
-    body: "Multi-location groups have different needs — ops standardisation, owner-level analytics, staged rollouts. Send us the basics and we'll come back with a pilot proposal sized to your group.",
-    bestFor: "Best for: 2+ locations, DSO ops teams, group operations managers.",
+    title: "Tell us the clinic shape and first workflow.",
+    body: "Whether you run one clinic or a group, share your current system, location count, and the workflow you want to improve first. We'll reply with a scoped pilot proposal and the setup questions that still need review.",
+    bestFor:
+      "Best for: single clinics, growing groups, DSO ops teams, and practice managers evaluating a configured pilot.",
     Form: PilotProposalForm,
   },
 ];
@@ -121,8 +122,8 @@ export default function ContactTabs() {
               onKeyDown={(e) => handleKeyDown(e, t.id)}
               className={
                 isActive
-                  ? "inline-flex items-center min-h-[40px] rounded-full bg-[var(--color-ink)] px-4 py-2 text-sm font-medium text-[var(--color-canvas)] transition-colors"
-                  : "inline-flex items-center min-h-[40px] rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
+                  ? "inline-flex items-center min-h-[44px] rounded-full bg-[var(--color-ink)] px-4 py-2 text-sm font-medium text-[var(--color-canvas)] transition-colors"
+                  : "inline-flex items-center min-h-[44px] rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-canvas-tinted)] transition-colors"
               }
             >
               {t.label}

@@ -39,7 +39,8 @@ Per-intent required fields (see `validate()` in `api/contact.ts`):
 - `question`: `message` ≥10 chars.
 - `migration`: `clinicName`, `currentPms`. The current UI also requires `workflowGoal`;
   the endpoint accepts legacy clients without it during the compatibility window.
-- `pilot`: `clinicName`, `numLocations`.
+- `pilot`: `clinicName`, `numLocations` (whole number, minimum 1). The current UI also requires
+  `currentPms` and `workflowGoal`; the endpoint keeps those optional for legacy clients.
 - `demo`: `clinicName`, `location`.
 
 ### Response shape

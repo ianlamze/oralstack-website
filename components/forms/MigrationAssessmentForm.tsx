@@ -1,30 +1,13 @@
 "use client";
 
 import FormShell, { Field, Select, TextArea } from "./FormShell";
-
-const PMS_OPTIONS = [
-  { value: "Plato", label: "Plato" },
-  { value: "Open Dental", label: "Open Dental" },
-  { value: "Dentrix", label: "Dentrix" },
-  { value: "Eaglesoft", label: "Eaglesoft" },
-  { value: "Practice-Web", label: "Practice-Web" },
-  { value: "Other", label: "Other / not sure" },
-];
+import { PMS_OPTIONS, WORKFLOW_OPTIONS } from "./contact-options";
 
 const TIMELINE_OPTIONS = [
   { value: "this-month", label: "This month" },
   { value: "1-3-months", label: "Next 1–3 months" },
   { value: "3-6-months", label: "3–6 months" },
   { value: "later", label: "Later / exploring" },
-];
-
-const WORKFLOW_OPTIONS = [
-  { value: "run-the-day", label: "Reception, schedule, or daily flow" },
-  { value: "patient-care", label: "Patient folder or chairside care" },
-  { value: "checkout-money", label: "Checkout, billing, or reconciliation" },
-  { value: "clinic-operations", label: "Inventory, staff, or clinic operations" },
-  { value: "insights", label: "Insights or multi-clinic oversight" },
-  { value: "not-sure", label: "Not sure yet" },
 ];
 
 export default function MigrationAssessmentForm() {
