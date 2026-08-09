@@ -111,7 +111,7 @@ export default function ContactPage() {
           />
           <p>
             Whichever route you choose, keep patient, clinical, credential, and security-finding
-            data out of the message. WhatsApp is an external channel. {" "}
+            data out of the message. WhatsApp is an external channel.{" "}
             <a
               href="/privacy#contact-requests"
               className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4"
