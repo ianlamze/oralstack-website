@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
+import MobileWorkflowCatalog from "@/components/page/MobileWorkflowCatalog";
 import WorkflowNavigator from "@/components/page/WorkflowNavigator";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/motion/AnimateInView";
@@ -52,121 +53,117 @@ export default function WorkflowsPage() {
         </div>
       </Section>
 
-      <WorkflowNavigator />
+      <MobileWorkflowCatalog />
 
-      <Section className="pb-24 pt-16 md:pb-32 md:pt-20">
-        <ol className="grid gap-24 md:gap-32">
-          {workflowsDetailed.map((workflow, index) => {
-            const Visual = workflow.visual ? visualByKey[workflow.visual] : undefined;
-            const visualSide = index % 2 === 0 ? "right" : "left";
+      <div className="hidden xl:block">
+        <WorkflowNavigator />
 
-            return (
-              <li key={workflow.slug} id={workflow.slug} className="scroll-mt-36">
-                {workflow.legacySlugs.map((legacySlug) => (
-                  <span
-                    key={legacySlug}
-                    id={legacySlug}
-                    aria-hidden
-                    className="block scroll-mt-36"
-                  />
-                ))}
-                <AnimateInView>
-                  <header className="mb-10 grid max-w-[54ch] gap-3 md:mb-12">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                        {String(index + 1).padStart(2, "0")} · {workflow.eyebrow}
-                      </p>
-                      <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-inset)] px-3 py-1 text-xs font-medium text-[var(--color-tide-deep)]">
-                        {workflow.availabilityLabel}
-                      </span>
-                    </div>
-                    <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight md:text-3xl lg:text-4xl">
-                      {workflow.title}
-                    </h2>
-                    <a
-                      href={`/book-a-demo?focus=${workflow.slug}`}
-                      className="mt-2 inline-flex min-h-[44px] w-fit items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-2.5 text-sm font-medium text-[var(--color-tide-deep)] transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
-                    >
-                      Walk through this area
-                      <ArrowRight className="size-4" aria-hidden />
-                    </a>
-                  </header>
+        <Section className="pb-24 pt-16 md:pb-32 md:pt-20">
+          <ol className="grid gap-24 md:gap-32">
+            {workflowsDetailed.map((workflow, index) => {
+              const Visual = workflow.visual ? visualByKey[workflow.visual] : undefined;
+              const visualSide = index % 2 === 0 ? "right" : "left";
 
-                  <div
-                    className={
-                      Visual
-                        ? `grid items-start gap-10 lg:gap-16 ${
-                            visualSide === "right"
-                              ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
-                              : "lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
-                          }`
-                        : "grid items-start gap-10"
-                    }
-                  >
+              return (
+                <li key={workflow.slug} id={`desktop-${workflow.slug}`} className="scroll-mt-36">
+                  <AnimateInView>
+                    <header className="mb-10 grid max-w-[54ch] gap-3 md:mb-12">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+                          {String(index + 1).padStart(2, "0")} · {workflow.eyebrow}
+                        </p>
+                        <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-inset)] px-3 py-1 text-xs font-medium text-[var(--color-tide-deep)]">
+                          {workflow.availabilityLabel}
+                        </span>
+                      </div>
+                      <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight md:text-3xl lg:text-4xl">
+                        {workflow.title}
+                      </h2>
+                      <a
+                        href={`/book-a-demo?focus=${workflow.slug}`}
+                        className="mt-2 inline-flex min-h-[44px] w-fit items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-2.5 text-sm font-medium text-[var(--color-tide-deep)] transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
+                      >
+                        Walk through this area
+                        <ArrowRight className="size-4" aria-hidden />
+                      </a>
+                    </header>
+
                     <div
-                      className={`grid gap-6 ${
-                        Visual && visualSide === "left" ? "lg:order-2" : ""
-                      }`}
+                      className={
+                        Visual
+                          ? `grid items-start gap-10 lg:gap-16 ${
+                              visualSide === "right"
+                                ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]"
+                                : "lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"
+                            }`
+                          : "grid items-start gap-10"
+                      }
                     >
-                      <p className="max-w-[62ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
-                        {workflow.body}
-                      </p>
-
-                      <ul className="grid gap-3 md:grid-cols-3">
-                        {workflow.features.map((feature) => (
-                          <li
-                            key={feature.title}
-                            className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-5"
-                          >
-                            <p className="text-xs font-medium text-[var(--color-tide-deep)]">
-                              {capabilityAvailabilityLabels[feature.availability]}
-                            </p>
-                            <h3 className="mt-2 text-base font-semibold tracking-tight">
-                              {feature.title}
-                            </h3>
-                            <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-                              {feature.description}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <dl className="grid gap-4 border-t border-[var(--color-border)] pt-5 text-sm leading-relaxed md:grid-cols-2">
-                        <div>
-                          <dt className="font-medium text-[var(--color-ink)]">
-                            {workflowsPageContent.keepsTogetherLabel}
-                          </dt>
-                          <dd className="mt-1 text-[var(--color-text-muted)]">
-                            {workflow.keepsTogether}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="font-medium text-[var(--color-ink)]">
-                            {workflowsPageContent.boundaryLabel}
-                          </dt>
-                          <dd className="mt-1 text-[var(--color-text-muted)]">
-                            {workflow.boundary}
-                          </dd>
-                        </div>
-                      </dl>
-                    </div>
-
-                    {Visual && (
                       <div
-                        className={`w-full ${visualSide === "left" ? "lg:order-1" : ""} ${
-                          visualSide === "right" ? "lg:justify-self-end" : "lg:justify-self-start"
+                        className={`grid gap-6 ${
+                          Visual && visualSide === "left" ? "lg:order-2" : ""
                         }`}
                       >
-                        <Visual />
+                        <p className="max-w-[62ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
+                          {workflow.body}
+                        </p>
+
+                        <ul className="grid gap-3 md:grid-cols-3">
+                          {workflow.features.map((feature) => (
+                            <li
+                              key={feature.title}
+                              className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] p-5"
+                            >
+                              <p className="text-xs font-medium text-[var(--color-tide-deep)]">
+                                {capabilityAvailabilityLabels[feature.availability]}
+                              </p>
+                              <h3 className="mt-2 text-base font-semibold tracking-tight">
+                                {feature.title}
+                              </h3>
+                              <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                                {feature.description}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <dl className="grid gap-4 border-t border-[var(--color-border)] pt-5 text-sm leading-relaxed md:grid-cols-2">
+                          <div>
+                            <dt className="font-medium text-[var(--color-ink)]">
+                              {workflowsPageContent.keepsTogetherLabel}
+                            </dt>
+                            <dd className="mt-1 text-[var(--color-text-muted)]">
+                              {workflow.keepsTogether}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt className="font-medium text-[var(--color-ink)]">
+                              {workflowsPageContent.boundaryLabel}
+                            </dt>
+                            <dd className="mt-1 text-[var(--color-text-muted)]">
+                              {workflow.boundary}
+                            </dd>
+                          </div>
+                        </dl>
                       </div>
-                    )}
-                  </div>
-                </AnimateInView>
-              </li>
-            );
-          })}
-        </ol>
-      </Section>
+
+                      {Visual && (
+                        <div
+                          className={`w-full ${visualSide === "left" ? "lg:order-1" : ""} ${
+                            visualSide === "right" ? "lg:justify-self-end" : "lg:justify-self-start"
+                          }`}
+                        >
+                          <Visual />
+                        </div>
+                      )}
+                    </div>
+                  </AnimateInView>
+                </li>
+              );
+            })}
+          </ol>
+        </Section>
+      </div>
 
       <Section className="pb-16 md:pb-20">
         <AnimateInView>
