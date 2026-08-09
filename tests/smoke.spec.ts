@@ -6,7 +6,7 @@ const ROUTES = [
   { path: "/customers/", title: /Customers/ },
   { path: "/customers/dfi-synergy/", title: /DFI Synergy/ },
   { path: "/pricing/", title: /Pricing/ },
-  { path: "/integrations/", title: /Integrations/ },
+  { path: "/integrations/", title: /Plato connection and integrations/i },
   { path: "/tools/", title: /Product feature guide/i },
   { path: "/for-solo-clinics/", title: /solo/ },
   { path: "/for-multi-clinic/", title: /multi-clinic/ },
@@ -233,6 +233,117 @@ test("workflow deep links keep the section heading below the sticky navigation",
   );
 });
 
+test("Plato connection explains ownership and leads into a structured assessment", async ({
+  page,
+}) => {
+  await page.goto("/integrations/#plato", { waitUntil: "networkidle" });
+
+  const plato = page.locator("#plato");
+  await expect(plato).toBeInViewport();
+  await expect(
+    plato.getByRole("heading", {
+      name: "Plato stays authoritative. Oralstack makes the work around it visible.",
+    }),
+  ).toBeVisible();
+  await expect(
+    plato.getByText("Plato remains the system of record", { exact: false }),
+  ).toBeVisible();
+  await expect(plato.getByText("Available with clinic setup", { exact: true })).toBeVisible();
+  const assessmentLinks = plato.getByRole("link", { name: "Request a connection assessment" });
+  await expect(assessmentLinks).toHaveCount(2);
+  await expect(assessmentLinks.first()).toHaveAttribute(
+    "href",
+    "/contact/?intent=migration#request",
+  );
+  await expect(page.locator("main a[href^='mailto:']")).toHaveCount(0);
+
+  const externalCategory = page.locator("details").filter({ hasText: "Patient communication" });
+  await expect(externalCategory).not.toHaveAttribute("open", "");
+  const categorySummary = externalCategory.locator("summary");
+  await categorySummary.focus();
+  await categorySummary.press("Enter");
+  await expect(externalCategory).toHaveAttribute("open", "");
+  await expect(externalCategory.getByText("Meta WhatsApp Business Cloud API")).toBeVisible();
+  const payerCategory = page.locator("details").filter({ hasText: "Payer workflows" });
+  const externalBox = await externalCategory.boundingBox();
+  const payerBox = await payerCategory.boundingBox();
+  expect(payerBox?.height).toBeLessThan(externalBox?.height ?? 0);
+  await categorySummary.press("Space");
+  await expect(externalCategory).not.toHaveAttribute("open", "");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+
+  await assessmentLinks.first().click();
+  await expect(page).toHaveURL(/\/contact\/\?intent=migration#request$/);
+  await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(
+    page.getByRole("heading", { name: "Connect Plato or plan a reviewed rollout." }),
+  ).toBeVisible();
+  await expect(page.getByLabel(/What should improve first/)).toBeVisible();
+});
+
+test("homepage Plato proof keeps the connection path and assessment intent", async ({ page }) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  const platoProof = page.getByRole("link", { name: "Plato stays the system of record" });
+  await expect(platoProof).toHaveAttribute("href", "/integrations#plato");
+  await platoProof.click();
+  await expect(page).toHaveURL(/\/integrations\/?#plato$/);
+  await expect(page.locator("#plato")).toBeInViewport();
+
+  await page.goto("/contact/?intent=migration#request", { waitUntil: "networkidle" });
+  await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(
+    page.getByRole("heading", { name: "Connect Plato or plan a reviewed rollout." }),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Request connection assessment" })).toBeVisible();
+  const requestSection = page.locator("#request");
+  await expect(requestSection).toBeInViewport();
+  const requestBox = await requestSection.boundingBox();
+  expect(requestBox?.y).toBeGreaterThan(60);
+  expect(requestBox?.y).toBeLessThan(240);
+
+  await page.goto("/contact/#migration", { waitUntil: "networkidle" });
+  await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+
+  await page.goto("/status/", { waitUntil: "domcontentloaded" });
+  const platoStatus = page.locator("li").filter({ hasText: "Plato-connected workflow path" });
+  await expect(platoStatus.getByText("Available with clinic setup", { exact: true })).toBeVisible();
+});
+
+test("Plato connection has focused visual regression coverage", async ({ page }) => {
+  await page.goto("/integrations/#plato", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content: `
+      *, *::before, *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+      }
+    `,
+  });
+
+  await expect(page.locator("#plato")).toHaveScreenshot("plato-connection.png", {
+    animations: "disabled",
+  });
+
+  const patientCommunication = page.locator("details").filter({ hasText: "Patient communication" });
+  await patientCommunication.locator("summary").click();
+  await expect(patientCommunication).toHaveScreenshot("patient-communication-open.png", {
+    animations: "disabled",
+  });
+});
+
 test("workflow explorer has focused visual regression coverage", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   await page.addStyleTag({
@@ -278,7 +389,7 @@ test("tablet navigation stays compact and exposes keyboard escape", async ({ pag
 // A smaller set of high-traffic routes get pixel-snapshot regression coverage.
 // Adding new routes here is a deliberate decision — snapshots cost CI time and
 // noise during routine content edits. Keep this list tight.
-const SNAPSHOT_ROUTES = ["/", "/workflows/", "/book-a-demo/", "/about/"];
+const SNAPSHOT_ROUTES = ["/", "/workflows/", "/integrations/", "/book-a-demo/", "/about/"];
 
 for (const path of SNAPSHOT_ROUTES) {
   test(`${path} matches visual snapshot`, async ({ page }) => {

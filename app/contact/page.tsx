@@ -41,10 +41,10 @@ const quickTouchCards: {
   {
     icon: Calendar,
     eyebrow: "Live walkthrough",
-    title: "Book a 30-minute demo",
+    title: "Request a 30-minute walkthrough",
     body: "Front desk and clinical workflows on a sample dataset that mirrors a typical Singapore clinic.",
     href: "/book-a-demo",
-    cta: "Book a demo",
+    cta: "Request a walkthrough",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function ContactPage() {
         </p>
       </Section>
 
-      <Section className="pb-24 md:pb-32">
+      <Section id="request" className="scroll-mt-28 pb-24 md:pb-32">
         <div className="max-w-[820px]">
           <ContactTabs />
         </div>

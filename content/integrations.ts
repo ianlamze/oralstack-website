@@ -1,7 +1,11 @@
 /** @deprecated Kept for the legacy StatusBadge component. */
 export type IntegrationStatus = "Live" | "Beta" | "Roadmap";
 
-export type IntegrationAvailability = "Available" | "Configured pilot" | "Not enabled";
+export type IntegrationAvailability =
+  | "Available"
+  | "Available with clinic setup"
+  | "Configured pilot"
+  | "Not enabled";
 
 export type IntegrationIcon =
   | "Camera"
@@ -24,6 +28,40 @@ export type IntegrationCategory = {
   icon: IntegrationIcon;
   items: Integration[];
 };
+
+export const platoConnection = {
+  status: "Available with clinic setup" as IntegrationAvailability,
+  snapshot: "Production-state snapshot recorded 20 July 2026",
+  title: "Plato stays authoritative. Oralstack makes the work around it visible.",
+  description:
+    "For API-connected clinics, Oralstack is a workflow and clinic-operations layer around Plato. It does not claim to replace Plato or silently become the clinic's system of record.",
+  stages: [
+    {
+      eyebrow: "Read",
+      title: "Start from the connected clinic day",
+      description:
+        "Use Plato-backed provider availability, patient context, and appointments inside the Oralstack workspace. The exact records available depend on the clinic connector and setup review.",
+    },
+    {
+      eyebrow: "Work",
+      title: "Coordinate the handoffs around the record",
+      description:
+        "Run reception, chair status, requests, patient context, checkout preparation, clinic operations, and manager review without creating a second hidden system of record.",
+    },
+    {
+      eyebrow: "Review",
+      title: "Keep changes back to Plato explicit",
+      description:
+        "Appointment creation and cancellation use reviewed Plato-backed paths. A reschedule remains a staff-applied proposal, and checkout work never implies a silent claim or payment posting.",
+    },
+  ],
+  guarantees: [
+    "Plato remains the system of record for patient identity, Plato schedule writes, and invoice writeback.",
+    "Sync health, update status, and audit history remain visible to staff.",
+    "A local fallback is never described as a delivered Plato writeback.",
+    "Clinic credentials, connector access, enabled modules, and rollout scope are reviewed before a pilot starts.",
+  ],
+} as const;
 
 export const integrationCategories: IntegrationCategory[] = [
   {

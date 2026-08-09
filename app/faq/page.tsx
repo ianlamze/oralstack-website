@@ -68,13 +68,13 @@ const groups: Group[] = [
         a: (
           <p>
             The timeline depends on Plato connector readiness, clinic configuration, data review,
-            and training. We scope it after an initial audit rather than promising a fixed cutover
+            and training. We scope it after an initial audit rather than promising a fixed rollout
             window.{" "}
             <a
-              href="/workflows"
+              href="/integrations#plato"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              See the current workflows →
+              See how the Plato connection works →
             </a>
           </p>
         ),
