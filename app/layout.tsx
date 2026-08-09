@@ -4,6 +4,7 @@ import { siteMeta } from "@/content/site-meta";
 import Nav from "@/components/sections/Nav";
 import Footer from "@/components/sections/Footer";
 import ScrollProgress from "@/components/motion/ScrollProgress";
+import CloudflareBeacon from "@/components/analytics/CloudflareBeacon";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -88,13 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: organizationJsonLd }}
         />
-        {CF_BEACON && (
-          <script
-            defer
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={JSON.stringify({ token: CF_BEACON })}
-          />
-        )}
+        {CF_BEACON && <CloudflareBeacon token={CF_BEACON} />}
       </body>
     </html>
   );

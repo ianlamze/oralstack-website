@@ -1,7 +1,7 @@
-// Vendor-agnostic event sink. POST { event, props, ts, path, ref } from the
+// Vendor-agnostic event sink. POST { event, props, ts, path } from the
 // client; we log it. Today the log goes to wrangler tail and Cloudflare's
-// runtime logs (visible in the Pages dashboard). Later, swap the body of
-// `record()` to write to Analytics Engine, forward to PostHog, etc.
+// runtime logs (visible in the Pages dashboard). The payload is intentionally
+// small and excludes form content, referrer, country, and user-agent data.
 //
 // Inline the PagesFunction type so we don't need @cloudflare/workers-types
 // at runtime (kept in line with functions/api/contact.ts pattern).
@@ -65,8 +65,12 @@ type EventPayload = {
   props?: Record<string, unknown>;
   ts?: number;
   path?: string;
-  ref?: string | null;
 };
+
+const MAX_PROPS = 12;
+const MAX_KEY_LENGTH = 40;
+const MAX_STRING_LENGTH = 120;
+const MAX_PATH_LENGTH = 240;
 
 function isEventPayload(x: unknown): x is EventPayload {
   if (!x || typeof x !== "object") return false;
@@ -74,28 +78,29 @@ function isEventPayload(x: unknown): x is EventPayload {
   return typeof o.event === "string";
 }
 
-function record(payload: EventPayload, request: Request): void {
+function record(payload: EventPayload): void {
   // Strip any properties beyond strings/numbers/booleans/null — defensive
   // against random payloads being sent at us.
   const safeProps: Record<string, string | number | boolean | null> = {};
   if (payload.props && typeof payload.props === "object") {
-    for (const [k, v] of Object.entries(payload.props)) {
-      if (typeof v === "string" || typeof v === "number" || typeof v === "boolean" || v === null) {
-        safeProps[k] = v;
-      }
+    for (const [key, value] of Object.entries(payload.props).slice(0, MAX_PROPS)) {
+      if (!key || key.length > MAX_KEY_LENGTH || !/^[a-zA-Z0-9_]+$/.test(key)) continue;
+      if (typeof value === "string") safeProps[key] = value.slice(0, MAX_STRING_LENGTH);
+      else if (typeof value === "number" && Number.isFinite(value)) safeProps[key] = value;
+      else if (typeof value === "boolean" || value === null) safeProps[key] = value;
     }
   }
 
-  const cf = (request as Request & { cf?: { country?: string } }).cf;
+  const safePath =
+    typeof payload.path === "string" && payload.path.startsWith("/")
+      ? payload.path.split(/[?#]/, 1)[0].slice(0, MAX_PATH_LENGTH)
+      : null;
 
   const line = {
     event: payload.event,
     props: safeProps,
-    ts: typeof payload.ts === "number" ? payload.ts : Date.now(),
-    path: typeof payload.path === "string" ? payload.path : null,
-    ref: typeof payload.ref === "string" ? payload.ref : null,
-    country: cf?.country ?? null,
-    ua: request.headers.get("user-agent") ?? null,
+    ts: typeof payload.ts === "number" && Number.isFinite(payload.ts) ? payload.ts : Date.now(),
+    path: safePath,
   };
 
   // Visible via `wrangler pages deployment tail` and the Pages dashboard.
@@ -119,10 +124,10 @@ export const onRequestPost: PagesFunction = async (ctx) => {
   }
 
   // Run the record outside the request lifetime — fire-and-forget.
-  ctx.waitUntil(Promise.resolve().then(() => record(body, ctx.request)));
+  ctx.waitUntil(Promise.resolve().then(() => record(body)));
 
   // 204 No Content — nothing for the client to do with the response.
-  return new Response(null, { status: 204 });
+  return new Response(null, { status: 204, headers: { "cache-control": "no-store" } });
 };
 
 export const onRequestOptions: PagesFunction = async () => {

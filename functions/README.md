@@ -2,21 +2,24 @@
 
 Cloudflare Pages Functions. The site is a Next.js static export (`output: "export"` in `next.config.ts`) deployed to Cloudflare Pages, so this directory is the **entire** dynamic surface — no Node server, no API routes under `app/`, no database. Cloudflare discovers this directory at the project root; it must not be copied into the static `out/` directory.
 
-The contact endpoint sends mail via [Resend](https://resend.com). It only returns success after Resend accepts the message for sending; that response does not prove final inbox delivery. If `RESEND_API_KEY` is unset, it fails closed without logging submitted clinic or contact details.
+The contact endpoint sends mail via [Resend](https://resend.com) to the configured destination
+inbox. It only returns success after Resend accepts the message for sending; that response does not
+prove final inbox delivery. If `RESEND_API_KEY` is unset, it fails closed without logging submitted
+clinic or contact details.
 
 ## Files
 
 - [`api/contact.ts`](api/contact.ts) → `POST /api/contact`
 - [`api/event.ts`](api/event.ts) → `POST /api/event`
 
-The route maps directly from the file path under `functions/` (Cloudflare Pages convention). The file exports `onRequestPost` for the happy path and `onRequest` returning `405 Allow: POST` for any other method.
+Routes map directly from their file paths under `functions/` (Cloudflare Pages convention).
 
 ## Endpoints
 
 | Route | Purpose | Callers | Env vars consumed |
 |---|---|---|---|
 | `POST /api/contact` | Multi-intent contact form. Validates, builds an email, sends one message to `CONTACT_INBOX` with `Reply-To` set to the submitter. Subject is `[oralstack contact] <intent label> — <name>`. | `FormShell`, used by the structured forms on `/contact` and the demo request on `/book-a-demo`. | `RESEND_API_KEY`, `CONTACT_INBOX` (default `hello@oralstack.com`), `CONTACT_FROM` (default `Oralstack contact <noreply@oralstack.com>`) |
-| `POST /api/event` | Allowlisted, vendor-neutral product-marketing interaction events. Logs primitive properties plus request country and user agent to Cloudflare runtime logs. | `lib/analytics.ts` | None |
+| `POST /api/event` | Minimized first-party interaction events. Accepts an allowlisted event name and bounds and sanitizes primitive properties. Its contract excludes form data and free text. | `lib/analytics.ts` | None |
 
 ### Request shapes
 
@@ -35,6 +38,10 @@ The route maps directly from the file path under `functions/` (Cloudflare Pages 
 
 Demo submissions use `{ intent: "demo", clinicName, name, email, location, focus?, role?, numChairs?, providers?, currentPms?, preferredTimes?, message?, website? }`. `focus` carries the workflow selected in the homepage explorer or workflow guide.
 
+The public forms are not an approved channel for patient names, clinical records, credentials, or
+other sensitive patient data. If an evaluation needs sensitive material, arrange an approved
+transfer method first.
+
 Per-intent required fields (see `validate()` in `api/contact.ts`):
 - `question`: `message` ≥10 chars.
 - `migration`: `clinicName`, `currentPms`. The current UI also requires `workflowGoal`;
@@ -42,6 +49,33 @@ Per-intent required fields (see `validate()` in `api/contact.ts`):
 - `pilot`: `clinicName`, `numLocations` (whole number, minimum 1). The current UI also requires
   `currentPms` and `workflowGoal`; the endpoint keeps those optional for legacy clients.
 - `demo`: `clinicName`, `location`.
+
+`/api/event` — JSON. The client sends a deliberately small payload:
+
+```ts
+{
+  event,             // allowlisted interaction name
+  props?,            // bounded, sanitized string/number/boolean/null values
+  ts?,               // client timestamp
+  path?               // pathname only; no query string
+}
+```
+
+The site's tracker does not send form values, email addresses, clinic names, free text, URL query
+strings, raw referrers, or the browser's full user-agent string. It no-ops when the browser exposes
+Global Privacy Control or Do Not Track. The function independently rejects unknown events and
+bounds and sanitizes properties before writing a runtime log entry. Other callers must follow the
+same no-contact-data contract.
+
+### Data-handling boundary
+
+The contact path is browser → Cloudflare Pages Function → Resend → `CONTACT_INBOX`. The function
+normalizes and validates submitted fields, has no site database, and does not log the submitted
+content. Resend and the destination inbox remain part of the request path. This contract does not
+claim a storage region, retention period, consent basis, or compliance status for either provider.
+
+The event path is browser → Cloudflare Pages Function → Cloudflare runtime log. It is for bounded
+interaction events only and must never receive contact-form or patient data.
 
 ### Response shape
 
@@ -54,6 +88,9 @@ Always JSON, always `{ ok: boolean, message: string }`.
 | `503 { ok: false }` | `RESEND_API_KEY` is missing. No submission data is logged or retained. |
 | `502 { ok: false }` | Resend rejected the send or the request failed before provider acceptance. Only the provider status code is logged. |
 | `405 Allow: POST` | Any non-POST method. |
+
+For `/api/event`, an accepted event returns `204` with no body. Invalid JSON, a missing event, or an
+unknown event returns `400`; unsupported property values are discarded rather than recorded.
 
 ## Local testing
 
@@ -74,7 +111,7 @@ Always JSON, always `{ ok: boolean, message: string }`.
      -d '{"intent":"question","name":"Ada","email":"a@b.co","message":"ten chars please"}'
    ```
 
-   Without `RESEND_API_KEY` in your shell, you get `503 {ok:false}` and no submitted contact data is logged. To exercise the real send path, export `RESEND_API_KEY=re_…` (and optionally `CONTACT_INBOX` / `CONTACT_FROM`) before starting wrangler. The sending domain must be verified in Resend or the API returns 4xx and the function returns `502`.
+   Without `RESEND_API_KEY` in your shell, you get `503 {ok:false}` and no submitted contact data is logged. To exercise the real send path, export `RESEND_API_KEY=re_…` (and optionally `CONTACT_INBOX` / `CONTACT_FROM`) before starting wrangler. The sending domain must be verified in Resend or the API returns 4xx and the function returns `502`. Use synthetic contact and clinic details during tests.
 
 ## Error modes
 
@@ -89,5 +126,5 @@ Always JSON, always `{ ok: boolean, message: string }`.
 
 Operational setup (Resend account, DNS verification, Cloudflare env-var configuration, custom domain, Email Routing) is not duplicated here. See:
 
-- [`../CLOUDFLARE.md`](../CLOUDFLARE.md) — full Cloudflare Pages deployment + env-var walkthrough. Step 7 covers Resend wiring.
-- [`../CONTACT_SETUP.md`](../CONTACT_SETUP.md) — focused contact-form setup, anti-spam notes, WhatsApp number switch.
+- [`../docs/CLOUDFLARE.md`](../docs/CLOUDFLARE.md) — full Cloudflare Pages deployment + env-var walkthrough. Step 7 covers Resend wiring.
+- [`../docs/CONTACT_SETUP.md`](../docs/CONTACT_SETUP.md) — focused contact-form setup, privacy boundary, anti-spam notes, and WhatsApp number switch.

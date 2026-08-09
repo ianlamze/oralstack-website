@@ -111,6 +111,32 @@ export type AnalyticsEvent =
 type Props = Record<string, string | number | boolean | null | undefined>;
 
 const ENDPOINT = "/api/event";
+const MAX_PROPS = 12;
+const MAX_KEY_LENGTH = 40;
+const MAX_STRING_LENGTH = 120;
+const MAX_PATH_LENGTH = 240;
+
+type PrivacyNavigator = Navigator & { globalPrivacyControl?: boolean };
+
+export function hasTrackingOptOut(): boolean {
+  if (typeof navigator === "undefined") return true;
+  const privacyNavigator = navigator as PrivacyNavigator;
+  const doNotTrack = privacyNavigator.doNotTrack?.toLowerCase();
+  return (
+    privacyNavigator.globalPrivacyControl === true || doNotTrack === "1" || doNotTrack === "yes"
+  );
+}
+
+function sanitizeProps(props: Props): Record<string, string | number | boolean | null> {
+  const safe: Record<string, string | number | boolean | null> = {};
+  for (const [key, value] of Object.entries(props).slice(0, MAX_PROPS)) {
+    if (!key || key.length > MAX_KEY_LENGTH || !/^[a-zA-Z0-9_]+$/.test(key)) continue;
+    if (typeof value === "string") safe[key] = value.slice(0, MAX_STRING_LENGTH);
+    else if (typeof value === "number" && Number.isFinite(value)) safe[key] = value;
+    else if (typeof value === "boolean" || value === null) safe[key] = value;
+  }
+  return safe;
+}
 
 /**
  * Fire-and-forget event track. Safe to call anywhere — never throws, never
@@ -119,13 +145,13 @@ const ENDPOINT = "/api/event";
 export function track(event: AnalyticsEvent, props: Props = {}): void {
   if (typeof window === "undefined") return;
   if (typeof navigator === "undefined") return;
+  if (hasTrackingOptOut()) return;
 
   const payload = {
     event,
-    props,
+    props: sanitizeProps(props),
     ts: Date.now(),
-    path: window.location.pathname,
-    ref: document.referrer || null,
+    path: window.location.pathname.slice(0, MAX_PATH_LENGTH),
   };
 
   // Prefer sendBeacon — runs reliably during page-unload, doesn't block.

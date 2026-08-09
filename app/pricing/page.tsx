@@ -68,7 +68,11 @@ export default function PricingPage() {
           </div>
 
           <div className="mt-10 pt-8 border-t border-[var(--color-border)] flex flex-wrap items-center gap-4">
-            <MagneticButton href="/contact/?intent=pilot#request" variant="primary" withArrow>
+            <MagneticButton
+              href="/contact/?intent=pilot&source=pricing#request"
+              variant="primary"
+              withArrow
+            >
               Request a pilot proposal
             </MagneticButton>
             <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
@@ -181,11 +185,16 @@ export default function PricingPage() {
               >
                 security & compliance hub
               </a>{" "}
-              has MSA, DPA, BAA, and the subprocessor list.
+              summarises current security evidence and the request path for available procurement
+              materials.
             </p>
           </div>
           <div className="md:justify-self-end">
-            <MagneticButton href="/contact/?intent=pilot#request" variant="primary" withArrow>
+            <MagneticButton
+              href="/contact/?intent=pilot&source=pricing#request"
+              variant="primary"
+              withArrow
+            >
               Request a pilot proposal
             </MagneticButton>
           </div>
