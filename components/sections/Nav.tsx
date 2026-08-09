@@ -134,12 +134,11 @@ export default function Nav() {
             <Wordmark size="md" />
           </a>
 
-          <nav className="hidden md:flex items-center gap-1 text-sm">
+          <nav className="hidden lg:flex items-center gap-1 text-sm">
             <button
               ref={productTriggerRef}
               type="button"
               aria-expanded={productOpen}
-              aria-haspopup="menu"
               aria-controls="product-mega"
               onClick={openProductMenu}
               onMouseEnter={openProductMenu}
@@ -183,7 +182,7 @@ export default function Nav() {
               href="/book-a-demo"
               className="ml-2 inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-2 text-[var(--color-canvas)] shadow-[var(--shadow-1)] transition-colors hover:bg-[var(--color-tide-deep)]"
             >
-              Book a 30-min walkthrough
+              Request a 30-min walkthrough
             </a>
           </nav>
 
@@ -194,7 +193,7 @@ export default function Nav() {
             aria-label="Open menu"
             aria-expanded={drawerOpen}
             aria-controls="mobile-drawer"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)] md:hidden"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-[var(--radius-md)] p-2 text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)] lg:hidden"
           >
             <Menu className="h-6 w-6" aria-hidden />
           </button>
@@ -213,7 +212,7 @@ export default function Nav() {
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
             onMouseEnter={openProductMenu}
             onMouseLeave={scheduleCloseMenu}
-            className="absolute inset-x-0 top-full z-50 hidden md:block px-6 md:px-10 pt-3"
+            className="absolute inset-x-0 top-full z-50 hidden px-6 pt-3 md:px-10 lg:block"
           >
             <div className="mx-auto w-full max-w-[1100px]">
               <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] shadow-[var(--shadow-elevated)]">
@@ -335,7 +334,7 @@ export default function Nav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className="fixed inset-0 z-40 bg-[color-mix(in_srgb,var(--color-ink-deep)_44%,transparent)] md:hidden"
+              className="fixed inset-0 z-40 bg-[color-mix(in_srgb,var(--color-ink-deep)_44%,transparent)] lg:hidden"
             />
             <motion.div
               key="drawer"
@@ -347,7 +346,7 @@ export default function Nav() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-y-0 right-0 z-50 flex w-[88vw] max-w-[380px] flex-col bg-[var(--color-surface-raised)] shadow-[var(--shadow-elevated)] md:hidden"
+              className="fixed inset-y-0 right-0 z-50 flex w-[88vw] max-w-[380px] flex-col bg-[var(--color-surface-raised)] shadow-[var(--shadow-elevated)] lg:hidden"
             >
               <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 pb-3 pt-5">
                 <Wordmark size="sm" />
@@ -440,7 +439,7 @@ export default function Nav() {
                   onClick={() => setDrawerOpen(false)}
                   className="flex min-h-[48px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-3 font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
                 >
-                  Book a 30-min walkthrough
+                  Request a 30-min walkthrough
                 </a>
               </div>
             </motion.div>

@@ -137,7 +137,7 @@ NEXT_PUBLIC_DEMO_FORM_ENDPOINT=https://formspree.io/f/xxxxxxxx
 
 5. Redeploy.
 
-The DemoRequestForm payload is JSON `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes }`. The in-repo `/api/contact` function detects this shape and normalizes it to `intent: "demo"` automatically.
+The DemoRequestForm payload uses the shared contact shape: `{ intent: "demo", clinicName, name, email, location, focus, role, numChairs, providers, currentPms, preferredTimes, message }`. `focus` records the workflow selected before the request; the remaining clinic setup fields are optional.
 
 ## Troubleshooting
 

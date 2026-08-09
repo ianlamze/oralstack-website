@@ -72,9 +72,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${jakarta.variable} ${instrumentSerif.variable}`}>
       <body className="antialiased">
+        <a
+          href="#main-content"
+          className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-3 text-sm font-medium text-[var(--color-canvas)] shadow-[var(--shadow-elevated)] transition-transform focus:translate-y-0"
+        >
+          Skip to main content
+        </a>
         <ScrollProgress />
         <Nav />
-        {children}
+        <div id="main-content" tabIndex={-1}>
+          {children}
+        </div>
         <Footer />
         <script
           type="application/ld+json"

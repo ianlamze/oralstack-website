@@ -4,9 +4,9 @@ import Section from "@/components/primitives/Section";
 import DemoRequestForm from "@/components/forms/DemoRequestForm";
 
 export const metadata: Metadata = {
-  title: "Book a demo",
+  title: "Request a demo",
   description:
-    "Book a 30-minute oralstack demo covering the current Plato-connected workflows for a dental clinic.",
+    "Request a 30-minute oralstack demo covering the current Plato-connected workflows for a dental clinic.",
   alternates: { canonical: "/book-a-demo" },
 };
 
@@ -16,14 +16,12 @@ const CAL_EVENT = process.env.NEXT_PUBLIC_CALCOM_EVENT ?? "demo";
 export default function BookDemoPage() {
   return (
     <main>
-      <PageHeader eyebrow="Demo" title="Book a 30-minute walkthrough." />
+      <PageHeader eyebrow="Demo" title="Request a 30-minute walkthrough." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          We&apos;ll follow the front desk, clinician, and clinic manager through the current app on
-          a representative Singapore clinic dataset. The walkthrough covers Plato-connected
-          reception, patient care, checkout, patient access, clinic operations, and insights, with
-          setup-dependent paths called out clearly.
+          See the current app on a representative Singapore clinic dataset. Choose where to start;
+          we&apos;ll show that workflow&apos;s Plato boundary and any setup-dependent paths clearly.
         </p>
       </Section>
 

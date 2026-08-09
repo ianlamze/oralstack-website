@@ -100,6 +100,7 @@ const EXCLUDED_RELEASE_ROUTES = [
   "/compare/plato/",
   "/articles/",
   "/articles/choosing-dental-pms-apac-2026/",
+  "/articles/case-note-parser/",
   "/articles/dental-audit-logs/",
   "/articles/dental-sensor-bridge-integration/",
   "/articles/dicom-in-chart-vs-separate-viewer/",
@@ -164,6 +165,114 @@ test("demo form validates required fields before submitting", async ({ page }) =
   );
   await expect(page.getByText("Couldn't reach the server.")).toHaveCount(0);
   expect(contactRequests).toBe(0);
+});
+
+test("workflow explorer starts useful and carries the selected area into the demo", async ({
+  page,
+}) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  const initialChoice = page.getByRole("button", {
+    name: "Queues and calendars split the clinic day",
+  });
+  await expect(initialChoice).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#workflow-recommendation")).toContainText(
+    "Run appointments, requests and chair gaps",
+  );
+  await expect(page.getByText("3 days", { exact: true })).toBeVisible();
+  await expect(page.getByText("85%", { exact: true })).toBeVisible();
+  await expect(page.getByText("120+", { exact: true })).toBeVisible();
+
+  const checkoutChoice = page.getByRole("button", {
+    name: "Checkout handoffs stall at the desk",
+  });
+  await checkoutChoice.focus();
+  await page.keyboard.press("Enter");
+
+  await expect(checkoutChoice).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#workflow-recommendation")).toContainText(
+    "Stage checkout, estimates, receipts and follow-up",
+  );
+  await expect(page.getByRole("link", { name: "Request a focused walkthrough" })).toHaveAttribute(
+    "href",
+    "/book-a-demo?focus=checkout-money",
+  );
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});
+
+test("focused demo requests keep context and ask for four essentials", async ({ page }) => {
+  await page.goto("/book-a-demo/?focus=checkout-money", { waitUntil: "domcontentloaded" });
+
+  await expect(page.getByLabel("Start the walkthrough with")).toHaveValue("checkout-money");
+  await expect(
+    page.getByText("Checkout and money will be the first workflow shown."),
+  ).toBeVisible();
+  await expect(page.locator("form [required]")).toHaveCount(4);
+
+  await page.getByText("Add clinic setup details").click();
+  await expect(page.getByLabel("Your role (optional)")).toBeVisible();
+});
+
+test("workflow deep links keep the section heading below the sticky navigation", async ({
+  page,
+}) => {
+  await page.goto("/workflows/#checkout-money", { waitUntil: "networkidle" });
+
+  await expect(page.getByRole("navigation", { name: "Workflow sections" })).toBeVisible();
+  const heading = page.getByRole("heading", {
+    name: "Build the checkout, record payment, and leave a receipt trail.",
+  });
+  await expect(heading).toBeInViewport();
+  const box = await heading.boundingBox();
+  expect(box?.y).toBeGreaterThan(100);
+  await expect(page.getByRole("link", { name: "Walk through this area" }).nth(2)).toHaveAttribute(
+    "href",
+    "/book-a-demo?focus=checkout-money",
+  );
+});
+
+test("workflow explorer has focused visual regression coverage", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content: `
+      *, *::before, *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+      }
+    `,
+  });
+
+  const explorer = page.locator("#workflow-explorer");
+  await expect(explorer).toHaveScreenshot("workflow-explorer-initial.png", {
+    animations: "disabled",
+  });
+
+  await page.getByRole("button", { name: "Checkout handoffs stall at the desk" }).click();
+  await expect(explorer).toHaveScreenshot("workflow-explorer-checkout.png", {
+    animations: "disabled",
+  });
+});
+
+test("tablet navigation stays compact and exposes keyboard escape", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
+
+  const menuButton = page.getByRole("button", { name: "Open menu" });
+  await expect(menuButton).toBeVisible();
+  await menuButton.click();
+  await expect(page.getByRole("dialog", { name: "Site navigation" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog", { name: "Site navigation" })).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
 });
 
 // A smaller set of high-traffic routes get pixel-snapshot regression coverage.

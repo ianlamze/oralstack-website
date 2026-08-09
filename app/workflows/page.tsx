@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ArrowRight } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
+import WorkflowNavigator from "@/components/page/WorkflowNavigator";
 import Section from "@/components/primitives/Section";
 import AnimateInView from "@/components/motion/AnimateInView";
 import AnalyticsMock from "@/components/visuals/AnalyticsMock";
@@ -50,24 +52,26 @@ export default function WorkflowsPage() {
         </div>
       </Section>
 
-      <Section className="pb-24 md:pb-32">
+      <WorkflowNavigator />
+
+      <Section className="pb-24 pt-16 md:pb-32 md:pt-20">
         <ol className="grid gap-24 md:gap-32">
           {workflowsDetailed.map((workflow, index) => {
             const Visual = workflow.visual ? visualByKey[workflow.visual] : undefined;
             const visualSide = index % 2 === 0 ? "right" : "left";
 
             return (
-              <li key={workflow.slug} id={workflow.slug} className="scroll-mt-10">
+              <li key={workflow.slug} id={workflow.slug} className="scroll-mt-36">
                 {workflow.legacySlugs.map((legacySlug) => (
                   <span
                     key={legacySlug}
                     id={legacySlug}
                     aria-hidden
-                    className="block scroll-mt-10"
+                    className="block scroll-mt-36"
                   />
                 ))}
                 <AnimateInView>
-                  <header className="mb-10 grid max-w-[48ch] gap-3 md:mb-12">
+                  <header className="mb-10 grid max-w-[54ch] gap-3 md:mb-12">
                     <div className="flex flex-wrap items-center gap-3">
                       <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
                         {String(index + 1).padStart(2, "0")} · {workflow.eyebrow}
@@ -79,6 +83,13 @@ export default function WorkflowsPage() {
                     <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight md:text-3xl lg:text-4xl">
                       {workflow.title}
                     </h2>
+                    <a
+                      href={`/book-a-demo?focus=${workflow.slug}`}
+                      className="mt-2 inline-flex min-h-[44px] w-fit items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-2.5 text-sm font-medium text-[var(--color-tide-deep)] transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
+                    >
+                      Walk through this area
+                      <ArrowRight className="size-4" aria-hidden />
+                    </a>
                   </header>
 
                   <div

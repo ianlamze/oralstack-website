@@ -28,12 +28,12 @@ The route maps directly from the file path under `functions/` (Cloudflare Pages 
   message?,                         // required for "question" (≥10 chars)
   clinicName?, currentPms?, numChairs?, timeline?,
   numLocations?, numChairsTotal?, startDate?,
-  role?, location?, providers?, preferredTimes?,
+  role?, location?, providers?, preferredTimes?, focus?,
   website?                          // honeypot — must be empty
 }
 ```
 
-Demo shape from DemoRequestForm — `{ clinic, name, role, email, location, chairs, providers, currentPms, preferredTimes, notes, website? }` — is detected (no `intent`, has `clinic` or `role`) and normalized to `intent: "demo"`.
+Demo submissions use `{ intent: "demo", clinicName, name, email, location, focus?, role?, numChairs?, providers?, currentPms?, preferredTimes?, message?, website? }`. `focus` carries the workflow selected in the homepage explorer or workflow guide.
 
 Per-intent required fields (see `validate()` in `api/contact.ts`):
 - `question`: `message` ≥10 chars.

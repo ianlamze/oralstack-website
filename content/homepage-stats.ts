@@ -1,4 +1,4 @@
-// Stat band shown on the homepage after Workflows.
+// Stat band shown on the homepage after the workflow explorer.
 //
 // Stat *values* are pulled from content/case-studies/dfi-synergy.ts (single
 // source of truth — when DFI Synergy week-N numbers refresh in the case

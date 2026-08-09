@@ -27,7 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/faq/`, lastModified, priority: 0.7 },
     { url: `${base}/for-solo-clinics/`, lastModified, priority: 0.8 },
     { url: `${base}/for-multi-clinic/`, lastModified, priority: 0.8 },
-    { url: `${base}/tools/`, lastModified, priority: 0.8 },
     { url: `${base}/book-a-demo/`, lastModified, priority: 0.9 },
     { url: `${base}/contact/`, lastModified, priority: 0.9 },
     { url: `${base}/changelog/`, lastModified, priority: 0.6 },
