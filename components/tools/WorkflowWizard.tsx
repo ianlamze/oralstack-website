@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Check, Layers3 } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Layers3 } from "lucide-react";
 import Section from "@/components/primitives/Section";
 import { capabilityAvailabilityLabels, productCapabilities } from "@/content/product-capabilities";
 import { track } from "@/lib/analytics";
@@ -64,6 +64,15 @@ export default function WorkflowWizard() {
   const result = pains.find((p) => p.id === picked) ?? pains[0];
   const capability =
     productCapabilities.find((item) => item.slug === result.id) ?? productCapabilities[0];
+  const pickedIndex = Math.max(
+    0,
+    pains.findIndex((pain) => pain.id === picked),
+  );
+
+  function pickPain(id: string) {
+    setPicked(id);
+    track("wizard_pain_picked", { pain: id });
+  }
 
   return (
     <Section
@@ -84,7 +93,54 @@ export default function WorkflowWizard() {
       </div>
 
       <div className="mt-10 grid items-start gap-6 lg:grid-cols-[minmax(250px,0.72fr)_minmax(0,1.6fr)] lg:gap-8">
-        <fieldset className="-mx-6 flex min-w-0 snap-x gap-2 overflow-x-auto border-0 px-6 pb-2 lg:mx-0 lg:grid lg:overflow-visible lg:px-0 lg:pb-0">
+        <div
+          className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-4 shadow-[var(--shadow-1)] lg:hidden"
+          data-testid="workflow-explorer-chooser"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <label
+              htmlFor="workflow-explorer-select"
+              className="text-xs font-semibold text-[var(--color-text)]"
+            >
+              Choose a clinic workflow
+            </label>
+            <span
+              className="shrink-0 text-xs font-medium tabular-nums text-[var(--color-tide-deep)]"
+              aria-live="polite"
+            >
+              {pickedIndex + 1} of {pains.length}
+            </span>
+          </div>
+          <div className="relative mt-2">
+            <select
+              id="workflow-explorer-select"
+              value={picked}
+              onChange={(event) => pickPain(event.target.value)}
+              className="min-h-[48px] w-full appearance-none rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-[var(--color-surface-raised)] py-3 pl-4 pr-11 text-sm font-semibold text-[var(--color-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
+            >
+              {pains.map((pain, index) => {
+                const optionCapability =
+                  productCapabilities.find((item) => item.slug === pain.id) ??
+                  productCapabilities[index];
+                return (
+                  <option key={pain.id} value={pain.id}>
+                    {String(index + 1).padStart(2, "0")} ·{" "}
+                    {optionCapability.eyebrow.replace(" and ", " & ")}
+                  </option>
+                );
+              })}
+            </select>
+            <ChevronDown
+              aria-hidden
+              className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-tide-deep)]"
+            />
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+            {result.question}
+          </p>
+        </div>
+
+        <fieldset className="hidden border-0 lg:grid lg:gap-2">
           <legend className="sr-only">Clinic workflow areas</legend>
           {pains.map((pain, index) => {
             const isPicked = picked === pain.id;
@@ -92,13 +148,10 @@ export default function WorkflowWizard() {
               <button
                 key={pain.id}
                 type="button"
-                onClick={() => {
-                  setPicked(pain.id);
-                  track("wizard_pain_picked", { pain: pain.id });
-                }}
+                onClick={() => pickPain(pain.id)}
                 aria-pressed={isPicked}
                 aria-controls="workflow-recommendation"
-                className={`flex min-h-[58px] w-[210px] shrink-0 snap-start items-center justify-between gap-3 rounded-[var(--radius-lg)] border px-4 py-3 text-left transition-[border-color,background-color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] lg:w-full ${
+                className={`flex min-h-[58px] w-full items-center justify-between gap-3 rounded-[var(--radius-lg)] border px-4 py-3 text-left transition-[border-color,background-color,box-shadow] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] ${
                   isPicked
                     ? "border-[var(--color-tide)] bg-[var(--color-canvas-tinted)] shadow-[var(--shadow-1)]"
                     : "border-[var(--color-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-hover)]"
@@ -203,7 +256,7 @@ export default function WorkflowWizard() {
       <p className="mt-8 text-sm text-[var(--color-text-muted)]">
         Need the full map?{" "}
         <a
-          href="/workflows"
+          href={`/workflows#${result.id}`}
           className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4 hover:decoration-2"
         >
           Compare all seven workflows →

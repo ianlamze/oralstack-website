@@ -218,10 +218,19 @@ test("workflow explorer starts useful and carries the selected area into the dem
 }) => {
   await page.goto("/", { waitUntil: "networkidle" });
 
+  const isCompact = (page.viewportSize()?.width ?? 1280) < 1024;
+  const explorerSelect = page.getByLabel("Choose a clinic workflow");
   const initialChoice = page.getByRole("button", {
     name: "Queues and calendars split the clinic day",
   });
-  await expect(initialChoice).toHaveAttribute("aria-pressed", "true");
+
+  if (isCompact) {
+    await expect(explorerSelect).toBeVisible();
+    await expect(explorerSelect).toHaveValue("run-the-day");
+    await expect(explorerSelect.locator("option")).toHaveCount(7);
+  } else {
+    await expect(initialChoice).toHaveAttribute("aria-pressed", "true");
+  }
   await expect(page.locator("#workflow-recommendation")).toContainText(
     "Run appointments, requests and chair gaps",
   );
@@ -232,16 +241,26 @@ test("workflow explorer starts useful and carries the selected area into the dem
   const checkoutChoice = page.getByRole("button", {
     name: "Checkout handoffs stall at the desk",
   });
-  await checkoutChoice.focus();
-  await page.keyboard.press("Enter");
 
-  await expect(checkoutChoice).toHaveAttribute("aria-pressed", "true");
+  if (isCompact) {
+    await explorerSelect.selectOption("checkout-money");
+    await expect(explorerSelect).toHaveValue("checkout-money");
+    await expect(page.getByText("3 of 7", { exact: true })).toBeVisible();
+  } else {
+    await checkoutChoice.focus();
+    await page.keyboard.press("Enter");
+    await expect(checkoutChoice).toHaveAttribute("aria-pressed", "true");
+  }
   await expect(page.locator("#workflow-recommendation")).toContainText(
     "Stage checkout, estimates, receipts and follow-up",
   );
   await expect(page.getByRole("link", { name: "Request a focused walkthrough" })).toHaveAttribute(
     "href",
     "/book-a-demo?focus=checkout-money",
+  );
+  await expect(page.getByRole("link", { name: "Compare all seven workflows" })).toHaveAttribute(
+    "href",
+    "/workflows#checkout-money",
   );
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
@@ -673,16 +692,166 @@ test("workflow deep links keep the section heading below the sticky navigation",
   await page.goto("/workflows/#checkout-money", { waitUntil: "networkidle" });
 
   await expect(page.getByRole("navigation", { name: "Workflow sections" })).toBeVisible();
+  const isCompact = (page.viewportSize()?.width ?? 1280) < 1280;
+  if (isCompact) {
+    await expect(page.getByTestId("workflow-section-select")).toHaveValue("checkout-money");
+  }
   const heading = page.getByRole("heading", {
     name: "Build the checkout, record payment, and leave a receipt trail.",
   });
   await expect(heading).toBeInViewport();
   const box = await heading.boundingBox();
   expect(box?.y).toBeGreaterThan(100);
-  await expect(page.getByRole("link", { name: "Walk through this area" }).nth(2)).toHaveAttribute(
+  const section = page.locator(isCompact ? "#checkout-money" : "#desktop-checkout-money");
+  await expect(section.getByRole("link", { name: "Walk through this area" })).toHaveAttribute(
     "href",
     "/book-a-demo?focus=checkout-money",
   );
+});
+
+test("mobile workflow catalogue keeps one deep-linked area open and fully navigable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+    const calls: string[] = [];
+    (window as Window & { __workflowScrollBehaviors?: string[] }).__workflowScrollBehaviors = calls;
+    Element.prototype.scrollIntoView = function scrollIntoView(
+      options?: boolean | ScrollIntoViewOptions,
+    ) {
+      calls.push(typeof options === "object" ? (options.behavior ?? "auto") : "auto");
+      return originalScrollIntoView.call(this, options);
+    };
+  });
+  await page.goto("/workflows/#organization-security", { waitUntil: "networkidle" });
+
+  const catalog = page.getByTestId("mobile-workflow-catalog");
+  const select = page.getByTestId("workflow-section-select");
+  await expect(catalog).toBeVisible();
+  await expect(select).toHaveValue("organization-security");
+  await expect(select.locator("option")).toHaveCount(7);
+  const workflowPanels = catalog.locator("section[aria-labelledby^='mobile-workflow-button-']");
+  await expect(workflowPanels).toHaveCount(7);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-'][hidden]"),
+  ).toHaveCount(6);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-']:not([hidden])"),
+  ).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", {
+      name: "Control clinic access and keep the audit trail reviewable.",
+    }),
+  ).toBeInViewport();
+
+  const patientCare = catalog.getByRole("button", { name: /Patient care/ });
+  await patientCare.focus();
+  await page.keyboard.press("Enter");
+  await expect(patientCare).toHaveAttribute("aria-expanded", "true");
+  await expect(select).toHaveValue("patient-care");
+  await expect(page).toHaveURL(/\/workflows\/#patient-care$/);
+  await expect(workflowPanels).toHaveCount(7);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-'][hidden]"),
+  ).toHaveCount(6);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-']:not([hidden])"),
+  ).toHaveCount(1);
+
+  await select.selectOption("checkout-money");
+  await expect(page).toHaveURL(/\/workflows\/#checkout-money$/);
+  await expect(
+    page.getByRole("heading", {
+      name: "Build the checkout, record payment, and leave a receipt trail.",
+    }),
+  ).toBeInViewport();
+  await expect(page.getByRole("button", { name: "Previous workflow" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Next workflow" })).toBeEnabled();
+  const scrollBehaviors = await page.evaluate(
+    () =>
+      (window as Window & { __workflowScrollBehaviors?: string[] }).__workflowScrollBehaviors ?? [],
+  );
+  expect(scrollBehaviors).toContain("auto");
+  expect(scrollBehaviors).not.toContain("smooth");
+
+  const mobileHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+  expect(mobileHeight).toBeLessThan(8200);
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const desktopPresentation = await page.evaluate(() => {
+    const mobile = document.querySelector<HTMLElement>('[data-testid="mobile-workflow-catalog"]');
+    const desktop = document.querySelector<HTMLElement>('[data-testid="desktop-workflow-catalog"]');
+    return {
+      desktopMatches: window.matchMedia("(min-width: 80rem)").matches,
+      desktopVisible: desktop ? window.getComputedStyle(desktop).display !== "none" : false,
+      mobileVisible: mobile ? window.getComputedStyle(mobile).display !== "none" : false,
+    };
+  });
+  expect(desktopPresentation).toEqual({
+    desktopMatches: true,
+    desktopVisible: true,
+    mobileVisible: false,
+  });
+  const desktopNavigation = page.getByRole("navigation", { name: "Workflow sections" });
+  await expect(desktopNavigation.getByRole("link", { name: /Checkout and money/ })).toHaveAttribute(
+    "aria-current",
+    "location",
+  );
+  await expect(
+    page.getByRole("heading", {
+      name: "Build the checkout, record payment, and leave a receipt trail.",
+    }),
+  ).toBeInViewport();
+
+  await desktopNavigation.getByRole("link", { name: /Insights/ }).click();
+  await expect(page).toHaveURL(/\/workflows\/#insights$/);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobilePresentation = await page.evaluate(() => {
+    const mobile = document.querySelector<HTMLElement>('[data-testid="mobile-workflow-catalog"]');
+    const desktop = document.querySelector<HTMLElement>('[data-testid="desktop-workflow-catalog"]');
+    return {
+      desktopMatches: window.matchMedia("(min-width: 80rem)").matches,
+      desktopVisible: desktop ? window.getComputedStyle(desktop).display !== "none" : false,
+      mobileVisible: mobile ? window.getComputedStyle(mobile).display !== "none" : false,
+    };
+  });
+  expect(mobilePresentation).toEqual({
+    desktopMatches: false,
+    desktopVisible: false,
+    mobileVisible: true,
+  });
+  await expect(select).toHaveValue("insights");
+  await expect(catalog.getByRole("button", { name: /Insights/ })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/workflows/", { waitUntil: "networkidle" });
+  await select.selectOption("insights");
+  await expect(page).toHaveURL(/\/workflows\/#insights$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/workflows\/$/);
+  await expect(select).toHaveValue("run-the-day");
+  await expect(catalog.getByRole("button", { name: /Run the day/ })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+  await expect(
+    page.getByRole("heading", {
+      name: "Move patients from arrival to checkout without losing the handoff.",
+    }),
+  ).toBeInViewport();
+  await page.goForward();
+  await expect(page).toHaveURL(/\/workflows\/#insights$/);
+  await expect(select).toHaveValue("insights");
 });
 
 test("Plato connection explains ownership and leads into a structured assessment", async ({
@@ -878,10 +1047,29 @@ test("workflow explorer has focused visual regression coverage", async ({ page }
     animations: "disabled",
   });
 
-  await page.getByRole("button", { name: "Checkout handoffs stall at the desk" }).click();
+  const explorerSelect = page.getByLabel("Choose a clinic workflow");
+  if (await explorerSelect.isVisible()) {
+    await explorerSelect.selectOption("checkout-money");
+  } else {
+    await page.getByRole("button", { name: "Checkout handoffs stall at the desk" }).click();
+  }
   await expect(explorer).toHaveScreenshot("workflow-explorer-checkout.png", {
     animations: "disabled",
   });
+});
+
+test("mobile workflow selector has focused visual regression coverage", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/workflows/#checkout-money", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+
+  await expect(page.getByRole("navigation", { name: "Workflow sections" })).toHaveScreenshot(
+    "mobile-workflow-selector.png",
+    { animations: "disabled" },
+  );
 });
 
 test("homepage named pilot evidence has focused visual regression coverage", async ({ page }) => {
