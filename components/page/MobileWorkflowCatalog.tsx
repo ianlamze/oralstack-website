@@ -27,7 +27,7 @@ const compactWorkflowLabels: Record<string, string> = {
   "patient-access": "Patient access",
   "clinic-operations": "Clinic ops",
   insights: "Insights",
-  "organization-security": "Org & security",
+  "organization-security": "Security",
 };
 
 function workflowFromHash() {
