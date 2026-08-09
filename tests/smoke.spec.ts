@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
+import { onRequestPost } from "../functions/api/contact";
 
 const ROUTES = [
   { path: "/", title: /Oralstack/ },
@@ -526,6 +527,53 @@ test("demo requests submit once and keep values available after a delivery error
     "Synthetic workflow notes for error; no patient data.",
   );
   await expect(page.getByTestId("request-privacy-notice")).toBeVisible();
+});
+
+test("contact delivery preserves each allowlisted request source in the provider email", async () => {
+  const sourceLabels = {
+    "dfi-synergy": "DFI Synergy · April 2026 pilot evidence",
+    pricing: "Pilot pricing",
+    "solo-clinic": "One-clinic guide",
+    "clinic-group": "Clinic-group guide",
+    integrations: "Plato integration guide",
+  } as const;
+  const originalFetch = globalThis.fetch;
+
+  try {
+    for (const [sourcePage, expectedLabel] of Object.entries(sourceLabels)) {
+      let providerPayload: { text?: string } | undefined;
+      globalThis.fetch = async (_input, init) => {
+        providerPayload = JSON.parse(String(init?.body)) as { text?: string };
+        return Response.json({ id: "synthetic-provider-message" });
+      };
+
+      const response = await onRequestPost({
+        request: new Request("https://oralstack.example/api/contact", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            intent: "pilot",
+            name: "Synthetic Operations Lead",
+            email: "operations@example.invalid",
+            clinicName: "Synthetic Dental Group",
+            numLocations: 1,
+            sourcePage,
+          }),
+        }),
+        env: {
+          RESEND_API_KEY: "re_synthetic_test_key",
+          CONTACT_INBOX: "inbox@example.invalid",
+          CONTACT_FROM: "sender@example.invalid",
+        },
+        waitUntil: () => undefined,
+      });
+
+      expect(response.status).toBe(200);
+      expect(providerPayload?.text).toContain(`Request source: ${expectedLabel}`);
+    }
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("customers page presents one named historical pilot and contextual request paths", async ({

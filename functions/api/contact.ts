@@ -115,6 +115,10 @@ function row(label: string, value: string | number | undefined): string {
 
 const SOURCE_LABELS: Record<string, string> = {
   "dfi-synergy": "DFI Synergy · April 2026 pilot evidence",
+  pricing: "Pilot pricing",
+  "solo-clinic": "One-clinic guide",
+  "clinic-group": "Clinic-group guide",
+  integrations: "Plato integration guide",
 };
 
 function sourceLabel(sourcePage: string | undefined): string | undefined {

@@ -47,7 +47,7 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 | Journey and interaction checks | 19 | 19 | **38** |
 | Focused component snapshots | 11 | 11 | **22** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **110** | **110** | **220** |
+| **Total** | **111** | **111** | **222** |
 
 The complete suite expects 36 baseline PNGs in
 [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/). Generate new baselines on Linux so
@@ -64,7 +64,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 220 tests across desktop + mobile
+npm run test:smoke    # 222 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when
