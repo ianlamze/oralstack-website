@@ -2014,8 +2014,10 @@ for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
     }
     await page.goto(region.path, { waitUntil: "networkidle" });
     await page.addStyleTag({
-      content:
-        "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+      content: `
+        *, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }
+        body > a[href="#main-content"], body > header, body > [aria-hidden="true"] { visibility: hidden !important; }
+      `,
     });
 
     await expect(page.getByTestId(region.testId)).toHaveScreenshot(region.snapshot, {
@@ -2034,8 +2036,10 @@ test("security review form has focused visual regression coverage", async ({ pag
     { waitUntil: "networkidle" },
   );
   await page.addStyleTag({
-    content:
-      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+    content: `
+      *, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }
+      body > a[href="#main-content"], body > header, body > [aria-hidden="true"] { visibility: hidden !important; }
+    `,
   });
 
   const reviewForm = page.locator("#contact-panel-security form");
