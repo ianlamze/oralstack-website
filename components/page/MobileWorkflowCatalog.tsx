@@ -20,6 +20,16 @@ const visualByKey: Record<CapabilityVisual, React.ComponentType> = {
   analytics: AnalyticsMock,
 };
 
+const compactWorkflowLabels: Record<string, string> = {
+  "run-the-day": "Run the day",
+  "patient-care": "Patient care",
+  "checkout-money": "Checkout",
+  "patient-access": "Patient access",
+  "clinic-operations": "Clinic ops",
+  insights: "Insights",
+  "organization-security": "Org & security",
+};
+
 function workflowFromHash() {
   const hash = window.location.hash.replace(/^#/, "");
   return productCapabilities.find(
@@ -99,8 +109,8 @@ export default function MobileWorkflowCatalog() {
             >
               {productCapabilities.map((workflow, index) => (
                 <option key={workflow.slug} value={workflow.slug}>
-                  {String(index + 1).padStart(2, "0")} of {productCapabilities.length} ·{" "}
-                  {workflow.eyebrow.replace(" and ", " & ")}
+                  {String(index + 1).padStart(2, "0")}/{productCapabilities.length} ·{" "}
+                  {compactWorkflowLabels[workflow.slug] ?? workflow.eyebrow}
                 </option>
               ))}
             </select>
