@@ -9,8 +9,8 @@ Master inventory of every env var the Oralstack site reads at runtime. Two scope
 
 | Name | Scope | Required | Used by | Purpose |
 |---|---|---|---|---|
-| `NEXT_PUBLIC_CF_BEACON_TOKEN` | Client | Optional | [app/layout.tsx](../app/layout.tsx) | Cloudflare Web Analytics beacon token. If unset, the analytics script is not injected. |
-| `NEXT_PUBLIC_CALCOM_USERNAME` | Client | Optional | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com username for the booking iframe at `/book-a-demo`. The embed preserves allowlisted source and workflow context as booking metadata and UTM values. If unset, the page falls back to `DemoRequestForm`. |
+| `NEXT_PUBLIC_CF_BEACON_TOKEN` | Client | Optional | [app/layout.tsx](../app/layout.tsx) | Cloudflare Web Analytics beacon token. If unset, the provider script is not injected; when set, the client still suppresses it for Global Privacy Control or Do Not Track. This is separate from the minimized first-party `/api/event` telemetry. Verify the privacy notice before enabling it. |
+| `NEXT_PUBLIC_CALCOM_USERNAME` | Client | Optional | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com username for the booking option at `/book-a-demo`. The page waits for explicit user activation before creating the iframe; after activation, it preserves allowlisted source and workflow context as booking metadata and UTM values. If unset, the page uses `DemoRequestForm`. |
 | `NEXT_PUBLIC_CALCOM_EVENT` | Client | Optional (default `demo`) | [app/book-a-demo/page.tsx](../app/book-a-demo/page.tsx) | Cal.com event slug appended to the booking URL. |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Client | Optional | [app/layout.tsx](../app/layout.tsx) | Google Search Console HTML-tag verification value. Skip if you used DNS verification (see [SEARCH_CONSOLE.md](SEARCH_CONSOLE.md)). |
 | `RESEND_API_KEY` | Server | Required for successful form delivery | [functions/api/contact.ts](../functions/api/contact.ts) | Resend API key for outbound email. Without it, the endpoint returns `503` and does not log submitted clinic or contact details. |
@@ -25,7 +25,7 @@ cp .env.example .env.local
 
 Fill in only what you need. None are required to boot `npm run dev`. Common dev setups:
 
-- **Booking iframe** — set `NEXT_PUBLIC_CALCOM_USERNAME` to see the real Cal.com embed; otherwise `/book-a-demo` shows the fallback form. Both paths preserve allowlisted `source` and `focus` context.
+- **Booking iframe** — set `NEXT_PUBLIC_CALCOM_USERNAME` to offer Cal.com after an explicit user action; otherwise `/book-a-demo` shows the first-party form. Both paths preserve allowlisted `source` and `focus` context.
 - **Form delivery testing** — run `npm run build`, then `npx wrangler pages dev out` with a test Resend key and controlled destination inbox.
 
 Server-only vars (`RESEND_API_KEY` etc.) are not read from `.env.local` — they only apply when functions execute on Cloudflare. Test the email path against the deployed preview.
@@ -41,6 +41,13 @@ Set vars in the Cloudflare Pages dashboard:
 See [CLOUDFLARE.md](CLOUDFLARE.md) (deploy + dashboard env step) and [CONTACT_SETUP.md](CONTACT_SETUP.md) (Resend onboarding) for the full walkthrough. Mark `RESEND_API_KEY` as **encrypted**.
 
 After saving env vars, redeploy (`npm run deploy`) so the static export picks up new `NEXT_PUBLIC_*` values.
+
+Before enabling or changing Cal.com, Cloudflare Web Analytics, Resend, or the destination inbox,
+reconcile the production data path with `/privacy`. Do not assume a storage region, retention period,
+consent basis, or compliance status from these environment variables.
+
+Public contact forms must not be used to collect patient names, clinical records, credentials, or
+other sensitive patient data.
 
 ## Adding a new env var
 

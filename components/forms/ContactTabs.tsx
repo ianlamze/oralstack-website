@@ -1,6 +1,13 @@
 "use client";
 
-import { useLayoutEffect, useState, type ComponentType, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useState,
+  type ComponentType,
+  type KeyboardEvent,
+} from "react";
 import QuickQuestionForm from "./QuickQuestionForm";
 import MigrationAssessmentForm from "./MigrationAssessmentForm";
 import PilotProposalForm from "./PilotProposalForm";
@@ -62,9 +69,9 @@ function isIntent(s: string): s is Intent {
 }
 
 /**
- * Single-form-at-a-time tab UI for /contact. Replaces the previous stacked
- * vertical layout — picking one intent now hides the other two, removing the
- * scroll-past-everything friction.
+ * Single-visible-form tab UI for /contact. Each tab-panel shell stays mounted
+ * so its ARIA relationship remains valid; forms stay mounted after first use
+ * so switching intent does not discard a draft.
  *
  * Initial intent is read from `?intent=` first, with the legacy
  * #question / #migration / #pilot hashes retained as aliases. Tab changes keep
@@ -75,10 +82,13 @@ function isIntent(s: string): s is Intent {
  */
 export default function ContactTabs() {
   const [active, setActive] = useState<Intent>("question");
+  const [mountedTabs, setMountedTabs] = useState<ReadonlySet<Intent>>(
+    () => new Set<Intent>(["question"]),
+  );
   const [requestSource, setRequestSource] = useState<RequestSourceId | null>(null);
   const [defaultWorkflowGoal, setDefaultWorkflowGoal] = useState<string | undefined>();
 
-  useLayoutEffect(() => {
+  const syncFromLocation = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
     const hash = window.location.hash.replace(/^#/, "");
     const requested = params.get("intent");
@@ -88,17 +98,40 @@ export default function ContactTabs() {
     setDefaultWorkflowGoal(
       requestedWorkflow ?? (source === "dfi-synergy" ? "run-the-day" : undefined),
     );
-    if (requested && isIntent(requested)) setActive(requested);
-    else if (hash && isIntent(hash)) setActive(hash);
+    const initialTab =
+      requested && isIntent(requested) ? requested : hash && isIntent(hash) ? hash : "question";
+    setActive(initialTab);
+    setMountedTabs((current) => {
+      if (current.has(initialTab)) return current;
+      return new Set([...current, initialTab]);
+    });
   }, []);
 
+  useLayoutEffect(() => {
+    syncFromLocation();
+  }, [syncFromLocation]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", syncFromLocation);
+    window.addEventListener("hashchange", syncFromLocation);
+    return () => {
+      window.removeEventListener("popstate", syncFromLocation);
+      window.removeEventListener("hashchange", syncFromLocation);
+    };
+  }, [syncFromLocation]);
+
   function handleSelect(id: Intent) {
+    if (id === active) return;
     setActive(id);
+    setMountedTabs((current) => {
+      if (current.has(id)) return current;
+      return new Set([...current, id]);
+    });
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
       url.searchParams.set("intent", id);
       url.hash = "request";
-      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+      window.history.pushState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }
 
@@ -115,9 +148,6 @@ export default function ContactTabs() {
     handleSelect(nextTab.id);
     document.getElementById(`contact-tab-${nextTab.id}`)?.focus();
   }
-
-  const activeTab = TABS.find((t) => t.id === active) ?? TABS[0];
-  const ActiveForm = activeTab.Form;
 
   return (
     <div className="grid gap-8">
@@ -147,50 +177,63 @@ export default function ContactTabs() {
         })}
       </div>
 
-      <section
-        id={`contact-panel-${activeTab.id}`}
-        role="tabpanel"
-        aria-labelledby={`contact-tab-${activeTab.id}`}
-        // biome-ignore lint/a11y/noNoninteractiveTabindex: WAI-ARIA tabs pattern — the tabpanel must be focusable so keyboard users can Tab from the active tab into the panel content.
-        tabIndex={0}
-        onFocus={(event) => {
-          if (event.target !== event.currentTarget) return;
-          const panel = event.currentTarget;
-          window.requestAnimationFrame(() => panel.scrollIntoView({ block: "start" }));
-        }}
-        className="scroll-mt-28 grid gap-6 rounded-[var(--radius-lg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-tide-deep)] focus:ring-offset-4"
-      >
-        <header className="grid gap-2">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-            {activeTab.eyebrow}
-          </p>
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
-            {activeTab.title}
-          </h2>
-          <p className="mt-1 text-[var(--color-text-muted)] max-w-[62ch] leading-relaxed">
-            {activeTab.body}
-          </p>
-          <p className="text-xs text-[var(--color-text-soft)]">{activeTab.bestFor}</p>
-        </header>
-        {requestSource && (
-          <aside
-            data-testid="request-context"
-            className="grid gap-1 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4"
+      {TABS.map((tab) => {
+        const isActive = tab.id === active;
+        const TabForm = tab.Form;
+
+        return (
+          <section
+            key={tab.id}
+            id={`contact-panel-${tab.id}`}
+            role="tabpanel"
+            aria-labelledby={`contact-tab-${tab.id}`}
+            hidden={!isActive}
+            tabIndex={isActive ? 0 : -1}
+            onFocus={(event) => {
+              if (event.target !== event.currentTarget) return;
+              const panel = event.currentTarget;
+              window.requestAnimationFrame(() => panel.scrollIntoView({ block: "start" }));
+            }}
+            className={
+              isActive
+                ? "scroll-mt-28 grid gap-6 rounded-[var(--radius-lg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-tide-deep)] focus:ring-offset-4"
+                : "hidden"
+            }
           >
-            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-tide-deep)]">
-              Continuing from {REQUEST_SOURCES[requestSource].label}
-            </p>
-            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {REQUEST_SOURCES[requestSource].context}
-            </p>
-          </aside>
-        )}
-        {active === "pilot" ? (
-          <PilotProposalForm defaultWorkflowGoal={defaultWorkflowGoal} />
-        ) : (
-          <ActiveForm />
-        )}
-      </section>
+            <header className="grid gap-2">
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+                {tab.eyebrow}
+              </p>
+              <h2 className="text-2xl md:text-3xl font-semibold tracking-tight max-w-[28ch]">
+                {tab.title}
+              </h2>
+              <p className="mt-1 text-[var(--color-text-muted)] max-w-[62ch] leading-relaxed">
+                {tab.body}
+              </p>
+              <p className="text-xs text-[var(--color-text-soft)]">{tab.bestFor}</p>
+            </header>
+            {requestSource && isActive && (
+              <aside
+                data-testid="request-context"
+                className="grid gap-1 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4"
+              >
+                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-tide-deep)]">
+                  Continuing from {REQUEST_SOURCES[requestSource].label}
+                </p>
+                <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
+                  {REQUEST_SOURCES[requestSource].context}
+                </p>
+              </aside>
+            )}
+            {mountedTabs.has(tab.id) &&
+              (tab.id === "pilot" ? (
+                <PilotProposalForm defaultWorkflowGoal={defaultWorkflowGoal} />
+              ) : (
+                <TabForm />
+              ))}
+          </section>
+        );
+      })}
     </div>
   );
 }

@@ -22,8 +22,13 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 
 - **Successful inbox delivery.** Required-field validation, workflow-to-demo context,
   evidence-to-request context, Plato-to-assessment handoff, pricing-to-pilot payload mapping,
-  accessible form feedback, and mobile navigation interactions are covered, but the Cloudflare
-  contact endpoint and inbox delivery are not.
+  shared request privacy notices, duplicate-submit prevention, accessible form feedback, retained
+  contact drafts, and mobile navigation interactions are covered, but the Cloudflare contact
+  endpoint and inbox delivery are not.
+- **Configured Cal.com network behavior in default CI.** The suite proves that the first-party
+  fallback does not contact Cal.com. When the scheduler variables are present in the build, the same
+  adaptive test also proves that the iframe stays absent until explicit activation and that the
+  allowlisted source/workflow context is preserved.
 - **Cross-browser.** Mobile uses Chromium with an iPhone 13 viewport, not real
   WebKit. Adequate for a static site without Safari-specific JS; switch to
   webkit if a Safari-specific bug surfaces.
@@ -39,10 +44,10 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 15 | 15 | **30** |
+| Journey and interaction checks | 19 | 19 | **38** |
 | Focused component snapshots | 11 | 11 | **22** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **106** | **106** | **212** |
+| **Total** | **110** | **110** | **220** |
 
 The complete suite expects 36 baseline PNGs in
 [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/). Generate new baselines on Linux so
@@ -59,7 +64,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 212 tests across desktop + mobile
+npm run test:smoke    # 220 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when

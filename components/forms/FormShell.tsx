@@ -8,7 +8,7 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { getRequestSourceId } from "./contact-options";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -145,6 +145,26 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
           </a>
         </div>
       )}
+
+      <div
+        data-testid="request-privacy-notice"
+        className="flex items-start gap-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4 text-xs leading-relaxed text-[var(--color-text-muted)]"
+      >
+        <ShieldCheck className="mt-0.5 size-4 shrink-0 text-[var(--color-tide-deep)]" aria-hidden />
+        <p>
+          <span className="font-semibold text-[var(--color-text)]">Clinic details only.</span> Do
+          not include patient names, identifiers, health information, clinical records, passwords,
+          or security findings. We send this request through Cloudflare and Resend so the Oralstack
+          team can reply.{" "}
+          <a
+            href="/privacy#contact-requests"
+            className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4"
+          >
+            How requests are handled
+          </a>
+          .
+        </p>
+      </div>
 
       <div className="flex items-center gap-3 mt-1">
         <button

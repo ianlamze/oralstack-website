@@ -64,7 +64,8 @@ Recommended: move DNS to Cloudflare. It enables Email Routing (Step 5) and Web A
 ## Step 4 — Cloudflare Web Analytics (~3 minutes)
 
 1. Cloudflare dashboard → **Analytics & Logs** → **Web Analytics** → **Add a site**
-2. Choose **Automatic setup** if `oralstack.com` is on Cloudflare DNS, or **Manual setup** if not
+2. Choose **Manual setup** and leave Cloudflare's automatic/edge injection disabled. The site
+   loads the beacon itself so it can honor browser Global Privacy Control and Do Not Track signals.
 3. Copy the **token** from the beacon snippet (the value of `data-cf-beacon='{"token": "..."}'`)
 4. Create `.env.local` in the repo root:
 
@@ -72,9 +73,14 @@ Recommended: move DNS to Cloudflare. It enables Email Routing (Step 5) and Web A
 NEXT_PUBLIC_CF_BEACON_TOKEN=your-token-here
 ```
 
-5. Tell me — I rebuild and redeploy. Analytics start collecting on the next deploy.
+5. Rebuild and redeploy. The provider script is included in the next static export.
 
-The site does not load the beacon script if the env var is empty, so there's no analytics pollution during local dev.
+The site does not load the provider script if the env var is empty. When it is set, the client still
+suppresses the script if the browser exposes Global Privacy Control or Do Not Track. Do not also
+enable Cloudflare's automatic setup: it can inject the beacon outside this client-side gate and may
+load it twice. Before setting the token in production, verify that `/privacy` describes the enabled
+analytics path. Cloudflare Web Analytics is separate from the minimized first-party `/api/event`
+telemetry described in Step 7.
 
 ## Step 5 — Email Routing for `hello@oralstack.com` (~5 minutes)
 
@@ -103,22 +109,36 @@ NEXT_PUBLIC_CALCOM_USERNAME=your-cal-username
 NEXT_PUBLIC_CALCOM_EVENT=demo
 ```
 
-5. Tell me — I rebuild and redeploy. `/book-a-demo` now embeds Cal.com directly.
+5. Rebuild and redeploy. `/book-a-demo` now offers Cal.com as an explicitly activated option.
 
-The embed forwards the site's allowlisted evidence source and workflow focus as booking metadata
-and UTM values. This keeps a DFI case-study request contextual without putting personal data in the
-page URL.
+The page shows a disclosure before loading Cal.com. No Cal.com iframe is created until the user
+activates that option. After activation, the embed forwards only the site's allowlisted evidence
+source and workflow focus as booking metadata and UTM values; those values keep the request context
+without placing form-entered contact details in the page URL.
+
+Changing the Cal.com account, event, or embed behavior requires a review of `/privacy`. Do not ask
+users to put patient names, clinical records, credentials, or other sensitive patient data into the
+booking flow.
 
 ## Step 7 — Form endpoints + Resend (~5 minutes)
 
-The site has one Cloudflare Pages Function handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo), plus an allowlisted interaction-event sink at [`/api/event`](../functions/api/event.ts). Endpoint contracts, request/response shapes, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
+The site has one Cloudflare Pages Function handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo), plus a minimized interaction-event sink at [`/api/event`](../functions/api/event.ts). Endpoint contracts, request/response shapes, privacy boundaries, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
 Without `RESEND_API_KEY` set, the endpoint returns `503 {ok:false}`. It does not log submitted clinic or contact details, and the form offers a direct email fallback.
 
+The public form data path is browser → Cloudflare Pages Function → Resend → `CONTACT_INBOX`. The
+function has no site database and does not log submitted content, but Resend and the destination
+inbox remain part of the request path. Do not document a storage region, retention period, consent
+basis, or compliance status unless those facts have been verified for the active configuration.
+
+Public forms are not an approved channel for patient names, clinical records, credentials, or other
+sensitive patient data. If an evaluation needs sensitive material, arrange an approved transfer
+method first.
+
 To activate real email forwarding:
 
-1. Sign up at [resend.com](https://resend.com) (free tier: 100 emails/day, 3,000/month).
-2. **Verify the sending domain.** Resend → Domains → Add → `oralstack.com` → add the DNS records (SPF, DKIM) Resend provides into Cloudflare DNS. Verification usually completes in 5–10 minutes.
+1. Sign up at [resend.com](https://resend.com).
+2. **Verify the sending domain.** Resend → Domains → Add → `oralstack.com` → add the DNS records (SPF, DKIM) Resend provides into Cloudflare DNS.
 3. Resend → API Keys → Create API Key (full access, single domain). Copy the value (starts with `re_`).
 4. Cloudflare dashboard → Workers & Pages → **oralstack-website** → Settings → Environment variables:
    - `RESEND_API_KEY` (encrypted) — the key from step 3
@@ -129,6 +149,22 @@ To activate real email forwarding:
 
 The DemoRequestForm payload uses the shared contact shape: `{ intent: "demo", clinicName, name, email, location, focus, role, numChairs, providers, currentPms, preferredTimes, message }`. `focus` records the workflow selected before the request; the remaining clinic setup fields are optional.
 
+### First-party interaction telemetry
+
+`/api/event` is a first-party, fire-and-forget interaction sink. The release contract is deliberately
+small:
+
+- the client sends only an allowlisted event name, bounded sanitized primitive properties, a
+  timestamp, and the current pathname;
+- the client does not send form values, email addresses, clinic names, free text, URL query strings,
+  raw referrers, or the browser's full user-agent string;
+- the client does not send an event when the browser exposes Global Privacy Control or Do Not Track;
+- the function rejects unknown events and bounds and sanitizes properties before writing a runtime
+  log entry.
+
+Do not add a telemetry field merely because it is available in the browser. Update the implementation,
+privacy notice, endpoint contract, and tests together when the event schema changes.
+
 ## Troubleshooting
 
 When a deploy fails, the cause is almost always one of these. Check in order.
@@ -137,7 +173,7 @@ When a deploy fails, the cause is almost always one of these. Check in order.
 
 - **Wrangler auth expired** (~30 days inactive). Re-run `npx wrangler login`.
 - **Non-ASCII commit message rejected.** Wrangler's deploy API rejects en-dash, arrows, emoji in the auto-detected commit message. Override with `npx wrangler pages deploy out --project-name=oralstack-website --commit-dirty=true --commit-message="ASCII only"`.
-- **`next build` fails.** Run `npm run typecheck` and `npm run lint` first. Build errors often reduce to a TS error or a missing import. CI runs the same gate — see [.github/workflows/ci.yml](.github/workflows/ci.yml).
+- **`next build` fails.** Run `npm run typecheck` and `npm run lint` first. Build errors often reduce to a TS error or a missing import. CI runs the same gate — see [.github/workflows/ci.yml](../.github/workflows/ci.yml).
 - **Content check fails.** `npm run check:content` catches banned voice words, duplicate slugs, malformed `publishedAt`. The error message points at the file + line.
 
 ### Site deploys but a route 404s in production
@@ -180,10 +216,10 @@ Cloudflare's runtime crashed before the function set a response. Check **Functio
 [ ] Step 1: npx wrangler login → npx wrangler whoami works
 [ ] Step 2: npm run deploy (I run this once you're logged in)
 [ ] Step 3: Custom domain wired in Cloudflare Pages
-[ ] Step 4: Cloudflare Web Analytics token in .env.local
+[ ] Step 4: Cloudflare Web Analytics token in .env.local (optional; privacy notice reviewed)
 [ ] Step 5: hello@ + security@ + legal@ forwarding via Email Routing
-[ ] Step 6: Cal.com username + event in .env.local
-[ ] Step 7: Resend wired (RESEND_API_KEY in Cloudflare Pages env vars)
+[ ] Step 6: Cal.com username + event in .env.local (optional; activation gate verified)
+[ ] Step 7: Resend wired (RESEND_API_KEY in Cloudflare Pages env vars; privacy notice reviewed)
 ```
 
 When you've done step 1, just say "logged in" and I take it from there.

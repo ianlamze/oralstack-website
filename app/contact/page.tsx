@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight, Calendar, Mail, MessageCircle } from "lucide-react";
+import { ArrowRight, Calendar, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import ContactTabs from "@/components/forms/ContactTabs";
@@ -20,6 +20,7 @@ const quickTouchCards: {
   href: string;
   cta: string;
   external?: boolean;
+  privacyNote?: string;
 }[] = [
   {
     icon: MessageCircle,
@@ -29,6 +30,7 @@ const quickTouchCards: {
     href: whatsappLink(),
     cta: "Open WhatsApp",
     external: true,
+    privacyNote: "External channel · do not include patient or clinical data.",
   },
   {
     icon: Mail,
@@ -55,8 +57,8 @@ export default function ContactPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          We&apos;re a small team — your message reaches a real engineer, not a shared inbox. Pick
-          the channel that fits the question.
+          We&apos;re a small team — your message reaches the product team, not an automated sales
+          queue. Pick the channel that fits the question.
         </p>
       </Section>
 
@@ -85,6 +87,11 @@ export default function ContactPage() {
                   <p className="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
                     {c.body}
                   </p>
+                  {c.privacyNote && (
+                    <p className="mt-3 text-xs leading-relaxed text-[var(--color-text-soft)]">
+                      {c.privacyNote}
+                    </p>
+                  )}
                   <p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[var(--color-tide-deep)] group-hover:underline underline-offset-4">
                     {c.cta}
                     <ArrowRight className="size-3.5" aria-hidden />
@@ -94,6 +101,26 @@ export default function ContactPage() {
             );
           })}
         </ul>
+        <aside
+          data-testid="contact-channel-privacy"
+          className="mt-4 flex max-w-[820px] items-start gap-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4 text-xs leading-relaxed text-[var(--color-text-muted)]"
+        >
+          <ShieldCheck
+            className="mt-0.5 size-4 shrink-0 text-[var(--color-tide-deep)]"
+            aria-hidden
+          />
+          <p>
+            Whichever route you choose, keep patient, clinical, credential, and security-finding
+            data out of the message. WhatsApp is an external channel. {" "}
+            <a
+              href="/privacy#contact-requests"
+              className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4"
+            >
+              Read the marketing-site privacy notice
+            </a>
+            .
+          </p>
+        </aside>
       </Section>
 
       {/* Tabbed forms — replaces the previous stacked-vertical layout */}

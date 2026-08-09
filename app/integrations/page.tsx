@@ -61,7 +61,7 @@ export default function IntegrationsPage() {
                 <ArrowRight className="size-4" aria-hidden />
               </a>
               <a
-                href="/contact/?intent=migration#request"
+                href="/contact/?intent=migration&source=integrations#request"
                 className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
               >
                 Request a connection assessment
@@ -126,7 +126,7 @@ export default function IntegrationsPage() {
                 {platoConnection.description}
               </p>
               <a
-                href="/contact/?intent=migration#request"
+                href="/contact/?intent=migration&source=integrations#request"
                 className="mt-1 inline-flex min-h-[44px] w-fit items-center gap-2 text-sm font-semibold text-[var(--color-tide-deep)] underline decoration-[var(--color-border-strong)] underline-offset-4"
               >
                 Request a connection assessment
@@ -180,7 +180,7 @@ export default function IntegrationsPage() {
                 </p>
               </div>
               <a
-                href="/contact/?intent=migration#request"
+                href="/contact/?intent=migration&source=integrations#request"
                 className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-canvas)] px-5 py-3 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-sea)]"
               >
                 Request a connection assessment
@@ -235,14 +235,14 @@ export default function IntegrationsPage() {
           </div>
           <div className="flex flex-col gap-3 md:justify-self-end">
             <a
-              href="/contact/?intent=migration#request"
+              href="/contact/?intent=migration&source=integrations#request"
               className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
             >
               Request a connection assessment
               <ArrowRight className="size-4" aria-hidden />
             </a>
             <a
-              href="/contact/?intent=question#request"
+              href="/contact/?intent=question&source=integrations#request"
               className="inline-flex min-h-[44px] items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas)]"
             >
               Ask about another connection

@@ -70,12 +70,43 @@ async function expectNoForbiddenClinicFitClaims(page: Page) {
 }
 
 async function fillEvidencePilotProposal(page: Page, suffix: string) {
-  await page.getByLabel(/Your name/).fill(`Demo Practice Manager ${suffix}`);
-  await page.getByLabel(/Email/).fill(`practice.manager.${suffix}@example.invalid`);
-  await page.getByLabel(/Clinic \/ group name/).fill(`Synthetic Dental Clinic ${suffix}`);
-  await page.getByLabel(/Number of locations/).fill("1");
-  await page.getByLabel(/Current clinic system/).selectOption("Plato");
-  await expect(page.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
+  const form = page
+    .getByRole("button", { name: "Request a pilot proposal", exact: true })
+    .locator("xpath=ancestor::form");
+  await form.getByLabel(/Your name/).fill(`Demo Practice Manager ${suffix}`);
+  await form.getByLabel(/Email/).fill(`practice.manager.${suffix}@example.invalid`);
+  await form.getByLabel(/Clinic \/ group name/).fill(`Synthetic Dental Clinic ${suffix}`);
+  await form.getByLabel(/Number of locations/).fill("1");
+  await form.getByLabel(/Current clinic system/).selectOption("Plato");
+  await expect(form.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
+}
+
+async function showFirstPartyDemoForm(page: Page) {
+  const requestFormChoice = page.getByRole("button", {
+    name: "Use Oralstack request form",
+    exact: true,
+  });
+  if ((await requestFormChoice.count()) > 0) {
+    await requestFormChoice.click();
+    await expect(page.getByRole("region", { name: "Oralstack demo request form" })).toBeFocused();
+  }
+  await expect(page.getByRole("button", { name: "Send demo request" })).toBeVisible();
+}
+
+async function fillDemoRequest(page: Page, suffix: string) {
+  const form = page
+    .getByRole("button", { name: "Send demo request", exact: true })
+    .locator("xpath=ancestor::form");
+  await form.getByLabel(/Clinic name/).fill(`Synthetic Demo Clinic ${suffix}`);
+  await form.getByLabel(/Location/).fill("Singapore");
+  await form.getByLabel(/Your name/).fill(`Demo Operations Lead ${suffix}`);
+  await form.getByLabel(/Email/).fill(`demo.${suffix}@example.invalid`);
+  const setupDetails = form.locator("details").filter({ hasText: "Add clinic setup details" });
+  await setupDetails.locator("summary").click();
+  await form.getByLabel("Your role (optional)").fill(`Practice manager ${suffix}`);
+  await form
+    .getByLabel("Anything else (optional)")
+    .fill(`Synthetic workflow notes for ${suffix}; no patient data.`);
 }
 
 for (const route of ROUTES) {
@@ -280,6 +311,223 @@ test("focused demo requests keep context and ask for four essentials", async ({ 
   await expect(page.getByLabel("Your role (optional)")).toBeVisible();
 });
 
+test("shared request forms disclose their data boundary and link to a truthful privacy notice", async ({
+  page,
+}) => {
+  if ((page.viewportSize()?.width ?? 1280) < 640) {
+    await page.setViewportSize({ width: 320, height: 800 });
+  }
+
+  const forms = [
+    { path: "/book-a-demo/", submit: "Send demo request", demo: true },
+    { path: "/contact/?intent=question#request", submit: "Send question" },
+    {
+      path: "/contact/?intent=migration#request",
+      submit: "Request connection assessment",
+    },
+    { path: "/contact/?intent=pilot#request", submit: "Request a pilot proposal" },
+  ] as const;
+
+  for (const formTarget of forms) {
+    await page.goto(formTarget.path, { waitUntil: "networkidle" });
+    if ("demo" in formTarget && formTarget.demo) await showFirstPartyDemoForm(page);
+
+    const submit = page.getByRole("button", { name: formTarget.submit, exact: true });
+    const form = submit.locator("xpath=ancestor::form");
+    const notice = form.getByTestId("request-privacy-notice");
+    await expect(notice).toBeVisible();
+    await expect(notice).toContainText("Clinic details only.");
+    await expect(notice).toContainText("patient names");
+    await expect(notice).toContainText("clinical records");
+    await expect(notice).toContainText("passwords");
+    await expect(notice.getByRole("link", { name: "How requests are handled" })).toHaveAttribute(
+      "href",
+      "/privacy#contact-requests",
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      `horizontal overflow around the request notice on ${formTarget.path}`,
+    ).toBe(true);
+  }
+
+  await page.goto("/privacy/", { waitUntil: "networkidle" });
+  const main = page.locator("main");
+  await expect(main.getByRole("heading", { name: "Contact and demo requests" })).toBeVisible();
+  await expect(main.getByRole("heading", { name: "Optional Cal.com scheduler" })).toBeVisible();
+  await expect(
+    main.getByRole("heading", { name: "Site requests and interaction telemetry" }),
+  ).toBeVisible();
+  await expect(
+    main.getByRole("heading", { name: "Service providers and international processing" }),
+  ).toBeVisible();
+  await expect(main.getByRole("heading", { name: "Retention" })).toBeVisible();
+  await expect(main.getByRole("heading", { name: "Your choices and questions" })).toBeVisible();
+  await expect(main).toContainText("Cloudflare Pages Function");
+  await expect(main).toContainText("Resend");
+  await expect(main).toContainText("United States");
+  await expect(main).toContainText("Global Privacy Control");
+  await expect(main).toContainText("Do Not Track");
+  await expect(main).toContainText("has not published a fixed deletion schedule");
+  await expect(main.locator("#contact-requests")).toBeVisible();
+
+  const privacyCopy = await main.innerText();
+  expect(privacyCopy).not.toMatch(
+    /does not run analytics yet|do not transfer personal data outside APAC|messages are held in Singapore/i,
+  );
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});
+
+test("demo scheduling keeps Cal.com dormant until explicit activation", async ({ page }) => {
+  let calRequests = 0;
+  await page.route("https://cal.com/**", async (route) => {
+    calRequests += 1;
+    await route.abort();
+  });
+
+  await page.goto("/book-a-demo/?focus=run-the-day&source=pricing", {
+    waitUntil: "domcontentloaded",
+  });
+  const gate = page.getByTestId("cal-scheduler-gate");
+  const scheduler = page.getByTitle("Cal.com demo scheduler");
+  const fallbackFormSubmit = page.getByRole("button", { name: "Send demo request" });
+  await expect(gate.or(fallbackFormSubmit)).toBeVisible();
+
+  if (!(await gate.isVisible())) {
+    await expect(fallbackFormSubmit).toBeVisible();
+    await expect(scheduler).toHaveCount(0);
+    expect(calRequests).toBe(0);
+    return;
+  }
+
+  await expect(gate).toBeVisible();
+  await expect(gate).toContainText("Cal.com is not loaded until you open it");
+  await expect(gate).toContainText("Do not enter patient or clinical data");
+  await expect(gate.getByRole("link", { name: "Scheduling privacy details" })).toHaveAttribute(
+    "href",
+    "/privacy#scheduling",
+  );
+  await expect(page.getByTestId("request-context")).toContainText("Continuing from Pilot pricing");
+  await expect(scheduler).toHaveCount(0);
+  expect(calRequests).toBe(0);
+
+  const activate = gate.getByRole("button", { name: "Open Cal.com scheduler" });
+  const activateBox = await activate.boundingBox();
+  expect(activateBox?.height).toBeGreaterThanOrEqual(44);
+  await activate.click();
+
+  const loadedStatus = page.getByRole("status");
+  await expect(loadedStatus).toBeFocused();
+  await expect(loadedStatus).toContainText("Cal.com is now loaded");
+  await expect(scheduler).toBeVisible();
+  const schedulerSrc = await scheduler.getAttribute("src");
+  expect(schedulerSrc).not.toBeNull();
+  const schedulerUrl = new URL(schedulerSrc ?? "https://invalid.example");
+  expect(schedulerUrl.hostname).toBe("cal.com");
+  expect(schedulerUrl.searchParams.get("metadata[requestSource]")).toBe("pricing");
+  expect(schedulerUrl.searchParams.get("metadata[workflowFocus]")).toBe("run-the-day");
+  await expect.poll(() => calRequests).toBeGreaterThan(0);
+
+  await loadedStatus.getByRole("button", { name: "Use request form instead" }).click();
+  const firstPartyForm = page.getByRole("region", { name: "Oralstack demo request form" });
+  await expect(firstPartyForm).toBeFocused();
+  await expect(scheduler).toHaveCount(0);
+  await expect(firstPartyForm.getByTestId("request-privacy-notice")).toBeVisible();
+});
+
+test("demo requests submit once and keep values available after a delivery error", async ({
+  page,
+}) => {
+  let successRequests = 0;
+  let successPayload: Record<string, string> | undefined;
+  let releaseSuccess = () => {};
+  const successGate = new Promise<void>((resolve) => {
+    releaseSuccess = resolve;
+  });
+  await page.route("**/api/contact", async (route) => {
+    successRequests += 1;
+    successPayload = route.request().postDataJSON() as Record<string, string>;
+    await successGate;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true, message: "Demo request received." }),
+    });
+  });
+
+  await page.goto("/book-a-demo/?focus=run-the-day&source=pricing", {
+    waitUntil: "networkidle",
+  });
+  await showFirstPartyDemoForm(page);
+  await fillDemoRequest(page, "success");
+  const successForm = page.locator("form");
+  const successSubmit = successForm.locator('button[type="submit"]');
+  await successSubmit.evaluate((element: HTMLButtonElement) => {
+    element.click();
+    element.click();
+  });
+
+  await expect.poll(() => successRequests).toBe(1);
+  await expect(successForm).toHaveAttribute("aria-busy", "true");
+  await expect(successSubmit).toBeDisabled();
+  await expect(successSubmit).toContainText("Sending");
+  expect(successPayload).toEqual(
+    expect.objectContaining({
+      intent: "demo",
+      sourcePage: "pricing",
+      focus: "run-the-day",
+      clinicName: "Synthetic Demo Clinic success",
+      location: "Singapore",
+      name: "Demo Operations Lead success",
+      email: "demo.success@example.invalid",
+      role: "Practice manager success",
+      message: "Synthetic workflow notes for success; no patient data.",
+    }),
+  );
+  releaseSuccess();
+
+  const status = page.locator("main").getByRole("status");
+  await expect(status).toBeFocused();
+  await expect(status).toContainText("Demo request received.");
+
+  await page.unroute("**/api/contact");
+  let errorRequests = 0;
+  await page.route("**/api/contact", async (route) => {
+    errorRequests += 1;
+    await route.fulfill({
+      status: 502,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: false, message: "Demo delivery unavailable for this test." }),
+    });
+  });
+  await page.goto("/book-a-demo/?focus=run-the-day&source=pricing", {
+    waitUntil: "networkidle",
+  });
+  await showFirstPartyDemoForm(page);
+  await fillDemoRequest(page, "error");
+  await page.getByRole("button", { name: "Send demo request" }).click();
+
+  const alert = page.locator("form").getByRole("alert");
+  await expect(alert).toBeFocused();
+  await expect(alert).toContainText("Demo delivery unavailable for this test.");
+  await expect(
+    alert.getByRole("link", { name: "Email hello@oralstack.com instead" }),
+  ).toHaveAttribute("href", "mailto:hello@oralstack.com");
+  expect(errorRequests).toBe(1);
+  const errorForm = page.locator("form");
+  await expect(errorForm.getByLabel("Start the walkthrough with")).toHaveValue("run-the-day");
+  await expect(errorForm.getByLabel(/Clinic name/)).toHaveValue("Synthetic Demo Clinic error");
+  await expect(errorForm.getByLabel(/Location/)).toHaveValue("Singapore");
+  await expect(errorForm.getByLabel(/Your name/)).toHaveValue("Demo Operations Lead error");
+  await expect(errorForm.getByLabel(/Email/)).toHaveValue("demo.error@example.invalid");
+  await expect(errorForm.getByLabel("Your role (optional)")).toHaveValue("Practice manager error");
+  await expect(errorForm.getByLabel("Anything else (optional)")).toHaveValue(
+    "Synthetic workflow notes for error; no patient data.",
+  );
+  await expect(page.getByTestId("request-privacy-notice")).toBeVisible();
+});
+
 test("customers page presents one named historical pilot and contextual request paths", async ({
   page,
 }) => {
@@ -430,6 +678,88 @@ test("contact tabs keep keyboard focus visible and below the sticky navigation",
     .toBeGreaterThanOrEqual(0);
 });
 
+test("contact tabs retain drafts and source context through browser history", async ({ page }) => {
+  await page.goto("/contact/?intent=question&source=integrations#request", {
+    waitUntil: "networkidle",
+  });
+
+  const questionTab = page.getByRole("tab", { name: "Quick question" });
+  const migrationTab = page.getByRole("tab", { name: "Connection & rollout" });
+  const pilotTab = page.getByRole("tab", { name: "Pilot proposal" });
+  const questionPanel = page.locator("#contact-panel-question");
+  const migrationPanel = page.locator("#contact-panel-migration");
+  const pilotPanel = page.locator("#contact-panel-pilot");
+  await expect(page.locator("[role='tabpanel']")).toHaveCount(3);
+  await expect(questionPanel).toBeVisible();
+  await expect(migrationPanel).toBeHidden();
+  await expect(pilotPanel).toBeHidden();
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Plato integration guide",
+  );
+
+  await questionPanel.getByLabel(/Your name/).fill("Question Draft Owner");
+  await questionPanel.getByLabel(/Email/).fill("question.draft@example.invalid");
+  await questionPanel
+    .getByLabel("What's your question?")
+    .fill("How does the reviewed Plato connection work?");
+
+  await migrationTab.click();
+  await expect(migrationTab).toHaveAttribute("aria-selected", "true");
+  await expect(questionPanel).toBeHidden();
+  await expect(migrationPanel).toBeVisible();
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Plato integration guide",
+  );
+  await migrationPanel.getByLabel(/Your name/).fill("Migration Draft Owner");
+  await migrationPanel.getByLabel(/Email/).fill("migration.draft@example.invalid");
+  await migrationPanel.getByLabel(/Clinic name/).fill("Synthetic Migration Clinic");
+  await migrationPanel.getByLabel("Current clinic system").selectOption("Plato");
+  await migrationPanel.getByLabel("What should improve first?").selectOption("run-the-day");
+
+  await pilotTab.click();
+  await expect(pilotTab).toHaveAttribute("aria-selected", "true");
+  await expect(migrationPanel).toBeHidden();
+  await expect(pilotPanel).toBeVisible();
+  await pilotPanel.getByLabel(/Your name/).fill("Pilot Draft Owner");
+  await pilotPanel.getByLabel("Clinic / group name").fill("Synthetic Pilot Group");
+  await pilotPanel.getByLabel("Number of locations").fill("2");
+
+  await page.goBack();
+  await expect(migrationTab).toHaveAttribute("aria-selected", "true");
+  await expect(migrationPanel).toBeVisible();
+  await expect(migrationPanel.getByLabel(/Clinic name/)).toHaveValue("Synthetic Migration Clinic");
+  await expect(migrationPanel.getByLabel("What should improve first?")).toHaveValue("run-the-day");
+
+  await page.goBack();
+  await expect(questionTab).toHaveAttribute("aria-selected", "true");
+  await expect(questionPanel).toBeVisible();
+  await expect(questionPanel.getByLabel(/Your name/)).toHaveValue("Question Draft Owner");
+  await expect(questionPanel.getByLabel("What's your question?")).toHaveValue(
+    "How does the reviewed Plato connection work?",
+  );
+
+  await page.goForward();
+  await expect(migrationTab).toHaveAttribute("aria-selected", "true");
+  await page.goForward();
+  await expect(pilotTab).toHaveAttribute("aria-selected", "true");
+  await expect(pilotPanel).toBeVisible();
+  await expect(pilotPanel.getByLabel(/Your name/)).toHaveValue("Pilot Draft Owner");
+  await expect(pilotPanel.getByLabel("Clinic / group name")).toHaveValue("Synthetic Pilot Group");
+  await expect(pilotPanel.getByLabel("Number of locations")).toHaveValue("2");
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Plato integration guide",
+  );
+  await expect
+    .poll(() =>
+      page.evaluate(() => ({
+        intent: new URL(window.location.href).searchParams.get("intent"),
+        source: new URL(window.location.href).searchParams.get("source"),
+        hash: window.location.hash,
+      })),
+    )
+    .toEqual({ intent: "pilot", source: "integrations", hash: "#request" });
+});
+
 test("request feedback focuses success and error states without losing form values", async ({
   page,
 }) => {
@@ -477,14 +807,19 @@ test("request feedback focuses success and error states without losing form valu
   await expect(
     alert.getByRole("link", { name: "Email hello@oralstack.com instead" }),
   ).toHaveAttribute("href", "mailto:hello@oralstack.com");
-  await expect(page.getByLabel(/Your name/)).toHaveValue("Demo Practice Manager preserved");
-  await expect(page.getByLabel(/Email/)).toHaveValue("practice.manager.preserved@example.invalid");
-  await expect(page.getByLabel(/Clinic \/ group name/)).toHaveValue(
+  const preservedForm = page.locator("#contact-panel-pilot form");
+  await expect(preservedForm.getByLabel(/Your name/)).toHaveValue(
+    "Demo Practice Manager preserved",
+  );
+  await expect(preservedForm.getByLabel(/Email/)).toHaveValue(
+    "practice.manager.preserved@example.invalid",
+  );
+  await expect(preservedForm.getByLabel(/Clinic \/ group name/)).toHaveValue(
     "Synthetic Dental Clinic preserved",
   );
-  await expect(page.getByLabel(/Number of locations/)).toHaveValue("1");
-  await expect(page.getByLabel(/Current clinic system/)).toHaveValue("Plato");
-  await expect(page.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
+  await expect(preservedForm.getByLabel(/Number of locations/)).toHaveValue("1");
+  await expect(preservedForm.getByLabel(/Current clinic system/)).toHaveValue("Plato");
+  await expect(preservedForm.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
 });
 
 test("evidence request journey reflows without horizontal overflow at 320px", async ({ page }) => {
@@ -519,14 +854,20 @@ test("pricing carries one-clinic buyers into a structured pilot proposal", async
   await page.goto("/pricing/", { waitUntil: "networkidle" });
   const proposalLinks = page.getByRole("link", { name: "Request a pilot proposal" });
   await expect(proposalLinks).toHaveCount(2);
-  await expect(proposalLinks.first()).toHaveAttribute("href", "/contact/?intent=pilot#request");
-  await expect(proposalLinks.last()).toHaveAttribute("href", "/contact/?intent=pilot#request");
+  await expect(proposalLinks.first()).toHaveAttribute(
+    "href",
+    "/contact/?intent=pilot&source=pricing#request",
+  );
+  await expect(proposalLinks.last()).toHaveAttribute(
+    "href",
+    "/contact/?intent=pilot&source=pricing#request",
+  );
   const proposalBox = await proposalLinks.first().boundingBox();
   expect(proposalBox?.height).toBeGreaterThanOrEqual(44);
   await expect(page.locator("main a[href^='mailto:'][href*='pilot']")).toHaveCount(0);
   await proposalLinks.first().click();
 
-  await expect(page).toHaveURL(/\/contact\/\?intent=pilot#request$/);
+  await expect(page).toHaveURL(/\/contact\/\?intent=pilot&source=pricing#request$/);
   await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
     "aria-selected",
     "true",
@@ -538,14 +879,17 @@ test("pricing carries one-clinic buyers into a structured pilot proposal", async
   await expect(pilotHeading).toBeInViewport();
   await expect(page.getByText("single clinics", { exact: false })).toBeVisible();
 
-  await page.getByLabel(/Your name/).fill("Demo Practice Manager");
-  await page.getByLabel(/Email/).fill("practice.manager@example.invalid");
-  await page.getByLabel(/Clinic \/ group name/).fill("Sample Dental Clinic");
-  const locationCount = page.getByLabel(/Number of locations/);
+  const pilotForm = page
+    .getByRole("button", { name: "Request a pilot proposal", exact: true })
+    .locator("xpath=ancestor::form");
+  await pilotForm.getByLabel(/Your name/).fill("Demo Practice Manager");
+  await pilotForm.getByLabel(/Email/).fill("practice.manager@example.invalid");
+  await pilotForm.getByLabel(/Clinic \/ group name/).fill("Sample Dental Clinic");
+  const locationCount = pilotForm.getByLabel(/Number of locations/);
   await expect(locationCount).toHaveAttribute("min", "1");
   await locationCount.fill("1");
-  await page.getByLabel(/Current clinic system/).selectOption("Plato");
-  const workflowGoal = page.getByLabel(/What should improve first/);
+  await pilotForm.getByLabel(/Current clinic system/).selectOption("Plato");
+  const workflowGoal = pilotForm.getByLabel(/What should improve first/);
   await expect(workflowGoal.locator('option[value="patient-access"]')).toHaveText(
     "Patient access, intake, or portal",
   );
@@ -638,11 +982,13 @@ test("clinic-fit discovery carries both clinic shapes into the canonical pilot j
   const audiencePages = [
     {
       path: "/for-solo-clinics/",
+      source: "solo-clinic",
       crossLinkName: /See the clinic-group path/,
       crossLinkHref: "/for-multi-clinic",
     },
     {
       path: "/for-multi-clinic/",
+      source: "clinic-group",
       crossLinkName: /See the one-clinic path/,
       crossLinkHref: "/for-solo-clinics",
     },
@@ -659,8 +1005,11 @@ test("clinic-fit discovery carries both clinic shapes into the canonical pilot j
     const actions = page.getByTestId("audience-hero-actions");
     const primary = actions.getByRole("link", { name: /Request a pilot proposal/ });
     const secondary = actions.getByRole("link", { name: /Request a 30-min walkthrough/ });
-    await expect(primary).toHaveAttribute("href", "/contact/?intent=pilot#request");
-    await expect(secondary).toHaveAttribute("href", "/book-a-demo");
+    await expect(primary).toHaveAttribute(
+      "href",
+      `/contact/?intent=pilot&source=${audience.source}#request`,
+    );
+    await expect(secondary).toHaveAttribute("href", `/book-a-demo/?source=${audience.source}`);
     await expectFirstViewportAction(page, primary);
     await expectFirstViewportAction(page, secondary);
     await expect(page.getByRole("link", { name: audience.crossLinkName })).toHaveAttribute(
@@ -669,7 +1018,9 @@ test("clinic-fit discovery carries both clinic shapes into the canonical pilot j
     );
 
     await primary.click();
-    await expect(page).toHaveURL(/\/contact\/\?intent=pilot#request$/);
+    await expect(page).toHaveURL(
+      new RegExp(`/contact/\\?intent=pilot&source=${audience.source}#request$`),
+    );
     await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
       "aria-selected",
       "true",
@@ -874,7 +1225,7 @@ test("Plato connection explains ownership and leads into a structured assessment
   await expect(assessmentLinks).toHaveCount(2);
   await expect(assessmentLinks.first()).toHaveAttribute(
     "href",
-    "/contact/?intent=migration#request",
+    "/contact/?intent=migration&source=integrations#request",
   );
   await expect(page.locator("main a[href^='mailto:']")).toHaveCount(0);
 
@@ -896,7 +1247,7 @@ test("Plato connection explains ownership and leads into a structured assessment
   );
 
   await assessmentLinks.first().click();
-  await expect(page).toHaveURL(/\/contact\/\?intent=migration#request$/);
+  await expect(page).toHaveURL(/\/contact\/\?intent=migration&source=integrations#request$/);
   await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
     "aria-selected",
     "true",
@@ -904,7 +1255,9 @@ test("Plato connection explains ownership and leads into a structured assessment
   await expect(
     page.getByRole("heading", { name: "Connect Plato or plan a reviewed rollout." }),
   ).toBeVisible();
-  await expect(page.getByLabel(/What should improve first/)).toBeVisible();
+  await expect(
+    page.locator("#contact-panel-migration").getByLabel(/What should improve first/),
+  ).toBeVisible();
 });
 
 test("homepage Plato proof keeps the connection path and assessment intent", async ({ page }) => {

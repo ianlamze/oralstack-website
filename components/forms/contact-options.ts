@@ -24,6 +24,26 @@ export const REQUEST_SOURCES = {
     context:
       "Evidence is historical and clinic-specific; the current product boundary still applies.",
   },
+  pricing: {
+    label: "Pilot pricing",
+    context:
+      "The current pilot price is documented; clinic scope, connector readiness, and setup still need review.",
+  },
+  "solo-clinic": {
+    label: "One-clinic guide",
+    context:
+      "The current product boundary still applies; clinic setup and any Plato connection are confirmed before a pilot.",
+  },
+  "clinic-group": {
+    label: "Clinic-group guide",
+    context:
+      "Clinic-scoped access, group visibility, connector readiness, and enabled modules are reviewed before a proposal.",
+  },
+  integrations: {
+    label: "Plato integration guide",
+    context:
+      "Plato remains the source of truth; connector readiness and reviewed writeback paths are confirmed for your clinic.",
+  },
 } as const;
 
 export type RequestSourceId = keyof typeof REQUEST_SOURCES;

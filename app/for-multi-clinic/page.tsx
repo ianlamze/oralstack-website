@@ -29,13 +29,13 @@ export default function ForMultiClinicPage() {
         </p>
         <div data-testid="audience-hero-actions" className="mt-7 flex flex-wrap items-center gap-3">
           <a
-            href="/contact/?intent=pilot#request"
+            href="/contact/?intent=pilot&source=clinic-group#request"
             className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
           >
             Request a pilot proposal →
           </a>
           <a
-            href="/book-a-demo"
+            href="/book-a-demo/?source=clinic-group"
             className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
           >
             Request a 30-min walkthrough
@@ -184,7 +184,7 @@ export default function ForMultiClinicPage() {
             </p>
             <p className="mt-4 text-sm">
               <a
-                href="/book-a-demo"
+                href="/book-a-demo/?source=clinic-group"
                 className="text-[var(--color-tide-deep)] font-medium underline underline-offset-4"
               >
                 Or book a 30-minute demo first →
@@ -193,7 +193,7 @@ export default function ForMultiClinicPage() {
           </div>
           <div className="md:justify-self-end">
             <a
-              href="/contact/?intent=pilot#request"
+              href="/contact/?intent=pilot&source=clinic-group#request"
               className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
             >
               Request pilot proposal →

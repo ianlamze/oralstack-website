@@ -6,10 +6,17 @@
 > and 156 desktop/mobile checks. Archived article, comparison, journey, lead-magnet,
 > and tool-detail routes are not part of the production export.
 
+> **August 2026 privacy/transparency note:** the current site has two Cloudflare Pages Functions.
+> `/api/contact` handles public contact and clinic details transiently before sending through Resend
+> to the configured inbox. `/api/event` handles allowlisted event names with bounded, sanitized
+> properties and respects browser GPC/DNT signals. Neither function is an approved patient-data
+> intake path, and the public forms warn against submitting patient names, clinical records,
+> credentials, or other sensitive patient data.
+
 A point-in-time review of the Oralstack marketing site as a codebase. Honest grades, real numbers, prioritised debt list. Re-run this assessment whenever the shape of the project shifts (a new framework, a new content scale, a real backend) or every ~3 months.
 
 **Last reviewed:** 2026-04-27 (revised after maintainability investments shipped). **Reviewer:** Claude Opus 4.7.
-**Scope:** the standalone marketing site at the repo root; not the future Dentologic monorepo port.
+**Scope:** the standalone marketing site at the repo root; not the Oralstack application repository.
 
 ---
 
@@ -17,25 +24,33 @@ A point-in-time review of the Oralstack marketing site as a codebase. Honest gra
 
 **Overall: A−. Healthy codebase with strong tooling, automated testing, and clean conventions. The remaining gap to A is a marketing-content concern (real product screenshots), not a maintainability one.**
 
-This is a content-heavy marketing site built on a clean static-export stack (Next 16, React 19, Tailwind 4, TypeScript strict). Twenty-five routes, fifteen articles, one Cloudflare Pages Function for the demo form, no auth, no PII handling. The codebase is well-organised, type-safe, conformantly-formatted, smoke-tested in CI, and documented for new contributors. Duplication across structurally similar pages has been factored out — adding a 6th comparison page is now a 30-minute job.
+This is a content-heavy marketing site built on a clean static-export stack (Next 16, React 19,
+Tailwind 4, TypeScript strict). The historical review counted twenty-five routes and fifteen articles.
+The current dynamic surface is two Cloudflare Pages Functions, with no site authentication or site
+database. Public forms do handle contact and clinic details before sending them through Resend to the
+configured inbox; minimized first-party interaction events use a separate endpoint. The codebase is
+well-organised, type-safe, conformantly-formatted, smoke-tested in CI, and documented for new
+contributors. Duplication across structurally similar pages has been factored out.
 
 ## What changed since the previous review
 
 The previous review (graded **B+**) flagged ten debt items split into "do this month" and "do this quarter". Eight of ten now shipped:
 
-- ✅ **Compare pages factored.** Data-driven via [content/comparisons/](content/comparisons/), shared shell in [components/sections/ComparisonPage.tsx](components/sections/ComparisonPage.tsx). Five 250-line pages collapsed to ~12-line shells.
-- ✅ **Shared `Reason` and `Bullet` components** extracted into [components/sections/](components/sections/), used across `/about`, `/compare/*`, `/for-*`.
-- ✅ **CI workflow** at [.github/workflows/ci.yml](.github/workflows/ci.yml) — runs lint + typecheck + build + smoke tests on every PR.
+- ✅ **Compare pages factored.** Data-driven via [content/comparisons/](../content/comparisons/), shared shell in [components/page/ComparisonPage.tsx](../components/page/ComparisonPage.tsx). Five 250-line pages collapsed to ~12-line shells.
+- ✅ **Shared [`Reason`](../components/ui/Reason.tsx) and [`Bullet`](../components/ui/Bullet.tsx) components** extracted for use across `/about`, `/compare/*`, and `/for-*`.
+- ✅ **CI workflow** at [.github/workflows/ci.yml](../.github/workflows/ci.yml) — runs lint + typecheck + build + smoke tests on every PR.
 - ✅ **Linter** — Biome 2.4.13 configured with sane defaults. `npm run lint` exits clean (5 warnings, 0 errors).
 - ✅ **EXTENDING.md** — patterns guide for adding comparison pages, articles, vertical landers, workflows.
-- ✅ **Smoke tests** — Playwright runner with 46 load tests across desktop + mobile, 12 visual snapshot baselines covering high-traffic routes. Failures upload screenshot diffs as CI artifacts. See [tests/smoke.spec.ts](tests/smoke.spec.ts).
+- ✅ **Smoke tests** — Playwright runner with 46 load tests across desktop + mobile, 12 visual snapshot baselines covering high-traffic routes. Failures upload screenshot diffs as CI artifacts. See [tests/smoke.spec.ts](../tests/smoke.spec.ts).
 - ✅ **Form endpoint scaffold** — the Cloudflare Pages Function at [functions/api/contact.ts](../functions/api/contact.ts) validates question, migration, pilot, and demo intents and forwards them through Resend. Goes live once `RESEND_API_KEY` is set in Pages env vars (see [CLOUDFLARE.md](CLOUDFLARE.md) Step 7).
 - ✅ **Bundle pass** — Next 16 + Turbopack already tree-shakes lucide and motion to optimal; verified by inspection of `out/_next/static/chunks/`. `optimizePackageImports` config added for explicit intent though it produced no measurable delta.
 
 Two items remain, both already noted in the previous review:
 
-- ⏳ **Real product screenshots.** CSS visualisations are clever and modern but a screenshot from the actual Dentologic app (especially imaging) would convert evaluators harder. Marketing concern, not maintainability.
-- ⏳ **Form endpoint live in production.** The function code is shipped. Activation requires the user to sign up at Resend, verify the sending domain, and set `RESEND_API_KEY` — no further code work.
+- ⏳ **Real product screenshots.** CSS visualisations are clever and modern but a screenshot from the actual Oralstack app (especially imaging) would convert evaluators harder. Marketing concern, not maintainability.
+- ⏳ **Production form delivery.** The function code is shipped. Delivery remains an operational
+  configuration check: verify the Resend domain and `RESEND_API_KEY`, `CONTACT_INBOX`, and
+  `CONTACT_FROM`. Without the API key, the endpoint fails closed.
 
 ## Numbers
 
@@ -61,16 +76,25 @@ The headline number: **the codebase shrank by ~900 LOC** while gaining 5 new com
 
 ## Architecture — grade A−
 
-**Strengths.** Static export at build time means no server runtime, no database, no auth boundary to defend. Cloudflare Pages serves the `out/` directory globally. Failure modes are limited to "page renders wrong" or "build fails" — never "data breach" or "request times out".
+**Strengths.** Static export at build time means there is no Next.js application server, site
+database, or site authentication boundary. Cloudflare Pages serves the `out/` directory globally.
+The two Pages Functions remain dynamic request surfaces, so delivery failures, telemetry mistakes,
+provider configuration, and inappropriate data submission are part of the operational risk model.
 
-The Cloudflare Pages Function for the demo form is the one new dynamic surface, and it's deliberately minimal: a single handler, validated input, forwards to a typed third-party API, no state.
+`/api/contact` validates public request data and forwards it through Resend without intentionally
+logging the submitted content or storing it in a site database. `/api/event` accepts only allowlisted
+event names with bounded, sanitized primitive properties and respects browser GPC/DNT signals.
+Provider and inbox handling still belong in the marketing-site privacy notice.
 
 **Strong choices that paid off:**
 - Tailwind 4 with `@theme` tokens defined once. Every colour/radius/font is `var(--*)`. One global change propagates everywhere — exercised twice now, for WCAG contrast bumps.
 - Content-as-code: workflows, articles, customers, comparisons, integrations live as typed TypeScript files in `content/`. Type-checked at build time. No CMS overhead.
 - Comparison pages are now data-driven. Five pages share one shell; adding a sixth is one data file plus a 12-line shell.
 
-**Where it'll bend.** When the demo form starts getting real submissions, the Pages Function will need: rate limiting (otherwise abusable), a CAPTCHA or honeypot (otherwise bot-spammable), and observability (otherwise silent failures). All known patterns; budget half a day when traffic warrants.
+**Where it'll bend.** The forms already use a honeypot and per-intent validation. Sustained abuse may
+still require rate limiting or a CAPTCHA with server-side verification. Provider configuration,
+privacy-notice drift, and delivery monitoring should be reviewed whenever Resend, Cal.com, the
+destination inbox, or analytics settings change.
 
 ## Code quality — grade A−
 
@@ -103,7 +127,7 @@ The Cloudflare Pages Function for the demo form is the one new dynamic surface, 
 **What's wired:**
 - `npm run dev / build / typecheck / lint / format / test:smoke / test:smoke:update / deploy`.
 - Biome for lint + format. Playwright for smoke + visual regression. Wrangler for Cloudflare Pages deploys.
-- [scripts/browse.mjs](scripts/browse.mjs) — Playwright-based CLI for ad-hoc page fetching and competitor design research.
+- [scripts/browse.mjs](../scripts/browse.mjs) — Playwright-based CLI for ad-hoc page fetching and competitor design research.
 - CI runs all of: lint → typecheck → build → smoke tests, in that order. Cache hits on `~/.cache/ms-playwright` keep CI under 90 seconds in steady state.
 
 **Gaps (minor):**
@@ -119,7 +143,12 @@ The Cloudflare Pages Function for the demo form is the one new dynamic surface, 
 
 ## Risk profile
 
-**Low.** Static site, Cloudflare-hosted, one well-scoped Pages Function as the only server surface. No PII storage on the server. No auth. Worst-case incident is "site shows wrong content for an hour" — recoverable via Cloudflare Pages deployment rollback (one click).
+**Bounded, not zero.** The site has no site database or auth, and the contact function does not
+intentionally log submitted content. It still handles contact and clinic details transiently and
+passes successful requests through Resend to the configured inbox. The interaction endpoint writes
+minimized events to Cloudflare runtime logs. Risks therefore include wrong content, failed delivery,
+provider or privacy-notice misconfiguration, log over-collection, and inappropriate sensitive-data
+submission—not only static rendering errors.
 
 **Bus factor:** improved. EXTENDING.md, MAINTAINABILITY.md (this file), CHANGES.md, and AGENTS.md collectively let a second engineer ramp in a day. CI gates the obvious mistakes.
 
@@ -129,7 +158,9 @@ The Cloudflare Pages Function for the demo form is the one new dynamic surface, 
 
 **Real product screenshots** — the lone remaining "gap to A" item from the previous review. CSS visualisations are clever, modern, and consistent; replacing one or two with actual product shots (especially on the imaging workflow) is a marketing-conversion lift, not a maintainability item. Estimated half-day from screenshot capture to component swap.
 
-**Activate the contact endpoint** — function code is in. Sign up at Resend, verify the domain, set `RESEND_API_KEY` in Cloudflare Pages env vars, and redeploy. `/api/contact` then sends validated form submissions to `hello@oralstack.com`. ~10 minutes of out-of-band work.
+**Verify the production contact path** — confirm the sending domain, `RESEND_API_KEY`,
+`CONTACT_INBOX`, and `CONTACT_FROM`; exercise success and fail-closed paths with synthetic data; and
+reconcile the active Resend/inbox path with `/privacy` before release.
 
 **Defer until needed:**
 - Cross-browser smoke tests (real WebKit) — only worth it if a Safari-specific bug surfaces.
