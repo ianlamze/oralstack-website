@@ -2,22 +2,52 @@
 
 import { useEffect, useState } from "react";
 import { productCapabilities } from "@/content/product-capabilities";
+import {
+  preferredWorkflowScrollBehavior,
+  publishWorkflowChange,
+  WORKFLOW_CHANGE_EVENT,
+  workflowChangeBehavior,
+} from "@/components/page/workflow-navigation-state";
+
+type ScrollRequest = {
+  behavior: ScrollBehavior;
+  slug: string;
+};
 
 export default function WorkflowNavigator() {
   const [active, setActive] = useState(productCapabilities[0].slug);
+  const [scrollRequest, setScrollRequest] = useState<ScrollRequest | null>(null);
 
   useEffect(() => {
-    const hash = window.location.hash.replace(/^#/, "");
-    const hashWorkflow = productCapabilities.find(
-      (workflow) => workflow.slug === hash || workflow.legacySlugs.includes(hash),
-    );
+    const desktopMedia = window.matchMedia("(min-width: 1280px)");
 
-    if (hashWorkflow) {
+    const syncFromHash = (event?: Event) => {
+      const hash = window.location.hash.replace(/^#/, "");
+      const hashWorkflow = hash
+        ? productCapabilities.find(
+            (workflow) => workflow.slug === hash || workflow.legacySlugs.includes(hash),
+          )
+        : productCapabilities[0];
+
+      if (!hashWorkflow) return;
       setActive(hashWorkflow.slug);
-      window.requestAnimationFrame(() => {
-        document.getElementById(`desktop-${hashWorkflow.slug}`)?.scrollIntoView({ block: "start" });
-      });
-    }
+      if (desktopMedia.matches && (Boolean(event) || Boolean(hash))) {
+        setScrollRequest({
+          behavior: workflowChangeBehavior(event),
+          slug: hashWorkflow.slug,
+        });
+      }
+    };
+
+    const syncOnDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) syncFromHash();
+    };
+
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    window.addEventListener("popstate", syncFromHash);
+    window.addEventListener(WORKFLOW_CHANGE_EVENT, syncFromHash);
+    desktopMedia.addEventListener("change", syncOnDesktop);
 
     const sections = productCapabilities
       .map((workflow) => document.getElementById(`desktop-${workflow.slug}`))
@@ -41,16 +71,33 @@ export default function WorkflowNavigator() {
     );
 
     for (const section of sections) observer.observe(section);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("hashchange", syncFromHash);
+      window.removeEventListener("popstate", syncFromHash);
+      window.removeEventListener(WORKFLOW_CHANGE_EVENT, syncFromHash);
+      desktopMedia.removeEventListener("change", syncOnDesktop);
+    };
   }, []);
 
-  function selectWorkflow(slug: string) {
-    const section = document.getElementById(`desktop-${slug}`);
-    if (!section) return;
+  useEffect(() => {
+    if (!scrollRequest || scrollRequest.slug !== active) return;
+    if (!window.matchMedia("(min-width: 1280px)").matches) return;
 
-    setActive(slug);
-    window.history.replaceState(null, "", `#${slug}`);
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(`desktop-${active}`)?.scrollIntoView({
+        behavior: scrollRequest.behavior,
+        block: "start",
+        inline: "nearest",
+      });
+      setScrollRequest(null);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [active, scrollRequest]);
+
+  function selectWorkflow(slug: string) {
+    publishWorkflowChange(slug, preferredWorkflowScrollBehavior());
   }
 
   return (

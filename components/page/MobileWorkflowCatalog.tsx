@@ -12,6 +12,17 @@ import {
   workflowsPageContent,
   type CapabilityVisual,
 } from "@/content/product-capabilities";
+import {
+  preferredWorkflowScrollBehavior,
+  publishWorkflowChange,
+  WORKFLOW_CHANGE_EVENT,
+  workflowChangeBehavior,
+} from "@/components/page/workflow-navigation-state";
+
+type ScrollRequest = {
+  behavior: ScrollBehavior;
+  slug: string;
+};
 
 const visualByKey: Record<CapabilityVisual, React.ComponentType> = {
   schedule: ScheduleMock,
@@ -32,6 +43,8 @@ const compactWorkflowLabels: Record<string, string> = {
 
 function workflowFromHash() {
   const hash = window.location.hash.replace(/^#/, "");
+  if (!hash) return productCapabilities[0];
+
   return productCapabilities.find(
     (workflow) => workflow.slug === hash || workflow.legacySlugs.includes(hash),
   );
@@ -39,40 +52,63 @@ function workflowFromHash() {
 
 export default function MobileWorkflowCatalog() {
   const [active, setActive] = useState(productCapabilities[0].slug);
+  const [scrollRequest, setScrollRequest] = useState<ScrollRequest | null>(null);
   const activeIndex = Math.max(
     0,
     productCapabilities.findIndex((workflow) => workflow.slug === active),
   );
 
   useEffect(() => {
-    const openHashWorkflow = () => {
+    const mobileMedia = window.matchMedia("(max-width: 1279px)");
+
+    const openHashWorkflow = (event?: Event) => {
       const workflow = workflowFromHash();
       if (!workflow) return;
 
       setActive(workflow.slug);
-      window.requestAnimationFrame(() => {
-        document.getElementById(workflow.slug)?.scrollIntoView({ block: "start" });
-      });
+      if (mobileMedia.matches && (Boolean(event) || Boolean(window.location.hash))) {
+        setScrollRequest({
+          behavior: workflowChangeBehavior(event),
+          slug: workflow.slug,
+        });
+      }
+    };
+
+    const syncOnMobile = (event: MediaQueryListEvent) => {
+      if (event.matches) openHashWorkflow();
     };
 
     openHashWorkflow();
     window.addEventListener("hashchange", openHashWorkflow);
     window.addEventListener("popstate", openHashWorkflow);
+    window.addEventListener(WORKFLOW_CHANGE_EVENT, openHashWorkflow);
+    mobileMedia.addEventListener("change", syncOnMobile);
     return () => {
       window.removeEventListener("hashchange", openHashWorkflow);
       window.removeEventListener("popstate", openHashWorkflow);
+      window.removeEventListener(WORKFLOW_CHANGE_EVENT, openHashWorkflow);
+      mobileMedia.removeEventListener("change", syncOnMobile);
     };
   }, []);
 
-  function selectWorkflow(slug: string, behavior: ScrollBehavior = "smooth") {
-    const section = document.getElementById(slug);
-    if (!section) return;
+  useEffect(() => {
+    if (!scrollRequest || scrollRequest.slug !== active) return;
+    if (!window.matchMedia("(max-width: 1279px)").matches) return;
 
-    setActive(slug);
-    window.history.pushState(null, "", `#${slug}`);
-    window.requestAnimationFrame(() => {
-      section.scrollIntoView({ behavior, block: "start" });
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(active)?.scrollIntoView({
+        behavior: scrollRequest.behavior,
+        block: "start",
+        inline: "nearest",
+      });
+      setScrollRequest(null);
     });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [active, scrollRequest]);
+
+  function selectWorkflow(slug: string) {
+    publishWorkflowChange(slug, preferredWorkflowScrollBehavior());
   }
 
   const previous = activeIndex > 0 ? productCapabilities[activeIndex - 1] : undefined;
@@ -200,71 +236,74 @@ export default function MobileWorkflowCatalog() {
                     </button>
                   </h3>
 
-                  {isActive && (
-                    <section
-                      id={panelId}
-                      aria-labelledby={buttonId}
-                      className="border-t border-[var(--color-border)] px-4 pb-6 pt-5"
-                    >
-                      <h4 className="text-2xl font-semibold leading-[1.12] tracking-tight">
-                        {workflow.title}
-                      </h4>
-                      <p className="mt-4 text-base leading-relaxed text-[var(--color-text-muted)]">
-                        {workflow.summary}
-                      </p>
-                      <a
-                        href={`/book-a-demo?focus=${workflow.slug}`}
-                        className="mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-canvas)] px-4 py-2.5 text-sm font-medium text-[var(--color-tide-deep)] transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
-                      >
-                        Walk through this area
-                        <ArrowRight className="size-4" aria-hidden />
-                      </a>
+                  <section
+                    id={panelId}
+                    aria-labelledby={buttonId}
+                    hidden={!isActive}
+                    className="border-t border-[var(--color-border)] px-4 pb-6 pt-5"
+                  >
+                    {isActive && (
+                      <>
+                        <h4 className="text-2xl font-semibold leading-[1.12] tracking-tight">
+                          {workflow.title}
+                        </h4>
+                        <p className="mt-4 text-base leading-relaxed text-[var(--color-text-muted)]">
+                          {workflow.summary}
+                        </p>
+                        <a
+                          href={`/book-a-demo?focus=${workflow.slug}`}
+                          className="mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-canvas)] px-4 py-2.5 text-sm font-medium text-[var(--color-tide-deep)] transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-surface-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tide-deep)] focus-visible:ring-offset-2"
+                        >
+                          Walk through this area
+                          <ArrowRight className="size-4" aria-hidden />
+                        </a>
 
-                      <ul className="mt-6 grid gap-3">
-                        {workflow.features.map((feature) => (
-                          <li
-                            key={feature.title}
-                            className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-4"
-                          >
-                            <p className="text-[11px] font-medium text-[var(--color-tide-deep)]">
-                              {capabilityAvailabilityLabels[feature.availability]}
-                            </p>
-                            <h5 className="mt-1.5 text-sm font-semibold tracking-tight">
-                              {feature.title}
-                            </h5>
-                            <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-                              {feature.description}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
+                        <ul className="mt-6 grid gap-3">
+                          {workflow.features.map((feature) => (
+                            <li
+                              key={feature.title}
+                              className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-4"
+                            >
+                              <p className="text-[11px] font-medium text-[var(--color-tide-deep)]">
+                                {capabilityAvailabilityLabels[feature.availability]}
+                              </p>
+                              <h5 className="mt-1.5 text-sm font-semibold tracking-tight">
+                                {feature.title}
+                              </h5>
+                              <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                                {feature.description}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
 
-                      <dl className="mt-6 grid gap-4 border-t border-[var(--color-border)] pt-5 text-sm leading-relaxed">
-                        <div>
-                          <dt className="font-medium text-[var(--color-ink)]">
-                            {workflowsPageContent.keepsTogetherLabel}
-                          </dt>
-                          <dd className="mt-1 text-[var(--color-text-muted)]">
-                            {workflow.keepsTogether}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt className="font-medium text-[var(--color-ink)]">
-                            {workflowsPageContent.boundaryLabel}
-                          </dt>
-                          <dd className="mt-1 text-[var(--color-text-muted)]">
-                            {workflow.boundary}
-                          </dd>
-                        </div>
-                      </dl>
+                        <dl className="mt-6 grid gap-4 border-t border-[var(--color-border)] pt-5 text-sm leading-relaxed">
+                          <div>
+                            <dt className="font-medium text-[var(--color-ink)]">
+                              {workflowsPageContent.keepsTogetherLabel}
+                            </dt>
+                            <dd className="mt-1 text-[var(--color-text-muted)]">
+                              {workflow.keepsTogether}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt className="font-medium text-[var(--color-ink)]">
+                              {workflowsPageContent.boundaryLabel}
+                            </dt>
+                            <dd className="mt-1 text-[var(--color-text-muted)]">
+                              {workflow.boundary}
+                            </dd>
+                          </div>
+                        </dl>
 
-                      {Visual && (
-                        <div className="mt-7 w-full overflow-hidden rounded-[var(--radius-lg)]">
-                          <Visual />
-                        </div>
-                      )}
-                    </section>
-                  )}
+                        {Visual && (
+                          <div className="mt-7 w-full overflow-hidden rounded-[var(--radius-lg)]">
+                            <Visual />
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </section>
                 </li>
               );
             })}

@@ -713,6 +713,18 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+    const calls: string[] = [];
+    (window as Window & { __workflowScrollBehaviors?: string[] }).__workflowScrollBehaviors = calls;
+    Element.prototype.scrollIntoView = function scrollIntoView(
+      options?: boolean | ScrollIntoViewOptions,
+    ) {
+      calls.push(typeof options === "object" ? (options.behavior ?? "auto") : "auto");
+      return originalScrollIntoView.call(this, options);
+    };
+  });
   await page.goto("/workflows/#organization-security", { waitUntil: "networkidle" });
 
   const catalog = page.getByTestId("mobile-workflow-catalog");
@@ -720,9 +732,14 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   await expect(catalog).toBeVisible();
   await expect(select).toHaveValue("organization-security");
   await expect(select.locator("option")).toHaveCount(7);
-  await expect(catalog.locator("section[aria-labelledby^='mobile-workflow-button-']")).toHaveCount(
-    1,
-  );
+  const workflowPanels = catalog.locator("section[aria-labelledby^='mobile-workflow-button-']");
+  await expect(workflowPanels).toHaveCount(7);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-'][hidden]"),
+  ).toHaveCount(6);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-']:not([hidden])"),
+  ).toHaveCount(1);
   await expect(
     page.getByRole("heading", {
       name: "Control clinic access and keep the audit trail reviewable.",
@@ -735,9 +752,13 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   await expect(patientCare).toHaveAttribute("aria-expanded", "true");
   await expect(select).toHaveValue("patient-care");
   await expect(page).toHaveURL(/\/workflows\/#patient-care$/);
-  await expect(catalog.locator("section[aria-labelledby^='mobile-workflow-button-']")).toHaveCount(
-    1,
-  );
+  await expect(workflowPanels).toHaveCount(7);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-'][hidden]"),
+  ).toHaveCount(6);
+  await expect(
+    catalog.locator("section[aria-labelledby^='mobile-workflow-button-']:not([hidden])"),
+  ).toHaveCount(1);
 
   await select.selectOption("checkout-money");
   await expect(page).toHaveURL(/\/workflows\/#checkout-money$/);
@@ -748,14 +769,61 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   ).toBeInViewport();
   await expect(page.getByRole("button", { name: "Previous workflow" })).toBeEnabled();
   await expect(page.getByRole("button", { name: "Next workflow" })).toBeEnabled();
+  const scrollBehaviors = await page.evaluate(
+    () =>
+      (window as Window & { __workflowScrollBehaviors?: string[] }).__workflowScrollBehaviors ?? [],
+  );
+  expect(scrollBehaviors).toContain("auto");
+  expect(scrollBehaviors).not.toContain("smooth");
 
   const mobileHeight = await page.evaluate(() => document.documentElement.scrollHeight);
   expect(mobileHeight).toBeLessThan(8200);
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const desktopNavigation = page.getByRole("navigation", { name: "Workflow sections" });
+  await expect(desktopNavigation.getByRole("link", { name: /Checkout and money/ })).toHaveAttribute(
+    "aria-current",
+    "location",
+  );
+  await expect(
+    page.getByRole("heading", {
+      name: "Build the checkout, record payment, and leave a receipt trail.",
+    }),
+  ).toBeInViewport();
+
+  await desktopNavigation.getByRole("link", { name: /Insights/ }).click();
+  await expect(page).toHaveURL(/\/workflows\/#insights$/);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(select).toHaveValue("insights");
+  await expect(catalog.getByRole("button", { name: /Insights/ })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
 
   await page.setViewportSize({ width: 320, height: 800 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/workflows/", { waitUntil: "networkidle" });
+  await select.selectOption("insights");
+  await expect(page).toHaveURL(/\/workflows\/#insights$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/workflows\/$/);
+  await expect(select).toHaveValue("run-the-day");
+  await expect(catalog.getByRole("button", { name: /Run the day/ })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+  await expect(
+    page.getByRole("heading", {
+      name: "Move patients from arrival to checkout without losing the handoff.",
+    }),
+  ).toBeInViewport();
+  await page.goForward();
+  await expect(page).toHaveURL(/\/workflows\/#insights$/);
+  await expect(select).toHaveValue("insights");
 });
 
 test("Plato connection explains ownership and leads into a structured assessment", async ({
