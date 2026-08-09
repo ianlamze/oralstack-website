@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, type ChangeEventHandler, type FormEvent, type ReactNode } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -61,7 +61,11 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
 
   if (status === "success") {
     return (
-      <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 grid gap-3">
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6 grid gap-3"
+      >
         <div className="flex items-center gap-2 text-[var(--color-tide-deep)]">
           <CheckCircle2 className="size-5" aria-hidden />
           <p className="font-semibold tracking-tight">Got it.</p>
@@ -179,12 +183,16 @@ export function Select({
   required = false,
   options,
   defaultValue = "",
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
   required?: boolean;
   options: { value: string; label: string }[];
   defaultValue?: string;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
 }) {
   return (
     <label className="grid gap-1.5">
@@ -192,7 +200,14 @@ export function Select({
         {label}
         {required && <span className="text-[var(--color-text-soft)]"> *</span>}
       </span>
-      <select name={name} required={required} defaultValue={defaultValue} className={fieldBase}>
+      <select
+        name={name}
+        required={required}
+        defaultValue={value === undefined ? defaultValue : undefined}
+        value={value}
+        onChange={onChange}
+        className={fieldBase}
+      >
         <option value="" disabled>
           Pick one
         </option>

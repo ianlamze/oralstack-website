@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   title: "Product feature guide",
   description:
     "A current guide to the Oralstack app: clinic-day workflows, patient care, checkout, patient access, operations, insights, and organization controls.",
-  alternates: { canonical: "/tools" },
-  robots: { index: true, follow: true },
+  alternates: { canonical: "/workflows" },
+  robots: { index: false, follow: true },
 };
 
 type FeatureGroup = {

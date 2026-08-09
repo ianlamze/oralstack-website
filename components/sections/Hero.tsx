@@ -44,7 +44,7 @@ export default function Hero() {
           <HeroItem>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <MagneticButton href="/book-a-demo" variant="primary" withArrow>
-                Book a 30-min walkthrough
+                Request a 30-min walkthrough
               </MagneticButton>
               <Button href="/workflows" variant="ghost">
                 Explore the clinic workspace

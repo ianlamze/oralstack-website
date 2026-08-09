@@ -48,6 +48,7 @@ interface ContactPayload {
   location?: string;
   providers?: string | number;
   preferredTimes?: string;
+  focus?: string;
   // honeypot — bots fill, humans don't see
   website?: string;
 }
@@ -95,6 +96,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     row("# chairs", p.numChairs),
     row("# providers", p.providers),
     row("Preferred times", p.preferredTimes),
+    row("Walkthrough focus", p.focus),
     row("Timeline", p.timeline),
     row("# locations", p.numLocations),
     row("# chairs total", p.numChairsTotal),
@@ -117,6 +119,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     p.numChairs && `# chairs: ${p.numChairs}`,
     p.providers && `# providers: ${p.providers}`,
     p.preferredTimes && `Preferred times: ${p.preferredTimes}`,
+    p.focus && `Walkthrough focus: ${p.focus}`,
     p.timeline && `Timeline: ${p.timeline}`,
     p.numLocations && `# locations: ${p.numLocations}`,
     p.numChairsTotal && `# chairs total: ${p.numChairsTotal}`,

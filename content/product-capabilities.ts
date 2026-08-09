@@ -300,7 +300,7 @@ export const workflowsPageContent = {
   cta: {
     title: "See the current workflows with your clinic setup in mind.",
     body: "A 30-minute demo follows the front desk, clinician, and clinic manager through the shipped oralstack paths on a representative Singapore clinic dataset.",
-    label: "Book a demo",
+    label: "Request a demo",
     href: "/book-a-demo",
   },
 } as const;

@@ -30,7 +30,7 @@ export default function CTA() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <MagneticButton href="/book-a-demo" variant="onDark" withArrow>
-                Book a demo
+                Request a demo
               </MagneticButton>
               <a
                 href="mailto:hello@oralstack.com?subject=Oralstack%20pilot"

@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import FormShell, { Field, Select, TextArea } from "@/components/forms/FormShell";
+import { productCapabilities } from "@/content/product-capabilities";
 
 const PMS_OPTIONS = [
   { value: "Plato", label: "Plato" },
@@ -12,7 +14,26 @@ const PMS_OPTIONS = [
   { value: "None / paper diary", label: "None / paper diary" },
 ];
 
+const FOCUS_OPTIONS = [
+  { value: "general", label: "A general clinic walkthrough" },
+  ...productCapabilities.map((workflow) => ({
+    value: workflow.slug,
+    label: workflow.eyebrow,
+  })),
+];
+
+const VALID_FOCUS = new Set(FOCUS_OPTIONS.map((option) => option.value));
+
 export default function DemoRequestForm() {
+  const [focus, setFocus] = useState("general");
+
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("focus");
+    if (requested && VALID_FOCUS.has(requested)) setFocus(requested);
+  }, []);
+
+  const focusLabel = FOCUS_OPTIONS.find((option) => option.value === focus)?.label;
+
   return (
     <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-6 md:p-10">
       <header className="grid gap-2">
@@ -20,14 +41,32 @@ export default function DemoRequestForm() {
           Request a demo
         </p>
         <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-          Tell us about your clinic.
+          Tell us where to start.
         </h2>
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-          We&apos;ll reply within one working day with two or three time slots, and run the demo
-          against a sample dataset that matches your size.
+          Share the essentials and we&apos;ll reply within one working day with two or three time
+          slots.
         </p>
       </header>
       <FormShell intent="demo" submitLabel="Send demo request">
+        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4">
+          <Select
+            label="Start the walkthrough with"
+            name="focus"
+            options={FOCUS_OPTIONS}
+            value={focus}
+            onChange={(event) => setFocus(event.currentTarget.value)}
+          />
+          <p
+            className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]"
+            aria-live="polite"
+          >
+            {focus === "general"
+              ? "We'll follow the clinic day from reception to close."
+              : `${focusLabel} will be the first workflow shown.`}
+          </p>
+        </div>
+
         <div className="grid gap-4 md:grid-cols-2">
           <Field
             label="Clinic name"
@@ -45,12 +84,6 @@ export default function DemoRequestForm() {
             autoComplete="name"
           />
           <Field
-            label="Your role"
-            name="role"
-            required
-            placeholder="Owner, practice manager, front desk lead…"
-          />
-          <Field
             label="Email"
             name="email"
             type="email"
@@ -58,28 +91,50 @@ export default function DemoRequestForm() {
             placeholder="you@clinic.com"
             autoComplete="email"
           />
-          <Field label="# chairs" name="numChairs" type="number" required min={1} placeholder="3" />
-          <Field
-            label="# providers (optional)"
-            name="providers"
-            type="number"
-            min={1}
-            placeholder="4"
-          />
-          <Select label="Current PMS (optional)" name="currentPms" options={PMS_OPTIONS} />
         </div>
-        <TextArea
-          label="Preferred times (optional)"
-          name="preferredTimes"
-          rows={2}
-          placeholder="e.g. Wed afternoons SGT, or Fri 10:00–12:00"
-        />
-        <TextArea
-          label="Anything else (optional)"
-          name="message"
-          rows={3}
-          placeholder="Pain points, what you'd want to see first, current workflow notes…"
-        />
+
+        <details className="group rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-raised)]">
+          <summary className="flex min-h-[48px] cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 text-sm font-medium text-[var(--color-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-tide-deep)] [&::-webkit-details-marker]:hidden">
+            Add clinic setup details
+            <span className="text-xs font-normal text-[var(--color-text-soft)]">Optional</span>
+          </summary>
+          <div className="grid gap-4 border-t border-[var(--color-border)] p-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="Your role (optional)"
+                name="role"
+                placeholder="Owner, practice manager, front desk lead…"
+              />
+              <Field
+                label="# chairs (optional)"
+                name="numChairs"
+                type="number"
+                min={1}
+                placeholder="3"
+              />
+              <Field
+                label="# providers (optional)"
+                name="providers"
+                type="number"
+                min={1}
+                placeholder="4"
+              />
+              <Select label="Current PMS (optional)" name="currentPms" options={PMS_OPTIONS} />
+            </div>
+            <TextArea
+              label="Preferred times (optional)"
+              name="preferredTimes"
+              rows={2}
+              placeholder="e.g. Wed afternoons SGT, or Fri 10:00–12:00"
+            />
+            <TextArea
+              label="Anything else (optional)"
+              name="message"
+              rows={3}
+              placeholder="Pain points, what you'd want to see first, current workflow notes…"
+            />
+          </div>
+        </details>
       </FormShell>
     </div>
   );
