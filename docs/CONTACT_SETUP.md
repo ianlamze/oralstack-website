@@ -11,17 +11,21 @@ One backend Pages Function, four intents, all flowing through `POST /api/contact
 | `/contact` → Quick question tab | `question` | [`components/forms/QuickQuestionForm.tsx`](components/forms/QuickQuestionForm.tsx) |
 | `/contact` → Migration assessment tab | `migration` | [`components/forms/MigrationAssessmentForm.tsx`](components/forms/MigrationAssessmentForm.tsx) |
 | `/contact` → Pilot proposal tab | `pilot` | [`components/forms/PilotProposalForm.tsx`](components/forms/PilotProposalForm.tsx) |
-| `/book-a-demo` (when Cal.com env not set) | `demo` (auto-detected) | [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) |
+| `/book-a-demo` (when Cal.com env not set) | `demo` (auto-detected) | [`components/forms/DemoRequestForm.tsx`](../components/forms/DemoRequestForm.tsx) |
+
+When Cal.com is configured, [`components/forms/CalDemoEmbed.tsx`](../components/forms/CalDemoEmbed.tsx)
+passes the allowlisted evidence source and workflow focus as booking metadata and UTM values so the
+same request context reaches the scheduled walkthrough.
 
 ## Endpoint contract
 
 Full request/response shapes, validation rules, and error modes live in [`functions/README.md`](../functions/README.md). One-line summary: every form posts JSON, the function validates, sends mail via Resend, returns `{ ok: boolean, message }`.
 
-Without `RESEND_API_KEY` set, the endpoint validates and **logs to the Cloudflare console** instead of sending. The form UI works either way — useful for dev.
+Without `RESEND_API_KEY` set, the endpoint fails closed with `503 {ok:false}`. It does not log submitted clinic or contact details; the form keeps the entered values and offers a direct email fallback.
 
 ## Environment variables
 
-`RESEND_API_KEY`, `CONTACT_INBOX`, `CONTACT_FROM`, plus `NEXT_PUBLIC_DEMO_FORM_ENDPOINT` for the third-party-service escape hatch on `DemoRequestForm`. Full inventory in [`ENV_VARS.md`](ENV_VARS.md).
+`RESEND_API_KEY`, `CONTACT_INBOX`, and `CONTACT_FROM`. All structured requests use the same audited `/api/contact` contract. Full inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
 ## Setup
 

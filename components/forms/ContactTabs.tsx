@@ -4,6 +4,12 @@ import { useLayoutEffect, useState, type ComponentType, type KeyboardEvent } fro
 import QuickQuestionForm from "./QuickQuestionForm";
 import MigrationAssessmentForm from "./MigrationAssessmentForm";
 import PilotProposalForm from "./PilotProposalForm";
+import {
+  getRequestSourceId,
+  getWorkflowOptionValue,
+  REQUEST_SOURCES,
+  type RequestSourceId,
+} from "./contact-options";
 
 type Intent = "question" | "migration" | "pilot";
 
@@ -69,10 +75,19 @@ function isIntent(s: string): s is Intent {
  */
 export default function ContactTabs() {
   const [active, setActive] = useState<Intent>("question");
+  const [requestSource, setRequestSource] = useState<RequestSourceId | null>(null);
+  const [defaultWorkflowGoal, setDefaultWorkflowGoal] = useState<string | undefined>();
 
   useLayoutEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     const hash = window.location.hash.replace(/^#/, "");
-    const requested = new URLSearchParams(window.location.search).get("intent");
+    const requested = params.get("intent");
+    const source = getRequestSourceId(params.get("source"));
+    const requestedWorkflow = getWorkflowOptionValue(params.get("focus"));
+    setRequestSource(source);
+    setDefaultWorkflowGoal(
+      requestedWorkflow ?? (source === "dfi-synergy" ? "run-the-day" : undefined),
+    );
     if (requested && isIntent(requested)) setActive(requested);
     else if (hash && isIntent(hash)) setActive(hash);
   }, []);
@@ -138,7 +153,12 @@ export default function ContactTabs() {
         aria-labelledby={`contact-tab-${activeTab.id}`}
         // biome-ignore lint/a11y/noNoninteractiveTabindex: WAI-ARIA tabs pattern — the tabpanel must be focusable so keyboard users can Tab from the active tab into the panel content.
         tabIndex={0}
-        className="grid gap-6 focus:outline-none"
+        onFocus={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const panel = event.currentTarget;
+          window.requestAnimationFrame(() => panel.scrollIntoView({ block: "start" }));
+        }}
+        className="scroll-mt-28 grid gap-6 rounded-[var(--radius-lg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-tide-deep)] focus:ring-offset-4"
       >
         <header className="grid gap-2">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
@@ -152,7 +172,24 @@ export default function ContactTabs() {
           </p>
           <p className="text-xs text-[var(--color-text-soft)]">{activeTab.bestFor}</p>
         </header>
-        <ActiveForm />
+        {requestSource && (
+          <aside
+            data-testid="request-context"
+            className="grid gap-1 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4"
+          >
+            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-tide-deep)]">
+              Continuing from {REQUEST_SOURCES[requestSource].label}
+            </p>
+            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
+              {REQUEST_SOURCES[requestSource].context}
+            </p>
+          </aside>
+        )}
+        {active === "pilot" ? (
+          <PilotProposalForm defaultWorkflowGoal={defaultWorkflowGoal} />
+        ) : (
+          <ActiveForm />
+        )}
       </section>
     </div>
   );

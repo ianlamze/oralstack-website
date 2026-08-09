@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
+import CalDemoEmbed from "@/components/forms/CalDemoEmbed";
 import DemoRequestForm from "@/components/forms/DemoRequestForm";
 
 export const metadata: Metadata = {
@@ -18,8 +20,8 @@ export default function BookDemoPage() {
     <main>
       <PageHeader eyebrow="Demo" title="Request a 30-minute walkthrough." />
 
-      <Section className="pb-12">
-        <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
+      <Section className="pb-6 md:pb-10">
+        <p className="max-w-[58ch] text-base text-[var(--color-text-muted)] leading-relaxed md:text-lg">
           See the current app on a representative Singapore clinic dataset. Choose where to start;
           we&apos;ll show that workflow&apos;s Plato boundary and any setup-dependent paths clearly.
         </p>
@@ -29,15 +31,13 @@ export default function BookDemoPage() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-14 lg:items-start">
           <div>
             {CAL_USER ? (
-              <div className="overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white">
-                <iframe
-                  title="Book a demo"
-                  src={`https://cal.com/${CAL_USER}/${CAL_EVENT}?theme=light`}
-                  className="block w-full"
-                  style={{ height: "780px", border: "0" }}
-                  loading="lazy"
-                />
-              </div>
+              <Suspense
+                fallback={
+                  <div className="min-h-[780px] rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-white" />
+                }
+              >
+                <CalDemoEmbed username={CAL_USER} event={CAL_EVENT} />
+              </Suspense>
             ) : (
               <DemoRequestForm />
             )}
@@ -68,13 +68,14 @@ export default function BookDemoPage() {
             </div>
             <div className="grid gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border)] p-6">
               <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
-                Outcome
+                Next step
               </p>
               <p className="text-xl font-semibold tracking-tight text-[var(--color-text)]">
-                A pilot proposal
+                Availability + fit check
               </p>
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-                Within two working days of the demo, sized to your clinic.
+                We&apos;ll reply with available times and any setup questions needed to make the
+                walkthrough useful.
               </p>
             </div>
 

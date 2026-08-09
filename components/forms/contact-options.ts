@@ -17,3 +17,24 @@ export const WORKFLOW_OPTIONS = [
   { value: "organization-security", label: "Organization access or security controls" },
   { value: "not-sure", label: "Not sure yet" },
 ];
+
+export const REQUEST_SOURCES = {
+  "dfi-synergy": {
+    label: "DFI Synergy · April 2026 pilot",
+    context:
+      "Evidence is historical and clinic-specific; the current product boundary still applies.",
+  },
+} as const;
+
+export type RequestSourceId = keyof typeof REQUEST_SOURCES;
+
+export function getRequestSourceId(value: string | null): RequestSourceId | null {
+  if (!value || !Object.hasOwn(REQUEST_SOURCES, value)) return null;
+  return value as RequestSourceId;
+}
+
+const WORKFLOW_VALUES = new Set(WORKFLOW_OPTIONS.map((option) => option.value));
+
+export function getWorkflowOptionValue(value: string | null): string | undefined {
+  return value && WORKFLOW_VALUES.has(value) ? value : undefined;
+}

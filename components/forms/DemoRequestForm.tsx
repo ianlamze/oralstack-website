@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import FormShell, { Field, Select, TextArea } from "@/components/forms/FormShell";
+import {
+  getRequestSourceId,
+  REQUEST_SOURCES,
+  type RequestSourceId,
+} from "@/components/forms/contact-options";
 import { productCapabilities } from "@/content/product-capabilities";
 
 const PMS_OPTIONS = [
@@ -26,30 +31,36 @@ const VALID_FOCUS = new Set(FOCUS_OPTIONS.map((option) => option.value));
 
 export default function DemoRequestForm() {
   const [focus, setFocus] = useState("general");
+  const [source, setSource] = useState<RequestSourceId | null>(null);
 
-  useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get("focus");
-    if (requested && VALID_FOCUS.has(requested)) setFocus(requested);
+  useLayoutEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedSource = getRequestSourceId(params.get("source"));
+    const requestedFocus = params.get("focus");
+    setSource(requestedSource);
+    if (requestedFocus && VALID_FOCUS.has(requestedFocus)) setFocus(requestedFocus);
+    else if (requestedSource === "dfi-synergy") setFocus("run-the-day");
   }, []);
 
   const focusLabel = FOCUS_OPTIONS.find((option) => option.value === focus)?.label;
 
   return (
-    <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-6 md:p-10">
-      <header className="grid gap-2">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-          Request a demo
-        </p>
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-          Tell us where to start.
-        </h2>
-        <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-          Share the essentials and we&apos;ll reply within one working day with two or three time
-          slots.
-        </p>
-      </header>
+    <div className="grid gap-4 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas)] p-5 md:p-8">
       <FormShell intent="demo" submitLabel="Send demo request">
         <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4">
+          {source && (
+            <div
+              data-testid="request-context"
+              className="mb-3 grid gap-1 border-b border-[var(--color-border)] pb-3"
+            >
+              <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-tide-deep)]">
+                Continuing from {REQUEST_SOURCES[source].label}
+              </p>
+              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
+                {REQUEST_SOURCES[source].context}
+              </p>
+            </div>
+          )}
           <Select
             label="Start the walkthrough with"
             name="focus"
