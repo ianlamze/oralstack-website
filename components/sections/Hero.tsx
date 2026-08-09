@@ -13,36 +13,36 @@ const proofPoints = [
 
 export default function Hero() {
   return (
-    <Section className="pb-20 pt-14 md:pb-28 md:pt-20">
-      <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-14">
-        <HeroStagger>
+    <Section className="pb-16 pt-10 md:pb-20 md:pt-10">
+      <div className="grid min-w-0 items-center gap-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-14">
+        <HeroStagger className="min-w-0">
           <HeroItem>
-            <p className="inline-flex min-h-8 items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface-raised)] px-3 text-[11px] font-semibold uppercase tracking-[var(--tracking-eyebrow)] text-[var(--color-tide-deep)] shadow-[var(--shadow-1)]">
+            <p className="inline-flex min-h-8 max-w-full items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-surface-raised)] px-3 py-1.5 text-[11px] font-semibold uppercase leading-tight tracking-[var(--tracking-eyebrow)] text-[var(--color-tide-deep)] shadow-[var(--shadow-1)] sm:rounded-full">
               <span className="flex size-5 items-center justify-center rounded-full bg-[var(--color-canvas-tinted)]">
                 <CalendarDays className="size-3" aria-hidden />
               </span>
-              Built in Singapore · Connected to Plato
+              <span className="min-w-0">Built in Singapore · Connected to Plato</span>
             </p>
           </HeroItem>
 
           <HeroItem>
-            <h1 className="mt-6 max-w-[13ch] text-[length:var(--text-display)] leading-[0.94] text-[var(--color-ink)]">
+            <h1 className="mt-4 max-w-[13ch] text-[length:var(--text-display)] leading-[0.94] text-[var(--color-ink)]">
               Run the clinic day from one calm workspace.
             </h1>
-            <p className="mt-5 max-w-[34ch] text-xl font-medium leading-snug tracking-tight text-[var(--color-tide-deep)] md:text-2xl">
+            <p className="mt-4 max-w-[34ch] text-xl font-medium leading-snug tracking-tight text-[var(--color-tide-deep)] md:text-2xl">
               Schedule, receive, chart and check out—without replacing Plato.
             </p>
           </HeroItem>
 
           <HeroItem>
-            <p className="mt-6 max-w-[47ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
+            <p className="mt-5 max-w-[47ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
               Oralstack gives the front desk and clinical team one operational view of patient
               requests, chair work, checkout and the reviewed writebacks waiting to return to Plato.
             </p>
           </HeroItem>
 
           <HeroItem>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-5 flex flex-wrap items-center gap-3">
               <MagneticButton href="/book-a-demo" variant="primary" withArrow>
                 Request a 30-min walkthrough
               </MagneticButton>
@@ -53,7 +53,7 @@ export default function Hero() {
           </HeroItem>
 
           <HeroItem>
-            <ul className="mt-8 grid gap-2 text-sm text-[var(--color-text-muted)] sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <ul className="mt-6 grid gap-2 text-sm text-[var(--color-text-muted)] sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {proofPoints.map((point) => (
                 <li key={point.label} className="flex items-center gap-2">
                   <CheckCircle2
@@ -76,7 +76,7 @@ export default function Hero() {
           </HeroItem>
         </HeroStagger>
 
-        <HeroStagger className="w-full lg:justify-self-end">
+        <HeroStagger className="min-w-0 w-full lg:justify-self-end">
           <HeroItem>
             <figure className="overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-line)] bg-[var(--color-surface-raised)] p-2 shadow-[var(--shadow-hero)] md:p-3">
               <div className="flex items-center justify-between gap-4 border-b border-[var(--color-line)] px-2 pb-2 md:px-3 md:pb-3">
