@@ -382,6 +382,70 @@ test("homepage Plato proof keeps the connection path and assessment intent", asy
   await expect(platoStatus.getByText("Available with clinic setup", { exact: true })).toBeVisible();
 });
 
+test("homepage turns named pilot evidence into the released conversion paths", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  const evidence = page.locator("#customer-evidence");
+  await expect(evidence).toHaveCount(1);
+  await expect(
+    evidence.getByRole("heading", { name: "What changed in four weeks at DFI Synergy." }),
+  ).toBeVisible();
+  await expect(evidence.getByText("historical results", { exact: false })).toBeVisible();
+  await expect(
+    evidence.getByRole("link", { name: "Read the pilot and measurement notes" }),
+  ).toHaveAttribute("href", "/customers/dfi-synergy");
+  await expect(
+    page.getByRole("heading", {
+      name: "DFI Synergy moved their front desk into Oralstack in three days.",
+    }),
+  ).toHaveCount(0);
+
+  const explorer = page.locator("#workflow-explorer");
+  const evidenceBox = await evidence.boundingBox();
+  const explorerBox = await explorer.boundingBox();
+  const viewport = page.viewportSize();
+  expect(evidenceBox?.y).toBeLessThan(explorerBox?.y ?? Number.POSITIVE_INFINITY);
+  expect(evidenceBox?.y).toBeLessThan((viewport?.height ?? 800) * 2);
+
+  const walkthroughLinks = page
+    .locator("main")
+    .getByRole("link", { name: "Request a 30-min walkthrough" });
+  await expect(walkthroughLinks).toHaveCount(2);
+  await expect(walkthroughLinks.first()).toHaveAttribute("href", "/book-a-demo");
+  await expect(walkthroughLinks.last()).toHaveAttribute("href", "/book-a-demo");
+  const firstWalkthroughBox = await walkthroughLinks.first().boundingBox();
+  expect(
+    (firstWalkthroughBox?.y ?? Number.POSITIVE_INFINITY) + (firstWalkthroughBox?.height ?? 0),
+  ).toBeLessThanOrEqual(viewport?.height ?? 800);
+
+  const pilotProposal = page.getByRole("link", { name: "Request a pilot proposal" });
+  await expect(pilotProposal).toHaveAttribute("href", "/contact/?intent=pilot#request");
+  const pilotBox = await pilotProposal.boundingBox();
+  expect(pilotBox?.height).toBeGreaterThanOrEqual(44);
+  await expect(page.locator("main a[href^='mailto:'][href*='pilot']")).toHaveCount(0);
+
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/?proof=narrow", { waitUntil: "networkidle" });
+  const narrowOverflow = await page.evaluate(() => ({
+    document: document.documentElement.scrollWidth - window.innerWidth,
+    supportingMetrics: Array.from(
+      document.querySelectorAll<HTMLElement>("[data-testid='supporting-metric']"),
+    ).map((metric) => metric.scrollWidth - metric.clientWidth),
+  }));
+  expect(narrowOverflow.document).toBeLessThanOrEqual(0);
+  expect(narrowOverflow.supportingMetrics.every((overflow) => overflow <= 0)).toBe(true);
+
+  await pilotProposal.click();
+  await expect(page).toHaveURL(/\/contact\/\?intent=pilot#request$/);
+  await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(
+    page.getByRole("heading", { name: "Tell us the clinic shape and first workflow." }),
+  ).toBeInViewport();
+});
+
 test("Plato connection has focused visual regression coverage", async ({ page }) => {
   await page.goto("/integrations/#plato", { waitUntil: "networkidle" });
   await page.addStyleTag({
@@ -426,6 +490,18 @@ test("workflow explorer has focused visual regression coverage", async ({ page }
 
   await page.getByRole("button", { name: "Checkout handoffs stall at the desk" }).click();
   await expect(explorer).toHaveScreenshot("workflow-explorer-checkout.png", {
+    animations: "disabled",
+  });
+});
+
+test("homepage named pilot evidence has focused visual regression coverage", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+
+  await expect(page.locator("#customer-evidence")).toHaveScreenshot("customer-evidence.png", {
     animations: "disabled",
   });
 });

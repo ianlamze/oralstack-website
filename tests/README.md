@@ -38,12 +38,12 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 7 | 7 | **14** |
-| Focused component snapshots | 2 | 2 | **4** |
+| Journey and interaction checks | 8 | 8 | **16** |
+| Focused component snapshots | 3 | 3 | **6** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **89** | **89** | **178** |
+| **Total** | **91** | **91** | **182** |
 
-18 baseline PNGs live in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/).
+20 baseline PNGs live in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/).
 
 ## Viewports
 
@@ -56,7 +56,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 178 tests across desktop + mobile
+npm run test:smoke    # 182 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when
