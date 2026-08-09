@@ -37,6 +37,7 @@ interface ContactPayload {
   // migration / pilot / demo-specific
   clinicName?: string;
   currentPms?: string;
+  workflowGoal?: string;
   numChairs?: string | number;
   timeline?: string;
   // pilot-specific
@@ -80,7 +81,7 @@ function row(label: string, value: string | number | undefined): string {
 function buildEmail(p: ContactPayload): { subject: string; html: string; text: string } {
   const intentLabel: Record<Intent, string> = {
     question: "Quick question",
-    migration: "Migration assessment request",
+    migration: "Connection assessment request",
     pilot: "Pilot proposal request",
     demo: "Demo request",
   };
@@ -93,6 +94,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     row("Clinic name", p.clinicName),
     row("Location", p.location),
     row("Current PMS", p.currentPms),
+    row("Workflow to improve first", p.workflowGoal),
     row("# chairs", p.numChairs),
     row("# providers", p.providers),
     row("Preferred times", p.preferredTimes),
@@ -116,6 +118,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     p.clinicName && `Clinic: ${p.clinicName}`,
     p.location && `Location: ${p.location}`,
     p.currentPms && `Current PMS: ${p.currentPms}`,
+    p.workflowGoal && `Workflow to improve first: ${p.workflowGoal}`,
     p.numChairs && `# chairs: ${p.numChairs}`,
     p.providers && `# providers: ${p.providers}`,
     p.preferredTimes && `Preferred times: ${p.preferredTimes}`,

@@ -6,11 +6,11 @@ import Section from "@/components/primitives/Section";
 export const metadata: Metadata = {
   title: "Status",
   description:
-    "A dated Oralstack capability snapshot that separates available platform surfaces, configured pilots, and capabilities that are not enabled.",
+    "A dated Oralstack capability snapshot that separates available, clinic-configured, pilot, and not-enabled product paths.",
   alternates: { canonical: "/status" },
 };
 
-type CapabilityStatus = "available" | "configured-pilot" | "not-enabled";
+type CapabilityStatus = "available" | "configured" | "configured-pilot" | "not-enabled";
 
 type Capability = {
   name: string;
@@ -19,6 +19,12 @@ type Capability = {
 };
 
 const capabilities: Capability[] = [
+  {
+    name: "Plato-connected workflow path",
+    detail:
+      "Plato remains authoritative while Oralstack uses reviewed, status-visible paths for connected clinic records and supported appointment updates. Each clinic still requires a readiness review.",
+    status: "configured",
+  },
   {
     name: "Core application API and tenant database",
     detail:
@@ -115,7 +121,7 @@ export default function StatusPage() {
           {capabilities.map((capability) => (
             <li
               key={capability.name}
-              className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-4 py-3"
+              className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4 gap-y-2 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-white px-4 py-3 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center"
             >
               <StatusDot status={capability.status} />
               <div className="grid min-w-0 gap-0.5">
@@ -135,6 +141,10 @@ export default function StatusPage() {
           <Block
             heading="Available"
             body="The surface is implemented and its required base controls are evidenced in the dated repository and production-state snapshot. This label does not assert current uptime for a particular deployment."
+          />
+          <Block
+            heading="Available with clinic setup"
+            body="The product path is implemented, but a clinic-specific connector, configuration, or scope review is required before staff can use it."
           />
           <Block
             heading="Configured pilot"
@@ -201,12 +211,13 @@ export default function StatusPage() {
 }
 
 function StatusDot({ status }: { status: CapabilityStatus }) {
-  const tone =
-    status === "available"
-      ? "bg-[var(--color-tide-deep)]"
-      : status === "configured-pilot"
-        ? "bg-[oklch(0.78_0.13_75)]"
-        : "bg-[var(--color-text-soft)]";
+  const tones: Record<CapabilityStatus, string> = {
+    available: "bg-[var(--color-tide-deep)]",
+    configured: "bg-[var(--color-sea)]",
+    "configured-pilot": "bg-[oklch(0.78_0.13_75)]",
+    "not-enabled": "bg-[var(--color-text-soft)]",
+  };
+  const tone = tones[status];
   return (
     <span aria-hidden className="inline-flex h-3 w-3 items-center justify-center">
       <Circle className={`h-3 w-3 rounded-full ${tone}`} fill="currentColor" />
@@ -221,6 +232,12 @@ function StatusPill({ status }: { status: CapabilityStatus }) {
       bg: "bg-[color-mix(in_oklch,var(--color-tide-deep),white_88%)]",
       fg: "text-[var(--color-tide-deep)]",
       border: "border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)]",
+    },
+    configured: {
+      label: "Available with clinic setup",
+      bg: "bg-[color-mix(in_oklch,var(--color-sea),white_82%)]",
+      fg: "text-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_60%)]",
+      border: "border-[color-mix(in_oklch,var(--color-sea),var(--color-ink)_24%)]",
     },
     "configured-pilot": {
       label: "Configured pilot",
@@ -238,7 +255,7 @@ function StatusPill({ status }: { status: CapabilityStatus }) {
   const tone = map[status];
   return (
     <span
-      className={`inline-flex items-center whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${tone.bg} ${tone.fg} ${tone.border}`}
+      className={`col-start-2 inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.08em] sm:col-start-auto ${tone.bg} ${tone.fg} ${tone.border}`}
     >
       {tone.label}
     </span>

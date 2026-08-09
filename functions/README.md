@@ -26,7 +26,7 @@ The route maps directly from the file path under `functions/` (Cloudflare Pages 
 { intent: "question" | "migration" | "pilot" | "demo",
   name, email,                      // always required
   message?,                         // required for "question" (≥10 chars)
-  clinicName?, currentPms?, numChairs?, timeline?,
+  clinicName?, currentPms?, workflowGoal?, numChairs?, timeline?,
   numLocations?, numChairsTotal?, startDate?,
   role?, location?, providers?, preferredTimes?, focus?,
   website?                          // honeypot — must be empty
@@ -37,7 +37,8 @@ Demo submissions use `{ intent: "demo", clinicName, name, email, location, focus
 
 Per-intent required fields (see `validate()` in `api/contact.ts`):
 - `question`: `message` ≥10 chars.
-- `migration`: `clinicName`, `currentPms`.
+- `migration`: `clinicName`, `currentPms`. The current UI also requires `workflowGoal`;
+  the endpoint accepts legacy clients without it during the compatibility window.
 - `pilot`: `clinicName`, `numLocations`.
 - `demo`: `clinicName`, `location`.
 

@@ -6,9 +6,9 @@ import Section from "@/components/primitives/Section";
 import { HeroItem, HeroStagger } from "@/components/motion/HeroStagger";
 
 const proofPoints = [
-  "Plato stays the system of record",
-  "Sync health and writeback status stay visible",
-  "Tenant-isolated and Singapore-region hosted",
+  { label: "Plato stays the system of record", href: "/integrations#plato" },
+  { label: "Sync health and writeback status stay visible" },
+  { label: "Tenant-isolated and Singapore-region hosted" },
 ];
 
 export default function Hero() {
@@ -55,12 +55,21 @@ export default function Hero() {
           <HeroItem>
             <ul className="mt-8 grid gap-2 text-sm text-[var(--color-text-muted)] sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {proofPoints.map((point) => (
-                <li key={point} className="flex items-center gap-2">
+                <li key={point.label} className="flex items-center gap-2">
                   <CheckCircle2
                     className="size-4 shrink-0 text-[var(--color-success)]"
                     aria-hidden
                   />
-                  <span>{point}</span>
+                  {point.href ? (
+                    <a
+                      href={point.href}
+                      className="font-medium text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4 transition-colors hover:text-[var(--color-tide-deep)]"
+                    >
+                      {point.label}
+                    </a>
+                  ) : (
+                    <span>{point.label}</span>
+                  )}
                 </li>
               ))}
             </ul>

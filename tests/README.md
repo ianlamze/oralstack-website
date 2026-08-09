@@ -12,16 +12,17 @@ For every route in [`smoke.spec.ts`](smoke.spec.ts):
 - No `pageerror` events fire on load
 - No `console.error` events fire on load
 
-For a tighter list of high-traffic routes (`/`, `/workflows/`, `/book-a-demo/`,
-`/about/`):
+For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
+`/book-a-demo/`, `/about/`):
 
 - Full-page pixel snapshot vs committed baseline (animations disabled)
 - `maxDiffPixelRatio: 0.02`, `threshold: 0.2` (see [`playwright.config.ts`](../playwright.config.ts))
 
 ## What's not covered
 
-- **End-to-end user journeys.** Required-field validation is covered, but successful
-  form delivery, nav-drawer interaction, and inter-page navigation are not.
+- **Successful form delivery.** Required-field validation, workflow-to-demo context,
+  Plato-to-assessment handoff, and mobile navigation interactions are covered, but
+  the Cloudflare contact endpoint and inbox delivery are not.
 - **Cross-browser.** Mobile uses Chromium with an iPhone 13 viewport, not real
   WebKit. Adequate for a static site without Safari-specific JS; switch to
   webkit if a Safari-specific bug surfaces.
@@ -34,13 +35,15 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/book-a-demo/`,
 |---|---:|---:|---:|
 | Public route loads (19 routes) | 19 | 19 | **38** |
 | Synthetic-identity checks (3 routes) | 3 | 3 | **6** |
-| Archived-route exclusions (50 routes) | 50 | 50 | **100** |
+| Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Snapshot tests (4 routes) | 4 | 4 | **8** |
-| **Total** | **78** | **78** | **156** |
+| Journey and interaction checks | 6 | 6 | **12** |
+| Focused component snapshots | 2 | 2 | **4** |
+| Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
+| **Total** | **88** | **88** | **176** |
 
-8 baseline PNGs live in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/).
+18 baseline PNGs live in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/).
 
 ## Viewports
 
@@ -53,7 +56,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 156 tests across desktop + mobile
+npm run test:smoke    # 176 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when

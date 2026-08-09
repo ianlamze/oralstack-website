@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ComponentType, type KeyboardEvent } from "react";
+import { useLayoutEffect, useState, type ComponentType, type KeyboardEvent } from "react";
 import QuickQuestionForm from "./QuickQuestionForm";
 import MigrationAssessmentForm from "./MigrationAssessmentForm";
 import PilotProposalForm from "./PilotProposalForm";
@@ -31,9 +31,10 @@ const TABS: TabDef[] = [
     id: "migration",
     label: "Connection & rollout",
     eyebrow: "Connection & rollout",
-    title: "Moving from Plato, Open Dental, or another PMS?",
-    body: "Tell us your current clinic stack and rollout goal. We'll map the Plato connection, reviewed writebacks, enabled modules, and any work that sits outside today's product scope.",
-    bestFor: "Best for: solo or small-group clinics planning a cutover within the next 6 months.",
+    title: "Connect Plato or plan a reviewed rollout.",
+    body: "Tell us your current clinic stack and the workflow you want to improve. We'll map connector readiness, record ownership, reviewed changes back to Plato, enabled modules, and anything outside today's product scope.",
+    bestFor:
+      "Best for: Plato-connected clinics, paper-led clinics, and small groups planning a rollout within the next 6 months.",
     Form: MigrationAssessmentForm,
   },
   {
@@ -58,9 +59,9 @@ function isIntent(s: string): s is Intent {
  * vertical layout — picking one intent now hides the other two, removing the
  * scroll-past-everything friction.
  *
- * Initial tab is read from the URL hash (#question / #migration / #pilot) so
- * deep-links from articles or other pages still land on the right form.
- * Hash updates via history.replaceState (no scroll jump) when the tab changes.
+ * Initial intent is read from `?intent=` first, with the legacy
+ * #question / #migration / #pilot hashes retained as aliases. Tab changes keep
+ * the intent in the query string and the stable form anchor at #request.
  *
  * Accessibility: full WAI-ARIA tabs pattern — role=tablist/tab/tabpanel,
  * roving tabindex, arrow-key + Home/End navigation.
@@ -68,17 +69,20 @@ function isIntent(s: string): s is Intent {
 export default function ContactTabs() {
   const [active, setActive] = useState<Intent>("question");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const hash = window.location.hash.replace(/^#/, "");
-    if (hash && isIntent(hash)) {
-      setActive(hash);
-    }
+    const requested = new URLSearchParams(window.location.search).get("intent");
+    if (requested && isIntent(requested)) setActive(requested);
+    else if (hash && isIntent(hash)) setActive(hash);
   }, []);
 
   function handleSelect(id: Intent) {
     setActive(id);
     if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", `#${id}`);
+      const url = new URL(window.location.href);
+      url.searchParams.set("intent", id);
+      url.hash = "request";
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }
 

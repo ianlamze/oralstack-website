@@ -18,14 +18,29 @@ const TIMELINE_OPTIONS = [
   { value: "later", label: "Later / exploring" },
 ];
 
+const WORKFLOW_OPTIONS = [
+  { value: "run-the-day", label: "Reception, schedule, or daily flow" },
+  { value: "patient-care", label: "Patient folder or chairside care" },
+  { value: "checkout-money", label: "Checkout, billing, or reconciliation" },
+  { value: "clinic-operations", label: "Inventory, staff, or clinic operations" },
+  { value: "insights", label: "Insights or multi-clinic oversight" },
+  { value: "not-sure", label: "Not sure yet" },
+];
+
 export default function MigrationAssessmentForm() {
   return (
-    <FormShell intent="migration" submitLabel="Request rollout assessment">
+    <FormShell intent="migration" submitLabel="Request connection assessment">
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Your name" name="name" required autoComplete="name" />
         <Field label="Email" name="email" type="email" required autoComplete="email" />
         <Field label="Clinic name" name="clinicName" required autoComplete="organization" />
         <Select label="Current clinic system" name="currentPms" required options={PMS_OPTIONS} />
+        <Select
+          label="What should improve first?"
+          name="workflowGoal"
+          required
+          options={WORKFLOW_OPTIONS}
+        />
         <Field label="# chairs" name="numChairs" type="number" placeholder="e.g. 4" />
         <Select label="Rollout timeline" name="timeline" options={TIMELINE_OPTIONS} />
       </div>
