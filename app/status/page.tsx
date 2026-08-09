@@ -84,7 +84,10 @@ export default function StatusPage() {
       <PageHeader eyebrow="Status" title="Published capability snapshot." />
 
       <Section className="pb-10">
-        <div className="grid gap-3 rounded-[var(--radius-xl)] border border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)] bg-[color-mix(in_oklch,var(--color-tide-deep),white_92%)] p-6 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:p-8">
+        <div
+          data-testid="status-trust-actions"
+          className="grid gap-3 rounded-[var(--radius-xl)] border border-[color-mix(in_oklch,var(--color-tide-deep),var(--color-ink)_15%)] bg-[color-mix(in_oklch,var(--color-tide-deep),white_92%)] p-6 md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:p-8"
+        >
           <span
             className="inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-md)] bg-white text-[var(--color-tide-deep)]"
             aria-hidden
@@ -100,21 +103,23 @@ export default function StatusPage() {
               2026.
             </p>
           </div>
-          <p className="text-xs tracking-[0.04em] text-[var(--color-text-muted)] md:justify-self-end md:max-w-[32ch] md:text-right">
-            This page has no automated uptime feed. Email{" "}
+          <div className="grid gap-2 md:justify-items-end md:justify-self-end md:max-w-[32ch] md:text-right">
+            <p className="text-xs tracking-[0.04em] text-[var(--color-text-muted)]">
+              This page has no automated uptime feed. Request current evidence before a rollout or
+              procurement decision.
+            </p>
             <a
-              href="mailto:status@oralstack.com"
-              className="text-[var(--color-tide-deep)] underline underline-offset-4"
+              href="/contact/?intent=security&source=status&request=deployment-status#request"
+              className="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              status@oralstack.com
-            </a>{" "}
-            for current deployment confirmation.
-          </p>
+              Request current confirmation →
+            </a>
+          </div>
         </div>
       </Section>
 
       <Section className="pb-12">
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+        <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
           Capability evidence
         </p>
         <ul className="grid max-w-[920px] gap-2">
@@ -162,7 +167,7 @@ export default function StatusPage() {
       </Section>
 
       <Section className="pb-12">
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
+        <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
           Incident history
         </p>
         <div className="grid max-w-[920px] gap-2 rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-canvas-tinted)] p-6 md:p-8">
@@ -198,7 +203,7 @@ export default function StatusPage() {
           </div>
           <div className="md:justify-self-end">
             <a
-              href="mailto:status@oralstack.com?subject=Current%20deployment%20status%20request"
+              href="/contact/?intent=security&source=status&request=deployment-status#request"
               className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-ink)]"
             >
               Request confirmation →

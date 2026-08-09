@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <main>
-      <PageHeader eyebrow="Legal" title="Privacy" lastUpdated="9 August 2026" />
+      <PageHeader eyebrow="Legal" title="Privacy" lastUpdated="10 August 2026" />
       <Section className="pb-24 md:pb-32">
         <article className="max-w-[720px] grid gap-8 text-[var(--color-text-muted)] leading-relaxed [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-[var(--color-text)] [&_a]:text-[var(--color-accent-deep)] [&_a]:underline-offset-4 hover:[&_a]:underline">
           <p>
@@ -25,9 +25,12 @@ export default function PrivacyPage() {
               Keep patient data out of this site.
             </p>
             <p>
-              Public forms, email, WhatsApp, and demo-booking fields are for clinic and business
-              contact details only. Do not submit patient names, identifiers, health information,
-              clinical records, passwords, access tokens, or security-vulnerability details.
+              Public forms, general business email, WhatsApp, and demo-booking fields are for clinic
+              and business contact details only. Do not submit patient names, identifiers, health
+              information, clinical records, passwords, access tokens, or vulnerability details
+              through those channels. For a security finding, use the dedicated disclosure address
+              on the <a href="/security#reliability">Security page</a> and include only a safe,
+              concise reproduction without patient data or live credentials.
             </p>
           </div>
 
@@ -36,9 +39,10 @@ export default function PrivacyPage() {
             <p>
               When you use a form on this site, we receive the fields you choose to submit.
               Depending on the form, that can include your name, work email, clinic or group name,
-              location, current clinic system, clinic size, preferred workflow, timing, and
-              free-text notes. We use this information to answer the request, assess fit, prepare a
-              walkthrough, or scope a connection or pilot.
+              organization, role or team, location, current clinic system, clinic size, preferred
+              workflow, review request, timing, and free-text notes. We use this information to
+              answer the request, assess fit, prepare a walkthrough, scope a connection or pilot, or
+              respond to a security and procurement review.
             </p>
             <p>
               The form posts to a Cloudflare Pages Function, which sends the request through Resend

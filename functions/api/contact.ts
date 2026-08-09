@@ -26,7 +26,7 @@ type PagesFunction<E = unknown> = (context: {
   waitUntil: (p: Promise<unknown>) => void;
 }) => Promise<Response> | Response;
 
-type Intent = "question" | "migration" | "pilot" | "demo";
+type Intent = "question" | "migration" | "pilot" | "security" | "demo";
 
 interface ContactPayload {
   intent: Intent;
@@ -37,6 +37,7 @@ interface ContactPayload {
   clinicName?: string;
   currentPms?: string;
   workflowGoal?: string;
+  requestType?: string;
   numChairs?: string | number;
   timeline?: string;
   // pilot-specific
@@ -76,6 +77,7 @@ function normalizePayload(raw: Record<string, unknown>): ContactPayload {
     clinicName: textField(raw.clinicName, 200),
     currentPms: textField(raw.currentPms, 120),
     workflowGoal: textField(raw.workflowGoal, 120),
+    requestType: textField(raw.requestType, 120),
     numChairs: numberField(raw.numChairs),
     timeline: textField(raw.timeline, 120),
     numLocations: numberField(raw.numLocations),
@@ -119,10 +121,31 @@ const SOURCE_LABELS: Record<string, string> = {
   "solo-clinic": "One-clinic guide",
   "clinic-group": "Clinic-group guide",
   integrations: "Plato integration guide",
+  security: "Security & compliance overview",
+  status: "Capability status snapshot",
+};
+
+const SECURITY_REQUEST_LABELS: Record<string, string> = {
+  "security-questionnaire": "Security questionnaire",
+  "controls-walkthrough": "Controls walkthrough",
+  "evidence-pack": "Current security evidence pack",
+  "product-agreement": "Product agreement",
+  "data-processing-terms": "Data processing terms",
+  "subprocessor-information": "Deployment-specific subprocessors",
+  "deployment-status": "Current deployment confirmation",
+  other: "Another procurement question",
 };
 
 function sourceLabel(sourcePage: string | undefined): string | undefined {
-  return sourcePage ? SOURCE_LABELS[sourcePage] : undefined;
+  return sourcePage && Object.hasOwn(SOURCE_LABELS, sourcePage)
+    ? SOURCE_LABELS[sourcePage]
+    : undefined;
+}
+
+function securityRequestLabel(requestType: string | undefined): string | undefined {
+  return requestType && Object.hasOwn(SECURITY_REQUEST_LABELS, requestType)
+    ? SECURITY_REQUEST_LABELS[requestType]
+    : undefined;
 }
 
 function buildEmail(p: ContactPayload): { subject: string; html: string; text: string } {
@@ -130,9 +153,11 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     question: "Quick question",
     migration: "Connection assessment request",
     pilot: "Pilot proposal request",
+    security: "Security review request",
     demo: "Demo request",
   };
   const source = sourceLabel(p.sourcePage);
+  const securityRequest = securityRequestLabel(p.requestType);
   const subjectName = p.name?.replace(/[\r\n]+/g, " ") ?? "(no name)";
   const subject = `[oralstack contact] ${intentLabel[p.intent]} — ${subjectName}`;
   const rows = [
@@ -145,6 +170,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     row("Location", p.location),
     row("Current PMS", p.currentPms),
     row("Workflow to improve first", p.workflowGoal),
+    row("Security review request", securityRequest),
     row("# chairs", p.numChairs),
     row("# providers", p.providers),
     row("Preferred times", p.preferredTimes),
@@ -170,6 +196,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     p.location && `Location: ${p.location}`,
     p.currentPms && `Current PMS: ${p.currentPms}`,
     p.workflowGoal && `Workflow to improve first: ${p.workflowGoal}`,
+    securityRequest && `Security review request: ${securityRequest}`,
     p.numChairs && `# chairs: ${p.numChairs}`,
     p.providers && `# providers: ${p.providers}`,
     p.preferredTimes && `Preferred times: ${p.preferredTimes}`,
@@ -186,7 +213,7 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
 }
 
 function validate(p: ContactPayload): string | null {
-  if (!p.intent || !["question", "migration", "pilot", "demo"].includes(p.intent)) {
+  if (!p.intent || !["question", "migration", "pilot", "security", "demo"].includes(p.intent)) {
     return "Missing or invalid intent.";
   }
   if (!p.name || p.name.trim().length < 2) return "Please enter your name.";
@@ -205,6 +232,14 @@ function validate(p: ContactPayload): string | null {
     if (!Number.isInteger(locationCount) || locationCount < 1) {
       return "Please enter at least one whole location.";
     }
+  }
+  if (p.intent === "security") {
+    if (!p.clinicName) return "Please tell us your organization or clinic name.";
+    if (!p.role) return "Please tell us your role or team.";
+    if (!p.requestType || !securityRequestLabel(p.requestType)) {
+      return "Please choose what your review needs.";
+    }
+    if (!p.timeline) return "Please choose a review timeline.";
   }
   if (p.intent === "demo") {
     if (!p.clinicName) return "Please tell us your clinic name.";
@@ -247,6 +282,8 @@ async function sendViaResend(env: Env, p: ContactPayload): Promise<Response> {
     migration:
       "Assessment request received. We'll reply with the setup questions for the next step.",
     pilot: "Pilot request received. We'll reply with the setup questions needed to scope it.",
+    security:
+      "Security review request received. We'll reply with the current evidence boundary and next step.",
     demo: "Demo request received. We'll reply with availability and any setup questions.",
   };
   return ok(successMessage[p.intent]);

@@ -122,7 +122,7 @@ booking flow.
 
 ## Step 7 — Form endpoints + Resend (~5 minutes)
 
-The site has one Cloudflare Pages Function handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, demo), plus a minimized interaction-event sink at [`/api/event`](../functions/api/event.ts). Endpoint contracts, request/response shapes, privacy boundaries, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
+The site has one Cloudflare Pages Function handling form submissions: [`/api/contact`](../functions/api/contact.ts) (multi-intent: question, migration, pilot, security, demo), plus a minimized interaction-event sink at [`/api/event`](../functions/api/event.ts). Endpoint contracts, request/response shapes, privacy boundaries, and error modes live in [`functions/README.md`](../functions/README.md). System overview in [`CONTACT_SETUP.md`](CONTACT_SETUP.md). Env-var inventory in [`ENV_VARS.md`](ENV_VARS.md).
 
 Without `RESEND_API_KEY` set, the endpoint returns `503 {ok:false}`. It does not log submitted clinic or contact details, and the form offers a direct email fallback.
 

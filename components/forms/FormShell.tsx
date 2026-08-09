@@ -14,9 +14,10 @@ import { getRequestSourceId } from "./contact-options";
 type Status = "idle" | "submitting" | "success" | "error";
 
 type Props = {
-  intent: "question" | "migration" | "pilot" | "demo";
+  intent: "question" | "migration" | "pilot" | "security" | "demo";
   /** Visible button label. */
   submitLabel?: string;
+  fallbackEmail?: string;
   children: ReactNode;
 };
 
@@ -24,7 +25,12 @@ type Props = {
  * Wraps a contact form with submission state, posts to /api/contact, shows
  * inline success/error UI. The honeypot field and intent are added automatically.
  */
-export default function FormShell({ intent, submitLabel = "Send", children }: Props) {
+export default function FormShell({
+  intent,
+  submitLabel = "Send",
+  fallbackEmail = "hello@oralstack.com",
+  children,
+}: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string>("");
   const successRef = useRef<HTMLDivElement>(null);
@@ -138,10 +144,10 @@ export default function FormShell({ intent, submitLabel = "Send", children }: Pr
           <p className="font-semibold">We couldn&apos;t send your request.</p>
           <p>{message}</p>
           <a
-            href="mailto:hello@oralstack.com"
+            href={`mailto:${fallbackEmail}`}
             className="w-fit font-medium underline underline-offset-4"
           >
-            Email hello@oralstack.com instead
+            Email {fallbackEmail} instead
           </a>
         </div>
       )}

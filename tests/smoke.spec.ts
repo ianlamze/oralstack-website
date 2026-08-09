@@ -63,6 +63,18 @@ async function expectFirstViewportAction(page: Page, action: Locator) {
   expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize()?.height ?? 0);
 }
 
+async function expectEarlyAction(page: Page, action: Locator) {
+  await expect(action).toBeVisible();
+
+  const box = await action.boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  expect(box.y).toBeGreaterThanOrEqual(0);
+  expect(box.y + box.height).toBeLessThanOrEqual((page.viewportSize()?.height ?? 0) * 2);
+}
+
 async function expectNoForbiddenClinicFitClaims(page: Page) {
   const body = (await page.locator("body").innerText()).toLocaleLowerCase();
   for (const claim of FORBIDDEN_CLINIC_FIT_CLAIMS) {
@@ -327,6 +339,7 @@ test("shared request forms disclose their data boundary and link to a truthful p
       submit: "Request connection assessment",
     },
     { path: "/contact/?intent=pilot#request", submit: "Request a pilot proposal" },
+    { path: "/contact/?intent=security#request", submit: "Request security review" },
   ] as const;
 
   for (const formTarget of forms) {
@@ -536,6 +549,8 @@ test("contact delivery preserves each allowlisted request source in the provider
     "solo-clinic": "One-clinic guide",
     "clinic-group": "Clinic-group guide",
     integrations: "Plato integration guide",
+    security: "Security & compliance overview",
+    status: "Capability status snapshot",
   } as const;
   const originalFetch = globalThis.fetch;
 
@@ -574,6 +589,348 @@ test("contact delivery preserves each allowlisted request source in the provider
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("security contact delivery validates required fields and rejects inherited allowlist keys", async () => {
+  const originalFetch = globalThis.fetch;
+  let providerPayload:
+    | { subject?: string; text?: string; html?: string; reply_to?: string }
+    | undefined;
+  let providerCalls = 0;
+  const validPayload: Record<string, unknown> = {
+    intent: "security",
+    name: "Synthetic Procurement Lead",
+    email: "procurement@example.invalid",
+    clinicName: "Synthetic Procurement Clinic",
+    role: "Procurement lead",
+    requestType: "security-questionnaire",
+    timeline: "1-2-weeks",
+    message: "Synthetic security-review notes; no patient data.",
+    sourcePage: "security",
+  };
+  const env = {
+    RESEND_API_KEY: "re_synthetic_test_key",
+    CONTACT_INBOX: "inbox@example.invalid",
+    CONTACT_FROM: "sender@example.invalid",
+  };
+  const postContact = (payload: Record<string, unknown>) =>
+    onRequestPost({
+      request: new Request("https://oralstack.example/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      }),
+      env,
+      waitUntil: () => undefined,
+    });
+
+  try {
+    globalThis.fetch = async (_input, init) => {
+      providerCalls += 1;
+      providerPayload = JSON.parse(String(init?.body)) as {
+        subject?: string;
+        text?: string;
+        html?: string;
+        reply_to?: string;
+      };
+      return Response.json({ id: `synthetic-provider-message-${providerCalls}` });
+    };
+
+    const accepted = await postContact(validPayload);
+    expect(accepted.status).toBe(200);
+    expect(providerCalls).toBe(1);
+    expect(providerPayload).toEqual(
+      expect.objectContaining({
+        subject: "[oralstack contact] Security review request — Synthetic Procurement Lead",
+        reply_to: "procurement@example.invalid",
+      }),
+    );
+    expect(providerPayload?.text).toContain("Request source: Security & compliance overview");
+    expect(providerPayload?.text).toContain("Role: Procurement lead");
+    expect(providerPayload?.text).toContain("Clinic: Synthetic Procurement Clinic");
+    expect(providerPayload?.text).toContain("Security review request: Security questionnaire");
+    expect(providerPayload?.text).toContain("Timeline: 1-2-weeks");
+    expect(providerPayload?.text).toContain("Synthetic security-review notes; no patient data.");
+
+    const invalidRequiredFields = [
+      { field: "name", value: "x", message: "Please enter your name." },
+      { field: "email", value: "not-an-email", message: "Please enter a valid email." },
+      {
+        field: "clinicName",
+        value: undefined,
+        message: "Please tell us your organization or clinic name.",
+      },
+      {
+        field: "role",
+        value: undefined,
+        message: "Please tell us your role or team.",
+      },
+      {
+        field: "requestType",
+        value: undefined,
+        message: "Please choose what your review needs.",
+      },
+      {
+        field: "timeline",
+        value: undefined,
+        message: "Please choose a review timeline.",
+      },
+      {
+        field: "requestType",
+        value: "constructor",
+        message: "Please choose what your review needs.",
+      },
+      {
+        field: "requestType",
+        value: "__proto__",
+        message: "Please choose what your review needs.",
+      },
+    ] as const;
+
+    for (const invalid of invalidRequiredFields) {
+      const response = await postContact({ ...validPayload, [invalid.field]: invalid.value });
+      expect(response.status, `${invalid.field}=${String(invalid.value)}`).toBe(400);
+      expect(await response.json()).toEqual({ ok: false, message: invalid.message });
+      expect(providerCalls, `provider called for ${invalid.field}=${String(invalid.value)}`).toBe(
+        1,
+      );
+    }
+
+    for (const inheritedSourceKey of ["constructor", "__proto__"] as const) {
+      providerPayload = undefined;
+      const callsBeforeRequest = providerCalls;
+      const response = await postContact({
+        ...validPayload,
+        sourcePage: inheritedSourceKey,
+      });
+      expect(response.status).toBe(200);
+      expect(providerCalls).toBe(callsBeforeRequest + 1);
+      expect(providerPayload).toBeDefined();
+      const inheritedSourceText = (providerPayload as { text?: string } | undefined)?.text;
+      expect(inheritedSourceText).not.toContain("Request source:");
+      expect(inheritedSourceText).not.toContain(inheritedSourceKey);
+    }
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("security, status, and pricing preserve procurement truth and request context", async ({
+  page,
+}) => {
+  await page.goto("/security/", { waitUntil: "networkidle" });
+
+  const securityActions = page.getByTestId("security-trust-actions");
+  const securityRequest = securityActions.getByRole("link", { name: "Request security review" });
+  await expectEarlyAction(page, securityRequest);
+  await expect(securityRequest).toHaveAttribute(
+    "href",
+    "/contact/?intent=security&source=security&request=security-questionnaire#request",
+  );
+  await expect(
+    securityActions.getByRole("link", { name: "View capability snapshot" }),
+  ).toHaveAttribute("href", "/status");
+  await expect(page.getByText("Through 6 August 2026", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("CE-HIMS, SOC 2 and ISO 27001 not held", { exact: true }),
+  ).toBeVisible();
+  await expect(page.locator("main")).toContainText(
+    "the latest recorded production-flag snapshot is dated 20 July 2026",
+  );
+  await expect(page.locator("main")).toContainText(
+    "Deployment details must be reconfirmed during procurement",
+  );
+  expect(await page.locator("main").textContent()).toContain(
+    "It is not presented as a live telemetry or uptime monitor.",
+  );
+  expect(
+    await page.locator("main a[href='mailto:security@oralstack.com']").count(),
+  ).toBeGreaterThan(0);
+
+  const securityDocumentRoutes = [
+    {
+      name: /^Product agreement/,
+      href: "/contact/?intent=security&source=security&request=product-agreement#request",
+    },
+    {
+      name: /^Data processing terms/,
+      href: "/contact/?intent=security&source=security&request=data-processing-terms#request",
+    },
+    {
+      name: /^Security evidence pack/,
+      href: "/contact/?intent=security&source=security&request=evidence-pack#request",
+    },
+    {
+      name: /^Deployment-specific subprocessor information/,
+      href: "/contact/?intent=security&source=security&request=subprocessor-information#request",
+    },
+  ] as const;
+  for (const documentRoute of securityDocumentRoutes) {
+    const documentLinks = page.locator(`main a[href="${documentRoute.href}"]`);
+    expect(await documentLinks.count(), String(documentRoute.name)).toBeGreaterThan(0);
+  }
+
+  await securityRequest.click();
+  await expect(page).toHaveURL(
+    /\/contact\/\?intent=security&source=security&request=security-questionnaire#request$/,
+  );
+  await expect(page.getByRole("tab", { name: "Security review" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Security & compliance overview",
+  );
+  await expect(page.getByTestId("request-context")).toContainText("Repository evidence is dated");
+  await expect(page.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+
+  await page.goto("/status/", { waitUntil: "networkidle" });
+  const statusActions = page.getByTestId("status-trust-actions");
+  const statusRequest = statusActions.getByRole("link", {
+    name: "Request current confirmation",
+  });
+  await expectEarlyAction(page, statusRequest);
+  await expect(statusRequest).toHaveAttribute(
+    "href",
+    "/contact/?intent=security&source=status&request=deployment-status#request",
+  );
+  await expect(
+    statusActions.getByText("Evidence reviewed, not live-monitored", { exact: true }),
+  ).toBeVisible();
+  await expect(statusActions).toContainText("Source reviewed through 6 August 2026");
+  await expect(statusActions).toContainText("production-flag snapshot recorded 20 July 2026");
+  await expect(statusActions).toContainText("This page has no automated uptime feed");
+
+  await statusRequest.click();
+  await expect(page).toHaveURL(
+    /\/contact\/\?intent=security&source=status&request=deployment-status#request$/,
+  );
+  await expect(page.getByRole("tab", { name: "Security review" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Capability status snapshot",
+  );
+  await expect(page.getByTestId("request-context")).toContainText("not a live uptime feed");
+  await expect(page.getByLabel("What do you need?")).toHaveValue("deployment-status");
+
+  await page.goto("/pricing/", { waitUntil: "networkidle" });
+  const pricingSecurityReview = page.getByRole("link", { name: "the security review form" });
+  await expect(pricingSecurityReview).toHaveAttribute(
+    "href",
+    "/contact/?intent=security&source=pricing&request=product-agreement#request",
+  );
+  await pricingSecurityReview.click();
+  await expect(page).toHaveURL(
+    /\/contact\/\?intent=security&source=pricing&request=product-agreement#request$/,
+  );
+  await expect(page.getByRole("tab", { name: "Security review" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(page.getByTestId("request-context")).toContainText("Continuing from Pilot pricing");
+  await expect(page.getByLabel("What do you need?")).toHaveValue("product-agreement");
+});
+
+test("security review submits the selected source and provider-ready fields once", async ({
+  page,
+}) => {
+  let requestCount = 0;
+  let reviewPayload: Record<string, string> | undefined;
+  await page.route("**/api/contact", async (route) => {
+    requestCount += 1;
+    reviewPayload = route.request().postDataJSON() as Record<string, string>;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ok: true,
+        message: "Security review request received for this test.",
+      }),
+    });
+  });
+
+  await page.goto(
+    "/contact/?intent=security&source=security&request=security-questionnaire#request",
+    { waitUntil: "networkidle" },
+  );
+  const form = page.locator("#contact-panel-security form");
+  await expect(page.getByRole("tab", { name: "Security review" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(form.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+  await form.getByLabel("Your name").fill("Synthetic Security Reviewer");
+  await form.getByLabel("Work email").fill("security.reviewer@example.invalid");
+  await form.getByLabel("Organization / clinic").fill("Synthetic Review Clinic");
+  await form.getByLabel("Your role / team").fill("Security and procurement");
+  await form.getByLabel("Review timeline").selectOption("1-2-weeks");
+  await form
+    .getByLabel("Scope or format notes (optional)")
+    .fill("Synthetic questionnaire scope; no patient data or security findings.");
+  await form.getByRole("button", { name: "Request security review" }).click();
+
+  const status = page.locator("#contact-panel-security").getByRole("status");
+  await expect(status).toBeFocused();
+  await expect(status).toContainText("Security review request received for this test.");
+  expect(requestCount).toBe(1);
+  expect(reviewPayload).toEqual(
+    expect.objectContaining({
+      intent: "security",
+      sourcePage: "security",
+      name: "Synthetic Security Reviewer",
+      email: "security.reviewer@example.invalid",
+      clinicName: "Synthetic Review Clinic",
+      role: "Security and procurement",
+      requestType: "security-questionnaire",
+      timeline: "1-2-weeks",
+      message: "Synthetic questionnaire scope; no patient data or security findings.",
+    }),
+  );
+
+  await page.unroute("**/api/contact");
+  await page.route("**/api/contact", async (route) => {
+    requestCount += 1;
+    await route.fulfill({
+      status: 502,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ok: false,
+        message: "Security review delivery unavailable for this test.",
+      }),
+    });
+  });
+  await page.reload({ waitUntil: "networkidle" });
+
+  const retryForm = page.locator("#contact-panel-security form");
+  await expect(retryForm.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+  await retryForm.getByLabel("Your name").fill("Synthetic Retry Reviewer");
+  await retryForm.getByLabel("Work email").fill("security.retry@example.invalid");
+  await retryForm.getByLabel("Organization / clinic").fill("Synthetic Retry Clinic");
+  await retryForm.getByLabel("Your role / team").fill("Security retry owner");
+  await retryForm.getByLabel("Review timeline").selectOption("this-month");
+  await retryForm
+    .getByLabel("Scope or format notes (optional)")
+    .fill("Synthetic retry scope; no patient data or security findings.");
+  await retryForm.getByRole("button", { name: "Request security review" }).click();
+
+  const alert = retryForm.getByRole("alert");
+  await expect(alert).toBeFocused();
+  await expect(alert).toContainText("Security review delivery unavailable for this test.");
+  await expect(
+    alert.getByRole("link", { name: "Email security@oralstack.com instead" }),
+  ).toHaveAttribute("href", "mailto:security@oralstack.com");
+  expect(requestCount).toBe(2);
+  await expect(retryForm.getByLabel("Your name")).toHaveValue("Synthetic Retry Reviewer");
+  await expect(retryForm.getByLabel("Work email")).toHaveValue("security.retry@example.invalid");
+  await expect(retryForm.getByLabel("Organization / clinic")).toHaveValue("Synthetic Retry Clinic");
+  await expect(retryForm.getByLabel("Your role / team")).toHaveValue("Security retry owner");
+  await expect(retryForm.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+  await expect(retryForm.getByLabel("Review timeline")).toHaveValue("this-month");
+  await expect(retryForm.getByLabel("Scope or format notes (optional)")).toHaveValue(
+    "Synthetic retry scope; no patient data or security findings.",
+  );
 });
 
 test("customers page presents one named historical pilot and contextual request paths", async ({
@@ -686,26 +1043,39 @@ test("DFI evidence carries qualified context into demo and pilot requests", asyn
 test("contact tabs keep keyboard focus visible and below the sticky navigation", async ({
   page,
 }) => {
-  await page.goto("/contact/?intent=pilot&source=dfi-synergy#request", {
-    waitUntil: "networkidle",
-  });
+  await page.goto(
+    "/contact/?intent=security&source=security&request=security-questionnaire#request",
+    {
+      waitUntil: "networkidle",
+    },
+  );
 
   const questionTab = page.getByRole("tab", { name: "Quick question" });
   const migrationTab = page.getByRole("tab", { name: "Connection & rollout" });
   const pilotTab = page.getByRole("tab", { name: "Pilot proposal" });
-  await pilotTab.focus();
-  await pilotTab.press("ArrowLeft");
-  await expect(migrationTab).toBeFocused();
-  await expect(migrationTab).toHaveAttribute("aria-selected", "true");
-  await migrationTab.press("Home");
+  const securityTab = page.getByRole("tab", { name: "Security review" });
+  await expect(page.getByRole("tab")).toHaveCount(4);
+  await expect(securityTab).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+
+  await securityTab.focus();
+  await securityTab.press("ArrowRight");
+  await expect(questionTab).toBeFocused();
+  await expect(questionTab).toHaveAttribute("aria-selected", "true");
+  await questionTab.press("ArrowLeft");
+  await expect(securityTab).toBeFocused();
+  await expect(securityTab).toHaveAttribute("aria-selected", "true");
+  await securityTab.press("Home");
   await expect(questionTab).toBeFocused();
   await expect(questionTab).toHaveAttribute("aria-selected", "true");
   await questionTab.press("End");
-  await expect(pilotTab).toBeFocused();
-  await expect(pilotTab).toHaveAttribute("aria-selected", "true");
+  await expect(securityTab).toBeFocused();
+  await expect(securityTab).toHaveAttribute("aria-selected", "true");
+  await expect(migrationTab).toHaveAttribute("aria-selected", "false");
+  await expect(pilotTab).toHaveAttribute("aria-selected", "false");
 
-  await pilotTab.press("Tab");
-  const panel = page.getByRole("tabpanel", { name: "Pilot proposal" });
+  await securityTab.press("Tab");
+  const panel = page.getByRole("tabpanel", { name: "Security review" });
   await expect(panel).toBeFocused();
   const hasVisibleFocus = await panel.evaluate((element) => {
     const style = getComputedStyle(element);
@@ -727,22 +1097,26 @@ test("contact tabs keep keyboard focus visible and below the sticky navigation",
 });
 
 test("contact tabs retain drafts and source context through browser history", async ({ page }) => {
-  await page.goto("/contact/?intent=question&source=integrations#request", {
-    waitUntil: "networkidle",
-  });
+  await page.goto(
+    "/contact/?intent=question&source=security&request=security-questionnaire#request",
+    { waitUntil: "networkidle" },
+  );
 
   const questionTab = page.getByRole("tab", { name: "Quick question" });
   const migrationTab = page.getByRole("tab", { name: "Connection & rollout" });
   const pilotTab = page.getByRole("tab", { name: "Pilot proposal" });
+  const securityTab = page.getByRole("tab", { name: "Security review" });
   const questionPanel = page.locator("#contact-panel-question");
   const migrationPanel = page.locator("#contact-panel-migration");
   const pilotPanel = page.locator("#contact-panel-pilot");
-  await expect(page.locator("[role='tabpanel']")).toHaveCount(3);
+  const securityPanel = page.locator("#contact-panel-security");
+  await expect(page.locator("[role='tabpanel']")).toHaveCount(4);
   await expect(questionPanel).toBeVisible();
   await expect(migrationPanel).toBeHidden();
   await expect(pilotPanel).toBeHidden();
+  await expect(securityPanel).toBeHidden();
   await expect(page.getByTestId("request-context")).toContainText(
-    "Continuing from Plato integration guide",
+    "Continuing from Security & compliance overview",
   );
 
   await questionPanel.getByLabel(/Your name/).fill("Question Draft Owner");
@@ -756,7 +1130,7 @@ test("contact tabs retain drafts and source context through browser history", as
   await expect(questionPanel).toBeHidden();
   await expect(migrationPanel).toBeVisible();
   await expect(page.getByTestId("request-context")).toContainText(
-    "Continuing from Plato integration guide",
+    "Continuing from Security & compliance overview",
   );
   await migrationPanel.getByLabel(/Your name/).fill("Migration Draft Owner");
   await migrationPanel.getByLabel(/Email/).fill("migration.draft@example.invalid");
@@ -771,6 +1145,24 @@ test("contact tabs retain drafts and source context through browser history", as
   await pilotPanel.getByLabel(/Your name/).fill("Pilot Draft Owner");
   await pilotPanel.getByLabel("Clinic / group name").fill("Synthetic Pilot Group");
   await pilotPanel.getByLabel("Number of locations").fill("2");
+
+  await securityTab.click();
+  await expect(securityTab).toHaveAttribute("aria-selected", "true");
+  await expect(pilotPanel).toBeHidden();
+  await expect(securityPanel).toBeVisible();
+  await securityPanel.getByLabel("Your name").fill("Security Draft Owner");
+  await securityPanel.getByLabel("Work email").fill("security.draft@example.invalid");
+  await securityPanel.getByLabel("Organization / clinic").fill("Synthetic Review Clinic");
+  await securityPanel.getByLabel("Your role / team").fill("Security reviewer");
+  await expect(securityPanel.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+  await securityPanel.getByLabel("Review timeline").selectOption("this-month");
+  await securityPanel
+    .getByLabel("Scope or format notes (optional)")
+    .fill("Synthetic draft scope; no patient data or security findings.");
+
+  await page.goBack();
+  await expect(pilotTab).toHaveAttribute("aria-selected", "true");
+  await expect(pilotPanel).toBeVisible();
 
   await page.goBack();
   await expect(migrationTab).toHaveAttribute("aria-selected", "true");
@@ -794,18 +1186,41 @@ test("contact tabs retain drafts and source context through browser history", as
   await expect(pilotPanel.getByLabel(/Your name/)).toHaveValue("Pilot Draft Owner");
   await expect(pilotPanel.getByLabel("Clinic / group name")).toHaveValue("Synthetic Pilot Group");
   await expect(pilotPanel.getByLabel("Number of locations")).toHaveValue("2");
+
+  await page.goForward();
+  await expect(securityTab).toHaveAttribute("aria-selected", "true");
+  await expect(securityPanel).toBeVisible();
+  await expect(securityPanel.getByLabel("Your name")).toHaveValue("Security Draft Owner");
+  await expect(securityPanel.getByLabel("Work email")).toHaveValue(
+    "security.draft@example.invalid",
+  );
+  await expect(securityPanel.getByLabel("Organization / clinic")).toHaveValue(
+    "Synthetic Review Clinic",
+  );
+  await expect(securityPanel.getByLabel("Your role / team")).toHaveValue("Security reviewer");
+  await expect(securityPanel.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+  await expect(securityPanel.getByLabel("Review timeline")).toHaveValue("this-month");
+  await expect(securityPanel.getByLabel("Scope or format notes (optional)")).toHaveValue(
+    "Synthetic draft scope; no patient data or security findings.",
+  );
   await expect(page.getByTestId("request-context")).toContainText(
-    "Continuing from Plato integration guide",
+    "Continuing from Security & compliance overview",
   );
   await expect
     .poll(() =>
       page.evaluate(() => ({
         intent: new URL(window.location.href).searchParams.get("intent"),
         source: new URL(window.location.href).searchParams.get("source"),
+        request: new URL(window.location.href).searchParams.get("request"),
         hash: window.location.hash,
       })),
     )
-    .toEqual({ intent: "pilot", source: "integrations", hash: "#request" });
+    .toEqual({
+      intent: "security",
+      source: "security",
+      request: "security-questionnaire",
+      hash: "#request",
+    });
 });
 
 test("request feedback focuses success and error states without losing form values", async ({
@@ -870,13 +1285,19 @@ test("request feedback focuses success and error states without losing form valu
   await expect(preservedForm.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
 });
 
-test("evidence request journey reflows without horizontal overflow at 320px", async ({ page }) => {
+test("evidence and security request journeys reflow without horizontal overflow at 320px", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 320, height: 800 });
   const paths = [
     "/customers/",
     "/customers/dfi-synergy/",
     "/book-a-demo/?focus=run-the-day&source=dfi-synergy",
     "/contact/?intent=pilot&source=dfi-synergy#request",
+    "/security/",
+    "/status/",
+    "/pricing/",
+    "/contact/?intent=security&source=security&request=security-questionnaire#request",
   ];
 
   for (const path of paths) {
@@ -885,6 +1306,23 @@ test("evidence request journey reflows without horizontal overflow at 320px", as
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
       `horizontal overflow at 320px on ${path}`,
     ).toBe(true);
+
+    if (path === "/security/") {
+      await expectEarlyAction(
+        page,
+        page.getByTestId("security-trust-actions").getByRole("link", {
+          name: "Request security review",
+        }),
+      );
+    }
+    if (path === "/status/") {
+      await expectEarlyAction(
+        page,
+        page.getByTestId("status-trust-actions").getByRole("link", {
+          name: "Request current confirmation",
+        }),
+      );
+    }
   }
 });
 
@@ -1552,6 +1990,52 @@ for (const region of EVIDENCE_REQUEST_SNAPSHOT_REGIONS) {
     });
   });
 }
+
+const TRUST_REVIEW_SNAPSHOT_REGIONS = [
+  {
+    path: "/security/",
+    testId: "security-trust-actions",
+    snapshot: "security-trust-actions.png",
+  },
+  {
+    path: "/status/",
+    testId: "status-trust-actions",
+    snapshot: "status-trust-actions.png",
+  },
+] as const;
+
+for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
+  test(`${region.path} trust action region has focused visual regression coverage`, async ({
+    page,
+  }) => {
+    await page.goto(region.path, { waitUntil: "networkidle" });
+    await page.addStyleTag({
+      content:
+        "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+    });
+
+    await expect(page.getByTestId(region.testId)).toHaveScreenshot(region.snapshot, {
+      animations: "disabled",
+    });
+  });
+}
+
+test("security review form has focused visual regression coverage", async ({ page }) => {
+  await page.goto(
+    "/contact/?intent=security&source=security&request=security-questionnaire#request",
+    { waitUntil: "networkidle" },
+  );
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+
+  const reviewForm = page.locator("#contact-panel-security form");
+  await expect(reviewForm.getByLabel("What do you need?")).toHaveValue("security-questionnaire");
+  await expect(reviewForm).toHaveScreenshot("security-review-form.png", {
+    animations: "disabled",
+  });
+});
 
 test("source-aware demo form has focused visual regression coverage", async ({ page }) => {
   await page.goto("/book-a-demo/?focus=run-the-day&source=dfi-synergy", {

@@ -18,6 +18,17 @@ export const WORKFLOW_OPTIONS = [
   { value: "not-sure", label: "Not sure yet" },
 ];
 
+export const SECURITY_REQUEST_OPTIONS = [
+  { value: "security-questionnaire", label: "Security questionnaire" },
+  { value: "controls-walkthrough", label: "Controls walkthrough" },
+  { value: "evidence-pack", label: "Current security evidence pack" },
+  { value: "product-agreement", label: "Product agreement" },
+  { value: "data-processing-terms", label: "Data processing terms" },
+  { value: "subprocessor-information", label: "Deployment-specific subprocessors" },
+  { value: "deployment-status", label: "Current deployment confirmation" },
+  { value: "other", label: "Another procurement question" },
+];
+
 export const REQUEST_SOURCES = {
   "dfi-synergy": {
     label: "DFI Synergy · April 2026 pilot",
@@ -44,6 +55,16 @@ export const REQUEST_SOURCES = {
     context:
       "Plato remains the source of truth; connector readiness and reviewed writeback paths are confirmed for your clinic.",
   },
+  security: {
+    label: "Security & compliance overview",
+    context:
+      "Repository evidence is dated; deployment-specific controls, processors, and open readiness work are reconfirmed during review.",
+  },
+  status: {
+    label: "Capability status snapshot",
+    context:
+      "The public snapshot is dated and is not a live uptime feed; current deployment state still needs direct confirmation.",
+  },
 } as const;
 
 export type RequestSourceId = keyof typeof REQUEST_SOURCES;
@@ -54,7 +75,12 @@ export function getRequestSourceId(value: string | null): RequestSourceId | null
 }
 
 const WORKFLOW_VALUES = new Set(WORKFLOW_OPTIONS.map((option) => option.value));
+const SECURITY_REQUEST_VALUES = new Set(SECURITY_REQUEST_OPTIONS.map((option) => option.value));
 
 export function getWorkflowOptionValue(value: string | null): string | undefined {
   return value && WORKFLOW_VALUES.has(value) ? value : undefined;
+}
+
+export function getSecurityRequestOptionValue(value: string | null): string | undefined {
+  return value && SECURITY_REQUEST_VALUES.has(value) ? value : undefined;
 }

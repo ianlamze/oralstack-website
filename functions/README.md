@@ -26,10 +26,10 @@ Routes map directly from their file paths under `functions/` (Cloudflare Pages c
 `/api/contact` — JSON. Canonical payload:
 
 ```ts
-{ intent: "question" | "migration" | "pilot" | "demo",
+{ intent: "question" | "migration" | "pilot" | "security" | "demo",
   name, email,                      // always required
   message?,                         // required for "question" (≥10 chars)
-  clinicName?, currentPms?, workflowGoal?, numChairs?, timeline?,
+  clinicName?, currentPms?, workflowGoal?, requestType?, numChairs?, timeline?,
   numLocations?, numChairsTotal?, startDate?,
   role?, location?, providers?, preferredTimes?, focus?, sourcePage?,
   website?                          // honeypot — must be empty
@@ -48,6 +48,7 @@ Per-intent required fields (see `validate()` in `api/contact.ts`):
   the endpoint accepts legacy clients without it during the compatibility window.
 - `pilot`: `clinicName`, `numLocations` (whole number, minimum 1). The current UI also requires
   `currentPms` and `workflowGoal`; the endpoint keeps those optional for legacy clients.
+- `security`: `clinicName`, `role`, an allowlisted `requestType`, `timeline`.
 - `demo`: `clinicName`, `location`.
 
 `/api/event` — JSON. The client sends a deliberately small payload:
