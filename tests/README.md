@@ -20,9 +20,9 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 
 ## What's not covered
 
-- **Successful form delivery.** Required-field validation, workflow-to-demo context,
-  Plato-to-assessment handoff, and mobile navigation interactions are covered, but
-  the Cloudflare contact endpoint and inbox delivery are not.
+- **Successful inbox delivery.** Required-field validation, workflow-to-demo context,
+  Plato-to-assessment handoff, pricing-to-pilot payload mapping, and mobile navigation
+  interactions are covered, but the Cloudflare contact endpoint and inbox delivery are not.
 - **Cross-browser.** Mobile uses Chromium with an iPhone 13 viewport, not real
   WebKit. Adequate for a static site without Safari-specific JS; switch to
   webkit if a Safari-specific bug surfaces.
@@ -38,10 +38,10 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 6 | 6 | **12** |
+| Journey and interaction checks | 7 | 7 | **14** |
 | Focused component snapshots | 2 | 2 | **4** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **88** | **88** | **176** |
+| **Total** | **89** | **89** | **178** |
 
 18 baseline PNGs live in [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/).
 
@@ -56,7 +56,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 176 tests across desktop + mobile
+npm run test:smoke    # 178 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when

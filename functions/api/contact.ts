@@ -150,6 +150,10 @@ function validate(p: ContactPayload): string | null {
   if (p.intent === "pilot") {
     if (!p.clinicName) return "Please tell us your clinic / group name.";
     if (!p.numLocations) return "Please tell us how many locations.";
+    const locationCount = Number(p.numLocations);
+    if (!Number.isInteger(locationCount) || locationCount < 1) {
+      return "Please enter at least one whole location.";
+    }
   }
   if (p.intent === "demo") {
     if (!p.clinicName) return "Please tell us your clinic name.";
