@@ -2010,7 +2010,7 @@ for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
   }) => {
     const viewport = page.viewportSize();
     if (viewport && viewport.width < 640) {
-      await page.setViewportSize({ width: viewport.width, height: 1280 });
+      await page.setViewportSize({ width: viewport.width, height: 2200 });
     }
     await page.goto(region.path, { waitUntil: "networkidle" });
     await page.addStyleTag({
@@ -2027,7 +2027,7 @@ for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
 test("security review form has focused visual regression coverage", async ({ page }) => {
   const viewport = page.viewportSize();
   if (viewport && viewport.width < 640) {
-    await page.setViewportSize({ width: viewport.width, height: 1280 });
+    await page.setViewportSize({ width: viewport.width, height: 2200 });
   }
   await page.goto(
     "/contact/?intent=security&source=security&request=security-questionnaire#request",
