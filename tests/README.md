@@ -34,6 +34,9 @@ The standalone-first release also verifies that:
   source through the walkthrough and pilot-request handoffs.
 - Changelog keeps current public and source-reviewed notes date-ordered, closes historical
   prototypes in a keyboard-operable archive, and preserves its source into the walkthrough.
+- FAQ starts with four clinic decisions, keeps the standalone answer visible, exposes 19 more
+  answers through keyboard-operable disclosures, and preserves its source and exploratory start
+  mode into the walkthrough.
 
 ## What's not covered
 
@@ -65,12 +68,12 @@ The standalone-first release also verifies that:
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 29 | 29 | **58** |
-| Focused component snapshots | 18 | 18 | **36** |
+| Journey and interaction checks | 30 | 30 | **60** |
+| Focused component snapshots | 19 | 19 | **38** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **128** | **128** | **256** |
+| **Total** | **130** | **130** | **260** |
 
-The complete suite expects 50 baseline PNGs in
+The complete suite expects 52 baseline PNGs in
 [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/). Generate new baselines on Linux so
 the committed images match CI rendering. The security trust actions, status trust actions, and
 security review form account for six desktop/mobile baselines. The standalone-first suite adds four
@@ -80,7 +83,9 @@ not generate those PNGs locally. The About accountability update adds
 `about-accountability-{desktop,mobile}.png`; its existing full-page baselines must also be reviewed
 after they are regenerated in the authoritative Linux snapshot workflow. The Changelog release
 record adds `changelog-release-record-{desktop,mobile}.png`; this repository update does not
-generate those PNGs locally.
+generate those PNGs locally. The FAQ evaluation journey adds
+`faq-evaluation-journey-{desktop,mobile}.png`; this repository update does not generate those PNGs
+locally.
 
 ## Viewports
 
@@ -93,7 +98,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 256 tests across desktop + mobile
+npm run test:smoke    # 260 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when

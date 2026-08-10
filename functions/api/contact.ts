@@ -128,6 +128,7 @@ const SOURCE_LABELS: Record<string, string> = {
   status: "Capability status snapshot",
   about: "About Oralstack",
   changelog: "Product updates and rollout notes",
+  faq: "FAQ evaluation guide",
 };
 
 const START_MODE_LABELS: Record<string, string> = {

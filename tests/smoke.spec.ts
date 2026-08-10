@@ -715,6 +715,7 @@ test("contact delivery preserves each allowlisted request source in the provider
     security: "Security & compliance overview",
     status: "Capability status snapshot",
     changelog: "Product updates and rollout notes",
+    faq: "FAQ evaluation guide",
   } as const;
   const originalFetch = globalThis.fetch;
 
@@ -1573,6 +1574,104 @@ test("about explains accountability and preserves the walkthrough context", asyn
   await expect(page.getByTestId("request-context")).toContainText(
     "Continuing from About Oralstack",
   );
+});
+
+test("faq routes clinic evaluation decisions into accessible answers and a contextual walkthrough", async ({
+  page,
+}) => {
+  await page.goto("/faq/", { waitUntil: "networkidle" });
+
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Answers for the clinic decision in front of you.",
+    }),
+  ).toBeVisible();
+
+  const startHere = page.getByTestId("faq-start-here");
+  const alwaysVisibleQuestion = startHere.getByRole("heading", {
+    level: 2,
+    name: "Can Oralstack run without Plato?",
+  });
+  const questionDetails = page.locator(
+    'main section[aria-label="Frequently asked questions"] details',
+  );
+  await expect(alwaysVisibleQuestion).toBeVisible();
+  await expect(
+    startHere.getByText("Yes, through a clinic-configured guided pilot", { exact: false }),
+  ).toBeVisible();
+  await expect(questionDetails).toHaveCount(19);
+  expect((await alwaysVisibleQuestion.count()) + (await questionDetails.count())).toBe(20);
+  await expect(
+    page.locator('main section[aria-label="Frequently asked questions"] details[open]'),
+  ).toHaveCount(0);
+
+  const decisionNav = page.getByRole("navigation", {
+    name: "Go straight to the evidence you need.",
+  });
+  const decisionAnchors = [
+    "commercial-fit",
+    "setup-records",
+    "clinical-connections",
+    "security-continuity",
+  ] as const;
+  const decisionLinks = decisionNav.locator('a[href^="#"]');
+  await expect(decisionLinks).toHaveCount(4);
+  for (const anchor of decisionAnchors) {
+    await expect(decisionNav.locator(`a[href="#${anchor}"]`)).toHaveCount(1);
+    await expect(page.locator(`section#${anchor}`)).toHaveCount(1);
+  }
+
+  const heroActions = page.getByTestId("faq-hero-actions");
+  const walkthrough = heroActions.getByRole("link", { name: "Book a clinic walkthrough" });
+  const question = heroActions.getByRole("link", { name: "Ask a clinic-specific question" });
+  await expect(walkthrough).toHaveAttribute("href", "/book-a-demo/?source=faq&start=exploring");
+  await expect(question).toHaveAttribute("href", "/contact/?intent=question&source=faq#request");
+  await expectFirstViewportAction(page, walkthrough);
+  for (const action of [walkthrough, question]) {
+    const box = await action.boundingBox();
+    expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+  }
+
+  const summaries = questionDetails.locator("summary");
+  const summaryHeights = await summaries.evaluateAll((elements) =>
+    elements.map((element) => element.getBoundingClientRect().height),
+  );
+  expect(summaryHeights).toHaveLength(19);
+  expect(summaryHeights.every((height) => height >= 44)).toBe(true);
+
+  const firstDetails = questionDetails.first();
+  const firstSummary = firstDetails.locator("summary");
+  await firstSummary.focus();
+  await firstSummary.press("Enter");
+  await expect(firstDetails).toHaveAttribute("open", "");
+  await firstSummary.press("Space");
+  await expect(firstDetails).not.toHaveAttribute("open", "");
+
+  await walkthrough.click();
+  await expect(page).toHaveURL(/\/book-a-demo\/\?source=faq&start=exploring$/);
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from FAQ evaluation guide",
+  );
+  await expect(page.getByLabel("How would you like to start?")).toHaveValue("exploring");
+
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/faq/", { waitUntil: "networkidle" });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.addStyleTag({ content: "html { scroll-behavior: auto !important; }" });
+  await page
+    .getByRole("navigation", { name: "Go straight to the evidence you need." })
+    .locator('a[href="#commercial-fit"]')
+    .click();
+  await expect(page).toHaveURL(/\/faq\/#commercial-fit$/);
+  const targetHeading = page.locator("#commercial-fit-heading");
+  await expect(targetHeading).toBeInViewport();
+  const targetBox = await targetHeading.boundingBox();
+  const stickyHeaderBox = await page.locator("body > header").boundingBox();
+  expect(targetBox?.y ?? 0).toBeGreaterThanOrEqual(stickyHeaderBox?.height ?? 65);
 });
 
 test("changelog separates current releases from the archive and preserves walkthrough context", async ({
@@ -2462,6 +2561,27 @@ test("changelog release record has focused visual regression coverage", async ({
 
   await expect(page.getByTestId("changelog-release-record")).toHaveScreenshot(
     "changelog-release-record.png",
+    {
+      animations: "disabled",
+      maxDiffPixelRatio: 0,
+    },
+  );
+});
+
+test("faq evaluation journey has focused visual regression coverage", async ({ page }) => {
+  const viewport = page.viewportSize();
+  if (viewport) {
+    await page.setViewportSize({ width: viewport.width, height: 2200 });
+  }
+  await page.goto("/faq/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+  await removeFixedPageChrome(page);
+
+  await expect(page.getByTestId("faq-evaluation-journey")).toHaveScreenshot(
+    "faq-evaluation-journey.png",
     {
       animations: "disabled",
       maxDiffPixelRatio: 0,
