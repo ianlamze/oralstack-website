@@ -41,7 +41,7 @@ export default function PageHeader({
             className="mb-7 rounded-[var(--radius-sm)] shadow-[var(--shadow-1)]"
           />
         )}
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
           {eyebrow}
         </p>
         <h1
@@ -54,7 +54,7 @@ export default function PageHeader({
           {title}
         </h1>
         {lastUpdated && (
-          <p className="mt-4 text-sm text-[var(--color-text-soft)]">Last updated: {lastUpdated}</p>
+          <p className="mt-4 text-sm text-[var(--color-text-muted)]">Last updated: {lastUpdated}</p>
         )}
       </div>
     </Section>
