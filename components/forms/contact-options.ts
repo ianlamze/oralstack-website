@@ -86,6 +86,11 @@ export const REQUEST_SOURCES = {
     context:
       "Standalone use is currently scoped through a guided pilot; clinic workflow, record ownership, roles, setup, and optional connections are reviewed before kickoff.",
   },
+  changelog: {
+    label: "Product updates and rollout notes",
+    context:
+      "Public website changes, source-reviewed application changes, and clinic-setup boundaries are labelled separately; current clinic availability still needs confirmation.",
+  },
 } as const;
 
 export type RequestSourceId = keyof typeof REQUEST_SOURCES;

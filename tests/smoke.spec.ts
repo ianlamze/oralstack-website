@@ -16,7 +16,7 @@ const ROUTES = [
   { path: "/faq/", title: /FAQ/ },
   { path: "/book-a-demo/", title: /demo/i },
   { path: "/contact/", title: /Contact/ },
-  { path: "/changelog/", title: /Changelog/ },
+  { path: "/changelog/", title: /Product updates/ },
   { path: "/security/", title: /Security/ },
   { path: "/status/", title: /Status/ },
   { path: "/accessibility/", title: /Accessibility/ },
@@ -714,6 +714,7 @@ test("contact delivery preserves each allowlisted request source in the provider
     switching: "Switching & setup guide",
     security: "Security & compliance overview",
     status: "Capability status snapshot",
+    changelog: "Product updates and rollout notes",
   } as const;
   const originalFetch = globalThis.fetch;
 
@@ -1574,6 +1575,85 @@ test("about explains accountability and preserves the walkthrough context", asyn
   );
 });
 
+test("changelog separates current releases from the archive and preserves walkthrough context", async ({
+  page,
+}) => {
+  await page.goto("/changelog/", { waitUntil: "networkidle" });
+
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Product changes, with rollout state attached.",
+    }),
+  ).toBeVisible();
+
+  const heroActions = page.getByTestId("changelog-hero-actions");
+  const walkthrough = heroActions.getByRole("link", { name: "Book a clinic walkthrough" });
+  await expect(walkthrough).toHaveAttribute("href", "/book-a-demo/?source=changelog");
+  await expectFirstViewportAction(page, walkthrough);
+  await expect(heroActions.getByRole("link", { name: "Review capability status" })).toHaveAttribute(
+    "href",
+    "/status",
+  );
+
+  const releaseRecord = page.getByTestId("changelog-release-record");
+  await expect(
+    releaseRecord.getByRole("heading", {
+      level: 2,
+      name: "Standalone-first setup and an accountable clinic rollout.",
+    }),
+  ).toBeVisible();
+  await expect(releaseRecord.locator('time[datetime="2026-08-10"]')).toHaveCount(1);
+  await expect(releaseRecord.getByText("Public now", { exact: true })).toBeVisible();
+
+  const currentNotes = page.getByTestId("current-release-notes");
+  await expect(currentNotes.getByRole("listitem")).toHaveCount(5);
+  await expect(currentNotes.getByText("Public now", { exact: true })).toHaveCount(4);
+  await expect(currentNotes.getByText("Source reviewed", { exact: true })).toHaveCount(1);
+  await expect(currentNotes.getByRole("listitem").first().locator("time")).toHaveText(
+    "10 Aug 2026",
+  );
+  const currentDates = await currentNotes
+    .locator("time[datetime]")
+    .evaluateAll((times) => times.map((time) => time.getAttribute("datetime") ?? ""));
+  expect(currentDates).toEqual([...currentDates].sort((a, b) => b.localeCompare(a)));
+
+  const history = page.getByTestId("changelog-history");
+  await expect(history).not.toHaveAttribute("open", "");
+  await expect(
+    history.getByText("10 notes from March and April 2026", { exact: false }),
+  ).toBeVisible();
+  await expect(
+    history
+      .locator("h3")
+      .filter({ hasText: "Controlled rollout: DICOM and sensor-bridge evaluation." }),
+  ).toBeHidden();
+  await history.locator("summary").press("Enter");
+  await expect(history).toHaveAttribute("open", "");
+  await expect(history.getByRole("listitem")).toHaveCount(10);
+  const historicalDates = await history
+    .locator("time[datetime]")
+    .evaluateAll((times) => times.map((time) => time.getAttribute("datetime") ?? ""));
+  expect(historicalDates).toEqual([...historicalDates].sort((a, b) => b.localeCompare(a)));
+  expect(historicalDates[0]?.localeCompare(currentDates.at(-1) ?? "")).toBeLessThan(0);
+
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/changelog/", { waitUntil: "networkidle" });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  const mobileWalkthrough = page
+    .getByTestId("changelog-hero-actions")
+    .getByRole("link", { name: "Book a clinic walkthrough" });
+  await expectFirstViewportAction(page, mobileWalkthrough);
+  await mobileWalkthrough.click();
+  await expect(page).toHaveURL(/\/book-a-demo\/\?source=changelog$/);
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Product updates and rollout notes",
+  );
+});
+
 test("evidence and security request journeys reflow without horizontal overflow at 320px", async ({
   page,
 }) => {
@@ -2361,6 +2441,27 @@ test("about accountability has focused visual regression coverage", async ({ pag
 
   await expect(page.getByTestId("about-engagement-model")).toHaveScreenshot(
     "about-accountability.png",
+    {
+      animations: "disabled",
+      maxDiffPixelRatio: 0,
+    },
+  );
+});
+
+test("changelog release record has focused visual regression coverage", async ({ page }) => {
+  const viewport = page.viewportSize();
+  if (viewport) {
+    await page.setViewportSize({ width: viewport.width, height: 2200 });
+  }
+  await page.goto("/changelog/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+  await removeFixedPageChrome(page);
+
+  await expect(page.getByTestId("changelog-release-record")).toHaveScreenshot(
+    "changelog-release-record.png",
     {
       animations: "disabled",
       maxDiffPixelRatio: 0,
