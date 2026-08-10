@@ -2159,7 +2159,7 @@ test("homepage starting paths have focused visual regression coverage", async ({
   await page.goto("/", { waitUntil: "networkidle" });
   await page.addStyleTag({
     content:
-      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+      '*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; } header, a[href="#main-content"] { display: none !important; }',
   });
 
   await expect(page.getByTestId("starting-paths")).toHaveScreenshot("homepage-starting-paths.png", {
@@ -2171,7 +2171,7 @@ test("switching start paths have focused visual regression coverage", async ({ p
   await page.goto("/switching/", { waitUntil: "networkidle" });
   await page.addStyleTag({
     content:
-      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+      '*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; } header, a[href="#main-content"] { display: none !important; }',
   });
 
   const startPaths = page
