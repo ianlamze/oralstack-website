@@ -41,7 +41,7 @@ export default function CustomerEvidence() {
         <div className="grid gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(260px,0.7fr)] md:items-end">
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              Named pilot evidence · April 2026
+              Historical connected-pilot evidence · April 2026
             </p>
             <h2
               id="customer-evidence-heading"
@@ -51,8 +51,9 @@ export default function CustomerEvidence() {
             </h2>
           </div>
           <p className="max-w-[42ch] text-sm leading-relaxed text-[var(--color-text-muted)] md:justify-self-end">
-            A three-chair Singapore clinic piloting appointments, reception and reviewed checkout.
-            These are historical results from that named scope—not a general performance promise.
+            A three-chair Singapore clinic piloted appointments, reception and reviewed checkout
+            while preserving its Plato connection. These results do not evidence standalone adoption
+            or a general performance promise.
           </p>
         </div>
       </AnimateInView>

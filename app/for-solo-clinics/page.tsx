@@ -8,7 +8,7 @@ import AnimateInView from "@/components/motion/AnimateInView";
 export const metadata: Metadata = {
   title: "For one dental clinic",
   description:
-    "Oralstack for independently run dental clinics — a Plato-connected workspace for the clinic day, patient care, reviewed checkout, and operations.",
+    "Oralstack for independently run dental clinics — a guided standalone pilot for the clinic day, patient care, checkout, and operations, with optional connections.",
   alternates: { canonical: "/for-solo-clinics" },
 };
 
@@ -24,8 +24,8 @@ export default function ForSoloClinicsPage() {
       <Section className="pb-16">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           For independently run clinics and small teams moving between the schedule, reception,
-          chairside care, and checkout. Oralstack brings those Plato-connected workflows into one
-          browser-based staff workspace while Plato remains the system of record.
+          chairside care, and checkout. Start Oralstack through a guided standalone pilot, move from
+          paper or another clinic system, or keep Plato connected when that fits the clinic.
         </p>
         <div data-testid="audience-hero-actions" className="mt-7 flex flex-wrap items-center gap-3">
           <a
@@ -60,9 +60,9 @@ export default function ForSoloClinicsPage() {
             </p>
             <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
               Practice managers, owners, dentists, and front-desk leads can evaluate the same
-              questions: what staff can see, what stays in Plato, and which workflow should improve
-              first. The connection, roles, enabled modules, and rollout plan are scoped for each
-              clinic before a pilot starts.
+              questions: which record Oralstack will own, what staff can see, and which workflow
+              should improve first. The start mode, roles, enabled modules, import work, and rollout
+              plan are scoped before a pilot starts.
             </p>
           </div>
         </AnimateInView>
@@ -81,9 +81,9 @@ export default function ForSoloClinicsPage() {
             body="The patient folder links clinical work with visits, billing context, subsidy details, membership, and audit history. Reviewed checkout, receivables, inventory, finance, and clinic insights stay within the configured scope recorded for the clinic."
           />
           <Reason
-            eyebrow="Keep the system of record"
-            title="Plato remains the connected boundary."
-            body="Oralstack reads and extends the existing Plato record through reviewed, status-visible paths. Patient identity, Plato schedule writes, and invoice writeback stay inside those reviewed paths; a local fallback is never described as a delivered writeback."
+            eyebrow="Choose how the clinic starts"
+            title="Use Oralstack as the clinic system or keep Plato connected."
+            body="A guided standalone pilot enables the agreed native record paths for the clinic. A Plato-connected pilot keeps patient identity, schedule writes, and invoice writeback inside reviewed, status-visible connector paths. Record moves and imports are scoped separately in either mode."
           />
         </div>
       </Section>
@@ -104,8 +104,8 @@ export default function ForSoloClinicsPage() {
               </p>
             </div>
             <p className="mt-3 text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-              Pilot scope, clinic connections, enabled modules, and controlled rollouts are recorded
-              in the MSA.{" "}
+              Core pilot scope and standard setup are included. Record migration, bespoke imports,
+              optional connections, and controlled rollouts are recorded separately in the MSA.{" "}
               <a
                 href="/pricing"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -124,14 +124,14 @@ export default function ForSoloClinicsPage() {
           </p>
           <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Onboarding:</span> the Plato
-              connection, clinic scope, roles, and rollout plan are confirmed for each pilot. This
-              page does not promise a full PMS or paper-record migration.{" "}
+              <span className="font-medium text-[var(--color-text)]">Onboarding:</span> choose a
+              new-clinic setup, a reviewed record move, or an optional Plato connection. Clinic
+              scope, roles, data handling, and rollout sequence are confirmed before kickoff.{" "}
               <a
-                href="/workflows"
+                href="/switching"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
               >
-                Current product scope →
+                Switching &amp; setup →
               </a>
             </Bullet>
             <Bullet>
@@ -158,7 +158,8 @@ export default function ForSoloClinicsPage() {
             <Bullet>
               <span className="font-medium text-[var(--color-text)]">Worked example:</span> the
               named April 2026 DFI Synergy pilot moved its front-desk scope onto Oralstack in three
-              days. This is a historical result from that clinic, not a general timeline.{" "}
+              days through a Plato-connected workflow deployment. It is historical evidence from
+              that clinic, not proof of a standalone cutover or a general timeline.{" "}
               <a
                 href="/customers/dfi-synergy"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -177,9 +178,9 @@ export default function ForSoloClinicsPage() {
               Scope the first workflow for your clinic.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              Share your current clinic system and the workflow that should improve first.
-              We&apos;ll use that context to scope the connection, access, and enabled modules for
-              review.
+              Share how you want to start and which workflow should improve first. We&apos;ll use
+              that context to scope record ownership, access, enabled modules, import work, and any
+              optional connection.
             </p>
             <p className="mt-4 text-sm">
               <a

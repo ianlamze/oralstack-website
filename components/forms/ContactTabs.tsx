@@ -15,6 +15,7 @@ import SecurityReviewForm from "./SecurityReviewForm";
 import {
   getRequestSourceId,
   getSecurityRequestOptionValue,
+  getStartModeOptionValue,
   getWorkflowOptionValue,
   REQUEST_SOURCES,
   type RequestSourceId,
@@ -44,12 +45,12 @@ const TABS: TabDef[] = [
   },
   {
     id: "migration",
-    label: "Connection & rollout",
-    eyebrow: "Connection & rollout",
-    title: "Connect Plato or plan a reviewed rollout.",
-    body: "Tell us your current clinic stack and the workflow you want to improve. We'll map connector readiness, record ownership, reviewed changes back to Plato, enabled modules, and anything outside today's product scope.",
+    label: "Switching & setup",
+    eyebrow: "Switching & setup",
+    title: "Plan how your clinic starts with Oralstack.",
+    body: "Start fresh, move from paper or another clinic system, or keep Plato connected. We'll map record ownership, setup, import review, enabled modules, and anything outside today's pilot scope.",
     bestFor:
-      "Best for: Plato-connected clinics, paper-led clinics, and small groups planning a rollout within the next 6 months.",
+      "Best for: new clinics, paper-led teams, clinics changing systems, and teams keeping Plato connected.",
     Form: MigrationAssessmentForm,
   },
   {
@@ -57,7 +58,7 @@ const TABS: TabDef[] = [
     label: "Pilot proposal",
     eyebrow: "Pilot proposal",
     title: "Tell us the clinic shape and first workflow.",
-    body: "Whether you run one clinic or a group, share your current system, location count, and the workflow you want to improve first. We'll reply with a scoped pilot proposal and the setup questions that still need review.",
+    body: "Whether you run one clinic or a group, share how you want to start, your clinic shape, and the workflow you want to improve first. We'll reply with a scoped pilot proposal and the setup questions that still need review.",
     bestFor:
       "Best for: single clinics, growing groups, DSO ops teams, and practice managers evaluating a configured pilot.",
     Form: PilotProposalForm,
@@ -99,6 +100,7 @@ export default function ContactTabs() {
   );
   const [requestSource, setRequestSource] = useState<RequestSourceId | null>(null);
   const [defaultWorkflowGoal, setDefaultWorkflowGoal] = useState<string | undefined>();
+  const [defaultStartMode, setDefaultStartMode] = useState<string | undefined>();
   const [defaultSecurityRequest, setDefaultSecurityRequest] = useState<string | undefined>();
 
   const syncFromLocation = useCallback(() => {
@@ -107,11 +109,13 @@ export default function ContactTabs() {
     const requested = params.get("intent");
     const source = getRequestSourceId(params.get("source"));
     const requestedWorkflow = getWorkflowOptionValue(params.get("focus"));
+    const requestedStartMode = getStartModeOptionValue(params.get("start"));
     const requestedSecurityReview = getSecurityRequestOptionValue(params.get("request"));
     setRequestSource(source);
     setDefaultWorkflowGoal(
       requestedWorkflow ?? (source === "dfi-synergy" ? "run-the-day" : undefined),
     );
+    setDefaultStartMode(requestedStartMode);
     setDefaultSecurityRequest(requestedSecurityReview);
     const initialTab =
       requested && isIntent(requested) ? requested : hash && isIntent(hash) ? hash : "question";
@@ -245,8 +249,13 @@ export default function ContactTabs() {
               </aside>
             )}
             {mountedTabs.has(tab.id) &&
-              (tab.id === "pilot" ? (
-                <PilotProposalForm defaultWorkflowGoal={defaultWorkflowGoal} />
+              (tab.id === "migration" ? (
+                <MigrationAssessmentForm defaultStartMode={defaultStartMode} />
+              ) : tab.id === "pilot" ? (
+                <PilotProposalForm
+                  defaultWorkflowGoal={defaultWorkflowGoal}
+                  defaultStartMode={defaultStartMode}
+                />
               ) : tab.id === "security" ? (
                 <SecurityReviewForm defaultRequestType={defaultSecurityRequest} />
               ) : (

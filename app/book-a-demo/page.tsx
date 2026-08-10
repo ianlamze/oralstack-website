@@ -8,7 +8,7 @@ import DemoRequestForm from "@/components/forms/DemoRequestForm";
 export const metadata: Metadata = {
   title: "Request a demo",
   description:
-    "Request a 30-minute oralstack demo covering the current Plato-connected workflows for a dental clinic.",
+    "Request a 30-minute Oralstack demo for a guided standalone clinic setup, a move from another system, or an optional clinic connection.",
   alternates: { canonical: "/book-a-demo" },
 };
 
@@ -22,8 +22,9 @@ export default function BookDemoPage() {
 
       <Section className="pb-6 md:pb-10">
         <p className="max-w-[58ch] text-base text-[var(--color-text-muted)] leading-relaxed md:text-lg">
-          See the current app on a representative Singapore clinic dataset. Choose where to start;
-          we&apos;ll show that workflow&apos;s Plato boundary and any setup-dependent paths clearly.
+          See the current app on a representative Singapore clinic dataset. Tell us whether
+          you&apos;re starting fresh, moving records, or keeping an existing system connected;
+          we&apos;ll show the relevant clinic setup and record boundary clearly.
         </p>
       </Section>
 
@@ -85,14 +86,14 @@ export default function BookDemoPage() {
               </p>
               <ul className="grid gap-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
                 <li>
-                  <span className="text-[var(--color-text)] font-medium">Plato boundary:</span> we
-                  review connector readiness, clinic setup, and any data-handover scope before
-                  proposing a timeline.{" "}
+                  <span className="text-[var(--color-text)] font-medium">How you start:</span> a
+                  guided standalone pilot is the default path. Moving records and optional
+                  connections are reviewed before we propose a timeline.{" "}
                   <a
-                    href="/workflows"
+                    href="/switching"
                     className="text-[var(--color-tide-deep)] underline underline-offset-4"
                   >
-                    Current workflows →
+                    Switching &amp; setup →
                   </a>
                 </li>
                 <li>

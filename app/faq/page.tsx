@@ -5,7 +5,7 @@ import Section from "@/components/primitives/Section";
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Common questions about how oralstack works with Plato, clinic setup, security controls, integrations, and current product availability.",
+    "Common questions about Oralstack standalone clinic setup, switching systems, optional Plato connections, pricing, security, and current product availability.",
   alternates: { canonical: "/faq" },
 };
 
@@ -17,13 +17,14 @@ const groups: Group[] = [
     title: "Pricing & contracts",
     items: [
       {
-        q: "What does oralstack cost?",
+        q: "What does Oralstack cost?",
         a: (
           <>
             <p>
               $200 per clinic per month, flat, during pilot. SGD or USD invoiced at parity for now.
               Three months of hands-on onboarding included. No per-seat charges, no per-feature
-              gating, no setup fees.
+              gating, and no standard clinic-setup fee. Legacy-record migration, bespoke imports,
+              and optional connections are scoped separately before kickoff.
             </p>
             <p>
               Multi-clinic groups: pricing scales linearly per clinic. Group discounts on request
@@ -53,7 +54,7 @@ const groups: Group[] = [
         a: (
           <p>
             Pilot pricing is locked at $200/clinic/month for the first 12 months from kickoff. After
-            that we&apos;ll tell you what GA pricing looks like with at least 60 days&apos; notice;
+            that we&apos;ll tell you what GA pricing looks like with at least 90 days&apos; notice;
             you can stay or leave.
           </p>
         ),
@@ -61,43 +62,57 @@ const groups: Group[] = [
     ],
   },
   {
-    title: "Migration & onboarding",
+    title: "Switching & onboarding",
     items: [
+      {
+        q: "Can Oralstack run without Plato?",
+        a: (
+          <p>
+            Yes, through a guided standalone pilot with the agreed native clinic modules enabled.
+            This is not a self-serve or generally available one-click replacement claim. We confirm
+            record ownership, clinic configuration, import needs, training, exports, and support in
+            the pilot agreement. Clinics that want to keep Plato can use a separately reviewed
+            connected path.
+          </p>
+        ),
+      },
       {
         q: "How long does clinic setup take?",
         a: (
           <p>
-            The timeline depends on Plato connector readiness, clinic configuration, data review,
-            and training. We scope it after an initial audit rather than promising a fixed rollout
-            window.{" "}
+            The timeline depends on how the clinic starts. A new clinic, a paper-led team, a record
+            move, and a Plato-connected clinic require different configuration, data review, and
+            training. We scope the sequence after an initial audit rather than promising a fixed
+            rollout window.{" "}
             <a
-              href="/integrations#plato"
+              href="/switching"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              See how the Plato connection works →
+              See switching &amp; setup →
             </a>
           </p>
         ),
       },
       {
-        q: "Will oralstack replace or copy every patient record?",
+        q: "Will Oralstack move every patient record?",
         a: (
           <p>
-            No. For API-connected clinics, Plato remains the source of truth for patient identity,
-            schedule writes, and invoice writeback. oralstack reads mirrored records and writes
-            through reviewed paths. Any record migration is scoped separately and requires human
-            review; paper-record migration is not a current live feature.
+            Not by default. A standalone pilot defines which patient, schedule, clinical, billing,
+            and audit records Oralstack will own and which data will be imported. Bulk record moves
+            and paper-record conversion are scoped separately and require human review. In a
+            Plato-connected clinic, Plato remains the source of truth for the reviewed connector
+            paths named in the agreement.
           </p>
         ),
       },
       {
-        q: "What happens if the Plato connection is unavailable?",
+        q: "What happens if Plato is unavailable in a connected clinic?",
         a: (
           <p>
-            Plato remains the source of truth for an API-connected clinic. oralstack does not swap
+            Plato remains the source of truth for an API-connected clinic. Oralstack does not swap
             in rich demo records when a production read fails, and a locally staged fallback is
             never described as a delivered writeback. For Plato-backed reschedules, staff review a
-            proposal, apply the change in Plato, and then resolve it in oralstack.
+            proposal, apply the change in Plato, and then resolve it in Oralstack.
           </p>
         ),
       },
@@ -133,12 +148,12 @@ const groups: Group[] = [
         ),
       },
       {
-        q: "How does oralstack support PDPA obligations?",
+        q: "How does Oralstack support PDPA obligations?",
         a: (
           <p>
             Product controls include Singapore-region hosting, tenant scoping with Postgres
             row-level security, encryption requirements, origin checks, and chained audit evidence.
-            The clinic remains the data controller and oralstack operates as the data intermediary.
+            The clinic remains the data controller and Oralstack operates as the data intermediary.
             These controls support a clinic&apos;s evaluation; they are not a blanket legal
             certification.
           </p>
@@ -218,16 +233,16 @@ const groups: Group[] = [
         q: "Do you have an API?",
         a: (
           <p>
-            Not publicly. Current integration work centres on reviewed Plato connector paths.
-            HitPay, SmartCMS, NEHR, DICOM and sensor ingest, teleconsultation, and automated
-            external messaging remain controlled or disabled, not public live integrations.
+            Not publicly. Optional Plato connection work uses reviewed connector paths. HitPay,
+            SmartCMS, NEHR, DICOM and sensor ingest, teleconsultation, and automated external
+            messaging remain controlled or disabled, not public live integrations.
           </p>
         ),
       },
     ],
   },
   {
-    title: "About oralstack",
+    title: "About Oralstack",
     items: [
       {
         q: "How big is the team?",
@@ -251,13 +266,14 @@ const groups: Group[] = [
         ),
       },
       {
-        q: "What if oralstack goes out of business?",
+        q: "What if Oralstack goes out of business?",
         a: (
           <p>
             A reasonable thing to ask of any early-stage software company. Each pilot agreement
-            defines a data-handover plan for oralstack-owned records, including scope, format, and
-            timing. Plato remains the primary record for connected clinics. We do not promise that
-            every successor system can ingest every oralstack field without mapping work.
+            defines a data-handover plan for Oralstack-owned records, including scope, format, and
+            timing. Plato remains the primary record for the agreed paths in connected clinics. We
+            do not promise that every successor system can ingest every Oralstack field without
+            mapping work.
           </p>
         ),
       },
@@ -265,14 +281,15 @@ const groups: Group[] = [
         q: "Why not use Plato or Open Dental?",
         a: (
           <p>
-            Both are reasonable for the right clinic. oralstack currently works with Plato as a
-            workflow and clinical operations layer rather than presenting itself as a replacement
-            source of truth.{" "}
+            Both are reasonable for the right clinic. Oralstack can be configured as the
+            clinic&apos;s primary system through a guided pilot, or work through an optional
+            reviewed Plato connection. The right path depends on the records to retain, the
+            workflows to move, and the clinic&apos;s tolerance for a staged rollout.{" "}
             <a
-              href="/workflows"
+              href="/switching"
               className="text-[var(--color-tide-deep)] underline underline-offset-4"
             >
-              See the current product boundary →
+              Compare starting paths →
             </a>
           </p>
         ),

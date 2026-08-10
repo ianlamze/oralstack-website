@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 export const metadata: Metadata = {
   title: "The patient journey",
   description:
-    "How Oralstack supports a Plato-connected clinic day — preparation, reception, chairside care, checkout, and patient follow-up.",
+    "How Oralstack supports the clinic day — preparation, reception, chairside care, checkout, and patient follow-up in one guided setup.",
   alternates: { canonical: "/journey" },
 };
 
@@ -29,7 +29,7 @@ const stages = [
   {
     step: "04",
     title: "Review and close checkout",
-    body: "Staff review billable lines and payer portions, record payment, issue receipts, and manage the checkout queue through reviewed Plato-connected workflows.",
+    body: "Staff review billable lines and payer portions, record payment, issue receipts, and manage the checkout queue inside the clinic's configured record boundary.",
   },
   {
     step: "05",
@@ -41,13 +41,13 @@ const stages = [
 export default function JourneyPage() {
   return (
     <main>
-      <PageHeader eyebrow="Clinic journey" title="One connected view of the clinic day." />
+      <PageHeader eyebrow="Clinic journey" title="One view of the clinic day." />
 
       <Section className="pb-12">
         <p className="max-w-[60ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack extends the clinic&apos;s Plato workflow with a browser-based operating layer
-          for reception, chairside care, checkout, patient access, and management. These are the
-          stages the current product supports today.
+          Oralstack brings reception, chairside care, checkout, patient access, and management into
+          one browser-based clinic system. A guided standalone pilot is the default path; clinics
+          can keep Plato connected through separately reviewed paths when needed.
         </p>
       </Section>
 

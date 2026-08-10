@@ -4,10 +4,10 @@ export const dfiSynergy: CaseStudy = {
   slug: "dfi-synergy",
   customerId: "dfi-synergy",
 
-  eyebrow: "Historical customer story · April 2026 pilot · Singapore",
-  title: "How DFI Synergy moved their front desk into Oralstack in three days.",
+  eyebrow: "Historical customer story · Plato-connected workflow pilot · April 2026 · Singapore",
+  title: "How DFI Synergy moved its front-desk workflow into Oralstack in three days.",
   outcome:
-    "A three-chair, four-provider clinic in Singapore piloted Oralstack's appointment, reception, and reviewed checkout workflows alongside its clinic operations.",
+    "A three-chair, four-provider clinic in Singapore piloted Oralstack's appointment, reception, and reviewed checkout workflows through a Plato-connected deployment.",
 
   profile: {
     location: "Singapore",
@@ -48,13 +48,13 @@ export const dfiSynergy: CaseStudy = {
       paragraphs: [
         "DFI Synergy evaluated three options to replace the paper-and-WhatsApp setup: continue with Plato (the dominant Singapore PMS), Open Dental, or Oralstack. The shortlist came down to two requirements neither legacy option met cleanly.",
         "The first was a schedule and reception view the front desk could work from throughout the day. The second was a reviewed checkout flow that kept billable lines, payer estimates, payment recording, and receipts together while preserving the Plato connection boundary.",
-        "Oralstack was chosen on a third factor as well: APAC region hosting and a tenant-isolated data model. The clinic agreed to a focused front-desk pilot; this case study does not claim that every legacy record or native PMS workflow was migrated into Oralstack.",
+        "Oralstack was chosen on a third factor as well: APAC region hosting and a tenant-isolated data model. The clinic agreed to a focused, Plato-connected front-desk pilot. This case study does not claim a standalone deployment or that every legacy record and native PMS workflow moved into Oralstack.",
       ],
     },
     {
       heading: "What ran in the pilot",
       paragraphs: [
-        "The initial pilot focused on the staff-facing clinic day and checkout hand-off.",
+        "The initial Plato-connected pilot focused on the staff-facing clinic day and checkout hand-off.",
       ],
       bullets: [
         "Appointments — a shared provider schedule with staff booking and rescheduling.",
@@ -66,7 +66,7 @@ export const dfiSynergy: CaseStudy = {
     {
       heading: "What's next",
       paragraphs: [
-        "DICOM/device ingest, automated WhatsApp recall, and other controlled rollouts are not included in the generally available scope described by this case study.",
+        "DICOM/device ingest, automated WhatsApp recall, and other controlled rollouts were not included. This connected workflow pilot is not evidence of a standalone clinic-system cutover.",
       ],
     },
   ],

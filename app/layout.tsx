@@ -57,7 +57,8 @@ const organizationJsonLd = JSON.stringify({
     { "@type": "Place", name: "APAC" },
   ],
   knowsAbout: [
-    "Plato-connected dental clinic operations",
+    "dental clinic operating systems",
+    "guided dental clinic setup",
     "dental appointment workflow",
     "patient care coordination",
     "dental checkout and billing review",

@@ -29,24 +29,60 @@ export type IntegrationCategory = {
   items: Integration[];
 };
 
+export const integrationsPageContent = {
+  metadata: {
+    title: "Clinic connections and rollout status",
+    description:
+      "See how Oralstack runs as a guided standalone clinic workspace, when clinic setup is required, and which optional connections are available, in pilot, or not enabled.",
+  },
+  eyebrow: "Connections",
+  title: "Start with Oralstack. Connect only what your clinic needs.",
+  intro:
+    "The default path is a guided standalone pilot. Patient, schedule, clinical, checkout, and operations modules become the clinic's working record only after their setup and ownership boundaries are verified.",
+  primaryAction: {
+    label: "Plan a standalone rollout",
+    href: "/switching",
+  },
+  secondaryAction: {
+    label: "Review the optional Plato connection",
+    href: "#plato",
+  },
+  summaryEyebrow: "Standalone rollout",
+  summary: [
+    { label: "Default path", value: "Guided standalone pilot" },
+    { label: "Record ownership", value: "Agreed module by module" },
+    { label: "Plato", value: "Optional clinic connection" },
+    { label: "External services", value: "Enabled by rollout state" },
+  ],
+  platoEyebrow: "Optional clinic connection",
+  rolloutAction: {
+    title: "Plan the record model before connecting another system.",
+    body: "Start with the guided standalone path, then identify any existing records, exports, or optional connections the clinic needs before go-live.",
+    primaryLabel: "Plan your rollout",
+    primaryHref: "/switching",
+    secondaryLabel: "Ask about another connection",
+    secondaryHref: "/contact/?intent=question&source=integrations#request",
+  },
+} as const;
+
 export const platoConnection = {
   status: "Available with clinic setup" as IntegrationAvailability,
   snapshot: "Production-state snapshot recorded 20 July 2026",
-  title: "Plato stays authoritative. Oralstack makes the work around it visible.",
+  title: "Keep Plato authoritative when your clinic needs it.",
   description:
-    "For API-connected clinics, Oralstack is a workflow and clinic-operations layer around Plato. It does not claim to replace Plato or silently become the clinic's system of record.",
+    "Plato is an optional clinic-configured connection. When selected, Oralstack coordinates the reception, chairside, checkout, and manager handoffs around the Plato record without silently changing which system is authoritative.",
   stages: [
     {
-      eyebrow: "Read",
-      title: "Start from the connected clinic day",
+      eyebrow: "Connect",
+      title: "Connect the existing clinic record",
       description:
-        "Use Plato-backed provider availability, patient context, and appointments inside the Oralstack workspace. The exact records available depend on the clinic connector and setup review.",
+        "A clinic that chooses this path can use supported Plato-backed provider availability, patient context, and appointments inside the Oralstack workspace after connector review.",
     },
     {
       eyebrow: "Work",
       title: "Coordinate the handoffs around the record",
       description:
-        "Run reception, chair status, requests, patient context, checkout preparation, clinic operations, and manager review without creating a second hidden system of record.",
+        "Run reception, chair status, requests, patient context, checkout preparation, clinic operations, and manager review while Plato remains authoritative for the agreed records.",
     },
     {
       eyebrow: "Review",
@@ -56,7 +92,7 @@ export const platoConnection = {
     },
   ],
   guarantees: [
-    "Plato remains the system of record for patient identity, Plato schedule writes, and invoice writeback.",
+    "For clinics using this connection, Plato remains the system of record for patient identity, supported schedule writes, and invoice writeback.",
     "Sync health, update status, and audit history remain visible to staff.",
     "A local fallback is never described as a delivered Plato writeback.",
     "Clinic credentials, connector access, enabled modules, and rollout scope are reviewed before a pilot starts.",

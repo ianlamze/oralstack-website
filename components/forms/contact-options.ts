@@ -1,10 +1,21 @@
 export const PMS_OPTIONS = [
+  { value: "None / new clinic", label: "No current system / new clinic" },
+  { value: "Paper or spreadsheets", label: "Paper or spreadsheets" },
   { value: "Plato", label: "Plato" },
   { value: "Open Dental", label: "Open Dental" },
   { value: "Dentrix", label: "Dentrix" },
   { value: "Eaglesoft", label: "Eaglesoft" },
+  { value: "Carestream", label: "Carestream" },
   { value: "Practice-Web", label: "Practice-Web" },
-  { value: "Other", label: "Other / not sure" },
+  { value: "Other", label: "Another system / not sure" },
+];
+
+export const START_MODE_OPTIONS = [
+  { value: "new-clinic", label: "Start a new clinic with no existing system" },
+  { value: "paper-spreadsheets", label: "Move from paper or spreadsheets" },
+  { value: "existing-pms", label: "Move from an existing clinic system" },
+  { value: "plato-connected", label: "Keep Plato connected" },
+  { value: "exploring", label: "I'm still exploring" },
 ];
 
 export const WORKFLOW_OPTIONS = [
@@ -31,29 +42,34 @@ export const SECURITY_REQUEST_OPTIONS = [
 
 export const REQUEST_SOURCES = {
   "dfi-synergy": {
-    label: "DFI Synergy · April 2026 pilot",
+    label: "DFI Synergy · April 2026 Plato-connected pilot",
     context:
-      "Evidence is historical and clinic-specific; the current product boundary still applies.",
+      "Evidence is historical, clinic-specific, and connected; it is not proof of a standalone clinic-system cutover.",
   },
   pricing: {
-    label: "Pilot pricing",
+    label: "Guided pilot pricing",
     context:
-      "The current pilot price is documented; clinic scope, connector readiness, and setup still need review.",
+      "The core pilot price is documented; data migration, optional connections, and clinic-specific setup are confirmed before kickoff.",
   },
   "solo-clinic": {
     label: "One-clinic guide",
     context:
-      "The current product boundary still applies; clinic setup and any Plato connection are confirmed before a pilot.",
+      "Choose a guided standalone setup or keep an existing connection; the clinic record boundary is confirmed before a pilot.",
   },
   "clinic-group": {
     label: "Clinic-group guide",
     context:
-      "Clinic-scoped access, group visibility, connector readiness, and enabled modules are reviewed before a proposal.",
+      "Start mode, clinic-scoped access, group visibility, and enabled modules are reviewed location by location.",
   },
   integrations: {
-    label: "Plato integration guide",
+    label: "Connections guide",
     context:
-      "Plato remains the source of truth; connector readiness and reviewed writeback paths are confirmed for your clinic.",
+      "Oralstack can start through a guided standalone pilot; optional connector readiness and record ownership are confirmed for your clinic.",
+  },
+  switching: {
+    label: "Switching & setup guide",
+    context:
+      "Tell us whether you are starting fresh, moving from another record, or keeping Plato connected so we can scope the right setup path.",
   },
   security: {
     label: "Security & compliance overview",
@@ -76,6 +92,7 @@ export function getRequestSourceId(value: string | null): RequestSourceId | null
 
 const WORKFLOW_VALUES = new Set(WORKFLOW_OPTIONS.map((option) => option.value));
 const SECURITY_REQUEST_VALUES = new Set(SECURITY_REQUEST_OPTIONS.map((option) => option.value));
+const START_MODE_VALUES = new Set(START_MODE_OPTIONS.map((option) => option.value));
 
 export function getWorkflowOptionValue(value: string | null): string | undefined {
   return value && WORKFLOW_VALUES.has(value) ? value : undefined;
@@ -83,4 +100,8 @@ export function getWorkflowOptionValue(value: string | null): string | undefined
 
 export function getSecurityRequestOptionValue(value: string | null): string | undefined {
   return value && SECURITY_REQUEST_VALUES.has(value) ? value : undefined;
+}
+
+export function getStartModeOptionValue(value: string | null): string | undefined {
+  return value && START_MODE_VALUES.has(value) ? value : undefined;
 }

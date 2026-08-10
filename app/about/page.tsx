@@ -7,7 +7,7 @@ import Bullet from "@/components/ui/Bullet";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "oralstack is the Plato-connected workflow and clinical operations layer for dental clinics, built in Singapore around reception, patient care, checkout, and clinic management.",
+    "Oralstack is the modern operating system for dental clinics, built in Singapore around reception, patient care, checkout, and clinic management.",
   alternates: { canonical: "/about" },
 };
 
@@ -38,10 +38,10 @@ export default function AboutPage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          oralstack is the workflow and clinical operations layer for Plato-connected dental
-          clinics. It is APAC-first, region-hosted in Singapore, and designed around seven audited
-          capability groups spanning reception, patient care, checkout, patient access, clinic
-          operations, insights, and organization security.
+          Oralstack is the modern operating system for dental clinics. It is APAC-first,
+          region-hosted in Singapore, and designed around seven audited capability groups spanning
+          reception, patient care, checkout, patient access, clinic operations, insights, and
+          organization security.
         </p>
       </Section>
 
@@ -50,7 +50,7 @@ export default function AboutPage() {
           <Reason
             eyebrow="Why we're building this"
             title="The dental clinic stack hasn't kept up with the clinic."
-            body="Dental clinics often supplement their practice management system with spreadsheets, paper handoffs, and personal phones. The front desk tracks arrivals, clinicians document care, and managers reconcile the day across separate surfaces. We are building oralstack to connect that work around the existing Plato record, not to pretend a reviewed integration is a complete replacement for it."
+            body="Dental clinics often supplement a practice management system with spreadsheets, paper handoffs, and personal phones. The front desk tracks arrivals, clinicians document care, and managers reconcile the day across separate surfaces. We are building Oralstack so a clinic can run that work in one governed record, with an optional connection when an existing system still needs to stay in place."
           />
           <Reason
             eyebrow="What we're optimising for"
@@ -60,7 +60,7 @@ export default function AboutPage() {
           <Reason
             eyebrow="Where we are"
             title="Singapore-first, focused on the current app."
-            body="The production boundary uses Singapore-region services, tenant-scoped Postgres access, origin checks, encryption requirements, and chained audit evidence. Clinic workflows remain grounded in the Plato connection. Controlled integrations are evaluated separately and are not bundled into the current product promise."
+            body="The production boundary uses Singapore-region services, tenant-scoped Postgres access, origin checks, encryption requirements, and chained audit evidence. Standalone use is offered through a guided pilot with clinic-specific setup. Plato and other controlled integrations are optional paths, evaluated separately, and not bundled into the core product promise."
           />
         </div>
       </Section>

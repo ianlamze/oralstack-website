@@ -37,7 +37,7 @@ const featureGroups: FeatureGroup[] = [
     blurb: "Shared staff surfaces for the schedule, reception queue, hand-offs, and checkout.",
     features: [
       "My Day and Command workspaces",
-      "Plato-connected appointments and staff booking",
+      "Clinic schedule, provider availability, and staff booking",
       "Inbox, Requests, and Daily huddle",
       "Reception and Chairside modes",
       "Check-in, queue, seat, and checkout hand-offs",
@@ -60,13 +60,13 @@ const featureGroups: FeatureGroup[] = [
   {
     id: "checkout-money",
     title: "Checkout & money",
-    blurb: "Reviewed billing work that keeps the patient hand-off and Plato boundary visible.",
+    blurb: "Reviewed billing work that keeps patient, payer, and receipt hand-offs visible.",
     features: [
       "Checkout queue and editable draft lines",
       "Catalogue and manual billable items",
       "CHAS tier and estimated payer portions",
       "Manual payment recording and receipts",
-      "Billing, deposits, claims, and AR follow-up worklists",
+      "Billing, payer tracking, manual reconciliation, and AR follow-up worklists",
     ],
     Icon: Receipt,
   },
@@ -118,7 +118,7 @@ const featureGroups: FeatureGroup[] = [
       "Authorized clinic switching and group rollups",
       "Staff invites and self-serve password reset",
       "Role-based access and tenant isolation",
-      "Sync health, audit trails, and Singapore-region hosting",
+      "Record ownership, optional connection health, audit trails, and Singapore-region hosting",
     ],
     Icon: Building2,
   },
@@ -136,13 +136,13 @@ const controlledRollouts = [
 export default function ProductFeatureGuidePage() {
   return (
     <main>
-      <PageHeader eyebrow="Product guide" title="What is in Oralstack today." />
+      <PageHeader eyebrow="Product guide" title="What the current Oralstack workspace covers." />
 
       <Section className="pb-12">
         <p className="max-w-[64ch] text-lg leading-relaxed text-[var(--color-text-muted)]">
-          Oralstack is a Plato-connected operations and clinical workflow layer. This guide follows
-          the modules staff can open in the current app and keeps controlled rollouts separate from
-          generally available workflows.
+          Oralstack brings clinic-day, patient-care, checkout, and operations records into one
+          workspace. This guide separates the guided standalone pilot, clinic setup, optional
+          connections, and controlled rollouts.
         </p>
       </Section>
 

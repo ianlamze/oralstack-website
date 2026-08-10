@@ -51,9 +51,9 @@ export const capabilities: Capability[] = [
   {
     id: "deployment",
     label: "Product role",
-    rationale: "Whether the product is the system of record or an operational layer around it.",
+    rationale: "Whether the product can be the clinic system or needs another operational layer.",
     oralstack:
-      "A browser-based operations and clinical workflow layer that currently extends Plato through reviewed connections and writebacks.",
+      "A browser-based dental clinic system available through guided standalone setup. Existing-system connections are scoped separately where supported.",
     competitors: confirmWithVendor,
   },
   {
@@ -74,7 +74,7 @@ export const capabilities: Capability[] = [
   },
   {
     id: "charting",
-    label: "Patient & clinical workspace",
+    label: "Patient record & clinical care",
     rationale: "The clinical record and the visit context staff can reach from one patient folder.",
     oralstack:
       "Chart, perio, notes, plans, Rx, ordinary clinical media, letters, diagnoses, and audit beside timeline, visits, billing, subsidy, and membership.",
@@ -114,10 +114,11 @@ export const capabilities: Capability[] = [
   },
   {
     id: "setup",
-    label: "Integration boundary",
-    rationale: "Which actions remain reviewed, external, or controlled rollouts.",
+    label: "Rollout boundary",
+    rationale:
+      "Which modules are enabled during guided setup and which remain controlled rollouts or optional connections.",
     oralstack:
-      "Plato remains the connected source for core legacy workflows. Public booking, automated messaging, DICOM, AI providers, and integrated claims/payments are controlled or disabled—not base scope.",
+      "Standalone setup is scoped per clinic. Public booking, automated messaging, DICOM, AI providers, and integrated claims/payments are controlled or disabled—not base scope. Existing-system connections are optional and reviewed separately.",
     competitors: confirmWithVendor,
   },
   {

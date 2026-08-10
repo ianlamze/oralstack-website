@@ -8,7 +8,7 @@ import AnimateInView from "@/components/motion/AnimateInView";
 export const metadata: Metadata = {
   title: "For clinic groups",
   description:
-    "Oralstack for multi-location dental groups — authorized organization access, clinic switching, group insights, and tenant-scoped workflows around connected clinic systems.",
+    "Oralstack for multi-location dental groups — guided clinic-by-clinic setup, authorized access, clinic switching, group insights, and optional system connections.",
   alternates: { canonical: "/for-multi-clinic" },
 };
 
@@ -24,8 +24,9 @@ export default function ForMultiClinicPage() {
       <Section className="pb-16">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           For dental groups that need authorized clinic access, group-level signals, and a shared
-          operating workspace around connected clinic systems. Oralstack lets staff move between
-          permitted clinics while each request remains scoped to an active clinic.
+          operating view. Each location can start through a guided standalone pilot or keep an
+          approved connection while staff move between permitted clinics and each request remains
+          scoped to an active clinic.
         </p>
         <div data-testid="audience-hero-actions" className="mt-7 flex flex-wrap items-center gap-3">
           <a
@@ -61,8 +62,8 @@ export default function ForMultiClinicPage() {
             <p className="text-base text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
               Practice managers, owners, operations leads, and authorized group staff can review how
               clinic access, switching, rollups, and workflow scope should work across their
-              locations. Connections, enabled modules, and rollout sequence are agreed clinic by
-              clinic before a pilot starts.
+              locations. Start mode, record ownership, enabled modules, import work, and rollout
+              sequence are agreed clinic by clinic before a pilot starts.
             </p>
           </div>
         </AnimateInView>
@@ -99,9 +100,9 @@ export default function ForMultiClinicPage() {
                 $200<span className="text-2xl text-[var(--color-text-soft)]"> × clinics</span>
               </p>
               <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[40ch]">
-                Pilot pricing applies per clinic. Rollout sequence, clinic connections, enabled
-                modules, controlled rollouts, and any group pricing are recorded in the proposal and
-                MSA.
+                Pilot pricing applies per clinic. Core setup is included; legacy-record work,
+                optional connections, rollout sequence, controlled modules, and any group pricing
+                are recorded in the proposal and MSA.
               </p>
             </div>
             <p className="mt-3 text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
@@ -146,9 +147,10 @@ export default function ForMultiClinicPage() {
               </a>
             </Bullet>
             <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Rollout:</span> clinic
-              connections, access scope, and enabled modules are planned location by location. We do
-              not present a fixed full-PMS migration timeline as a product feature.{" "}
+              <span className="font-medium text-[var(--color-text)]">Rollout:</span> clinic start
+              mode, access scope, enabled modules, and optional connections are planned location by
+              location. We do not present a fixed full-record migration timeline as a product
+              feature.{" "}
               <a
                 href="/workflows"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"
@@ -178,9 +180,9 @@ export default function ForMultiClinicPage() {
               Scope a clinic-group pilot.
             </h2>
             <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              Tell us how your locations are organized, what clinic systems are connected, and which
-              workflow should improve first. The clinic sequence, access scope, connections, and
-              enabled modules are agreed in writing for the pilot.
+              Tell us how your locations are organized, how each clinic should start, and which
+              workflow should improve first. Record ownership, clinic sequence, access scope,
+              optional connections, and enabled modules are agreed in writing for the pilot.
             </p>
             <p className="mt-4 text-sm">
               <a

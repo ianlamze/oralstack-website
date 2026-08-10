@@ -45,6 +45,6 @@ export const customers: Customer[] = [
     },
     evidence: dfiSynergy.stats,
     evidenceNote:
-      "Historical results from DFI Synergy's named April 2026 pilot. The full case study documents the definitions, baseline, measurement window, and underlying event sources. These results describe that clinic and pilot scope, not a general performance promise.",
+      "Historical results from DFI Synergy's named April 2026 Plato-connected workflow pilot. The full case study documents the definitions, baseline, measurement window, and underlying event sources. These results describe that clinic and configured scope; they do not evidence standalone adoption or a general performance promise.",
   },
 ];

@@ -9,8 +9,8 @@ export default function Footer() {
           <div>
             <Wordmark size="md" tone="inverse" />
             <p className="mt-3 max-w-[36ch] text-xs leading-relaxed text-[color-mix(in_srgb,var(--color-sidebar-foreground)_60%,transparent)]">
-              The Plato-connected clinic workspace for the front desk, chairside team and practice
-              manager.
+              The dental clinic system for the front desk, chairside team and practice manager.
+              Available through guided setup.
             </p>
           </div>
 
@@ -31,7 +31,8 @@ export default function Footer() {
             title="Resources"
             links={[
               { label: "Customers", href: "/customers" },
-              { label: "Integrations", href: "/integrations" },
+              { label: "Switching to Oralstack", href: "/switching" },
+              { label: "Connections", href: "/integrations" },
               { label: "Pricing", href: "/pricing" },
               { label: "For one clinic", href: "/for-solo-clinics" },
               { label: "For clinic groups", href: "/for-multi-clinic" },

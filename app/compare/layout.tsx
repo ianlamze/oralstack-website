@@ -9,13 +9,13 @@ export default function CompareLayout({ children }: { children: React.ReactNode 
     <>
       <aside className="border-b border-[var(--color-line)] bg-[var(--color-canvas-tinted)] px-5 py-3 text-center text-xs leading-relaxed text-[var(--color-text-muted)]">
         <strong className="font-semibold text-[var(--color-text)]">Evaluation archive.</strong>{" "}
-        Oralstack currently extends Plato through reviewed workflows; it is not marketed as a
-        standalone replacement. Confirm the{" "}
+        Oralstack&apos;s product role and rollout model have changed since these notes were written.
+        Confirm the{" "}
         <a
-          href="/workflows"
+          href="/switching"
           className="font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
         >
-          current product boundary
+          current guided rollout
         </a>{" "}
         before using these older comparison notes.
       </aside>

@@ -19,7 +19,7 @@ const pains: Pain[] = [
     id: "run-the-day",
     question: "Queues and calendars split the clinic day",
     resultLead: "Run appointments, requests and chair gaps from one daily workspace.",
-    body: "My day, Command, Appointments, Inbox, Requests and Huddle give the team a shared operating view. Appointment changes still follow the clinic's Plato workflow.",
+    body: "My day, Command, Appointments, Inbox, Requests and Huddle give the team a shared operating view. Schedule paths are enabled only after guided clinic setup; Plato is an optional connection.",
   },
   {
     id: "patient-care",
@@ -31,13 +31,13 @@ const pains: Pain[] = [
     id: "checkout-money",
     question: "Checkout handoffs stall at the desk",
     resultLead: "Stage checkout, estimates, receipts and follow-up in one reviewed flow.",
-    body: "Plato remains the official ledger. Oralstack organizes billing tasks and queues reviewed invoice writebacks without silently posting claims or payments.",
+    body: "Oralstack keeps billing tasks, payer portions, manual payment records and receipt work together. Direct payment processing and electronic claims are not enabled.",
   },
   {
     id: "patient-access",
     question: "Patient requests arrive through different channels",
     resultLead: "Bring intake, portal requests, and secure messages into staff review.",
-    body: "The intake portal, patient portal, first-party messaging, and find-a-time requests keep staff in control. A requested time is not an automatic Plato booking.",
+    body: "The intake portal, patient portal, first-party messaging, and find-a-time requests keep staff in control. A requested time is not an automatic booking.",
   },
   {
     id: "clinic-operations",
@@ -49,13 +49,13 @@ const pains: Pain[] = [
     id: "insights",
     question: "Managers assemble the daily picture by hand",
     resultLead: "Use Huddle, Insights and reports as one operating view.",
-    body: "See chair gaps, production, collection, receivables and provider performance from available clinic data. Derived measures stay labelled when Plato data is incomplete.",
+    body: "See chair gaps, production, collection, receivables and provider performance from available clinic data. Derived measures stay labelled when the underlying record is incomplete.",
   },
   {
     id: "organization-security",
     question: "Access and sync health are hard to audit",
     resultLead: "Manage people, roles, settings, sync and audit together.",
-    body: "Role-aware controls show who can act, which clinic is active, and what is waiting for reviewed writeback.",
+    body: "Role-aware controls show who can act, which clinic is active, and whether a record is native to Oralstack or waiting on a configured connection.",
   },
 ];
 
@@ -87,8 +87,8 @@ export default function WorkflowWizard() {
           Start with the handoff creating the most friction.
         </h2>
         <p className="text-[var(--color-text-muted)] leading-relaxed max-w-[60ch]">
-          Choose one clinic job. We&apos;ll keep the current app scope, Plato boundary, and a
-          focused walkthrough path together.
+          Choose one clinic job. We&apos;ll keep the current app scope, record ownership, rollout
+          state, and a focused walkthrough path together.
         </p>
       </div>
 

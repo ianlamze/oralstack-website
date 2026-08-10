@@ -6,8 +6,8 @@ import Section from "@/components/primitives/Section";
 import { HeroItem, HeroStagger } from "@/components/motion/HeroStagger";
 
 const proofPoints = [
-  { label: "Plato stays the system of record", href: "/integrations#plato" },
-  { label: "Sync health and writeback status stay visible" },
+  { label: "Standalone setup through a guided pilot", href: "/pricing" },
+  { label: "Optional connections for existing systems", href: "/integrations" },
   { label: "Tenant-isolated and Singapore-region hosted" },
 ];
 
@@ -21,33 +21,34 @@ export default function Hero() {
               <span className="flex size-5 items-center justify-center rounded-full bg-[var(--color-canvas-tinted)]">
                 <CalendarDays className="size-3" aria-hidden />
               </span>
-              <span className="min-w-0">Built in Singapore · Connected to Plato</span>
+              <span className="min-w-0">Built in Singapore · Guided clinic setup</span>
             </p>
           </HeroItem>
 
           <HeroItem>
             <h1 className="mt-4 max-w-[13ch] text-[length:var(--text-display)] leading-[0.94] text-[var(--color-ink)]">
-              Run the clinic day from one calm workspace.
+              Run the clinic day from one calm system.
             </h1>
             <p className="mt-4 max-w-[34ch] text-xl font-medium leading-snug tracking-tight text-[var(--color-tide-deep)] md:text-2xl">
-              Schedule, receive, chart and check out—without replacing Plato.
+              Schedule, receive, chart and check out with Oralstack.
             </p>
           </HeroItem>
 
           <HeroItem>
             <p className="mt-5 max-w-[47ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
-              Oralstack gives the front desk and clinical team one operational view of patient
-              requests, chair work, checkout and the reviewed writebacks waiting to return to Plato.
+              Bring appointments, patient records, chair work, checkout and clinic operations into
+              one operational view. Start standalone through guided setup, or connect an existing
+              system where supported.
             </p>
           </HeroItem>
 
           <HeroItem>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <MagneticButton href="/book-a-demo" variant="primary" withArrow>
-                Request a 30-min walkthrough
+                Book a clinic walkthrough
               </MagneticButton>
               <Button href="/workflows" variant="ghost">
-                Explore the clinic workspace
+                See the clinic workflows
               </Button>
             </div>
           </HeroItem>
@@ -90,10 +91,10 @@ export default function Hero() {
                   />
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-[var(--color-ink)]">
-                      Oralstack clinic workspace
+                      Oralstack clinic system
                     </p>
                     <p className="truncate text-xs text-[var(--color-text-soft)]">
-                      Appointments · Plato-connected clinic view
+                      Appointments · Clinic day view
                     </p>
                   </div>
                 </div>
@@ -106,7 +107,7 @@ export default function Hero() {
               <div className="mt-2 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-canvas)] md:mt-3">
                 <Image
                   src="/oralstack-app-schedule-anonymised.webp"
-                  alt="Anonymised Oralstack appointment workspace using synthetic clinic, provider, patient, and appointment data"
+                  alt="Anonymised Oralstack appointment view using synthetic clinic, provider, patient, and appointment data"
                   width={1672}
                   height={941}
                   priority

@@ -2,12 +2,13 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 import { onRequestPost } from "../functions/api/contact";
 
 const ROUTES = [
-  { path: "/", title: /Oralstack/ },
+  { path: "/", title: /dental clinic operating system/i },
   { path: "/workflows/", title: /Dental clinic workflows/i },
   { path: "/customers/", title: /Customers/ },
   { path: "/customers/dfi-synergy/", title: /DFI Synergy/ },
   { path: "/pricing/", title: /Pricing/ },
-  { path: "/integrations/", title: /Plato connection and integrations/i },
+  { path: "/integrations/", title: /Clinic connections and rollout status/i },
+  { path: "/switching/", title: /Switching to Oralstack/i },
   { path: "/tools/", title: /Product feature guide/i },
   { path: "/for-solo-clinics/", title: /one dental clinic|one clinic/i },
   { path: "/for-multi-clinic/", title: /clinic groups/i },
@@ -90,6 +91,7 @@ async function fillEvidencePilotProposal(page: Page, suffix: string) {
   await form.getByLabel(/Email/).fill(`practice.manager.${suffix}@example.invalid`);
   await form.getByLabel(/Clinic \/ group name/).fill(`Synthetic Dental Clinic ${suffix}`);
   await form.getByLabel(/Number of locations/).fill("1");
+  await form.getByLabel("How would you like to start?").selectOption("new-clinic");
   await form.getByLabel(/Current clinic system/).selectOption("Plato");
   await expect(form.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
 }
@@ -114,6 +116,7 @@ async function fillDemoRequest(page: Page, suffix: string) {
   await form.getByLabel(/Location/).fill("Singapore");
   await form.getByLabel(/Your name/).fill(`Demo Operations Lead ${suffix}`);
   await form.getByLabel(/Email/).fill(`demo.${suffix}@example.invalid`);
+  await form.getByLabel("How would you like to start?").selectOption("new-clinic");
   const setupDetails = form.locator("details").filter({ hasText: "Add clinic setup details" });
   await setupDetails.locator("summary").click();
   await form.getByLabel("Your role (optional)").fill(`Practice manager ${suffix}`);
@@ -171,7 +174,7 @@ for (const path of PRIVACY_ROUTES) {
     if (path === "/") {
       await expect(
         page.getByAltText(
-          "Anonymised Oralstack appointment workspace using synthetic clinic, provider, patient, and appointment data",
+          "Anonymised Oralstack appointment view using synthetic clinic, provider, patient, and appointment data",
         ),
       ).toHaveAttribute("src", /oralstack-app-schedule-anonymised\.webp$/);
     }
@@ -248,11 +251,11 @@ test("demo form validates required fields before submitting", async ({ page }) =
   await page.goto("/book-a-demo/", { waitUntil: "domcontentloaded" });
   await page.getByRole("button", { name: "Send demo request" }).click();
 
-  const clinicName = page.getByLabel(/Clinic name/);
-  await expect(clinicName).toBeFocused();
-  expect(await clinicName.evaluate((input: HTMLInputElement) => input.validationMessage)).not.toBe(
-    "",
-  );
+  const startMode = page.getByLabel("How would you like to start?");
+  await expect(startMode).toBeFocused();
+  expect(
+    await startMode.evaluate((select: HTMLSelectElement) => select.validationMessage),
+  ).not.toBe("");
   await expect(page.getByText("Couldn't reach the server.")).toHaveCount(0);
   expect(contactRequests).toBe(0);
 });
@@ -311,17 +314,165 @@ test("workflow explorer starts useful and carries the selected area into the dem
   );
 });
 
-test("focused demo requests keep context and ask for four essentials", async ({ page }) => {
+test("focused demo requests keep context and ask for a starting point plus four essentials", async ({
+  page,
+}) => {
   await page.goto("/book-a-demo/?focus=checkout-money", { waitUntil: "domcontentloaded" });
 
   await expect(page.getByLabel("Start the walkthrough with")).toHaveValue("checkout-money");
   await expect(
     page.getByText("Checkout and money will be the first workflow shown."),
   ).toBeVisible();
-  await expect(page.locator("form [required]")).toHaveCount(4);
+  await expect(page.locator("form [required]")).toHaveCount(5);
 
   await page.getByText("Add clinic setup details").click();
   await expect(page.getByLabel("Your role (optional)")).toBeVisible();
+});
+
+test("homepage defaults to standalone positioning and exposes three starting paths", async ({
+  page,
+}) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+
+  expect(await page.title()).toMatch(/dental clinic operating system/i);
+  expect(await page.title()).not.toMatch(/plato/i);
+
+  const heroHeading = page.getByRole("heading", {
+    level: 1,
+    name: "Run the clinic day from one calm system.",
+  });
+  const hero = heroHeading.locator("xpath=ancestor::section");
+  await expect(heroHeading).toBeVisible();
+  await expect(hero).not.toContainText(/Plato/i);
+  await expect(page.locator("header").first()).not.toContainText(/Plato/i);
+  await expect(page.getByRole("contentinfo")).not.toContainText(/Plato/i);
+  await expect(hero.getByRole("link", { name: "Book a clinic walkthrough" })).toHaveAttribute(
+    "href",
+    "/book-a-demo",
+  );
+
+  const startingPaths = page.getByTestId("starting-paths");
+  await expect(startingPaths.getByRole("link")).toHaveCount(3);
+  const paths = [
+    { name: "See the new-clinic path", href: "/switching/#start-new" },
+    { name: "See the move path", href: "/switching/#move-records" },
+    { name: "See the connection path", href: "/switching/#keep-connection" },
+  ] as const;
+  for (const path of paths) {
+    await expect(startingPaths.getByRole("link", { name: path.name })).toHaveAttribute(
+      "href",
+      path.href,
+    );
+  }
+});
+
+test("switching presents four truthful starting paths without 320px overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/switching/", { waitUntil: "networkidle" });
+
+  const paths = [
+    {
+      id: "start-new",
+      heading: "Set up a new clinic in Oralstack.",
+      action: "Plan a new-clinic setup",
+      href: "/contact/?intent=migration&source=switching&start=new-clinic#request",
+    },
+    {
+      id: "move-records",
+      heading: "Review what should become a digital record.",
+      action: "Assess paper and spreadsheets",
+      href: "/contact/?intent=migration&source=switching&start=paper-spreadsheets#request",
+    },
+    {
+      id: "move-system",
+      heading: "Map the supported records before cutover.",
+      action: "Assess the current system",
+      href: "/contact/?intent=migration&source=switching&start=existing-pms#request",
+    },
+    {
+      id: "keep-connection",
+      heading: "Use Oralstack with Plato where that fits.",
+      action: "Review the Plato connection",
+      href: "/integrations/#plato",
+    },
+  ] as const;
+
+  for (const path of paths) {
+    const card = page.locator(`#${path.id}`);
+    await expect(card.getByRole("heading", { name: path.heading })).toBeVisible();
+    await expect(card.getByRole("link", { name: path.action })).toHaveAttribute("href", path.href);
+  }
+  const paperHref = await page.locator("#move-records a").getAttribute("href");
+  const systemHref = await page.locator("#move-system a").getAttribute("href");
+  expect(paperHref).not.toBe(systemHref);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+
+  await page.getByRole("link", { name: "Choose a starting path" }).click();
+  const startingPathHeading = page.getByRole("heading", {
+    name: "Start with the clinic you have—not a generic migration promise.",
+  });
+  const headingBox = await startingPathHeading.boundingBox();
+  const stickyHeaderBox = await page.locator("header").boundingBox();
+  expect(headingBox?.y ?? 0).toBeGreaterThanOrEqual(stickyHeaderBox?.height ?? 65);
+});
+
+test("switching links preserve source and clinic starting point into contact", async ({ page }) => {
+  const paths = [
+    { id: "start-new", action: "Plan a new-clinic setup", startMode: "new-clinic" },
+    {
+      id: "move-records",
+      action: "Assess paper and spreadsheets",
+      startMode: "paper-spreadsheets",
+    },
+    {
+      id: "move-system",
+      action: "Assess the current system",
+      startMode: "existing-pms",
+    },
+  ] as const;
+
+  for (const path of paths) {
+    await page.goto("/switching/", { waitUntil: "networkidle" });
+    await page.locator(`#${path.id}`).getByRole("link", { name: path.action }).click();
+
+    const destination = new URL(page.url());
+    expect(destination.pathname).toBe("/contact/");
+    expect(destination.searchParams.get("intent")).toBe("migration");
+    expect(destination.searchParams.get("source")).toBe("switching");
+    expect(destination.searchParams.get("start")).toBe(path.startMode);
+    expect(destination.hash).toBe("#request");
+    await expect(page.getByRole("tab", { name: "Switching & setup" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await expect(page.getByTestId("request-context")).toContainText(
+      "Continuing from Switching & setup guide",
+    );
+    await expect(
+      page.locator("#contact-panel-migration").getByLabel("How would you like to start?"),
+    ).toHaveValue(path.startMode);
+  }
+});
+
+test("default demo and pilot forms do not preselect Plato", async ({ page }) => {
+  await page.goto("/book-a-demo/", { waitUntil: "networkidle" });
+  await showFirstPartyDemoForm(page);
+  const demoForm = page
+    .getByRole("button", { name: "Send demo request", exact: true })
+    .locator("xpath=ancestor::form");
+  await expect(demoForm.getByLabel("How would you like to start?")).toHaveValue("");
+  await expect(demoForm.getByLabel("Current clinic system (optional)")).toHaveValue("");
+
+  await page.goto("/contact/?intent=pilot#request", { waitUntil: "networkidle" });
+  const pilotForm = page.locator("#contact-panel-pilot form");
+  await expect(page.getByRole("tab", { name: "Pilot proposal" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(pilotForm.getByLabel("How would you like to start?")).toHaveValue("");
+  await expect(pilotForm.getByLabel("Current clinic system")).toHaveValue("");
 });
 
 test("shared request forms disclose their data boundary and link to a truthful privacy notice", async ({
@@ -336,7 +487,7 @@ test("shared request forms disclose their data boundary and link to a truthful p
     { path: "/contact/?intent=question#request", submit: "Send question" },
     {
       path: "/contact/?intent=migration#request",
-      submit: "Request connection assessment",
+      submit: "Request a setup assessment",
     },
     { path: "/contact/?intent=pilot#request", submit: "Request a pilot proposal" },
     { path: "/contact/?intent=security#request", submit: "Request security review" },
@@ -400,7 +551,7 @@ test("demo scheduling keeps Cal.com dormant until explicit activation", async ({
     await route.abort();
   });
 
-  await page.goto("/book-a-demo/?focus=run-the-day&source=pricing", {
+  await page.goto("/book-a-demo/?focus=run-the-day&source=pricing&start=new-clinic", {
     waitUntil: "domcontentloaded",
   });
   const gate = page.getByTestId("cal-scheduler-gate");
@@ -410,6 +561,7 @@ test("demo scheduling keeps Cal.com dormant until explicit activation", async ({
 
   if (!(await gate.isVisible())) {
     await expect(fallbackFormSubmit).toBeVisible();
+    await expect(page.getByLabel("How would you like to start?")).toHaveValue("new-clinic");
     await expect(scheduler).toHaveCount(0);
     expect(calRequests).toBe(0);
     return;
@@ -422,7 +574,12 @@ test("demo scheduling keeps Cal.com dormant until explicit activation", async ({
     "href",
     "/privacy#scheduling",
   );
-  await expect(page.getByTestId("request-context")).toContainText("Continuing from Pilot pricing");
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Guided pilot pricing",
+  );
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Clinic starting point: Start a new clinic with no existing system.",
+  );
   await expect(scheduler).toHaveCount(0);
   expect(calRequests).toBe(0);
 
@@ -441,12 +598,14 @@ test("demo scheduling keeps Cal.com dormant until explicit activation", async ({
   expect(schedulerUrl.hostname).toBe("cal.com");
   expect(schedulerUrl.searchParams.get("metadata[requestSource]")).toBe("pricing");
   expect(schedulerUrl.searchParams.get("metadata[workflowFocus]")).toBe("run-the-day");
+  expect(schedulerUrl.searchParams.get("metadata[startMode]")).toBe("new-clinic");
   await expect.poll(() => calRequests).toBeGreaterThan(0);
 
   await loadedStatus.getByRole("button", { name: "Use request form instead" }).click();
   const firstPartyForm = page.getByRole("region", { name: "Oralstack demo request form" });
   await expect(firstPartyForm).toBeFocused();
   await expect(scheduler).toHaveCount(0);
+  await expect(firstPartyForm.getByLabel("How would you like to start?")).toHaveValue("new-clinic");
   await expect(firstPartyForm.getByTestId("request-privacy-notice")).toBeVisible();
 });
 
@@ -491,6 +650,7 @@ test("demo requests submit once and keep values available after a delivery error
       intent: "demo",
       sourcePage: "pricing",
       focus: "run-the-day",
+      startMode: "new-clinic",
       clinicName: "Synthetic Demo Clinic success",
       location: "Singapore",
       name: "Demo Operations Lead success",
@@ -530,6 +690,7 @@ test("demo requests submit once and keep values available after a delivery error
   ).toHaveAttribute("href", "mailto:hello@oralstack.com");
   expect(errorRequests).toBe(1);
   const errorForm = page.locator("form");
+  await expect(errorForm.getByLabel("How would you like to start?")).toHaveValue("new-clinic");
   await expect(errorForm.getByLabel("Start the walkthrough with")).toHaveValue("run-the-day");
   await expect(errorForm.getByLabel(/Clinic name/)).toHaveValue("Synthetic Demo Clinic error");
   await expect(errorForm.getByLabel(/Location/)).toHaveValue("Singapore");
@@ -544,11 +705,12 @@ test("demo requests submit once and keep values available after a delivery error
 
 test("contact delivery preserves each allowlisted request source in the provider email", async () => {
   const sourceLabels = {
-    "dfi-synergy": "DFI Synergy · April 2026 pilot evidence",
-    pricing: "Pilot pricing",
+    "dfi-synergy": "DFI Synergy · April 2026 Plato-connected pilot evidence",
+    pricing: "Guided pilot pricing",
     "solo-clinic": "One-clinic guide",
     "clinic-group": "Clinic-group guide",
-    integrations: "Plato integration guide",
+    integrations: "Connections guide",
+    switching: "Switching & setup guide",
     security: "Security & compliance overview",
     status: "Capability status snapshot",
   } as const;
@@ -591,7 +753,7 @@ test("contact delivery preserves each allowlisted request source in the provider
   }
 });
 
-test("security contact delivery validates required fields and rejects inherited allowlist keys", async () => {
+test("contact delivery validates security and clinic-start allowlists without breaking legacy clients", async () => {
   const originalFetch = globalThis.fetch;
   let providerPayload:
     | { subject?: string; text?: string; html?: string; reply_to?: string }
@@ -607,6 +769,7 @@ test("security contact delivery validates required fields and rejects inherited 
     timeline: "1-2-weeks",
     message: "Synthetic security-review notes; no patient data.",
     sourcePage: "security",
+    startMode: "new-clinic",
   };
   const env = {
     RESEND_API_KEY: "re_synthetic_test_key",
@@ -649,6 +812,10 @@ test("security contact delivery validates required fields and rejects inherited 
     expect(providerPayload?.text).toContain("Role: Procurement lead");
     expect(providerPayload?.text).toContain("Clinic: Synthetic Procurement Clinic");
     expect(providerPayload?.text).toContain("Security review request: Security questionnaire");
+    expect(providerPayload?.text).toContain(
+      "How the clinic wants to start: Start a new clinic with no existing system",
+    );
+    expect(providerPayload?.html).toContain("Start a new clinic with no existing system");
     expect(providerPayload?.text).toContain("Timeline: 1-2-weeks");
     expect(providerPayload?.text).toContain("Synthetic security-review notes; no patient data.");
 
@@ -685,6 +852,16 @@ test("security contact delivery validates required fields and rejects inherited 
         value: "__proto__",
         message: "Please choose what your review needs.",
       },
+      {
+        field: "startMode",
+        value: "constructor",
+        message: "Please pick a valid clinic starting point.",
+      },
+      {
+        field: "startMode",
+        value: "unknown-start",
+        message: "Please pick a valid clinic starting point.",
+      },
     ] as const;
 
     for (const invalid of invalidRequiredFields) {
@@ -710,6 +887,15 @@ test("security contact delivery validates required fields and rejects inherited 
       expect(inheritedSourceText).not.toContain("Request source:");
       expect(inheritedSourceText).not.toContain(inheritedSourceKey);
     }
+
+    providerPayload = undefined;
+    const callsBeforeLegacyRequest = providerCalls;
+    const legacyResponse = await postContact({ ...validPayload, startMode: undefined });
+    expect(legacyResponse.status).toBe(200);
+    expect(providerCalls).toBe(callsBeforeLegacyRequest + 1);
+    expect((providerPayload as { text?: string } | undefined)?.text).not.toContain(
+      "How the clinic wants to start:",
+    );
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -800,6 +986,16 @@ test("security, status, and pricing preserve procurement truth and request conte
   await expect(statusActions).toContainText("Source reviewed through 6 August 2026");
   await expect(statusActions).toContainText("production-flag snapshot recorded 20 July 2026");
   await expect(statusActions).toContainText("This page has no automated uptime feed");
+  const standaloneStatus = page.locator("li").filter({ hasText: "Standalone clinic workspace" });
+  await expect(standaloneStatus.getByText("Configured pilot", { exact: true })).toBeVisible();
+  const nativeRecordStatus = page
+    .locator("li")
+    .filter({ hasText: "Native scheduling, invoicing, and payer setup" });
+  await expect(nativeRecordStatus.getByText("Configured pilot", { exact: true })).toBeVisible();
+  const optionalPlatoStatus = page.locator("li").filter({ hasText: "Optional Plato connection" });
+  await expect(
+    optionalPlatoStatus.getByText("Available with clinic setup", { exact: true }),
+  ).toBeVisible();
 
   await statusRequest.click();
   await expect(page).toHaveURL(
@@ -816,6 +1012,13 @@ test("security, status, and pricing preserve procurement truth and request conte
   await expect(page.getByLabel("What do you need?")).toHaveValue("deployment-status");
 
   await page.goto("/pricing/", { waitUntil: "networkidle" });
+  const corePrice = page.getByText("What the core price covers", { exact: true }).locator("..");
+  await expect(corePrice).toContainText("Guided setup of the agreed native clinic workflows");
+  const separatelyScoped = page
+    .getByText("Scoped separately before kickoff", { exact: true })
+    .locator("..");
+  await expect(separatelyScoped).toContainText("Bulk legacy-record migration");
+  await expect(separatelyScoped).toContainText("Plato or another bespoke connector");
   const pricingSecurityReview = page.getByRole("link", { name: "the security review form" });
   await expect(pricingSecurityReview).toHaveAttribute(
     "href",
@@ -829,7 +1032,9 @@ test("security, status, and pricing preserve procurement truth and request conte
     "aria-selected",
     "true",
   );
-  await expect(page.getByTestId("request-context")).toContainText("Continuing from Pilot pricing");
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from Guided pilot pricing",
+  );
   await expect(page.getByLabel("What do you need?")).toHaveValue("product-agreement");
 });
 
@@ -969,7 +1174,7 @@ test("DFI evidence carries qualified context into demo and pilot requests", asyn
 
   const earlyActions = page.getByTestId("case-study-early-actions");
   const historicalBoundary = page.getByText(
-    "Historical customer story · April 2026 pilot · Singapore",
+    "Historical customer story · Plato-connected workflow pilot · April 2026 · Singapore",
     { exact: true },
   );
   const proposal = earlyActions.getByRole("link", { name: "Request a scoped pilot proposal" });
@@ -1011,10 +1216,14 @@ test("DFI evidence carries qualified context into demo and pilot requests", asyn
   await walkthrough.click();
   await expect(page).toHaveURL(/\/book-a-demo\/\?focus=run-the-day&source=dfi-synergy$/);
   const demoContext = page.getByTestId("request-context");
-  await expect(demoContext).toContainText("Continuing from DFI Synergy · April 2026 pilot");
-  await expect(demoContext).toContainText("historical and clinic-specific");
+  await expect(demoContext).toContainText(
+    "Continuing from DFI Synergy · April 2026 Plato-connected pilot",
+  );
+  await expect(demoContext).toContainText("historical, clinic-specific, and connected");
   await expect(page.getByLabel("Start the walkthrough with")).toHaveValue("run-the-day");
-  await expect(page.locator("form [required]").first()).toHaveAccessibleName(/Clinic name/);
+  await expect(page.locator("form [required]").first()).toHaveAccessibleName(
+    /How would you like to start/,
+  );
   if ((page.viewportSize()?.width ?? 0) < 640) {
     const firstRequired = page.locator("form [required]").first();
     await expect(firstRequired).toBeInViewport();
@@ -1035,8 +1244,10 @@ test("DFI evidence carries qualified context into demo and pilot requests", asyn
     "true",
   );
   const pilotContext = page.getByTestId("request-context");
-  await expect(pilotContext).toContainText("Continuing from DFI Synergy · April 2026 pilot");
-  await expect(pilotContext).toContainText("historical and clinic-specific");
+  await expect(pilotContext).toContainText(
+    "Continuing from DFI Synergy · April 2026 Plato-connected pilot",
+  );
+  await expect(pilotContext).toContainText("historical, clinic-specific, and connected");
   await expect(page.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
 });
 
@@ -1051,7 +1262,7 @@ test("contact tabs keep keyboard focus visible and below the sticky navigation",
   );
 
   const questionTab = page.getByRole("tab", { name: "Quick question" });
-  const migrationTab = page.getByRole("tab", { name: "Connection & rollout" });
+  const migrationTab = page.getByRole("tab", { name: "Switching & setup" });
   const pilotTab = page.getByRole("tab", { name: "Pilot proposal" });
   const securityTab = page.getByRole("tab", { name: "Security review" });
   await expect(page.getByRole("tab")).toHaveCount(4);
@@ -1103,7 +1314,7 @@ test("contact tabs retain drafts and source context through browser history", as
   );
 
   const questionTab = page.getByRole("tab", { name: "Quick question" });
-  const migrationTab = page.getByRole("tab", { name: "Connection & rollout" });
+  const migrationTab = page.getByRole("tab", { name: "Switching & setup" });
   const pilotTab = page.getByRole("tab", { name: "Pilot proposal" });
   const securityTab = page.getByRole("tab", { name: "Security review" });
   const questionPanel = page.locator("#contact-panel-question");
@@ -1135,6 +1346,7 @@ test("contact tabs retain drafts and source context through browser history", as
   await migrationPanel.getByLabel(/Your name/).fill("Migration Draft Owner");
   await migrationPanel.getByLabel(/Email/).fill("migration.draft@example.invalid");
   await migrationPanel.getByLabel(/Clinic name/).fill("Synthetic Migration Clinic");
+  await migrationPanel.getByLabel("How would you like to start?").selectOption("plato-connected");
   await migrationPanel.getByLabel("Current clinic system").selectOption("Plato");
   await migrationPanel.getByLabel("What should improve first?").selectOption("run-the-day");
 
@@ -1168,6 +1380,9 @@ test("contact tabs retain drafts and source context through browser history", as
   await expect(migrationTab).toHaveAttribute("aria-selected", "true");
   await expect(migrationPanel).toBeVisible();
   await expect(migrationPanel.getByLabel(/Clinic name/)).toHaveValue("Synthetic Migration Clinic");
+  await expect(migrationPanel.getByLabel("How would you like to start?")).toHaveValue(
+    "plato-connected",
+  );
   await expect(migrationPanel.getByLabel("What should improve first?")).toHaveValue("run-the-day");
 
   await page.goBack();
@@ -1248,6 +1463,7 @@ test("request feedback focuses success and error states without losing form valu
     expect.objectContaining({
       intent: "pilot",
       sourcePage: "dfi-synergy",
+      startMode: "new-clinic",
       workflowGoal: "run-the-day",
     }),
   );
@@ -1281,6 +1497,7 @@ test("request feedback focuses success and error states without losing form valu
     "Synthetic Dental Clinic preserved",
   );
   await expect(preservedForm.getByLabel(/Number of locations/)).toHaveValue("1");
+  await expect(preservedForm.getByLabel("How would you like to start?")).toHaveValue("new-clinic");
   await expect(preservedForm.getByLabel(/Current clinic system/)).toHaveValue("Plato");
   await expect(preservedForm.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
 });
@@ -1374,6 +1591,7 @@ test("pricing carries one-clinic buyers into a structured pilot proposal", async
   const locationCount = pilotForm.getByLabel(/Number of locations/);
   await expect(locationCount).toHaveAttribute("min", "1");
   await locationCount.fill("1");
+  await pilotForm.getByLabel("How would you like to start?").selectOption("new-clinic");
   await pilotForm.getByLabel(/Current clinic system/).selectOption("Plato");
   const workflowGoal = pilotForm.getByLabel(/What should improve first/);
   await expect(workflowGoal.locator('option[value="patient-access"]')).toHaveText(
@@ -1391,6 +1609,7 @@ test("pricing carries one-clinic buyers into a structured pilot proposal", async
       intent: "pilot",
       clinicName: "Sample Dental Clinic",
       numLocations: "1",
+      startMode: "new-clinic",
       currentPms: "Plato",
       workflowGoal: "run-the-day",
     }),
@@ -1691,21 +1910,34 @@ test("mobile workflow catalogue keeps one deep-linked area open and fully naviga
   await expect(select).toHaveValue("insights");
 });
 
-test("Plato connection explains ownership and leads into a structured assessment", async ({
+test("connections lead with standalone and keep Plato as an optional assessed path", async ({
   page,
 }) => {
   await page.goto("/integrations/#plato", { waitUntil: "networkidle" });
+
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Start with Oralstack. Connect only what your clinic needs.",
+    }),
+  ).toBeVisible();
+  await expect(page.locator("main")).toContainText("The default path is a guided standalone pilot");
+  await expect(page.getByRole("link", { name: "Plan a standalone rollout" })).toHaveAttribute(
+    "href",
+    "/switching",
+  );
+  await expect(
+    page.getByRole("link", { name: "Review the optional Plato connection" }),
+  ).toHaveAttribute("href", "#plato");
 
   const plato = page.locator("#plato");
   await expect(plato).toBeInViewport();
   await expect(
     plato.getByRole("heading", {
-      name: "Plato stays authoritative. Oralstack makes the work around it visible.",
+      name: "Keep Plato authoritative when your clinic needs it.",
     }),
   ).toBeVisible();
-  await expect(
-    plato.getByText("Plato remains the system of record", { exact: false }),
-  ).toBeVisible();
+  await expect(plato).toContainText("Plato is an optional clinic-configured connection");
   await expect(plato.getByText("Available with clinic setup", { exact: true })).toBeVisible();
   const assessmentLinks = plato.getByRole("link", { name: "Request a connection assessment" });
   await expect(assessmentLinks).toHaveCount(2);
@@ -1734,35 +1966,37 @@ test("Plato connection explains ownership and leads into a structured assessment
 
   await assessmentLinks.first().click();
   await expect(page).toHaveURL(/\/contact\/\?intent=migration&source=integrations#request$/);
-  await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
+  await expect(page.getByRole("tab", { name: "Switching & setup" })).toHaveAttribute(
     "aria-selected",
     "true",
   );
   await expect(
-    page.getByRole("heading", { name: "Connect Plato or plan a reviewed rollout." }),
+    page.getByRole("heading", { name: "Plan how your clinic starts with Oralstack." }),
   ).toBeVisible();
   await expect(
     page.locator("#contact-panel-migration").getByLabel(/What should improve first/),
   ).toBeVisible();
 });
 
-test("homepage Plato proof keeps the connection path and assessment intent", async ({ page }) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  const platoProof = page.getByRole("link", { name: "Plato stays the system of record" });
-  await expect(platoProof).toHaveAttribute("href", "/integrations#plato");
-  await platoProof.click();
+test("legacy migration intent, hash alias, and Plato anchor remain compatible", async ({
+  page,
+}) => {
+  await page.goto("/integrations#plato", { waitUntil: "networkidle" });
   await expect(page).toHaveURL(/\/integrations\/?#plato$/);
   await expect(page.locator("#plato")).toBeInViewport();
 
   await page.goto("/contact/?intent=migration#request", { waitUntil: "networkidle" });
-  await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
+  await expect(page.getByRole("tab", { name: "Switching & setup" })).toHaveAttribute(
     "aria-selected",
     "true",
   );
   await expect(
-    page.getByRole("heading", { name: "Connect Plato or plan a reviewed rollout." }),
+    page.getByRole("heading", { name: "Plan how your clinic starts with Oralstack." }),
   ).toBeVisible();
-  await expect(page.getByRole("button", { name: "Request connection assessment" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Request a setup assessment" })).toBeVisible();
+  await expect(
+    page.locator("#contact-panel-migration").getByLabel("How would you like to start?"),
+  ).toHaveValue("");
   const requestSection = page.locator("#request");
   await expect(requestSection).toBeInViewport();
   const requestBox = await requestSection.boundingBox();
@@ -1770,14 +2004,10 @@ test("homepage Plato proof keeps the connection path and assessment intent", asy
   expect(requestBox?.y).toBeLessThan(240);
 
   await page.goto("/contact/#migration", { waitUntil: "networkidle" });
-  await expect(page.getByRole("tab", { name: "Connection & rollout" })).toHaveAttribute(
+  await expect(page.getByRole("tab", { name: "Switching & setup" })).toHaveAttribute(
     "aria-selected",
     "true",
   );
-
-  await page.goto("/status/", { waitUntil: "domcontentloaded" });
-  const platoStatus = page.locator("li").filter({ hasText: "Plato-connected workflow path" });
-  await expect(platoStatus.getByText("Available with clinic setup", { exact: true })).toBeVisible();
 });
 
 test("homepage turns named pilot evidence into the released conversion paths", async ({ page }) => {
@@ -1788,7 +2018,9 @@ test("homepage turns named pilot evidence into the released conversion paths", a
   await expect(
     evidence.getByRole("heading", { name: "What changed in four weeks at DFI Synergy." }),
   ).toBeVisible();
-  await expect(evidence.getByText("historical results", { exact: false })).toBeVisible();
+  await expect(
+    evidence.getByText("Historical connected-pilot evidence", { exact: false }),
+  ).toBeVisible();
   await expect(
     evidence.getByRole("link", { name: "Read the pilot and measurement notes" }),
   ).toHaveAttribute("href", "/customers/dfi-synergy");
@@ -1807,7 +2039,7 @@ test("homepage turns named pilot evidence into the released conversion paths", a
 
   const walkthroughLinks = page
     .locator("main")
-    .getByRole("link", { name: "Request a 30-min walkthrough" });
+    .getByRole("link", { name: "Book a clinic walkthrough" });
   await expect(walkthroughLinks).toHaveCount(2);
   await expect(walkthroughLinks.first()).toHaveAttribute("href", "/book-a-demo");
   await expect(walkthroughLinks.last()).toHaveAttribute("href", "/book-a-demo");
@@ -1816,7 +2048,7 @@ test("homepage turns named pilot evidence into the released conversion paths", a
     (firstWalkthroughBox?.y ?? Number.POSITIVE_INFINITY) + (firstWalkthroughBox?.height ?? 0),
   ).toBeLessThanOrEqual(viewport?.height ?? 800);
 
-  const pilotProposal = page.getByRole("link", { name: "Request a pilot proposal" });
+  const pilotProposal = page.getByRole("link", { name: "Request a standalone pilot" });
   await expect(pilotProposal).toHaveAttribute("href", "/contact/?intent=pilot#request");
   const pilotBox = await pilotProposal.boundingBox();
   expect(pilotBox?.height).toBeGreaterThanOrEqual(44);
@@ -1919,6 +2151,35 @@ test("homepage named pilot evidence has focused visual regression coverage", asy
   });
 
   await expect(page.locator("#customer-evidence")).toHaveScreenshot("customer-evidence.png", {
+    animations: "disabled",
+  });
+});
+
+test("homepage starting paths have focused visual regression coverage", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+
+  await expect(page.getByTestId("starting-paths")).toHaveScreenshot("homepage-starting-paths.png", {
+    animations: "disabled",
+  });
+});
+
+test("switching start paths have focused visual regression coverage", async ({ page }) => {
+  await page.goto("/switching/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+
+  const startPaths = page
+    .getByRole("heading", {
+      name: "Start with the clinic you have—not a generic migration promise.",
+    })
+    .locator("xpath=ancestor::section");
+  await expect(startPaths).toHaveScreenshot("switching-start-paths.png", {
     animations: "disabled",
   });
 });
@@ -2086,7 +2347,7 @@ test("tablet navigation stays compact and exposes keyboard escape", async ({ pag
   await expect(drawer).toBeVisible();
 
   const closeButton = drawer.getByRole("button", { name: "Close menu" });
-  const finalDrawerAction = drawer.getByRole("link", { name: "Request a 30-min walkthrough" });
+  const finalDrawerAction = drawer.getByRole("link", { name: "Book a clinic walkthrough" });
   await expect(closeButton).toBeFocused();
   await page.keyboard.press("Shift+Tab");
   await expect(finalDrawerAction).toBeFocused();

@@ -7,7 +7,7 @@ import { customers } from "@/content/customers";
 export const metadata: Metadata = {
   title: "Customers",
   description:
-    "Named historical evidence from DFI Synergy's April 2026 Oralstack front-desk pilot in Singapore, with scope and methodology qualifiers.",
+    "Named historical evidence from DFI Synergy's April 2026 Plato-connected Oralstack workflow pilot in Singapore, with scope and methodology qualifiers.",
   alternates: { canonical: "/customers" },
 };
 
@@ -19,9 +19,10 @@ export default function CustomersPage() {
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
           Oralstack&apos;s public customer evidence currently comes from DFI Synergy&apos;s named
-          April 2026 front-desk pilot in Singapore. The results below describe that clinic,
-          measurement window, and configured pilot scope — not a broader customer roster or a
-          general performance promise.
+          April 2026 front-desk pilot in Singapore. That deployment preserved its Plato connection;
+          it is not evidence of standalone adoption. The results below describe that clinic,
+          measurement window, and configured pilot scope—not a broader customer roster or a general
+          performance promise.
         </p>
       </Section>
 

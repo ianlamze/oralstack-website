@@ -8,20 +8,27 @@ import ClinicFitChooser from "@/components/sections/ClinicFitChooser";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Pilot pricing for Oralstack — flat $200 per clinic per month, with three months of hands-on onboarding included.",
+    "Guided standalone pilot pricing for Oralstack — flat $200 per clinic per month, with three months of hands-on onboarding included.",
   alternates: { canonical: "/pricing" },
 };
 
 export default function PricingPage() {
   return (
     <main>
-      <PageHeader eyebrow="Pricing" title="Pilot pricing." />
+      <PageHeader eyebrow="Pricing" title="Guided pilot pricing." />
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          One flat price. Three months of hands-on onboarding included. No per-seat charges, no
-          per-feature gating, no setup fees while we&apos;re in pilot.
+          One flat price for the configured core clinic pilot. Three months of hands-on onboarding
+          included. Data migration, bespoke imports, and optional connections are scoped before
+          kickoff rather than hidden inside the subscription.
         </p>
+        <a
+          href="/switching"
+          className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
+        >
+          Compare the clinic starting paths →
+        </a>
       </Section>
 
       <Section className="pb-16">
@@ -33,7 +40,7 @@ export default function PricingPage() {
           <div className="grid gap-10 md:grid-cols-[minmax(0,auto)_minmax(0,1fr)] md:gap-14 md:items-start">
             <div className="grid gap-2">
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                Pilot
+                Guided clinic pilot
               </p>
               <p className="text-5xl md:text-6xl font-semibold tracking-tight tabular-nums text-[var(--color-text)] leading-none">
                 $200
@@ -52,11 +59,14 @@ export default function PricingPage() {
               </p>
               <ul className="grid gap-2.5 text-[var(--color-text-muted)] leading-relaxed">
                 <Bullet>
-                  The configured pilot scope across appointments, reception, patient folders,
-                  reviewed checkout, patient access, clinic operations, and insights.
+                  The configured core scope across appointments, reception, patient folders,
+                  checkout, patient access, clinic operations, and insights.
                 </Bullet>
                 <Bullet>
                   Three months of hands-on onboarding for the front desk and clinical team.
+                </Bullet>
+                <Bullet>
+                  Standard clinic setup for roles, providers, chairs, and enabled native modules.
                 </Bullet>
                 <Bullet>Unlimited users, chairs, and providers within the clinic.</Bullet>
                 <Bullet>
@@ -76,7 +86,7 @@ export default function PricingPage() {
               Request a pilot proposal
             </MagneticButton>
             <p className="text-xs text-[var(--color-text-soft)] tracking-[0.04em]">
-              One clinic or a group · no self-serve activation · no long-term contract.
+              Guided standalone pilot · no self-serve activation · no long-term contract.
             </p>
           </div>
         </div>
@@ -86,30 +96,30 @@ export default function PricingPage() {
         <div className="grid gap-6 md:grid-cols-2 lg:gap-10 max-w-[820px]">
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-7 md:p-8 grid gap-4">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              What we ask
+              What the core price covers
             </p>
             <ul className="grid gap-2.5 text-[var(--color-text-muted)] text-sm leading-relaxed">
-              <Bullet>
-                30 minutes a week from a front-desk lead and a clinician for the first six weeks.
-              </Bullet>
-              <Bullet>Permission to be named in a case study — like DFI Synergy.</Bullet>
-              <Bullet>Honest feedback. We change the product around what doesn&apos;t work.</Bullet>
-              <Bullet>A real workflow to anchor against — not a sandbox.</Bullet>
+              <Bullet>Guided setup of the agreed native clinic workflows.</Bullet>
+              <Bullet>Unlimited users, chairs, and providers inside one clinic.</Bullet>
+              <Bullet>Training for the front desk, clinical team, and clinic manager.</Bullet>
+              <Bullet>A documented record boundary, rollout plan, and support window.</Bullet>
             </ul>
           </div>
 
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] p-7 md:p-8 grid gap-4">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-              Out of scope (today)
+              Scoped separately before kickoff
             </p>
             <ul className="grid gap-2.5 text-[var(--color-text-muted)] text-sm leading-relaxed">
-              <Bullet>Self-serve sign-up — every pilot starts with a 30-minute call.</Bullet>
-              <Bullet>Per-seat or per-feature gating — pricing stays flat in pilot.</Bullet>
+              <Bullet>
+                Bulk legacy-record migration, data cleaning, and custom import mapping.
+              </Bullet>
+              <Bullet>Plato or another bespoke connector and its reviewed write paths.</Bullet>
               <Bullet>
                 Public self-booking, automated messaging, DICOM/device ingest, external AI,
                 integrated claims, and payment processing unless explicitly scoped in writing.
               </Bullet>
-              <Bullet>Multi-region deployments outside APAC — talk to us.</Bullet>
+              <Bullet>Multi-region deployments outside APAC and group-wide rollout work.</Bullet>
             </ul>
           </div>
         </div>
@@ -135,7 +145,7 @@ export default function PricingPage() {
             </Bullet>
             <Bullet>
               No silent feature gating. The MSA records exactly which modules, clinic connections,
-              and controlled rollouts are included in the pilot.
+              record-move work, and controlled rollouts are included in the pilot.
             </Bullet>
             <Bullet>
               Custom quotes (groups, DSOs, multi-region clinics) are written in the pilot MSA up
@@ -151,7 +161,7 @@ export default function PricingPage() {
             Your data, on the way out
           </p>
           <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">
-            The MSA records the offboarding and export package for your connected deployment.
+            The MSA records the offboarding and export package for your pilot deployment.
             Operational reports support CSV where exposed in the app; broader patient, clinical,
             billing, and audit exports are confirmed in writing rather than assumed from a demo.
           </p>
@@ -175,10 +185,10 @@ export default function PricingPage() {
               Request a scoped pilot proposal.
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
-              Tell us how your front desk runs today, what your current PMS is, and what would
-              change first if Oralstack landed in the clinic next week. We use those answers to
-              scope the clinic connection, enabled modules, and first workflow. Procurement teams:
-              the{" "}
+              Tell us whether you&apos;re starting fresh, moving from paper or another clinic
+              system, or keeping Plato connected. We use that answer to scope record ownership,
+              enabled modules, import work, optional connections, and the first workflow.
+              Procurement teams: the{" "}
               <a
                 href="/security"
                 className="text-[var(--color-tide-deep)] underline underline-offset-4"

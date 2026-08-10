@@ -22,6 +22,16 @@ export default function DfiSynergyCaseStudy() {
       <CaseStudyHero study={study} />
 
       <Section className="pb-16 md:pb-20">
+        <aside className="mb-10 grid max-w-[820px] gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-5 md:p-6">
+          <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--color-tide-deep)]">
+            Deployment shown
+          </p>
+          <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
+            This April 2026 evidence comes from a Plato-connected workflow pilot. It shows the
+            front-desk and checkout scope described below; it does not show a standalone
+            clinic-system cutover.
+          </p>
+        </aside>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16 items-start">
           <div className="max-w-[560px]">
             <PullQuote
@@ -121,17 +131,23 @@ export default function DfiSynergyCaseStudy() {
       </Section>
 
       <Section className="pb-20 md:pb-24">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)] mb-8">
-          Pilot workflow illustrations
+        <p className="mb-8 text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+          Illustrations, labelled by scope
         </p>
         <ul className="grid gap-6 md:grid-cols-2">
-          <li className="bg-[var(--color-canvas-tinted)] rounded-[var(--radius-lg)] p-5 md:p-6 flex items-center justify-center min-h-[280px]">
-            <div className="w-full max-w-[440px]">
+          <li className="grid min-h-[280px] content-start gap-4 rounded-[var(--radius-lg)] bg-[var(--color-canvas-tinted)] p-5 md:p-6">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-text-muted)]">
+              Reviewed checkout · included in this pilot
+            </p>
+            <div className="w-full max-w-[440px] self-center justify-self-center">
               <CheckoutMock />
             </div>
           </li>
-          <li className="bg-[var(--color-canvas-tinted)] rounded-[var(--radius-lg)] p-5 md:p-6 flex items-center justify-center min-h-[280px]">
-            <div className="w-full max-w-[440px]">
+          <li className="grid min-h-[280px] content-start gap-4 rounded-[var(--radius-lg)] bg-[var(--color-canvas-tinted)] p-5 md:p-6">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-text-muted)]">
+              Odontogram · product illustration, outside this pilot
+            </p>
+            <div className="w-full max-w-[440px] self-center justify-self-center">
               <OdontogramMock />
             </div>
           </li>
@@ -255,8 +271,8 @@ export default function DfiSynergyCaseStudy() {
             </h2>
             <p className="mt-4 text-[var(--color-text-muted)] max-w-[54ch] leading-relaxed">
               DFI Synergy&apos;s results reflect one named April 2026 pilot. Share your clinic shape
-              and first workflow for a scoped proposal, or request a walkthrough of the current
-              Plato-connected run-the-day path.
+              and preferred start mode for a scoped proposal, or request a walkthrough of the
+              Plato-connected run-the-day path used in this evidence.
             </p>
           </div>
           <div className="md:justify-self-end flex flex-col gap-3">

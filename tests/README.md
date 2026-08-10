@@ -18,10 +18,24 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 - Full-page pixel snapshot vs committed baseline (animations disabled)
 - `maxDiffPixelRatio: 0.02`, `threshold: 0.2` (see [`playwright.config.ts`](../playwright.config.ts))
 
+The standalone-first release also verifies that:
+
+- The default title, hero, navigation, footer, and demo CTA do not position Plato as a prerequisite.
+- The homepage links to three starting paths, while `/switching/` distinguishes new-clinic,
+  paper/spreadsheet, existing-PMS, and optional-connection paths without 320 px overflow.
+- Switching links preserve their allowlisted source and clinic starting point into the contact form.
+- Default demo and pilot forms do not preselect Plato; submitted starting points are mapped to
+  human-readable provider-email labels, invalid values are rejected, and legacy requests without a
+  starting point remain accepted.
+- Legacy `?intent=migration`, `#migration`, and `/integrations#plato` links remain compatible.
+- Integrations lead with standalone rollout, while status and pricing keep native setup, migration,
+  and optional connector boundaries distinct.
+
 ## What's not covered
 
 - **Successful inbox delivery.** Required-field validation, workflow-to-demo context,
-  evidence-to-request context, Plato-to-assessment handoff, pricing-to-pilot payload mapping,
+  evidence-to-request context, switching-to-assessment and optional-Plato handoffs,
+  pricing-to-pilot payload mapping,
   security/status/pricing procurement routing, shared request privacy notices, duplicate-submit
   prevention, accessible form feedback, four-tab contact drafts/history/keyboard behavior, and
   mobile navigation interactions are covered. The Cloudflare contact handler is also exercised
@@ -42,20 +56,24 @@ For a tighter list of high-traffic routes (`/`, `/workflows/`, `/integrations/`,
 
 | | Desktop | Mobile | Total |
 |---|---:|---:|---:|
-| Public route loads (19 routes) | 19 | 19 | **38** |
+| Public route loads (20 routes) | 20 | 20 | **40** |
 | Synthetic-identity checks (3 routes) | 3 | 3 | **6** |
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 23 | 23 | **46** |
-| Focused component snapshots | 14 | 14 | **28** |
+| Journey and interaction checks | 27 | 27 | **54** |
+| Focused component snapshots | 16 | 16 | **32** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **117** | **117** | **234** |
+| **Total** | **124** | **124** | **248** |
 
-The complete suite expects 42 baseline PNGs in
+The complete suite expects 46 baseline PNGs in
 [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/). Generate new baselines on Linux so
 the committed images match CI rendering. The security trust actions, status trust actions, and
-security review form account for six desktop/mobile baselines.
+security review form account for six desktop/mobile baselines. The standalone-first suite adds four
+new expected baselines—`homepage-starting-paths-{desktop,mobile}.png` and
+`switching-start-paths-{desktop,mobile}.png`—on top of the previous 42; this repository update does
+not generate those PNGs locally. Existing full-page and focused baselines touched by the reframe
+must also be reviewed before they are regenerated in the authoritative Linux snapshot workflow.
 
 ## Viewports
 
@@ -68,7 +86,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 234 tests across desktop + mobile
+npm run test:smoke    # 248 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when

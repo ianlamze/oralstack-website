@@ -7,7 +7,7 @@ type ComparisonPageProps = {
 };
 
 const currentBoundary = [
-  "Oralstack currently extends Plato through reviewed clinic workflows; it is not positioned as a standalone PMS replacement.",
+  "Oralstack is available as a clinic system through guided standalone setup. Existing-system connections are optional and scoped separately where supported.",
   "Appointments, reception, patient folders, clinical work, reviewed checkout, patient access, clinic operations, insights, and organization controls make up the current product story.",
   "Public self-booking, automated messaging, DICOM/device integrations, external AI, and integrated claims or payments must not be inferred from an older prototype or comparison.",
 ];
@@ -20,8 +20,8 @@ export default function ComparisonPage({ data }: ComparisonPageProps) {
       <Section className="pb-12">
         <p className="max-w-[64ch] text-lg leading-relaxed text-[var(--color-text-muted)]">
           This older vendor comparison has been retired. Oralstack&apos;s current product role and
-          rollout boundaries changed after it was written, so its historical feature-by-feature
-          claims are no longer shown as procurement guidance.
+          rollout model changed after it was written, so its historical feature-by-feature claims
+          are no longer shown as procurement guidance.
         </p>
         {data.lastReviewed && (
           <p className="mt-4 text-[11px] uppercase tracking-[0.06em] text-[var(--color-text-soft)]">
@@ -34,10 +34,10 @@ export default function ComparisonPage({ data }: ComparisonPageProps) {
       <Section className="pb-20 md:pb-28">
         <div className="max-w-[880px] rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-7 md:p-10">
           <p className="text-xs font-semibold uppercase tracking-[var(--tracking-eyebrow)] text-[var(--color-text-soft)]">
-            Current Oralstack boundary
+            Current Oralstack rollout boundary
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
-            Evaluate the workflow layer first.
+            Evaluate the clinic system first.
           </h2>
           <ul className="mt-6 grid gap-3">
             {currentBoundary.map((item) => (
