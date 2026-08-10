@@ -54,9 +54,7 @@ export default function PageHeader({
           {title}
         </h1>
         {lastUpdated && (
-          <p className="mt-4 text-sm text-[var(--color-text-muted)]">
-            Last updated: {lastUpdated}
-          </p>
+          <p className="mt-4 text-sm text-[var(--color-text-muted)]">Last updated: {lastUpdated}</p>
         )}
       </div>
     </Section>
