@@ -18,24 +18,24 @@ export default function CTA() {
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-[var(--tracking-eyebrow)] text-[var(--color-tide)]">
-              See the clinic day in context
+              Guided standalone setup
             </p>
             <h2 className="mt-3 max-w-[28ch] text-3xl font-semibold tracking-tight md:text-4xl">
-              Make the next clinic day easier to run.
+              Bring your clinic day into Oralstack.
             </h2>
             <p className="mt-4 max-w-[58ch] leading-relaxed text-[color-mix(in_srgb,var(--color-sidebar-foreground)_74%,transparent)]">
-              Request a focused 30-minute walkthrough, or share your clinic shape and first workflow
-              for a scoped pilot proposal.
+              Book a focused walkthrough. We will map your appointments, patient records, checkout
+              and clinic operations before proposing a scoped standalone pilot.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <MagneticButton href="/book-a-demo" variant="onDark" withArrow>
-                Request a 30-min walkthrough
+                Book a clinic walkthrough
               </MagneticButton>
               <a
                 href="/contact/?intent=pilot#request"
                 className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-sidebar-border)] px-5 py-3 text-sm font-semibold text-[var(--color-sidebar-foreground)] transition-colors hover:bg-[color-mix(in_srgb,var(--color-sidebar-foreground)_8%,transparent)]"
               >
-                Request a pilot proposal
+                Request a standalone pilot
               </a>
             </div>
           </div>

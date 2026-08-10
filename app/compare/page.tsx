@@ -6,7 +6,7 @@ import CompareBuilder from "@/components/tools/CompareBuilder";
 export const metadata: Metadata = {
   title: "Compare",
   description:
-    "Evaluate Oralstack's current Plato-connected scope against the requirements of your clinic.",
+    "Review Oralstack's current guided-rollout scope against the requirements of your dental clinic.",
   alternates: { canonical: "/compare" },
 };
 
@@ -17,10 +17,10 @@ export default function ComparePage() {
 
       <Section className="pb-12">
         <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack is currently a Plato-connected operating and clinical workflow layer—not a
-          standalone PMS replacement. Use this table to compare the current Oralstack scope with
-          your requirements, then verify every other vendor&apos;s current product and commercial
-          terms directly.
+          Oralstack is available as a clinic system through guided standalone setup. Existing-system
+          connections are scoped separately where supported. Use this archived table to compare the
+          current Oralstack boundary with your requirements, then verify every other vendor&apos;s
+          current product and commercial terms directly.
         </p>
       </Section>
 
@@ -50,16 +50,17 @@ export default function ComparePage() {
             Ask for a dated, written scope.
           </h2>
           <p className="mt-3 max-w-[64ch] text-sm leading-relaxed text-[var(--color-text-muted)]">
-            Confirm which Oralstack modules and clinic connections are enabled, which actions are
-            reviewed before Plato writeback, and which pilots are excluded. Public booking,
-            automated messaging, DICOM/device integrations, external AI, and integrated claims or
-            payments should not be assumed from a prototype or an older comparison page.
+            Confirm which Oralstack modules are enabled during guided setup, which capabilities
+            remain controlled pilots, and whether your clinic needs an existing-system connection.
+            Public booking, automated messaging, DICOM/device integrations, external AI, and
+            integrated claims or payments should not be assumed from a prototype or an older
+            comparison page.
           </p>
           <a
-            href="/workflows"
+            href="/switching"
             className="mt-5 inline-flex text-sm font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
           >
-            Review the current product scope →
+            Review switching and guided setup →
           </a>
         </div>
       </Section>

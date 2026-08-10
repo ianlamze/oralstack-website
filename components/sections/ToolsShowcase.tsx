@@ -48,7 +48,7 @@ const moduleBands: ModuleBand[] = [
       {
         href: "/tools#run-the-day",
         title: "Appointments",
-        blurb: "Plato-connected staff booking, availability, and schedule work.",
+        blurb: "Clinic schedule, provider availability, and staff booking.",
         Icon: ClipboardList,
       },
       {
@@ -104,7 +104,7 @@ const moduleBands: ModuleBand[] = [
       {
         href: "/tools#checkout-money",
         title: "Money & receivables",
-        blurb: "Billing, deposits, claims tracking, and AR follow-up worklists.",
+        blurb: "Billing drafts, payer tracking, and AR follow-up worklists.",
         Icon: Receipt,
       },
       {
@@ -147,7 +147,7 @@ const moduleBands: ModuleBand[] = [
       {
         href: "/tools#organization-security",
         title: "Sync & audit",
-        blurb: "Connection health, reviewed writebacks, and action history.",
+        blurb: "Record ownership, connection health, and action history.",
         Icon: ShieldCheck,
       },
       {
@@ -171,9 +171,8 @@ export default function ToolsShowcase() {
           The modules your team can actually open.
         </h2>
         <p className="max-w-[64ch] leading-relaxed text-[var(--color-text-muted)]">
-          This inventory follows Oralstack v2&apos;s real navigation. It deliberately excludes
-          dark-launched integrations and interactive marketing concepts from the shipped feature
-          count.
+          This inventory follows Oralstack v2&apos;s real navigation. Native clinic modules come
+          first; guided setup, optional connections, and controlled rollouts stay clearly marked.
         </p>
       </div>
 
@@ -227,7 +226,7 @@ export default function ToolsShowcase() {
           Open the complete feature guide <ArrowRight className="size-3" aria-hidden />
         </a>
         <p className="text-xs text-[var(--color-text-soft)]">
-          Availability can depend on clinic connection and role permissions.
+          Availability can depend on guided-pilot scope, clinic setup, and role permissions.
         </p>
       </div>
     </Section>

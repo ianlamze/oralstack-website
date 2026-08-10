@@ -4,20 +4,13 @@ import { useLayoutEffect, useState } from "react";
 import FormShell, { Field, Select, TextArea } from "@/components/forms/FormShell";
 import {
   getRequestSourceId,
+  getStartModeOptionValue,
+  PMS_OPTIONS,
   REQUEST_SOURCES,
+  START_MODE_OPTIONS,
   type RequestSourceId,
 } from "@/components/forms/contact-options";
 import { productCapabilities } from "@/content/product-capabilities";
-
-const PMS_OPTIONS = [
-  { value: "Plato", label: "Plato" },
-  { value: "Open Dental", label: "Open Dental" },
-  { value: "Dentrix", label: "Dentrix" },
-  { value: "Eaglesoft", label: "Eaglesoft" },
-  { value: "Carestream", label: "Carestream" },
-  { value: "Other", label: "Other" },
-  { value: "None / paper diary", label: "None / paper diary" },
-];
 
 const FOCUS_OPTIONS = [
   { value: "general", label: "A general clinic walkthrough" },
@@ -31,13 +24,16 @@ const VALID_FOCUS = new Set(FOCUS_OPTIONS.map((option) => option.value));
 
 export default function DemoRequestForm() {
   const [focus, setFocus] = useState("general");
+  const [startMode, setStartMode] = useState("");
   const [source, setSource] = useState<RequestSourceId | null>(null);
 
   useLayoutEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const requestedSource = getRequestSourceId(params.get("source"));
     const requestedFocus = params.get("focus");
+    const requestedStartMode = getStartModeOptionValue(params.get("start"));
     setSource(requestedSource);
+    if (requestedStartMode) setStartMode(requestedStartMode);
     if (requestedFocus && VALID_FOCUS.has(requestedFocus)) setFocus(requestedFocus);
     else if (requestedSource === "dfi-synergy") setFocus("run-the-day");
   }, []);
@@ -62,20 +58,34 @@ export default function DemoRequestForm() {
             </div>
           )}
           <Select
-            label="Start the walkthrough with"
-            name="focus"
-            options={FOCUS_OPTIONS}
-            value={focus}
-            onChange={(event) => setFocus(event.currentTarget.value)}
+            label="How would you like to start?"
+            name="startMode"
+            required
+            options={START_MODE_OPTIONS}
+            value={startMode}
+            onChange={(event) => setStartMode(event.currentTarget.value)}
           />
-          <p
-            className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]"
-            aria-live="polite"
-          >
-            {focus === "general"
-              ? "We'll follow the clinic day from reception to close."
-              : `${focusLabel} will be the first workflow shown.`}
+          <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
+            We&apos;ll tailor the walkthrough to a guided standalone setup, a record move, or an
+            optional existing-system connection.
           </p>
+          <div className="mt-4 border-t border-[var(--color-border)] pt-4">
+            <Select
+              label="Start the walkthrough with"
+              name="focus"
+              options={FOCUS_OPTIONS}
+              value={focus}
+              onChange={(event) => setFocus(event.currentTarget.value)}
+            />
+            <p
+              className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]"
+              aria-live="polite"
+            >
+              {focus === "general"
+                ? "We'll follow the clinic day from reception to close."
+                : `${focusLabel} will be the first workflow shown.`}
+            </p>
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -130,7 +140,11 @@ export default function DemoRequestForm() {
                 min={1}
                 placeholder="4"
               />
-              <Select label="Current PMS (optional)" name="currentPms" options={PMS_OPTIONS} />
+              <Select
+                label="Current clinic system (optional)"
+                name="currentPms"
+                options={PMS_OPTIONS}
+              />
             </div>
             <TextArea
               label="Preferred times (optional)"

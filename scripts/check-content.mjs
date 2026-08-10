@@ -36,6 +36,17 @@ const INDEXED = ["articles", "comparisons", "lead-magnets"];
 
 const VOICE_CHECK_DIRS = ["articles", "comparisons", "case-studies", "lead-magnets"];
 
+// The default acquisition surfaces must explain Oralstack on its own terms.
+// Plato remains valid on connection, switching, FAQ, and historical pages, but
+// it must not define the category before a buyer reaches those paths.
+const STANDALONE_FIRST_SURFACES = [
+  "content/site-meta.ts",
+  "app/opengraph-image.tsx",
+  "components/sections/Hero.tsx",
+  "components/sections/Nav.tsx",
+  "components/sections/Footer.tsx",
+];
+
 const violations = [];
 function fail(file, line, msg) {
   violations.push({ file: file.replace(ROOT, ""), line, msg });
@@ -168,6 +179,23 @@ async function voiceCheckSubdir(name) {
   }
 }
 
+async function checkStandaloneFirstSurfaces() {
+  for (const relativePath of STANDALONE_FIRST_SURFACES) {
+    const filePath = join(ROOT, relativePath);
+    const text = stripCommentsAndStrings(await readFile(filePath, "utf8"));
+    const lines = text.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (/\bPlato\b/i.test(lines[i])) {
+        fail(
+          filePath,
+          i + 1,
+          `default positioning must be standalone-first; move Plato copy to a switching or connection path: ${lines[i].trim().slice(0, 100)}`,
+        );
+      }
+    }
+  }
+}
+
 async function main() {
   for (const name of INDEXED) {
     await checkCollection(name);
@@ -176,6 +204,7 @@ async function main() {
     await voiceCheckSubdir(name);
   }
   await checkLooseContentFiles();
+  await checkStandaloneFirstSurfaces();
 
   if (violations.length === 0) {
     console.log("content check: OK");

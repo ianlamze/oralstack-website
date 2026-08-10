@@ -1,12 +1,14 @@
 "use client";
 
 import FormShell, { Field, Select, TextArea } from "./FormShell";
-import { PMS_OPTIONS, WORKFLOW_OPTIONS } from "./contact-options";
+import { PMS_OPTIONS, START_MODE_OPTIONS, WORKFLOW_OPTIONS } from "./contact-options";
 
 export default function PilotProposalForm({
   defaultWorkflowGoal,
+  defaultStartMode,
 }: {
   defaultWorkflowGoal?: string;
+  defaultStartMode?: string;
 }) {
   return (
     <FormShell intent="pilot" submitLabel="Request a pilot proposal">
@@ -21,6 +23,13 @@ export default function PilotProposalForm({
           required
           min={1}
           placeholder="e.g. 1"
+        />
+        <Select
+          label="How would you like to start?"
+          name="startMode"
+          required
+          options={START_MODE_OPTIONS}
+          defaultValue={defaultStartMode}
         />
         <Select label="Current clinic system" name="currentPms" required options={PMS_OPTIONS} />
         <Select

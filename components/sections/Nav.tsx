@@ -66,7 +66,7 @@ const productAreas: ProductArea[] = [
   {
     href: "/workflows#organization-security",
     label: "Organization & security",
-    desc: "People, roles, settings, sync health and audit history.",
+    desc: "People, roles, settings, access controls and audit history.",
     Icon: ShieldCheck,
   },
 ];
@@ -207,10 +207,10 @@ export default function Nav() {
               Customers
             </a>
             <a
-              href="/integrations"
+              href="/switching"
               className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] px-3 py-2 text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text)]"
             >
-              Integrations
+              Switching & setup
             </a>
             <a
               href="/security"
@@ -228,7 +228,7 @@ export default function Nav() {
               href="/book-a-demo"
               className="ml-2 inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-2 text-[var(--color-canvas)] shadow-[var(--shadow-1)] transition-colors hover:bg-[var(--color-tide-deep)]"
             >
-              Request a 30-min walkthrough
+              Book a clinic walkthrough
             </a>
           </nav>
 
@@ -265,7 +265,7 @@ export default function Nav() {
                 <div className="grid md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
                   <div className="p-6 md:p-7">
                     <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                      Clinic workspace
+                      Clinic system
                     </p>
                     <ul className="grid gap-1 sm:grid-cols-2">
                       {productAreas.map(({ href, label, desc, Icon }) => (
@@ -345,28 +345,28 @@ export default function Nav() {
                   </div>
 
                   <a
-                    href="/integrations"
+                    href="/switching"
                     onClick={closeMenu}
                     className="group relative grid content-between gap-6 border-t border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 transition-colors hover:bg-[var(--color-surface-hover)] md:border-l md:border-t-0 md:p-7"
                   >
                     <div>
                       <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-                        Connection model
+                        Guided clinic setup
                       </p>
                       <h3 className="mt-3 text-base font-semibold leading-snug text-[var(--color-text)]">
-                        One clinic workspace. Plato stays the system of record.
+                        Start with Oralstack as your clinic system.
                       </h3>
                       <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
-                        Oralstack mirrors clinic data, surfaces the next action, and returns
-                        approved work through reviewed writebacks.
+                        We map the clinic day with your team, configure the core workflows, and
+                        review any existing-system connection you need.
                       </p>
                     </div>
 
                     <div className="grid gap-2 text-xs text-[var(--color-text-muted)]">
                       {[
-                        "Clinic data mirrored",
-                        "Writeback state stays visible",
-                        "Sync health and audit history visible",
+                        "Standalone clinic configuration",
+                        "Patient and schedule setup",
+                        "Optional connections reviewed",
                       ].map((point) => (
                         <span key={point} className="flex items-center gap-2">
                           <ShieldCheck
@@ -379,7 +379,7 @@ export default function Nav() {
                     </div>
 
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-tide-deep)] transition-all group-hover:gap-2">
-                      See how Oralstack connects <ArrowRight className="h-3 w-3" aria-hidden />
+                      See guided setup <ArrowRight className="h-3 w-3" aria-hidden />
                     </span>
                   </a>
                 </div>
@@ -493,8 +493,11 @@ export default function Nav() {
                 <DrawerLink href="/customers" onNavigate={closeDrawer}>
                   Customers
                 </DrawerLink>
+                <DrawerLink href="/switching" onNavigate={closeDrawer}>
+                  Switching & setup
+                </DrawerLink>
                 <DrawerLink href="/integrations" onNavigate={closeDrawer}>
-                  Integrations
+                  Connections
                 </DrawerLink>
                 <DrawerLink href="/security" onNavigate={closeDrawer}>
                   Security
@@ -519,7 +522,7 @@ export default function Nav() {
                   onClick={closeDrawer}
                   className="flex min-h-[48px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-3 font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
                 >
-                  Request a 30-min walkthrough
+                  Book a clinic walkthrough
                 </a>
               </div>
             </motion.div>

@@ -41,14 +41,20 @@ export default function WorkflowsPage() {
           </p>
           <aside className="rounded-[var(--radius-xl)] border border-[var(--color-border)] border-l-2 border-l-[var(--color-tide-deep)] bg-[var(--color-surface-inset)] p-6 md:p-8">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
-              {workflowsPageContent.platoBoundary.eyebrow}
+              {workflowsPageContent.recordOwnership.eyebrow}
             </p>
             <h2 className="mt-3 text-xl font-semibold tracking-tight">
-              {workflowsPageContent.platoBoundary.title}
+              {workflowsPageContent.recordOwnership.title}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {workflowsPageContent.platoBoundary.body}
+              {workflowsPageContent.recordOwnership.body}
             </p>
+            <a
+              href={workflowsPageContent.recordOwnership.action.href}
+              className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
+            >
+              {workflowsPageContent.recordOwnership.action.label} →
+            </a>
           </aside>
         </div>
       </Section>

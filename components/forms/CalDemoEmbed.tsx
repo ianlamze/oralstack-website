@@ -6,8 +6,10 @@ import { CalendarDays, ExternalLink, ShieldCheck } from "lucide-react";
 import DemoRequestForm from "@/components/forms/DemoRequestForm";
 import {
   getRequestSourceId,
+  getStartModeOptionValue,
   getWorkflowOptionValue,
   REQUEST_SOURCES,
+  START_MODE_OPTIONS,
   WORKFLOW_OPTIONS,
 } from "@/components/forms/contact-options";
 
@@ -21,6 +23,7 @@ export default function CalDemoEmbed({ username, event }: Props) {
   const loadedModeRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const source = getRequestSourceId(searchParams.get("source"));
+  const startMode = getStartModeOptionValue(searchParams.get("start"));
   const requestedFocus = searchParams.get("focus");
   const focus =
     getWorkflowOptionValue(requestedFocus) ??
@@ -30,6 +33,7 @@ export default function CalDemoEmbed({ username, event }: Props) {
     focus === "general"
       ? "A general clinic walkthrough"
       : WORKFLOW_OPTIONS.find((option) => option.value === focus)?.label;
+  const startModeLabel = START_MODE_OPTIONS.find((option) => option.value === startMode)?.label;
 
   const bookingUrl = new URL(
     `https://cal.com/${encodeURIComponent(username)}/${encodeURIComponent(event)}`,
@@ -41,6 +45,7 @@ export default function CalDemoEmbed({ username, event }: Props) {
   bookingUrl.searchParams.set("utm_content", source ?? focus);
   bookingUrl.searchParams.set("metadata[requestSource]", source ?? "direct");
   bookingUrl.searchParams.set("metadata[workflowFocus]", focus);
+  if (startMode) bookingUrl.searchParams.set("metadata[startMode]", startMode);
 
   useEffect(() => {
     if (mode === "choice") return;
@@ -67,7 +72,7 @@ export default function CalDemoEmbed({ username, event }: Props) {
 
   return (
     <div className="grid gap-4">
-      {(source || focus !== "general") && (
+      {(source || startMode || focus !== "general") && (
         <div
           data-testid="request-context"
           className="grid gap-1 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-4"
@@ -80,6 +85,11 @@ export default function CalDemoEmbed({ username, event }: Props) {
           <p className="text-sm font-medium text-[var(--color-text)]">
             Start with {focusLabel?.toLowerCase()}.
           </p>
+          {startModeLabel && (
+            <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
+              Clinic starting point: {startModeLabel}.
+            </p>
+          )}
           {source && (
             <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
               {REQUEST_SOURCES[source].context}
@@ -137,8 +147,9 @@ export default function CalDemoEmbed({ username, event }: Props) {
               aria-hidden
             />
             <p>
-              Cal.com is not loaded until you open it. It receives the request source and workflow
-              focus as booking context. Do not enter patient or clinical data.{" "}
+              Cal.com is not loaded until you open it. It receives the request source, clinic
+              starting point, and workflow focus as booking context. Do not enter patient or
+              clinical data.{" "}
               <a
                 href="/privacy#scheduling"
                 className="font-medium text-[var(--color-tide-deep)] underline underline-offset-4"

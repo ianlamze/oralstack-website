@@ -20,9 +20,21 @@ type Capability = {
 
 const capabilities: Capability[] = [
   {
-    name: "Plato-connected workflow path",
+    name: "Standalone clinic workspace",
     detail:
-      "Plato remains authoritative while Oralstack uses reviewed, status-visible paths for connected clinic records and supported appointment updates. Each clinic still requires a readiness review.",
+      "The native patient, schedule, clinical, checkout, and operations paths require guided provisioning and evidence review. The enabled modules and their record ownership are agreed before clinic go-live.",
+    status: "configured-pilot",
+  },
+  {
+    name: "Native scheduling, invoicing, and payer setup",
+    detail:
+      "These standalone record paths are verified together with clinic configuration and are not represented as generally enabled in the dated production snapshot.",
+    status: "configured-pilot",
+  },
+  {
+    name: "Optional Plato connection",
+    detail:
+      "Clinics that choose Plato keep it authoritative for the agreed records while Oralstack uses reviewed, status-visible paths for supported appointment and writeback work.",
     status: "configured",
   },
   {
@@ -81,7 +93,7 @@ const capabilities: Capability[] = [
 export default function StatusPage() {
   return (
     <main>
-      <PageHeader eyebrow="Status" title="Published capability snapshot." />
+      <PageHeader eyebrow="Status" title="Capability and connection snapshot." />
 
       <Section className="pb-10">
         <div
@@ -145,7 +157,7 @@ export default function StatusPage() {
         <div className="grid max-w-[920px] gap-8 md:grid-cols-2">
           <Block
             heading="Available"
-            body="The surface is implemented and its required base controls are evidenced in the dated repository and production-state snapshot. This label does not assert current uptime for a particular deployment."
+            body="The surface is implemented and its required base controls are evidenced in the dated repository and production-state snapshot. This label does not make the standalone clinic workspace generally available or assert current uptime for a deployment."
           />
           <Block
             heading="Available with clinic setup"
@@ -153,14 +165,14 @@ export default function StatusPage() {
           />
           <Block
             heading="Configured pilot"
-            body="The code path exists, but a clinic still needs external credentials, deployment configuration, and a readiness review. It is not represented as generally enabled."
+            body="The code path exists, but a clinic still needs provisioning, deployment configuration, and a readiness review. External credentials apply only when the selected optional connection requires them."
           />
           <Block
             heading="Not enabled"
             body="The capability is unavailable in the latest recorded production configuration. Source code, tests, or a local workflow may exist without a live external connection."
           />
           <Block
-            heading="Source of truth"
+            heading="Evidence source"
             body="Repository tests and the checked-in production-state record support this page. Because the flag snapshot is dated, current deployment state must be verified directly before a rollout decision."
           />
         </div>

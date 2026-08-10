@@ -16,6 +16,7 @@ import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
 import {
   integrationCategories,
+  integrationsPageContent,
   type IntegrationAvailability,
   type IntegrationCategory,
   type IntegrationIcon,
@@ -23,9 +24,8 @@ import {
 } from "@/content/integrations";
 
 export const metadata: Metadata = {
-  title: "Plato connection and integrations",
-  description:
-    "See how Oralstack works around Plato, what stays authoritative, which changes back to Plato require review, and how other clinic connections are currently enabled.",
+  title: integrationsPageContent.metadata.title,
+  description: integrationsPageContent.metadata.description,
   alternates: { canonical: "/integrations" },
 };
 
@@ -42,29 +42,27 @@ const iconMap: Record<IntegrationIcon, React.ComponentType<{ className?: string 
 export default function IntegrationsPage() {
   return (
     <main>
-      <PageHeader eyebrow="Plato & integrations" title="Run the clinic day around Plato." />
+      <PageHeader eyebrow={integrationsPageContent.eyebrow} title={integrationsPageContent.title} />
 
       <Section className="pb-14 md:pb-16">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] lg:items-start lg:gap-14">
           <div>
             <p className="max-w-[58ch] text-lg leading-relaxed text-[var(--color-text-muted)]">
-              Oralstack works as a clinic-operations layer around Plato. Plato remains the system of
-              record; Oralstack gives staff one place to coordinate the reception, chairside,
-              checkout, and manager handoffs around that record.
+              {integrationsPageContent.intro}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <a
-                href="#plato"
+                href={integrationsPageContent.primaryAction.href}
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
               >
-                See how the connection works
+                {integrationsPageContent.primaryAction.label}
                 <ArrowRight className="size-4" aria-hidden />
               </a>
               <a
-                href="/contact/?intent=migration&source=integrations#request"
+                href={integrationsPageContent.secondaryAction.href}
                 className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)]"
               >
-                Request a connection assessment
+                {integrationsPageContent.secondaryAction.label}
               </a>
             </div>
           </div>
@@ -77,13 +75,12 @@ export default function IntegrationsPage() {
               id="connection-summary-heading"
               className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-text-soft)]"
             >
-              Connection summary
+              {integrationsPageContent.summaryEyebrow}
             </h2>
             <dl className="mt-5 grid gap-4 text-sm">
-              <SummaryRow label="System of record" value="Plato" />
-              <SummaryRow label="Oralstack role" value="Clinic workflow and operations" />
-              <SummaryRow label="Changes back to Plato" value="Reviewed and status-visible" />
-              <SummaryRow label="Clinic setup" value="Required before rollout" />
+              {integrationsPageContent.summary.map((item) => (
+                <SummaryRow key={item.label} label={item.label} value={item.value} />
+              ))}
             </dl>
           </aside>
         </div>
@@ -101,7 +98,7 @@ export default function IntegrationsPage() {
               </span>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-text-soft)]">
-                  Core clinic connection
+                  {integrationsPageContent.platoEyebrow}
                 </p>
                 <p className="mt-0.5 font-semibold text-[var(--color-text)]">Plato clinic API</p>
               </div>
@@ -226,26 +223,25 @@ export default function IntegrationsPage() {
         <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] px-8 py-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:px-12 md:py-12">
           <div>
             <h2 className="max-w-[28ch] text-2xl font-semibold tracking-tight md:text-3xl">
-              Bring the system and workflow you need to connect.
+              {integrationsPageContent.rolloutAction.title}
             </h2>
             <p className="mt-3 max-w-[58ch] leading-relaxed text-[var(--color-text-muted)]">
-              We will separate a clinic-configured Plato-backed path, a supported export, a
-              configured pilot, and new engineering work before proposing a rollout.
+              {integrationsPageContent.rolloutAction.body}
             </p>
           </div>
           <div className="flex flex-col gap-3 md:justify-self-end">
             <a
-              href="/contact/?intent=migration&source=integrations#request"
+              href={integrationsPageContent.rolloutAction.primaryHref}
               className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)]"
             >
-              Request a connection assessment
+              {integrationsPageContent.rolloutAction.primaryLabel}
               <ArrowRight className="size-4" aria-hidden />
             </a>
             <a
-              href="/contact/?intent=question&source=integrations#request"
+              href={integrationsPageContent.rolloutAction.secondaryHref}
               className="inline-flex min-h-[44px] items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas)]"
             >
-              Ask about another connection
+              {integrationsPageContent.rolloutAction.secondaryLabel}
             </a>
           </div>
         </div>

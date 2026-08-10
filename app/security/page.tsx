@@ -20,7 +20,7 @@ import Section from "@/components/primitives/Section";
 export const metadata: Metadata = {
   title: "Security & compliance",
   description:
-    "How Oralstack approaches data security, tenant isolation, hosting, access control, backups, legal documents, and the compliance roadmap. Honest about what's in place and what's still on the way.",
+    "How Oralstack approaches data security, record ownership, exports, tenant isolation, hosting, access control, backups, legal documents, and the compliance roadmap.",
   alternates: { canonical: "/security" },
 };
 
@@ -45,6 +45,24 @@ const whereDataLives: CardItem[] = [
     icon: FileLock2,
     title: "Encryption · layered controls",
     body: "Transport encryption and cloud-managed encryption at rest cover the deployed data services. Selected high-risk fields also use application-layer AES-256-GCM. We do not claim that every field is application-encrypted.",
+  },
+];
+
+const dataLifecycle: CardItem[] = [
+  {
+    icon: ScrollText,
+    title: "Record ownership · deployment-specific",
+    body: "The clinic rollout records which patient, appointment, clinical, billing, and audit records Oralstack owns natively and which records remain authoritative in an optional connected system. A code path is not treated as enabled clinic capability.",
+  },
+  {
+    icon: DatabaseBackup,
+    title: "Exports and offboarding · confirmed before go-live",
+    body: "Operational reports support CSV where exposed in the product. The broader patient, clinical, billing, document, and audit export package is confirmed in the clinic agreement rather than inferred from a walkthrough.",
+  },
+  {
+    icon: FileLock2,
+    title: "Retention and deletion · agreed in writing",
+    body: "Retention, source-system archives, rollback, account closure, deletion timing, and any legally required hold are agreed for the deployment. The public marketing-site privacy notice does not replace those product terms.",
   },
 ];
 
@@ -175,6 +193,7 @@ const legalDocs = [
 
 const securitySections = [
   { href: "#data", label: "Data" },
+  { href: "#lifecycle", label: "Lifecycle" },
   { href: "#access", label: "Access" },
   { href: "#reliability", label: "Recovery" },
   { href: "#compliance", label: "Compliance" },
@@ -277,6 +296,15 @@ export default function SecurityPage() {
           eyebrow="Where data lives"
           heading="Documented deployment, database-enforced tenant scope, layered encryption."
           items={whereDataLives}
+        />
+      </Section>
+
+      <Section className="pb-12">
+        <SectionGroup
+          id="lifecycle"
+          eyebrow="Product data lifecycle"
+          heading="Record ownership, exports, retention, and offboarding are part of the rollout decision."
+          items={dataLifecycle}
         />
       </Section>
 

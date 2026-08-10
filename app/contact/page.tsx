@@ -8,7 +8,7 @@ import { contactChannels, mailtoLink, whatsappLink } from "@/content/contact";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Oralstack — quick questions, Plato connection assessments, pilot proposals, security reviews, or a 30-minute product walkthrough.",
+    "Get in touch with Oralstack about clinic switching, guided rollout, pilot proposals, security reviews, or a 30-minute product walkthrough.",
   alternates: { canonical: "/contact" },
 };
 
@@ -36,7 +36,7 @@ const quickTouchCards: {
     icon: Mail,
     eyebrow: "Async",
     title: "Email",
-    body: `Write us at ${contactChannels.email} for longer clinic, security, or rollout questions.`,
+    body: `Write us at ${contactChannels.email} for longer switching, security, or rollout questions.`,
     href: mailtoLink(),
     cta: "Compose email",
   },

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
-export const alt = "Oralstack — The Plato-connected workspace for dental clinics";
+export const alt = "Oralstack — The dental clinic operating system";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -70,7 +70,7 @@ export default async function Image() {
             color: "#15375D",
           }}
         >
-          from one workspace.
+          from one calm system.
         </div>
         <div
           style={{
@@ -83,7 +83,7 @@ export default async function Image() {
             lineHeight: 1.25,
           }}
         >
-          Appointments, patient care, checkout and operations—connected to Plato.
+          Appointments, patient care, checkout and operations—available through guided setup.
         </div>
       </div>
 

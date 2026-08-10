@@ -35,6 +35,7 @@ interface ContactPayload {
   message?: string;
   // migration / pilot / demo-specific
   clinicName?: string;
+  startMode?: string;
   currentPms?: string;
   workflowGoal?: string;
   requestType?: string;
@@ -75,6 +76,7 @@ function normalizePayload(raw: Record<string, unknown>): ContactPayload {
     email: textField(raw.email, 254),
     message: textField(raw.message, 5000),
     clinicName: textField(raw.clinicName, 200),
+    startMode: textField(raw.startMode, 120),
     currentPms: textField(raw.currentPms, 120),
     workflowGoal: textField(raw.workflowGoal, 120),
     requestType: textField(raw.requestType, 120),
@@ -116,13 +118,22 @@ function row(label: string, value: string | number | undefined): string {
 }
 
 const SOURCE_LABELS: Record<string, string> = {
-  "dfi-synergy": "DFI Synergy · April 2026 pilot evidence",
-  pricing: "Pilot pricing",
+  "dfi-synergy": "DFI Synergy · April 2026 Plato-connected pilot evidence",
+  pricing: "Guided pilot pricing",
   "solo-clinic": "One-clinic guide",
   "clinic-group": "Clinic-group guide",
-  integrations: "Plato integration guide",
+  integrations: "Connections guide",
+  switching: "Switching & setup guide",
   security: "Security & compliance overview",
   status: "Capability status snapshot",
+};
+
+const START_MODE_LABELS: Record<string, string> = {
+  "new-clinic": "Start a new clinic with no existing system",
+  "paper-spreadsheets": "Move from paper or spreadsheets",
+  "existing-pms": "Move from an existing clinic system",
+  "plato-connected": "Keep Plato connected",
+  exploring: "Still exploring",
 };
 
 const SECURITY_REQUEST_LABELS: Record<string, string> = {
@@ -148,16 +159,23 @@ function securityRequestLabel(requestType: string | undefined): string | undefin
     : undefined;
 }
 
+function startModeLabel(startMode: string | undefined): string | undefined {
+  return startMode && Object.hasOwn(START_MODE_LABELS, startMode)
+    ? START_MODE_LABELS[startMode]
+    : undefined;
+}
+
 function buildEmail(p: ContactPayload): { subject: string; html: string; text: string } {
   const intentLabel: Record<Intent, string> = {
     question: "Quick question",
-    migration: "Connection assessment request",
+    migration: "Switching & setup assessment",
     pilot: "Pilot proposal request",
     security: "Security review request",
     demo: "Demo request",
   };
   const source = sourceLabel(p.sourcePage);
   const securityRequest = securityRequestLabel(p.requestType);
+  const startMode = startModeLabel(p.startMode);
   const subjectName = p.name?.replace(/[\r\n]+/g, " ") ?? "(no name)";
   const subject = `[oralstack contact] ${intentLabel[p.intent]} — ${subjectName}`;
   const rows = [
@@ -167,8 +185,9 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     row("Role", p.role),
     row("Email", p.email),
     row("Clinic name", p.clinicName),
+    row("How the clinic wants to start", startMode),
     row("Location", p.location),
-    row("Current PMS", p.currentPms),
+    row("Current clinic system", p.currentPms),
     row("Workflow to improve first", p.workflowGoal),
     row("Security review request", securityRequest),
     row("# chairs", p.numChairs),
@@ -193,8 +212,9 @@ function buildEmail(p: ContactPayload): { subject: string; html: string; text: s
     p.role && `Role: ${p.role}`,
     p.email && `Email: ${p.email}`,
     p.clinicName && `Clinic: ${p.clinicName}`,
+    startMode && `How the clinic wants to start: ${startMode}`,
     p.location && `Location: ${p.location}`,
-    p.currentPms && `Current PMS: ${p.currentPms}`,
+    p.currentPms && `Current clinic system: ${p.currentPms}`,
     p.workflowGoal && `Workflow to improve first: ${p.workflowGoal}`,
     securityRequest && `Security review request: ${securityRequest}`,
     p.numChairs && `# chairs: ${p.numChairs}`,
@@ -223,7 +243,10 @@ function validate(p: ContactPayload): string | null {
   }
   if (p.intent === "migration") {
     if (!p.clinicName) return "Please tell us your clinic name.";
-    if (!p.currentPms) return "Please pick your current PMS.";
+    if (!p.currentPms) return "Please pick your current clinic system.";
+  }
+  if (p.startMode && !startModeLabel(p.startMode)) {
+    return "Please pick a valid clinic starting point.";
   }
   if (p.intent === "pilot") {
     if (!p.clinicName) return "Please tell us your clinic / group name.";
@@ -279,8 +302,7 @@ async function sendViaResend(env: Env, p: ContactPayload): Promise<Response> {
   }
   const successMessage: Record<Intent, string> = {
     question: "Question received. We'll reply by email.",
-    migration:
-      "Assessment request received. We'll reply with the setup questions for the next step.",
+    migration: "Setup assessment received. We'll reply with the questions for the next step.",
     pilot: "Pilot request received. We'll reply with the setup questions needed to scope it.",
     security:
       "Security review request received. We'll reply with the current evidence boundary and next step.",

@@ -22,8 +22,8 @@ export type ProductCapability = {
 };
 
 export const capabilityAvailabilityLabels: Record<CapabilityAvailability, string> = {
-  available: "Available now",
-  configured: "Available with clinic setup",
+  available: "Guided pilot",
+  configured: "Configured in clinic setup",
 };
 
 export const productCapabilities: readonly ProductCapability[] = [
@@ -33,20 +33,20 @@ export const productCapabilities: readonly ProductCapability[] = [
     eyebrow: "Run the day",
     title: "Move patients from arrival to checkout without losing the handoff.",
     summary:
-      "Reception works from the Plato-connected schedule, confirms arrivals, handles walk-ins, seats patients, tracks chair status, and sends completed visits to checkout.",
+      "In a guided standalone rollout, reception works from the Oralstack schedule, confirms arrivals, handles walk-ins, seats patients, tracks chair status, and sends completed visits to checkout.",
     availability: "configured",
     visual: "schedule",
     features: [
       {
-        title: "Work from the connected schedule",
+        title: "Set up the clinic schedule",
         description:
-          "Read provider availability and create or cancel Plato-backed appointments from the same workspace.",
+          "Confirm providers, chairs, availability, and schedule scope during clinic setup before staff create or cancel appointments in Oralstack.",
         availability: "configured",
       },
       {
-        title: "Keep reschedules reviewable",
+        title: "Keep appointment changes reviewable",
         description:
-          "For Plato-backed clinics, oralstack stages a proposed move for staff to apply in Plato and then resolve.",
+          "Create, cancel, and review schedule changes with status visible. Clinics that choose Plato use the connector's reviewed writeback path.",
         availability: "configured",
       },
       {
@@ -59,7 +59,7 @@ export const productCapabilities: readonly ProductCapability[] = [
     keepsTogether:
       "provider availability, arrivals, walk-ins, chair status, handoffs, and checkout readiness",
     boundary:
-      "Plato remains the scheduling source of truth for API-connected clinics. oralstack does not present a staged reschedule as a completed Plato write.",
+      "Native scheduling is enabled only after clinic provisioning and readiness review. The optional Plato connection retains its own record-ownership and writeback rules.",
   },
   {
     slug: "patient-care",
@@ -93,7 +93,7 @@ export const productCapabilities: readonly ProductCapability[] = [
     keepsTogether:
       "charting, perio, case notes, treatment plans, prescriptions, clinical media, letters, and audit history",
     boundary:
-      "External AI providers, DICOM, the X-ray bridge, NEHR submission, treatment-plan sharing, and visit summaries remain outside current live claims.",
+      "External AI providers, DICOM, the X-ray bridge, NEHR submission, treatment-plan sharing, and visit summaries are not enabled in the current rollout.",
   },
   {
     slug: "checkout-money",
@@ -127,7 +127,7 @@ export const productCapabilities: readonly ProductCapability[] = [
     keepsTogether:
       "billable lines, payer portions, CHAS context, payment records, receipts, credits, and settlements",
     boundary:
-      "Online payment processing, refunds, self-checkout, SmartCMS submission, and native invoicing are controlled rollouts and are not presented as live.",
+      "Online payment processing, refunds, self-checkout, and electronic claims are not enabled. Receipt and invoicing paths require confirmation during clinic setup.",
   },
   {
     slug: "patient-access",
@@ -135,7 +135,7 @@ export const productCapabilities: readonly ProductCapability[] = [
     eyebrow: "Patient access",
     title: "Give patients a secure path into the clinic.",
     summary:
-      "Token-based intake and the patient portal let patients complete registration, review balances and visits, accept treatment consent, request a suitable time, and message the clinic.",
+      "Where enabled during clinic setup, token-based intake and the patient portal let patients complete registration, review balances and visits, accept treatment consent, request a suitable time, and message the clinic.",
     availability: "configured",
     features: [
       {
@@ -166,7 +166,7 @@ export const productCapabilities: readonly ProductCapability[] = [
     keepsTogether:
       "registration, consent, portal history, time requests, and first-party patient messages",
     boundary:
-      "Public self-booking, booking deposits, the patient-form builder, dynamic consent builder, and automated WhatsApp or SMS outreach are not live claims.",
+      "Public self-booking, booking deposits, the patient-form builder, dynamic consent builder, and automated WhatsApp or SMS outreach are not enabled in the current rollout.",
   },
   {
     slug: "clinic-operations",
@@ -274,23 +274,27 @@ export const workflowsPageContent = {
   metadata: {
     title: "Dental clinic workflows",
     description:
-      "Explore the oralstack workflows available now for Plato-connected dental clinics: reception, patient care, checkout, patient access, clinic operations, insights, and organization security.",
+      "Explore the Oralstack standalone clinic workflows for reception, patient care, checkout, patient access, operations, insights, and organization security, with rollout status shown for each path.",
   },
   eyebrow: "Product capabilities",
-  title: "Seven connected workflows in the current oralstack app.",
+  title: "Seven clinic workflows in one Oralstack workspace.",
   intro:
-    "Follow a patient from the front desk to the chair, checkout, follow-up, and the records managers review after the day closes. Every capability below is available now or available after documented clinic setup.",
+    "Follow a patient from the front desk to the chair, checkout, follow-up, and the records managers review after the day closes. The current standalone path is a guided pilot, with each enabled workflow verified during clinic setup.",
   keepsTogetherLabel: "Keeps together",
-  boundaryLabel: "Product boundary",
-  platoBoundary: {
-    eyebrow: "Plato-reviewed boundary",
-    title: "oralstack adds the workflow layer. Plato stays the source of truth.",
-    body: "For API-connected clinics, oralstack reads and extends the existing Plato record. Patient identity, Plato schedule writes, and invoice writeback stay inside reviewed paths. A proposed reschedule still needs staff confirmation in Plato, and a local fallback is never described as a delivered writeback.",
+  boundaryLabel: "Rollout boundary",
+  recordOwnership: {
+    eyebrow: "Record ownership",
+    title: "Choose the clinic record model before go-live.",
+    body: "Standalone clinics use Oralstack as the working record only for the modules verified during guided setup. A clinic can instead keep Plato authoritative through an optional connection, with ownership and writeback rules agreed before rollout.",
+    action: {
+      label: "Review the optional Plato connection",
+      href: "/integrations#plato",
+    },
   },
   rolloutPolicy: {
     eyebrow: "Availability standard",
-    title: "Current app, not roadmap.",
-    body: "The seven groups above contain only shipped capabilities and features that become available after explicit clinic setup. Code behind controlled rollout gates is not presented as live product functionality.",
+    title: "Guided pilot, not a blanket availability claim.",
+    body: "The seven groups above contain implemented capabilities that are included in a guided pilot or configured during clinic setup. Code behind controlled rollout gates is not presented as enabled product functionality.",
     items: [
       "Public self-booking, deposits, online payment processing, refunds, and self-checkout",
       "DICOM, the X-ray bridge, NEHR, SmartCMS, teleconsultation, and external clinical AI providers",
@@ -298,8 +302,8 @@ export const workflowsPageContent = {
     ],
   },
   cta: {
-    title: "See the current workflows with your clinic setup in mind.",
-    body: "A 30-minute demo follows the front desk, clinician, and clinic manager through the shipped oralstack paths on a representative Singapore clinic dataset.",
+    title: "Map the standalone workspace to your clinic day.",
+    body: "A 30-minute demo follows the front desk, clinician, and clinic manager through the current Oralstack paths on a representative Singapore clinic dataset, with setup dependencies called out.",
     label: "Request a demo",
     href: "/book-a-demo",
   },
@@ -308,7 +312,7 @@ export const workflowsPageContent = {
 export const workflowsSectionContent = {
   eyebrow: "Product capabilities",
   title: "The workflows busy dental clinics run every day.",
-  body: "Seven audited capability groups from the current oralstack app, with clinic setup called out where it is required.",
+  body: "Seven audited capability groups from the current Oralstack app, with guided-pilot and clinic-setup boundaries called out.",
   cardAction: "Explore this workflow",
   pageAction: "See all seven workflows",
 } as const;

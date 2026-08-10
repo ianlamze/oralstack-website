@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteMeta.url;
-  const lastModified = new Date("2026-08-09T00:00:00+08:00");
+  const lastModified = new Date("2026-08-10T00:00:00+08:00");
 
   const caseStudyUrls: MetadataRoute.Sitemap = customers
     .filter((c) => c.caseStudySlug)
@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${base}/`, lastModified, priority: 1.0 },
     { url: `${base}/workflows/`, lastModified, priority: 0.9 },
+    { url: `${base}/switching/`, lastModified, priority: 0.9 },
     { url: `${base}/customers/`, lastModified, priority: 0.8 },
     ...caseStudyUrls,
     { url: `${base}/integrations/`, lastModified, priority: 0.7 },
