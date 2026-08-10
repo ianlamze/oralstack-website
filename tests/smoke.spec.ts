@@ -2159,12 +2159,12 @@ test("homepage starting paths have focused visual regression coverage", async ({
   await page.goto("/", { waitUntil: "networkidle" });
   await page.addStyleTag({
     content:
-      '*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; } header, a[href="#main-content"] { display: none !important; }',
+      '*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; } header, a[href="#main-content"], body > [aria-hidden="true"] { display: none !important; }',
   });
 
   await expect(page.getByTestId("starting-paths")).toHaveScreenshot("homepage-starting-paths.png", {
     animations: "disabled",
-    maxDiffPixelRatio: 0.005,
+    maxDiffPixelRatio: 0,
   });
 });
 
@@ -2172,7 +2172,7 @@ test("switching start paths have focused visual regression coverage", async ({ p
   await page.goto("/switching/", { waitUntil: "networkidle" });
   await page.addStyleTag({
     content:
-      '*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; } header, a[href="#main-content"] { display: none !important; }',
+      '*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; } header, a[href="#main-content"], body > [aria-hidden="true"] { display: none !important; }',
   });
 
   const startPaths = page
@@ -2182,7 +2182,7 @@ test("switching start paths have focused visual regression coverage", async ({ p
     .locator("xpath=ancestor::section");
   await expect(startPaths).toHaveScreenshot("switching-start-paths.png", {
     animations: "disabled",
-    maxDiffPixelRatio: 0.005,
+    maxDiffPixelRatio: 0,
   });
 });
 
