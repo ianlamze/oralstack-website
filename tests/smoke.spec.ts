@@ -706,6 +706,7 @@ test("demo requests submit once and keep values available after a delivery error
 test("contact delivery preserves each allowlisted request source in the provider email", async () => {
   const sourceLabels = {
     "dfi-synergy": "DFI Synergy · April 2026 Plato-connected pilot evidence",
+    about: "About Oralstack",
     pricing: "Guided pilot pricing",
     "solo-clinic": "One-clinic guide",
     "clinic-group": "Clinic-group guide",
@@ -1502,6 +1503,77 @@ test("request feedback focuses success and error states without losing form valu
   await expect(preservedForm.getByLabel(/What should improve first/)).toHaveValue("run-the-day");
 });
 
+test("about explains accountability and preserves the walkthrough context", async ({ page }) => {
+  await page.goto("/about/", { waitUntil: "networkidle" });
+
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Built around what dental clinics actually run.",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("Founder bios are being written up.")).toHaveCount(0);
+  await expect(page.getByText("a real engineer is on every call", { exact: false })).toHaveCount(0);
+
+  const actions = page.getByTestId("about-top-actions");
+  const walkthrough = actions.getByRole("link", { name: "Book a clinic walkthrough" });
+  await expect(walkthrough).toHaveAttribute("href", "/book-a-demo/?source=about");
+  await expectFirstViewportAction(page, walkthrough);
+  await expect(actions.getByRole("link", { name: "Request a pilot proposal" })).toHaveAttribute(
+    "href",
+    "/contact/?intent=pilot&source=about#request",
+  );
+
+  const engagement = page.getByTestId("about-engagement-model");
+  await expect(
+    engagement.getByRole("heading", {
+      level: 2,
+      name: "Three reviewed steps from clinic day to pilot.",
+    }),
+  ).toBeVisible();
+  await expect(engagement.getByRole("listitem")).toHaveCount(3);
+  await expect(engagement.getByText("Clinic responsibility")).toHaveCount(3);
+  await expect(engagement.getByText("Oralstack responsibility")).toHaveCount(3);
+  const engagementDetails = engagement.locator("details");
+  await expect(engagementDetails.first()).toHaveAttribute("open", "");
+  await expect(engagementDetails.nth(1)).not.toHaveAttribute("open", "");
+  await engagement.locator("summary").nth(1).press("Enter");
+  await expect(engagementDetails.nth(1)).toHaveAttribute("open", "");
+  await expect(
+    engagementDetails.nth(1).getByText("Confirm record ownership", { exact: false }),
+  ).toBeVisible();
+
+  const evidence = page.getByRole("navigation", { name: "Oralstack product evidence" });
+  const evidenceLinks = [
+    ["See the clinic workflows", "/workflows"],
+    ["Choose how your clinic starts", "/switching"],
+    ["Review the security boundary", "/security"],
+    ["Check capability status", "/status"],
+  ] as const;
+  for (const [name, href] of evidenceLinks) {
+    await expect(evidence.getByRole("link", { name: new RegExp(name) })).toHaveAttribute(
+      "href",
+      href,
+    );
+  }
+
+  await page.setViewportSize({ width: 320, height: 900 });
+  await page.goto("/about/", { waitUntil: "networkidle" });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  const mobileWalkthrough = page
+    .getByTestId("about-top-actions")
+    .getByRole("link", { name: "Book a clinic walkthrough" });
+  await expectFirstViewportAction(page, mobileWalkthrough);
+  await mobileWalkthrough.click();
+  await expect(page).toHaveURL(/\/book-a-demo\/\?source=about$/);
+  await expect(page.getByTestId("request-context")).toContainText(
+    "Continuing from About Oralstack",
+  );
+});
+
 test("evidence and security request journeys reflow without horizontal overflow at 320px", async ({
   page,
 }) => {
@@ -2274,6 +2346,27 @@ async function removeFixedPageChrome(page: Page) {
       for (const element of elements) element.remove();
     });
 }
+
+test("about accountability has focused visual regression coverage", async ({ page }) => {
+  const viewport = page.viewportSize();
+  if (viewport) {
+    await page.setViewportSize({ width: viewport.width, height: 2200 });
+  }
+  await page.goto("/about/", { waitUntil: "networkidle" });
+  await page.addStyleTag({
+    content:
+      "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
+  });
+  await removeFixedPageChrome(page);
+
+  await expect(page.getByTestId("about-engagement-model")).toHaveScreenshot(
+    "about-accountability.png",
+    {
+      animations: "disabled",
+      maxDiffPixelRatio: 0,
+    },
+  );
+});
 
 for (const region of TRUST_REVIEW_SNAPSHOT_REGIONS) {
   test(`${region.path} trust action region has focused visual regression coverage`, async ({

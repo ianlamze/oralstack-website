@@ -1,172 +1,235 @@
 import type { Metadata } from "next";
+import { ChevronDown } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import Section from "@/components/primitives/Section";
-import Reason from "@/components/ui/Reason";
-import Bullet from "@/components/ui/Bullet";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Oralstack is the modern operating system for dental clinics, built in Singapore around reception, patient care, checkout, and clinic management.",
+    "Oralstack is a dental clinic operating system offered through a guided standalone pilot, with clinic-specific setup and separately reviewed optional connections.",
   alternates: { canonical: "/about" },
 };
 
-type Founder = {
-  name: string;
-  role: string;
-  bio: string;
-};
-
-// To populate: fill the entries below. Until at least one is added, the page
-// renders a "team coming soon" notice instead of empty cards.
-const founders: Founder[] = [
-  // {
-  //   name: "Jane Doe",
-  //   role: "Co-founder & CEO",
-  //   bio: "Two-line bio. Background, why dental, what they bring.",
-  // },
+const engagementSteps = [
+  {
+    number: "01",
+    title: "Map the clinic day",
+    task: "Choose the first job to improve across reception, patient care, checkout, or clinic operations.",
+    clinic: "Share the current handoffs, the roles involved, and where staff lose time or context.",
+    oralstack:
+      "Match the agreed clinic job to current Oralstack workflows and define what the pilot needs to prove.",
+  },
+  {
+    number: "02",
+    title: "Configure and review the record boundary",
+    task: "Agree which records Oralstack will own, what staff can access, and what data needs setup or import.",
+    clinic:
+      "Confirm record ownership, permitted roles, source data, and whether an existing system must remain connected.",
+    oralstack:
+      "Configure the guided clinic setup and document enabled modules, access, imports, and rollout limits. Optional connections are scoped separately.",
+  },
+  {
+    number: "03",
+    title: "Train, review, and support",
+    task: "Prepare the agreed roles, test real clinic scenarios, and review the pilot before broader use.",
+    clinic:
+      "Nominate clinic leads, validate the configured workflow, and decide whether the reviewed scope is ready for staff.",
+    oralstack:
+      "Train the agreed roles, review issues and evidence with the clinic, and support the pilot through the agreed channel.",
+  },
 ];
+
+const evidenceLinks = [
+  {
+    eyebrow: "Product",
+    title: "See the clinic workflows",
+    body: "Review current reception, patient-care, checkout, operations, and organization paths.",
+    href: "/workflows",
+    action: "See the workflows →",
+  },
+  {
+    eyebrow: "Setup",
+    title: "Choose how your clinic starts",
+    body: "Start fresh, move records, or assess an optional connection before the pilot is scoped.",
+    href: "/switching",
+    action: "Plan the setup path →",
+  },
+  {
+    eyebrow: "Trust",
+    title: "Review the security boundary",
+    body: "See dated evidence, deployment boundaries, open work, and the procurement path.",
+    href: "/security",
+    action: "Review security →",
+  },
+  {
+    eyebrow: "Readiness",
+    title: "Check capability status",
+    body: "Separate available, clinic-configured, guided-pilot, and not-enabled product paths.",
+    href: "/status",
+    action: "View capability status →",
+  },
+];
+
+const primaryActionClass =
+  "inline-flex min-h-11 items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]";
+
+const secondaryActionClass =
+  "inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] bg-[var(--color-canvas)] px-5 py-3 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-canvas-tinted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]";
 
 export default function AboutPage() {
   return (
     <main>
       <PageHeader
-        eyebrow="About"
+        eyebrow="About Oralstack"
         title="Built around what dental clinics actually run."
         variant="display"
       />
 
-      <Section className="pb-12">
-        <p className="max-w-[58ch] text-lg text-[var(--color-text-muted)] leading-relaxed">
-          Oralstack is the modern operating system for dental clinics. It is APAC-first,
-          region-hosted in Singapore, and designed around seven audited capability groups spanning
-          reception, patient care, checkout, patient access, clinic operations, insights, and
-          organization security.
+      <Section className="pb-16 md:pb-20">
+        <p className="max-w-3xl text-lg leading-relaxed text-[var(--color-text-muted)]">
+          Oralstack brings reception, patient records, chairside care, checkout, and clinic
+          operations into one clinic system. It is APAC-first; the latest documented deployment
+          places core production services in Singapore. Standalone use is offered with
+          clinic-specific setup through a guided pilot; optional connections are reviewed
+          separately.
         </p>
-      </Section>
-
-      <Section className="pb-20 md:pb-28">
-        <div className="grid gap-12 md:gap-14 max-w-[760px]">
-          <Reason
-            eyebrow="Why we're building this"
-            title="The dental clinic stack hasn't kept up with the clinic."
-            body="Dental clinics often supplement a practice management system with spreadsheets, paper handoffs, and personal phones. The front desk tracks arrivals, clinicians document care, and managers reconcile the day across separate surfaces. We are building Oralstack so a clinic can run that work in one governed record, with an optional connection when an existing system still needs to stay in place."
-          />
-          <Reason
-            eyebrow="What we're optimising for"
-            title="Defensible claims and reviewed product boundaries."
-            body="We separate what is available now, what requires clinic setup, and what remains behind a controlled rollout gate. The public product story stops at shipped workflows. DICOM, public booking, automated outreach, external clinical AI, direct claims, and online payment rails do not become live claims just because code exists for them."
-          />
-          <Reason
-            eyebrow="Where we are"
-            title="Singapore-first, focused on the current app."
-            body="The production boundary uses Singapore-region services, tenant-scoped Postgres access, origin checks, encryption requirements, and chained audit evidence. Standalone use is offered through a guided pilot with clinic-specific setup. Plato and other controlled integrations are optional paths, evaluated separately, and not bundled into the core product promise."
-          />
+        <div
+          data-testid="about-top-actions"
+          className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center"
+        >
+          <a href="/book-a-demo/?source=about" className={primaryActionClass}>
+            Book a clinic walkthrough →
+          </a>
+          <a href="/contact/?intent=pilot&source=about#request" className={secondaryActionClass}>
+            Request a pilot proposal
+          </a>
         </div>
       </Section>
 
       <Section className="pb-20 md:pb-28">
-        <div className="grid gap-6 max-w-[820px]">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-            Team
+        <div
+          data-testid="about-engagement-model"
+          className="max-w-5xl rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 md:p-10"
+        >
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
+            How a clinic engages
           </p>
-          {founders.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2">
-              {founders.map((f) => (
-                <article
-                  key={f.name}
-                  className="grid gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border)] p-6 md:p-7"
+          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl">
+            Three reviewed steps from clinic day to pilot.
+          </h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-[var(--color-text-muted)]">
+            The clinic owns its operating decisions and go-live approval. Oralstack maps,
+            configures, and supports the agreed pilot scope. Each step makes that split visible.
+          </p>
+
+          <ol className="mt-8 grid gap-3">
+            {engagementSteps.map((step, index) => (
+              <li key={step.number}>
+                <details
+                  open={index === 0}
+                  className="group rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas)]"
                 >
-                  <h2 className="text-lg font-semibold tracking-tight text-[var(--color-text)]">
-                    {f.name}
-                  </h2>
-                  <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text-soft)]">
-                    {f.role}
-                  </p>
-                  <p className="mt-1 text-sm text-[var(--color-text-muted)] leading-relaxed">
-                    {f.bio}
-                  </p>
-                </article>
+                  <summary className="grid min-h-14 cursor-pointer list-none grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-4 p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] [&::-webkit-details-marker]:hidden md:gap-6 md:p-6">
+                    <span
+                      className="flex size-11 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] text-sm font-semibold tabular-nums text-[var(--color-tide-deep)]"
+                      aria-hidden="true"
+                    >
+                      {step.number}
+                    </span>
+                    <span className="grid gap-2">
+                      <h3 className="text-xl font-semibold tracking-tight text-[var(--color-text)] md:text-2xl">
+                        {step.title}
+                      </h3>
+                      <span className="max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
+                        {step.task}
+                      </span>
+                    </span>
+                    <ChevronDown
+                      className="mt-3 size-5 text-[var(--color-tide-deep)] group-open:rotate-180"
+                      aria-hidden="true"
+                    />
+                  </summary>
+                  <dl className="grid gap-4 border-t border-[var(--color-border)] px-5 py-5 sm:grid-cols-2 sm:gap-6 md:ml-16 md:px-6 md:py-6">
+                    <div>
+                      <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-text)]">
+                        Clinic responsibility
+                      </dt>
+                      <dd className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                        {step.clinic}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-text)]">
+                        Oralstack responsibility
+                      </dt>
+                      <dd className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                        {step.oralstack}
+                      </dd>
+                    </div>
+                  </dl>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Section>
+
+      <Section className="pb-20 md:pb-28">
+        <div className="max-w-5xl">
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
+            Review the evidence
+          </p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl">
+            Product scope, security, and readiness stay inspectable.
+          </h2>
+          <nav aria-label="Oralstack product evidence" className="mt-7">
+            <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {evidenceLinks.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="group flex h-full min-h-11 flex-col rounded-[var(--radius-lg)] border border-[var(--color-border)] p-5 transition-colors hover:border-[var(--color-border-strong)] hover:bg-[var(--color-canvas-tinted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)] md:p-6"
+                  >
+                    <span className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-tide-deep)]">
+                      {item.eyebrow}
+                    </span>
+                    <span className="mt-3 text-lg font-semibold tracking-tight text-[var(--color-text)]">
+                      {item.title}
+                    </span>
+                    <span className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                      {item.body}
+                    </span>
+                    <span className="mt-5 text-sm font-medium text-[var(--color-tide-deep)]">
+                      {item.action}
+                    </span>
+                  </a>
+                </li>
               ))}
-            </div>
-          ) : (
-            <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] p-6 md:p-8">
-              <p className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-[58ch]">
-                Founder bios are being written up. In the meantime, the easiest way to see who
-                you&apos;d be working with is to{" "}
-                <a
-                  href="/book-a-demo"
-                  className="text-[var(--color-tide-deep)] underline underline-offset-4"
-                >
-                  book a 30-minute demo
-                </a>{" "}
-                — a real engineer is on every call.
-              </p>
-            </div>
-          )}
-        </div>
-      </Section>
-
-      <Section className="pb-20 md:pb-28">
-        <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-8 md:p-12 max-w-[820px]">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
-            How we work
-          </p>
-          <ul className="grid gap-3 text-[var(--color-text-muted)] leading-relaxed">
-            <Bullet>
-              <span className="font-medium text-[var(--color-text)]">
-                Engineer-led customer calls.
-              </span>{" "}
-              The person who writes the code is the person on the demo, the onboarding, and the call
-              when something breaks.
-            </Bullet>
-            <Bullet>
-              <span className="font-medium text-[var(--color-text)]">
-                Reviewed rollout boundaries.
-              </span>{" "}
-              Shipped workflows, clinic-configured capabilities, and controlled rollouts are
-              described separately.
-            </Bullet>
-            <Bullet>
-              <span className="font-medium text-[var(--color-text)]">
-                Region-hosted, tenant-isolated.
-              </span>{" "}
-              Singapore region, Postgres row-level security, audit logs by default — see the{" "}
-              <a
-                href="/security"
-                className="text-[var(--color-tide-deep)] underline underline-offset-4"
-              >
-                security posture
-              </a>
-              .
-            </Bullet>
-            <Bullet>
-              <span className="font-medium text-[var(--color-text)]">Defensible claims only.</span>{" "}
-              Every current workflow maps to implemented product paths. Disabled integrations and
-              prototypes stay labeled as controlled or historical.
-            </Bullet>
-          </ul>
+            </ul>
+          </nav>
         </div>
       </Section>
 
       <Section className="pb-24 md:pb-32">
-        <div className="grid gap-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] px-8 py-12 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:px-14 md:py-16">
+        <div className="grid max-w-5xl gap-7 rounded-[var(--radius-xl)] border border-[var(--color-border)] px-6 py-10 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-center md:px-12 md:py-14">
           <div>
-            <h2 className="max-w-[28ch] text-2xl md:text-3xl font-semibold tracking-tight">
-              Want to see how we work in practice?
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
+              Guided pilot
+            </p>
+            <h2 className="mt-3 max-w-xl text-2xl font-semibold tracking-tight md:text-3xl">
+              Map the first workflow for your clinic.
             </h2>
-            <p className="mt-4 max-w-[54ch] text-[var(--color-text-muted)] leading-relaxed">
-              A 30-minute demo with a real engineer, on a sample dataset that matches your
-              clinic&apos;s shape. We follow up with availability and any setup questions needed to
-              make the walkthrough useful.
+            <p className="mt-4 max-w-2xl leading-relaxed text-[var(--color-text-muted)]">
+              Share how your clinic works today. We&apos;ll use the walkthrough to identify the
+              record ownership, roles, setup work, and evidence the pilot should review.
             </p>
           </div>
-          <div className="md:justify-self-end">
-            <a
-              href="/book-a-demo"
-              className="inline-flex items-center min-h-[44px] rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
-            >
-              Book a demo →
+          <div className="grid gap-3 md:justify-self-end">
+            <a href="/book-a-demo/?source=about" className={primaryActionClass}>
+              Book a clinic walkthrough →
+            </a>
+            <a href="/contact/?intent=pilot&source=about#request" className={secondaryActionClass}>
+              Request a pilot proposal
             </a>
           </div>
         </div>

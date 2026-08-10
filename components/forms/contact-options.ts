@@ -81,6 +81,11 @@ export const REQUEST_SOURCES = {
     context:
       "The public snapshot is dated and is not a live uptime feed; current deployment state still needs direct confirmation.",
   },
+  about: {
+    label: "About Oralstack",
+    context:
+      "Standalone use is currently scoped through a guided pilot; clinic workflow, record ownership, roles, setup, and optional connections are reviewed before kickoff.",
+  },
 } as const;
 
 export type RequestSourceId = keyof typeof REQUEST_SOURCES;

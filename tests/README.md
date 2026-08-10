@@ -30,6 +30,8 @@ The standalone-first release also verifies that:
 - Legacy `?intent=migration`, `#migration`, and `/integrations#plato` links remain compatible.
 - Integrations lead with standalone rollout, while status and pricing keep native setup, migration,
   and optional connector boundaries distinct.
+- About replaces placeholder team copy with a three-step accountability model and preserves its
+  source through the walkthrough and pilot-request handoffs.
 
 ## What's not covered
 
@@ -61,19 +63,20 @@ The standalone-first release also verifies that:
 | Archived-route exclusions (51 routes) | 51 | 51 | **102** |
 | Released-link crawl | 1 | 1 | **2** |
 | Required-field form validation | 1 | 1 | **2** |
-| Journey and interaction checks | 27 | 27 | **54** |
-| Focused component snapshots | 16 | 16 | **32** |
+| Journey and interaction checks | 28 | 28 | **56** |
+| Focused component snapshots | 17 | 17 | **34** |
 | Full-page snapshot tests (5 routes) | 5 | 5 | **10** |
-| **Total** | **124** | **124** | **248** |
+| **Total** | **126** | **126** | **252** |
 
-The complete suite expects 46 baseline PNGs in
+The complete suite expects 48 baseline PNGs in
 [`__snapshots__/smoke.spec.ts/`](__snapshots__/smoke.spec.ts/). Generate new baselines on Linux so
 the committed images match CI rendering. The security trust actions, status trust actions, and
 security review form account for six desktop/mobile baselines. The standalone-first suite adds four
 new expected baselines—`homepage-starting-paths-{desktop,mobile}.png` and
 `switching-start-paths-{desktop,mobile}.png`—on top of the previous 42; this repository update does
-not generate those PNGs locally. Existing full-page and focused baselines touched by the reframe
-must also be reviewed before they are regenerated in the authoritative Linux snapshot workflow.
+not generate those PNGs locally. The About accountability update adds
+`about-accountability-{desktop,mobile}.png`; its existing full-page baselines must also be reviewed
+after they are regenerated in the authoritative Linux snapshot workflow.
 
 ## Viewports
 
@@ -86,7 +89,7 @@ Both projects run Chromium. From [`playwright.config.ts`](../playwright.config.t
 
 ```bash
 npm run build         # tests serve from out/
-npm run test:smoke    # 248 tests across desktop + mobile
+npm run test:smoke    # 252 tests across desktop + mobile
 ```
 
 The Playwright config spins up `npx serve out -p 3000` automatically when

@@ -126,6 +126,7 @@ const SOURCE_LABELS: Record<string, string> = {
   switching: "Switching & setup guide",
   security: "Security & compliance overview",
   status: "Capability status snapshot",
+  about: "About Oralstack",
 };
 
 const START_MODE_LABELS: Record<string, string> = {
