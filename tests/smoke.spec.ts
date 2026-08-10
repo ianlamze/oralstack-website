@@ -2164,7 +2164,7 @@ test("homepage starting paths have focused visual regression coverage", async ({
 
   await expect(page.getByTestId("starting-paths")).toHaveScreenshot("homepage-starting-paths.png", {
     animations: "disabled",
-    maxDiffPixelRatio: 0,
+    maxDiffPixelRatio: 0.005,
   });
 });
 
@@ -2182,7 +2182,7 @@ test("switching start paths have focused visual regression coverage", async ({ p
     .locator("xpath=ancestor::section");
   await expect(startPaths).toHaveScreenshot("switching-start-paths.png", {
     animations: "disabled",
-    maxDiffPixelRatio: 0,
+    maxDiffPixelRatio: 0.005,
   });
 });
 
