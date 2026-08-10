@@ -91,6 +91,11 @@ export const REQUEST_SOURCES = {
     context:
       "Public website changes, source-reviewed application changes, and clinic-setup boundaries are labelled separately; current clinic availability still needs confirmation.",
   },
+  faq: {
+    label: "FAQ evaluation guide",
+    context:
+      "Standalone use is evaluated first through a guided pilot; clinic setup, record ownership, enabled modules, and optional connections are confirmed before kickoff.",
+  },
 } as const;
 
 export type RequestSourceId = keyof typeof REQUEST_SOURCES;
