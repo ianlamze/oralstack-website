@@ -2401,6 +2401,7 @@ test("homepage named pilot evidence has focused visual regression coverage", asy
       "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
   });
 
+  await removeFixedPageChrome(page);
   await expect(page.locator("#customer-evidence")).toHaveScreenshot("customer-evidence.png", {
     animations: "disabled",
   });
@@ -2643,6 +2644,7 @@ test("source-aware demo form has focused visual regression coverage", async ({ p
       "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
   });
 
+  await removeFixedPageChrome(page);
   const formCard = page.locator("main form").locator("..");
   await expect(formCard).toHaveScreenshot("source-aware-demo-form.png", {
     animations: "disabled",
