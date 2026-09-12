@@ -98,7 +98,7 @@ export default function AboutPage() {
           className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center"
         >
           <a href="/book-a-demo/?source=about" className={primaryActionClass}>
-            Book a clinic walkthrough →
+            Request a walkthrough →
           </a>
           <a href="/contact/?intent=pilot&source=about#request" className={secondaryActionClass}>
             Request a pilot proposal
@@ -226,7 +226,7 @@ export default function AboutPage() {
           </div>
           <div className="grid gap-3 md:justify-self-end">
             <a href="/book-a-demo/?source=about" className={primaryActionClass}>
-              Book a clinic walkthrough →
+              Request a walkthrough →
             </a>
             <a href="/contact/?intent=pilot&source=about#request" className={secondaryActionClass}>
               Request a pilot proposal

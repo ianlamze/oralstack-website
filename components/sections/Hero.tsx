@@ -26,26 +26,22 @@ export default function Hero() {
           </HeroItem>
 
           <HeroItem>
-            <h1 className="mt-4 max-w-[13ch] text-[length:var(--text-display)] leading-[0.94] text-[var(--color-ink)]">
+            <h1 className="mt-4 max-w-[15ch] text-balance text-[length:var(--text-display)] leading-[var(--leading-display)] text-[var(--color-ink)]">
               Run the clinic day from one calm system.
             </h1>
-            <p className="mt-4 max-w-[34ch] text-xl font-medium leading-snug tracking-tight text-[var(--color-tide-deep)] md:text-2xl">
-              Schedule, receive, chart and check out with Oralstack.
-            </p>
           </HeroItem>
 
           <HeroItem>
             <p className="mt-5 max-w-[47ch] text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
-              Bring appointments, patient records, chair work, checkout and clinic operations into
-              one operational view. Start standalone through guided setup, or connect an existing
-              system where supported.
+              Schedule appointments, chart treatment and manage checkout in one patient workspace.
+              Start with guided setup, with optional connections to existing systems.
             </p>
           </HeroItem>
 
           <HeroItem>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <MagneticButton href="/book-a-demo" variant="primary" withArrow>
-                Book a clinic walkthrough
+                Request a walkthrough
               </MagneticButton>
               <Button href="/workflows" variant="ghost">
                 See the clinic workflows
@@ -117,9 +113,14 @@ export default function Hero() {
               </div>
 
               <figcaption className="flex flex-col gap-1 px-2 pb-1 pt-3 sm:flex-row sm:items-center sm:justify-between md:px-3">
-                <span className="text-sm font-semibold text-[var(--color-ink)]">
-                  The current Oralstack interface, anonymised
-                </span>
+                <a
+                  href="/oralstack-app-schedule-anonymised.webp"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
+                >
+                  View the full-size interface
+                </a>
                 <span className="text-xs text-[var(--color-text-soft)]">
                   Synthetic clinic, provider and patient data
                 </span>

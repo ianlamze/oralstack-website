@@ -122,7 +122,8 @@
   /* Display type scale — for one or two breakthrough moments per page.
      Use sparingly; default headings stay at text-{2,3,4,5,6}xl. */
   --text-display-sm: clamp(2.5rem, 4.5vw, 3.75rem);
-  --text-display: clamp(3.25rem, 7vw, 5.75rem);
+  --text-display: clamp(2.75rem, 5vw, 4.5rem);
+  --leading-display: 1.05;
 
   /* Elevation system — used on cards, drawers, and hero objects.
      Calibrated to feel like soft daylight, not heavy shadow. */

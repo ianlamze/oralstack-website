@@ -346,7 +346,7 @@ test("homepage defaults to standalone positioning and exposes three starting pat
   await expect(hero).not.toContainText(/Plato/i);
   await expect(page.locator("header").first()).not.toContainText(/Plato/i);
   await expect(page.getByRole("contentinfo")).not.toContainText(/Plato/i);
-  await expect(hero.getByRole("link", { name: "Book a clinic walkthrough" })).toHaveAttribute(
+  await expect(hero.getByRole("link", { name: "Request a walkthrough" })).toHaveAttribute(
     "href",
     "/book-a-demo",
   );
@@ -1519,7 +1519,7 @@ test("about explains accountability and preserves the walkthrough context", asyn
   await expect(page.getByText("a real engineer is on every call", { exact: false })).toHaveCount(0);
 
   const actions = page.getByTestId("about-top-actions");
-  const walkthrough = actions.getByRole("link", { name: "Book a clinic walkthrough" });
+  const walkthrough = actions.getByRole("link", { name: "Request a walkthrough" });
   await expect(walkthrough).toHaveAttribute("href", "/book-a-demo/?source=about");
   await expectFirstViewportAction(page, walkthrough);
   await expect(actions.getByRole("link", { name: "Request a pilot proposal" })).toHaveAttribute(
@@ -1567,7 +1567,7 @@ test("about explains accountability and preserves the walkthrough context", asyn
   );
   const mobileWalkthrough = page
     .getByTestId("about-top-actions")
-    .getByRole("link", { name: "Book a clinic walkthrough" });
+    .getByRole("link", { name: "Request a walkthrough" });
   await expectFirstViewportAction(page, mobileWalkthrough);
   await mobileWalkthrough.click();
   await expect(page).toHaveURL(/\/book-a-demo\/\?source=about$/);
@@ -1624,7 +1624,7 @@ test("faq routes clinic evaluation decisions into accessible answers and a conte
   }
 
   const heroActions = page.getByTestId("faq-hero-actions");
-  const walkthrough = heroActions.getByRole("link", { name: "Book a clinic walkthrough" });
+  const walkthrough = heroActions.getByRole("link", { name: "Request a walkthrough" });
   const question = heroActions.getByRole("link", { name: "Ask a clinic-specific question" });
   await expect(walkthrough).toHaveAttribute("href", "/book-a-demo/?source=faq&start=exploring");
   await expect(question).toHaveAttribute("href", "/contact/?intent=question&source=faq#request");
@@ -1688,7 +1688,7 @@ test("changelog separates current releases from the archive and preserves walkth
   ).toBeVisible();
 
   const heroActions = page.getByTestId("changelog-hero-actions");
-  const walkthrough = heroActions.getByRole("link", { name: "Book a clinic walkthrough" });
+  const walkthrough = heroActions.getByRole("link", { name: "Request a walkthrough" });
   await expect(walkthrough).toHaveAttribute("href", "/book-a-demo/?source=changelog");
   await expectFirstViewportAction(page, walkthrough);
   await expect(heroActions.getByRole("link", { name: "Review capability status" })).toHaveAttribute(
@@ -1744,7 +1744,7 @@ test("changelog separates current releases from the archive and preserves walkth
   );
   const mobileWalkthrough = page
     .getByTestId("changelog-hero-actions")
-    .getByRole("link", { name: "Book a clinic walkthrough" });
+    .getByRole("link", { name: "Request a walkthrough" });
   await expectFirstViewportAction(page, mobileWalkthrough);
   await mobileWalkthrough.click();
   await expect(page).toHaveURL(/\/book-a-demo\/\?source=changelog$/);
@@ -2290,7 +2290,7 @@ test("homepage turns named pilot evidence into the released conversion paths", a
 
   const walkthroughLinks = page
     .locator("main")
-    .getByRole("link", { name: "Book a clinic walkthrough" });
+    .getByRole("link", { name: "Request a walkthrough" });
   await expect(walkthroughLinks).toHaveCount(2);
   await expect(walkthroughLinks.first()).toHaveAttribute("href", "/book-a-demo");
   await expect(walkthroughLinks.last()).toHaveAttribute("href", "/book-a-demo");
@@ -2401,6 +2401,7 @@ test("homepage named pilot evidence has focused visual regression coverage", asy
       "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
   });
 
+  await removeFixedPageChrome(page);
   await expect(page.locator("#customer-evidence")).toHaveScreenshot("customer-evidence.png", {
     animations: "disabled",
   });
@@ -2643,6 +2644,7 @@ test("source-aware demo form has focused visual regression coverage", async ({ p
       "*, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }",
   });
 
+  await removeFixedPageChrome(page);
   const formCard = page.locator("main form").locator("..");
   await expect(formCard).toHaveScreenshot("source-aware-demo-form.png", {
     animations: "disabled",
@@ -2663,7 +2665,7 @@ test("tablet navigation stays compact and exposes keyboard escape", async ({ pag
   await expect(drawer).toBeVisible();
 
   const closeButton = drawer.getByRole("button", { name: "Close menu" });
-  const finalDrawerAction = drawer.getByRole("link", { name: "Book a clinic walkthrough" });
+  const finalDrawerAction = drawer.getByRole("link", { name: "Request a walkthrough" });
   await expect(closeButton).toBeFocused();
   await page.keyboard.press("Shift+Tab");
   await expect(finalDrawerAction).toBeFocused();

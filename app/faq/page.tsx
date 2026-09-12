@@ -343,7 +343,7 @@ export default function FAQPage() {
                   href="/book-a-demo/?source=faq&start=exploring"
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
                 >
-                  Book a clinic walkthrough
+                  Request a walkthrough
                   <ArrowRight aria-hidden="true" size={16} />
                 </a>
                 <a
@@ -518,7 +518,7 @@ export default function FAQPage() {
               href="/book-a-demo/?source=faq&start=exploring"
               className="inline-flex min-h-[44px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] transition-colors hover:bg-[var(--color-tide-deep)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
             >
-              Book a clinic walkthrough
+              Request a walkthrough
             </a>
             <a
               href="/contact/?intent=question&source=faq#request"

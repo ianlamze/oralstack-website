@@ -18,13 +18,19 @@ const CAL_EVENT = process.env.NEXT_PUBLIC_CALCOM_EVENT ?? "demo";
 export default function BookDemoPage() {
   return (
     <main>
-      <PageHeader eyebrow="Demo" title="Request a 30-minute walkthrough." />
+      <PageHeader
+        eyebrow="Clinic walkthrough"
+        title="Request a 30-minute walkthrough."
+        variant="compact"
+        showMark={false}
+      />
 
       <Section className="pb-6 md:pb-10">
         <p className="max-w-[58ch] text-base text-[var(--color-text-muted)] leading-relaxed md:text-lg">
-          See the current app on a representative Singapore clinic dataset. Tell us whether
-          you&apos;re starting fresh, moving records, or keeping an existing system connected;
-          we&apos;ll show the relevant clinic setup and record boundary clearly.
+          See scheduling, charting and checkout with sample clinic data.
+          {CAL_USER
+            ? " Choose a time below for your walkthrough."
+            : " Tell us about your clinic below; we’ll reply with available times."}
         </p>
       </Section>
 

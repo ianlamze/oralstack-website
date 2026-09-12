@@ -2,13 +2,13 @@
 
 ## Typeface
 
-**System sans-serif stack** — no custom font is loaded. The CSS stack:
+**Plus Jakarta Sans** for body copy, controls and section headings, with a system sans-serif fallback. **Instrument Serif** at its real 400 weight is reserved for page-level display headings. Both are configured through `next/font` in `app/layout.tsx`.
 
 ```
 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif
 ```
 
-This means SF Pro on Apple platforms, Segoe UI on Windows, the platform default elsewhere. Loads instantly, renders crisply, no FOUC, no third-party request.
+The fallback uses the platform font while the self-hosted font files load.
 
 **Mono stack** for code / route labels / metadata:
 
@@ -16,14 +16,14 @@ This means SF Pro on Apple platforms, Segoe UI on Windows, the platform default 
 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace
 ```
 
-A custom typeface (Geist, Inter, or similar) is a deliberate later decision. It would buy a small amount of brand distinctiveness at the cost of an extra network request and a possible FOUC. Hold until/unless brand insists.
+Keep the same font roles as the product: operational headings stay sans-serif; large marketing headings can use the serif. Do not synthesize a bold serif weight.
 
 ## Type scale
 
 | Role | Size | Weight | Tracking | Use |
 |---|---|---|---|---|
-| Display | 60–84 px | 600 | -0.025em | Deck cover, OG image |
-| H1 hero | 36–60 px | 600 | -0.02em | Page hero headlines |
+| Display / H1 hero | 44–72 px | 400 | -0.02em | Instrument Serif, fluid `--text-display` token |
+| H1 inner page | 36–60 px | 400 | -0.02em | Instrument Serif, page introductions |
 | H2 section | 24–40 px | 600 | -0.015em | Section headings |
 | H3 subsection | 18–22 px | 600 | -0.01em | Workflow card titles, subsection heads |
 | Body large | 16–18 px | 400 | normal | Lede paragraphs |
@@ -40,7 +40,7 @@ The system uses three weights only:
 
 - **400** (regular) — body, captions, mono
 - **500** (medium) — eyebrows, button labels, table headers, status pills
-- **600** (semibold) — headings (h1, h2, h3), wordmark, CTA labels
+- **600** (semibold) — sans-serif section headings, wordmark, CTA labels
 
 No 700/800/900 used. Restraint is part of the premium feel.
 
@@ -95,6 +95,6 @@ Do not use mono for emphasis or decorative effect in body copy. Use semibold or 
 
 - Don't introduce a 4th weight (700+). The 400/500/600 ladder is the system.
 - Don't apply `text-uppercase` to body copy. Eyebrows are the only uppercase usage.
-- Don't use serif typefaces. The brand is sans-only.
+- Don't use serif for small UI headings, form labels, tables or controls.
 - Don't render the wordmark as a single colour in visual contexts.
 - Don't change tracking ad hoc. Use the values in the scale.

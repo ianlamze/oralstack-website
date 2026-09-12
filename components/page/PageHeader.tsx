@@ -14,7 +14,7 @@ type PageHeaderProps = {
    *    breakthrough moments per page set (about, customers, hero verticals).
    *    Pulls in the BrandMotif as a subtle backdrop accent.
    */
-  variant?: "default" | "display";
+  variant?: "default" | "display" | "compact";
 };
 
 export default function PageHeader({
@@ -28,7 +28,11 @@ export default function PageHeader({
   return (
     <Section
       className={
-        isDisplay ? "relative overflow-hidden pb-12 pt-16 md:pb-16 md:pt-24" : "pb-8 pt-16 md:pt-24"
+        isDisplay
+          ? "relative overflow-hidden pb-12 pt-16 md:pb-16 md:pt-24"
+          : variant === "compact"
+            ? "pb-5 pt-8 md:pt-12"
+            : "pb-8 pt-16 md:pt-24"
       }
     >
       <div className={isDisplay ? "max-w-[1100px]" : "max-w-[820px]"}>
