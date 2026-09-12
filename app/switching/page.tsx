@@ -107,7 +107,7 @@ export default function SwitchingPage() {
               href="/book-a-demo/?start=exploring&source=switching"
               className="inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] border border-[var(--color-border-strong)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[var(--color-canvas-tinted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
             >
-              Book a clinic walkthrough
+              Request a walkthrough
             </a>
           </div>
           <dl className="grid gap-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-canvas-tinted)] p-6 sm:grid-cols-3">

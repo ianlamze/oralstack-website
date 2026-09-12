@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import PageHeader from "@/components/page/PageHeader";
 import MobileWorkflowCatalog from "@/components/page/MobileWorkflowCatalog";
 import WorkflowNavigator from "@/components/page/WorkflowNavigator";
@@ -32,30 +32,41 @@ const visualByKey: Record<CapabilityVisual, React.ComponentType> = {
 export default function WorkflowsPage() {
   return (
     <main>
-      <PageHeader eyebrow={workflowsPageContent.eyebrow} title={workflowsPageContent.title} />
+      <PageHeader
+        eyebrow={workflowsPageContent.eyebrow}
+        title={workflowsPageContent.title}
+        variant="compact"
+        showMark={false}
+      />
 
-      <Section className="pb-16 md:pb-20">
-        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-14">
+      <Section className="pb-8 md:pb-10">
+        <div className="grid items-start gap-4">
           <p className="max-w-[58ch] text-lg leading-relaxed text-[var(--color-text-muted)]">
             {workflowsPageContent.intro}
           </p>
-          <aside className="rounded-[var(--radius-xl)] border border-[var(--color-border)] border-l-2 border-l-[var(--color-tide-deep)] bg-[var(--color-surface-inset)] p-6 md:p-8">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
-              {workflowsPageContent.recordOwnership.eyebrow}
-            </p>
-            <h2 className="mt-3 text-xl font-semibold tracking-tight">
-              {workflowsPageContent.recordOwnership.title}
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {workflowsPageContent.recordOwnership.body}
-            </p>
-            <a
-              href={workflowsPageContent.recordOwnership.action.href}
-              className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
-            >
-              {workflowsPageContent.recordOwnership.action.label} →
-            </a>
-          </aside>
+          <details className="group rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface-inset)] px-4">
+            <summary className="flex min-h-11 cursor-pointer items-center gap-2 py-2 text-sm font-semibold text-[var(--color-tide-deep)]">
+              How records work with existing systems
+              <ChevronDown className="size-4 shrink-0 group-open:rotate-180" aria-hidden />
+            </summary>
+            <div className="pb-4">
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-tide-deep)]">
+                {workflowsPageContent.recordOwnership.eyebrow}
+              </p>
+              <h2 className="mt-3 text-xl font-semibold tracking-tight">
+                {workflowsPageContent.recordOwnership.title}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                {workflowsPageContent.recordOwnership.body}
+              </p>
+              <a
+                href={workflowsPageContent.recordOwnership.action.href}
+                className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-[var(--color-tide-deep)] underline underline-offset-4"
+              >
+                {workflowsPageContent.recordOwnership.action.label} →
+              </a>
+            </div>
+          </details>
         </div>
       </Section>
 

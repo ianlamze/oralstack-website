@@ -228,7 +228,7 @@ export default function Nav() {
               href="/book-a-demo"
               className="ml-2 inline-flex min-h-[44px] items-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-2 text-[var(--color-canvas)] shadow-[var(--shadow-1)] transition-colors hover:bg-[var(--color-tide-deep)]"
             >
-              Book a clinic walkthrough
+              Request a walkthrough
             </a>
           </nav>
 
@@ -522,7 +522,7 @@ export default function Nav() {
                   onClick={closeDrawer}
                   className="flex min-h-[48px] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-ink)] px-4 py-3 font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] transition-colors"
                 >
-                  Book a clinic walkthrough
+                  Request a walkthrough
                 </a>
               </div>
             </motion.div>

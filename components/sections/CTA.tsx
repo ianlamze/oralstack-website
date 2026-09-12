@@ -24,12 +24,12 @@ export default function CTA() {
               Bring your clinic day into Oralstack.
             </h2>
             <p className="mt-4 max-w-[58ch] leading-relaxed text-[color-mix(in_srgb,var(--color-sidebar-foreground)_74%,transparent)]">
-              Book a focused walkthrough. We will map your appointments, patient records, checkout
-              and clinic operations before proposing a scoped standalone pilot.
+              Request a focused walkthrough. We will map your appointments, patient records,
+              checkout and clinic operations before proposing a scoped standalone pilot.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <MagneticButton href="/book-a-demo" variant="onDark" withArrow>
-                Book a clinic walkthrough
+                Request a walkthrough
               </MagneticButton>
               <a
                 href="/contact/?intent=pilot#request"

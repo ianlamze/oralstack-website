@@ -78,7 +78,7 @@ export default function ChangelogPage() {
               href="/book-a-demo/?source=changelog"
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-ink)] px-5 py-3 text-sm font-medium text-[var(--color-canvas)] hover:bg-[var(--color-tide-deep)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-tide-deep)]"
             >
-              Book a clinic walkthrough
+              Request a walkthrough
               <ArrowRight className="size-4" aria-hidden />
             </a>
             <a
