@@ -17,7 +17,7 @@ The asymmetric two-root colouring creates a memorable "off-balance" character an
 | Browser favicon (SVG) | [`app/icon.svg`](../../app/icon.svg) |
 | Apple touch icon (180×180 PNG, generated) | [`app/apple-icon.tsx`](../../app/apple-icon.tsx) |
 | OG share image (1200×630 PNG, generated) | [`app/opengraph-image.tsx`](../../app/opengraph-image.tsx) |
-| In-React rendering | `<Wordmark size="…">` from [`components/sections/Wordmark.tsx`](../../components/sections/Wordmark.tsx) |
+| In-React rendering | `<Wordmark size="…">` from [`components/ui/Wordmark.tsx`](../../components/ui/Wordmark.tsx) |
 
 ## Wordmark
 

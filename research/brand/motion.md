@@ -26,17 +26,19 @@ These values are repeated across motion components — treat them as the system:
 | Scroll spring | `stiffness: 100, damping: 30` | Top progress bar |
 | View-transition | 0.25 s | Cross-document route transitions |
 
+SectionDivider is not present in the current component tree; there is no current component to import.
+
 ## Components
 
 ### Motion components (interactive)
 
 | Component | File | Trigger | Use |
 |---|---|---|---|
-| **AnimateInView** | [`components/sections/AnimateInView.tsx`](../../components/sections/AnimateInView.tsx) | scroll into view (`viewport`, `once: true`) | Generic fade-up wrapper for any section. Default amount=0.2; accepts `delay` for staggered groups |
-| **HeroStagger** + **HeroItem** | [`components/sections/HeroStagger.tsx`](../../components/sections/HeroStagger.tsx) | mount (`initial="hidden" animate="visible"`) | Wraps hero content. `HeroStagger` is the parent (orchestrates `staggerChildren: 0.08`); each child uses `<HeroItem>` |
-| **AnimatedMark** | [`components/sections/AnimatedMark.tsx`](../../components/sections/AnimatedMark.tsx) | scroll into view | Tooth-mark whose three segments assemble (crown scales in, then roots fade up). Use on page headers and major brand moments. Static fallback equivalent: import `MarkBullet` |
-| **CountUp** | [`components/sections/CountUp.tsx`](../../components/sections/CountUp.tsx) | scroll into view | Animates a numeric value up to its target. Used in `StatGrid`. Parses leading digits, preserves suffix (`120+`, `85%`, `3 weeks`) |
-| **ScrollProgress** | [`components/sections/ScrollProgress.tsx`](../../components/sections/ScrollProgress.tsx) | scroll position | Fixed top-of-page bar that fills navy → teal as the user scrolls. Lives in `app/layout.tsx`, applies site-wide |
+| **AnimateInView** | [`components/motion/AnimateInView.tsx`](../../components/motion/AnimateInView.tsx) | scroll into view (`viewport`, `once: true`) | Generic fade-up wrapper for any section. Default amount=0.2; accepts `delay` for staggered groups |
+| **HeroStagger** + **HeroItem** | [`components/motion/HeroStagger.tsx`](../../components/motion/HeroStagger.tsx) | mount (`initial="hidden" animate="visible"`) | Wraps hero content. `HeroStagger` is the parent (orchestrates `staggerChildren: 0.08`); each child uses `<HeroItem>` |
+| **AnimatedMark** | [`components/ui/AnimatedMark.tsx`](../../components/ui/AnimatedMark.tsx) | scroll into view | Tooth-mark whose three segments assemble (crown scales in, then roots fade up). Use on page headers and major brand moments. Static fallback equivalent: import `MarkBullet` |
+| **CountUp** | [`components/ui/CountUp.tsx`](../../components/ui/CountUp.tsx) | scroll into view | Animates a numeric value up to its target. Used in `StatGrid`. Parses leading digits, preserves suffix (`120+`, `85%`, `3 weeks`) |
+| **ScrollProgress** | [`components/motion/ScrollProgress.tsx`](../../components/motion/ScrollProgress.tsx) | scroll position | Fixed top-of-page bar that fills navy → teal as the user scrolls. Lives in `app/layout.tsx`, applies site-wide |
 | **MagneticButton** | [`components/primitives/MagneticButton.tsx`](../../components/primitives/MagneticButton.tsx) | mouse hover | Button that magnetically follows the cursor on hover. Variants: `primary` (navy bg) / `ghost` (outline) / `onDark` (light bg, for the dark CTA section). Strength prop default 0.18 |
 
 ### Decorative brand-mark elements (no motion)
@@ -45,8 +47,7 @@ These are static SVG marks used as decorative repeats — they make the brand ma
 
 | Component | File | Use |
 |---|---|---|
-| **MarkBullet** | [`components/sections/MarkBullet.tsx`](../../components/sections/MarkBullet.tsx) | Tiny tooth-mark used as a list bullet. Default 12 px. Used in pricing list items |
-| **SectionDivider** | [`components/sections/SectionDivider.tsx`](../../components/sections/SectionDivider.tsx) | Horizontal hairline with a centred `MarkBullet`. Use sparingly between major page sections to signal a transition without competing for attention |
+| **MarkBullet** | [`components/ui/MarkBullet.tsx`](../../components/ui/MarkBullet.tsx) | Tiny tooth-mark used as a list bullet. Default 12 px. Used in pricing list items |
 
 ## Patterns
 
