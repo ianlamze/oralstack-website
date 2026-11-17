@@ -46,7 +46,7 @@ Lives at `app/icon.svg` (favicon) + `app/apple-icon.tsx` (180×180 PNG) + the `W
 
 ### Wordmark
 
-"Oralstack" with two-tone colour split — *Oral* in navy (`var(--color-ink)`), *stack* in teal (`var(--color-tide)`). Rendered by `components/sections/Wordmark.tsx`.
+"Oralstack" with two-tone colour split — *Oral* in navy (`var(--color-ink)`), *stack* in teal (`var(--color-tide)`). Rendered by `components/ui/Wordmark.tsx`.
 
 ### Colours
 

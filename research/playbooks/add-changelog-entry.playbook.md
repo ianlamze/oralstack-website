@@ -10,7 +10,7 @@ triggers:
 
 # Add a changelog entry
 
-The runtime changelog at [`/changelog`](https://oralstack.com/changelog/) is generated from [`content/changelog.ts`](../../content/changelog.ts). This is the **public-facing** changelog — what customers and prospects see. For internal engineering history, use the root-level [`CHANGES.md`](../../CHANGES.md) instead.
+The runtime changelog at [`/changelog`](https://oralstack.com/changelog/) is generated from [`content/changelog.ts`](../../content/changelog.ts). This is the **public-facing** changelog — what customers and prospects see. For internal engineering history, use the engineering [`docs/CHANGES.md`](../../docs/CHANGES.md) instead.
 
 ## Required inputs
 

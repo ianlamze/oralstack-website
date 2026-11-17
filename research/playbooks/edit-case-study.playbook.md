@@ -19,7 +19,7 @@ triggers:
 ## Steps
 
 1. Read [`research/primitives/copy-voice.md`](../primitives/copy-voice.md) and confirm any new prose passes the banned-phrase list.
-2. Read [`research/primitives/brand-identity.md`](../primitives/brand-identity.md) and the [DFI Synergy framing memory](file:///Users/ianlam/.claude/projects/-Users-ianlam-Documents-Agent-Projects-Dentologic/memory/project_dfi_synergy_framing.md). **Hard rule:** no operator-founder framing. No "built where it ships", "our own clinic", "design partner". Quotes attributed to roles only ("Practice manager, DFI Synergy" / "Clinical director, DFI Synergy"), never "Founder, DFI Synergy & Oralstack".
+2. Read [`research/primitives/brand-identity.md`](../primitives/brand-identity.md). **Hard rule:** no operator-founder framing. No "built where it ships", "our own clinic", "design partner". Quotes attributed to roles only ("Practice manager, DFI Synergy" / "Clinical director, DFI Synergy"), never "Founder, DFI Synergy & Oralstack".
 3. Edit `content/case-studies/{slug}.ts` — data only. The component layer rarely needs touching.
 4. If the change introduces a new section structure (e.g. an extra body section between the existing four), the matching `app/customers/{slug}/page.tsx` may need a section index bump (`study.sections.slice(0, 2)` etc.). Check before saving.
 5. If you're updating stats, decide qualifier text:
