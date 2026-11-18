@@ -15,9 +15,9 @@ How to add the most common content surfaces. Each pattern is copy-paste-able and
 
 ## Add a comparison page (~30 minutes)
 
-1. **Create the data file** at `content/comparisons/<slug>.ts`. Copy from [content/comparisons/plato.ts](content/comparisons/plato.ts) and edit the rows, reasons, concession, and CTA. The shape is enforced by [content/comparisons/types.ts](content/comparisons/types.ts).
+1. **Create the data file** at `content/comparisons/<slug>.ts`. Copy from [content/comparisons/plato.ts](../content/comparisons/plato.ts) and edit the rows, reasons, concession, and CTA. The shape is enforced by [content/comparisons/types.ts](../content/comparisons/types.ts).
 
-2. **Register it** in [content/comparisons/index.ts](content/comparisons/index.ts):
+2. **Register it** in [content/comparisons/index.ts](../content/comparisons/index.ts):
    ```ts
    import { yourSlug } from "./your-slug";
    export const comparisons: Comparison[] = [plato, openDental, /* ... */, yourSlug];
@@ -55,7 +55,7 @@ That's it. The page renders with the standard 11-row table, three Reason blocks,
 
 ## Add an article (~30–60 minutes)
 
-1. **Pick a cluster** from `ArticleCluster` in [content/articles/types.ts](content/articles/types.ts): `front-desk`, `billing`, `clinical`, `migration`, `compliance`. The cluster determines where the article surfaces in the article hub and related-article logic.
+1. **Pick a cluster** from `ArticleCluster` in [content/articles/types.ts](../content/articles/types.ts): `front-desk`, `billing`, `clinical`, `migration`, `compliance`. The cluster determines where the article surfaces in the article hub and related-article logic.
 
 2. **Create the file** at `content/articles/<slug>.tsx`. Skeleton:
    ```tsx
@@ -85,7 +85,7 @@ That's it. The page renders with the standard 11-row table, three Reason blocks,
    }
    ```
 
-3. **Register it** in [content/articles/index.ts](content/articles/index.ts) — add the
+3. **Register it** in [content/articles/index.ts](../content/articles/index.ts) — add the
    import + array entry. The local route auto-generates from the array, but remains
    excluded from production until it passes a current product-truth review.
 
@@ -111,9 +111,9 @@ Vertical pages segment messaging for different buyer shapes (solo clinic vs DSO)
 
 2. **Add to sitemap** at priority 0.8.
 
-3. **Surface in nav mega panel** resource strip and mobile drawer (see existing entries in [components/sections/Nav.tsx](components/sections/Nav.tsx)).
+3. **Surface in nav mega panel** resource strip and mobile drawer (see existing entries in [components/sections/Nav.tsx](../components/sections/Nav.tsx)).
 
-4. **Surface in footer** under the "Solutions" column ([components/sections/Footer.tsx](components/sections/Footer.tsx)).
+4. **Surface in footer** under the "Solutions" column ([components/sections/Footer.tsx](../components/sections/Footer.tsx)).
 
 Vertical pages are unique enough (different audience, different proof, different CTA framing) that templating doesn't pay off. Copy from an existing vertical and edit.
 
@@ -123,11 +123,11 @@ Workflows are the core jobs the product is built around — front-desk, billing,
 
 1. **Add a visualisation mock** at `components/visuals/<NameMock>.tsx`. Look at existing mocks (ScheduleMock, OdontogramMock) — they're CSS-only, no images, no asset pipeline.
 
-2. **Add the workflow data** to both [content/workflows.ts](content/workflows.ts) (short version, used on homepage) and [content/workflows-detailed.ts](content/workflows-detailed.ts) (long version, used on `/workflows`).
+2. **Add the workflow data** to both [content/workflows.ts](../content/workflows.ts) (short version, used on homepage) and [content/workflows-detailed.ts](../content/workflows-detailed.ts) (long version, used on `/workflows`).
 
 3. **Wire the visual to the workflow** in [app/workflows/page.tsx](../app/workflows/page.tsx) — the `visualsBySlug` map.
 
-4. **Surface in nav** mega panel — the `workflowItems` array in [components/sections/Nav.tsx](components/sections/Nav.tsx) needs the new entry with a Lucide icon, label, and one-line description.
+4. **Surface in nav** mega panel — the `workflowItems` array in [components/sections/Nav.tsx](../components/sections/Nav.tsx) needs the new entry with a Lucide icon, label, and one-line description.
 
 5. **Anchor link** — the new workflow becomes available at `/workflows#<slug>`. Compare-page CTAs and articles can link there.
 
@@ -141,7 +141,13 @@ npm run typecheck   # tsc --noEmit
 npm run build       # next build, generates ./out/
 ```
 
-CI runs the same three on every PR (see [.github/workflows/ci.yml](.github/workflows/ci.yml)).
+CI runs the same three on every PR (see [.github/workflows/ci.yml](../.github/workflows/ci.yml)).
+
+## Link checking (local)
+
+Run `scripts/check-links.sh` from anywhere. It downloads the pinned lychee release binary from the official GitHub release, verifies it against the SHA-256 pinned in the script, and checks every link in the repo against `lychee.toml`. This is a local check only: nothing runs in CI and no Actions minutes are spent.
+
+`http://localhost` links (the `/dev/visuals` gallery, which is local-only by design) are excluded in `lychee.toml`. Absolute `file:///` machine paths are NOT excluded: they fail the check, which is how a committed local path gets caught.
 
 For visual confidence on UI-touching changes:
 

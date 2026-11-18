@@ -154,7 +154,7 @@ Length: 800–1500 words for spoke articles, 2000–3500 for pillars. Don't pad.
 - **Every article must link to at least one product page** (workflows, pricing, security, integrations, customers/dfi-synergy). Anchor text must be the actual term, not "click here" or "learn more."
 - **Every article should link to at least one related article** in the same cluster (when one exists).
 - **Every product page should link to at least one related article** when an article exists for that workflow.
-- **Anchor text is descriptive.** "[Plato migration tooling](/integrations)" not "[here](/integrations)".
+- **Anchor text is descriptive.** "[Plato migration tooling](https://oralstack.com/integrations)" not "[here](https://oralstack.com/integrations)".
 
 ### Technical SEO checklist (per article)
 

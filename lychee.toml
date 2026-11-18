@@ -1,0 +1,11 @@
+# lychee link-check configuration. Run via scripts/check-links.sh (local only,
+# no CI). See the "Link checking" section of docs/EXTENDING.md.
+
+# The /dev/visuals gallery is intentionally local-only: it is removed from the
+# production export, so localhost links to it are expected and excluded here.
+exclude = [
+  '^https?://(localhost|127\.0\.0\.1)(:\d+)?',
+]
+
+# Not excluded on purpose: absolute file:/// machine paths. They fail the check
+# as "file not found", which is how a committed local path gets caught.

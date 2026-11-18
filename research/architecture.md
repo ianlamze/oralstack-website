@@ -149,8 +149,8 @@ content/  →  components/visuals/  →  components/primitives/  →  components
 ## Key conventions
 
 - **No raw hex inside components** — always `var(--color-*)`. Audit rule `design.raw-color`.
-- **Brand name "Oralstack"** in prose (capital O, one word). URL `oralstack.com` lowercase. See [memory: oralstack rename](file:///Users/ianlam/.claude/projects/-Users-ianlam-Documents-Agent-Projects-Dentologic/memory/project_oralstack_rename.md).
-- **DFI Synergy framing** — never operator-founder, always arms-length. See [memory: DFI Synergy framing](file:///Users/ianlam/.claude/projects/-Users-ianlam-Documents-Agent-Projects-Dentologic/memory/project_dfi_synergy_framing.md).
+- **Brand name "Oralstack"** in prose (capital O, one word). URL `oralstack.com` lowercase. See the local agent-memory note "oralstack rename" (kept outside this repo).
+- **DFI Synergy framing** — never operator-founder, always arms-length. See the local agent-memory note "DFI Synergy framing" (kept outside this repo).
 - **Singapore-fictional patient names** in visuals — keep them consistent across mocks (Lim Wei Jian, Devi Krishnan, Aaron Teo, Mei Lin Tan, Hafiz Yusof).
 - **`role="img"` + descriptive `aria-label`** on every visualisation outer container.
 - **Static export friendly** — never use server-only APIs (cookies, headers, dynamic data fetching at request time). Everything resolves at build time.
@@ -166,4 +166,4 @@ npm run typecheck  # tsc --noEmit
 npm run deck:pdf   # headless Chrome → oralstack-deck.pdf from /dev/deck
 ```
 
-Detailed deploy walkthrough in [`CLOUDFLARE.md`](../CLOUDFLARE.md). Common-task playbook in [`research/playbooks/redeploy.playbook.md`](playbooks/redeploy.playbook.md).
+Detailed deploy walkthrough in [`docs/CLOUDFLARE.md`](../docs/CLOUDFLARE.md). Common-task playbook in [`research/playbooks/redeploy.playbook.md`](playbooks/redeploy.playbook.md).

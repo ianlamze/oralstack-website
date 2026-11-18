@@ -13,7 +13,7 @@ This site is built as a Next.js static export and deployed to Cloudflare Pages. 
 In your terminal:
 
 ```bash
-cd "/Users/ianlam/Documents/Agent Projects/oralstack"
+cd /path/to/oralstack-website  # your local clone of this repo
 npx wrangler login
 ```
 
