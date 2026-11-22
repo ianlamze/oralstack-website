@@ -35,19 +35,19 @@ A single-day end-to-end ship: scaffold to live at https://oralstack.com.
 - Brand name capitalisation: "Oralstack" (one word, capital O) in prose; URL/code stay lowercase
 - Two-tone wordmark: *Oral* navy, *stack* teal
 - Pricing locked: **$200 per clinic per month** flat pilot pricing, 3 months hands-on onboarding included, no per-seat
-- All 4 brand guideline docs added at [`research/brand/`](research/brand/)
+- All 4 brand guideline docs added at [`research/brand/`](../research/brand/)
 
 **Visualisation library expansion**
 - Added 3 more mocks: MessagingMock (WhatsApp recall), DicomViewerMock (single-image deep view), AnalyticsMock (chair utilisation heatmap) → 8 total
 - Added 6th workflow section "Operations & analytics" anchored by AnalyticsMock
 - All 8 mocks now wired into production pages
-- Library catalogue at [`components/visuals/README.md`](components/visuals/README.md) + dev review at [`/dev/visuals`](../app/dev/visuals/page.tsx)
+- Library catalogue at [`components/visuals/README.md`](../components/visuals/README.md) + dev review at [`/dev/visuals`](../app/dev/visuals/page.tsx)
 
 **Motion stack**
 - ScrollProgress (top-of-page bar), CountUp (stat reveals), MagneticButton (cursor magnetism on critical CTAs), AnimatedMark (3-segment assembly), MarkBullet + SectionDivider (decorative brand-mark elements), HeroStagger + HeroItem (hero entrance staging)
 - Cross-document view transitions enabled via `@view-transition { navigation: auto; }`
 - All motion respects `prefers-reduced-motion`
-- Documented in [`research/brand/motion.md`](research/brand/motion.md)
+- Documented in [`research/brand/motion.md`](../research/brand/motion.md)
 
 **Layout shifts**
 - Nav + Footer lifted to `app/layout.tsx` (every route gets them)
@@ -68,7 +68,7 @@ A single-day end-to-end ship: scaffold to live at https://oralstack.com.
 
 ### Header rework — mega panel + mobile drawer
 
-Replaced the link-row Nav with a real navigation system. Source: [`components/sections/Nav.tsx`](components/sections/Nav.tsx).
+Replaced the link-row Nav with a real navigation system. Source: [`components/sections/Nav.tsx`](../components/sections/Nav.tsx).
 
 - **Workflows mega panel (md+)**: hover/click/Esc-trigger dropdown anchored under the trigger. 2-column grid of the 6 workflows (each: Lucide icon · name · one-line description · anchor to `/workflows#slug`) plus a featured rail card linking to the DFI Synergy case study with a 3-stat block (3 wks / 0 / 85%). Bottom strip: Articles · vs Plato · vs Open Dental · Integrations · Changelog.
 - **Mobile drawer (<md)**: hamburger top-right → right-side slide-over (`88vw`, max `380px`). Workflows expanded inline as a motion-animated accordion; flat list below for Customers / Pricing / Integrations / Articles / Compare:vs Plato / Compare:vs Open Dental / Changelog / Security; sticky **Book a demo** at the bottom.
@@ -79,14 +79,14 @@ Replaced the link-row Nav with a real navigation system. Source: [`components/se
 
 The old fallback was a single mailto link with apologetic "Self-serve booking is being wired up" copy — high friction on mobile, no qualifying fields. Cal.com iframe still kicks in if `NEXT_PUBLIC_CALCOM_USERNAME` is set.
 
-- New: [`components/sections/DemoRequestForm.tsx`](components/sections/DemoRequestForm.tsx) — proper form (clinic, name, role, email, location, chairs, providers, current PMS dropdown, preferred times, notes). On submit it builds a structured mailto and opens the user's mail client with everything pre-filled. Drop-in replaceable later with a real endpoint (Cloudflare Pages Function / Formspree / Resend).
+- New: [`components/forms/DemoRequestForm.tsx`](../components/forms/DemoRequestForm.tsx) — proper form (clinic, name, role, email, location, chairs, providers, current PMS dropdown, preferred times, notes). On submit it builds a structured mailto and opens the user's mail client with everything pre-filled. Drop-in replaceable later with a real endpoint (Cloudflare Pages Function / Formspree / Resend).
 - New layout in [`app/book-a-demo/page.tsx`](../app/book-a-demo/page.tsx) — two-column on desktop (form + sidebar with Length / Format / Outcome cards plus a "What clinics ask first" trust strip linking to migration article, security, pricing). Single column on mobile.
 
 ### Compare pages
 
 Two new SEO-targeted comparison routes for high-intent searches ("Plato alternative", "Open Dental APAC").
 
-- [`/compare/plato`](../app/compare/plato/page.tsx) — 11-row capability table (deployment, schedule UX, charting, billing, imaging, recall, multi-clinic, off-site access, hosting, updates, pricing) + 3 "why we built differently" sections + honest "where Plato is the right call" concession + CTA to demo + cross-link to the existing [Plato migration article](content/articles/plato-to-cloud-migration.tsx).
+- [`/compare/plato`](../app/compare/plato/page.tsx) — 11-row capability table (deployment, schedule UX, charting, billing, imaging, recall, multi-clinic, off-site access, hosting, updates, pricing) + 3 "why we built differently" sections + honest "where Plato is the right call" concession + CTA to demo + cross-link to the existing [Plato migration article](../content/articles/plato-to-cloud-migration.tsx).
 - [`/compare/open-dental`](../app/compare/open-dental/page.tsx) — same shape, OD-specific rows (license & cost, hosting, UX, customisation, US insurance, APAC compliance, imaging, updates, multi-clinic, setup time, community).
 - Both pages match house voice: qualified claims, no "all-in-one" / "supercharge" / "best-in-class". Concession sections are real, not strawmen.
 - Sitemap: both URLs added at priority 0.8 in [`app/sitemap.ts`](../app/sitemap.ts).
@@ -110,7 +110,7 @@ A second-pass content build to flesh out the site beyond the initial scaffold.
 - **Three new comparison pages** — [`/compare/dentrix`](../app/compare/dentrix/page.tsx), [`/compare/eaglesoft`](../app/compare/eaglesoft/page.tsx), [`/compare/carestream`](../app/compare/carestream/page.tsx). Same shape as the Plato/OD pages: 11-row capability table, three "why we built differently" sections, "where they&apos;re the right call" concession, CTA. Plus a [`/compare`](../app/compare/page.tsx) index page listing all five comparisons.
 - **Vertical landing pages** — [`/for-solo-clinics`](../app/for-solo-clinics/page.tsx) (1–4 chair, office-manager + dentist-owner buyer) and [`/for-multi-clinic`](../app/for-multi-clinic/page.tsx) (DSO / multi-location, COO + VP Ops buyer). Different framing, different proof points, different CTA copy per segment.
 - **FAQ page** ([app/faq/page.tsx](../app/faq/page.tsx)) — five categorised question groups (pricing, migration, security, integrations, about) with qualified, link-rich answers. ~17 Q&A entries.
-- **Three new articles** — [choosing-dental-pms-apac-2026](content/articles/choosing-dental-pms-apac-2026.tsx) (migration cluster, buyer's checklist), [open-dental-to-managed-pms-migration](content/articles/open-dental-to-managed-pms-migration.tsx) (migration cluster, mirror of the Plato playbook for OD), [tenant-isolation-dental-saas](content/articles/tenant-isolation-dental-saas.tsx) (compliance cluster, four questions to ask vendors with code examples).
+- **Three new articles** — [choosing-dental-pms-apac-2026](../content/articles/choosing-dental-pms-apac-2026.tsx) (migration cluster, buyer's checklist), [open-dental-to-managed-pms-migration](../content/articles/open-dental-to-managed-pms-migration.tsx) (migration cluster, mirror of the Plato playbook for OD), [tenant-isolation-dental-saas](../content/articles/tenant-isolation-dental-saas.tsx) (compliance cluster, four questions to ask vendors with code examples).
 - **Wired in** — sitemap updated with the eleven new URLs; footer reorganised into Product / Solutions / Company columns to surface the new pages; nav mega panel resource strip swapped from "Articles · vs Plato · vs Open Dental · Integrations · Changelog" to "For solo · For DSOs · Compare · Articles · FAQ"; mobile drawer expanded with all new links.
 
 ### Open / pending (carry-over to next session)
